@@ -1,0 +1,483 @@
+<title>Feed to Fund Master Run</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a research tearsheet. One reading column, wide figure bands for the three test benches. */
+:root{
+  --bg:#f5f6f8; --paper:#ffffff; --ink:#14202e; --muted:#5a6676; --rule:#d9dee6; --tint:#eceff4;
+  --accent:#b8650a; --accent-soft:#f6e7d3;
+  --gain:#167a5b; --loss:#b4342d; --warn:#9a6a00;
+  --s1:#2f6db5; --s2:#7a4fb0; --s3:#b8650a; --s4:#c2417a; --s5:#178a8a; --fund:#14202e; --bench:#8b95a3;
+  --display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d26; --ink:#e4e9f0; --muted:#97a3b3; --rule:#2a3442; --tint:#1d2631;
+  --accent:#e59a3e; --accent-soft:#3a2a17; --gain:#45c49a; --loss:#ef6b62; --warn:#e2b44a;
+  --s1:#6ea3e8; --s2:#ad8ae0; --s3:#e59a3e; --s4:#e77aa8; --s5:#4cc4c4; --fund:#e4e9f0; --bench:#7d8898; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d26; --ink:#e4e9f0; --muted:#97a3b3; --rule:#2a3442; --tint:#1d2631;
+  --accent:#e59a3e; --accent-soft:#3a2a17; --gain:#45c49a; --loss:#ef6b62; --warn:#e2b44a;
+  --s1:#6ea3e8; --s2:#ad8ae0; --s3:#e59a3e; --s4:#e77aa8; --s5:#4cc4c4; --fund:#e4e9f0; --bench:#7d8898; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-block:32px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:56px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2.1rem,5vw,3.4rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:600}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0;max-width:68ch}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.eyebrow{font:500 .75rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.gain{color:var(--gain)} .loss{color:var(--loss)} .warnc{color:var(--warn)}
+section{display:grid;gap:20px;min-width:0}
+.lede{font-size:1.15rem;color:var(--ink)}
+.muted{color:var(--muted)}
+.hero{display:grid;gap:18px}
+.verdict{border-left:4px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 6px 6px 0;max-width:80ch}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.tile{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.tile .big{font:600 1.7rem/1.1 var(--mono)}
+.tile .lab{font-size:.85rem;color:var(--muted)}
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;display:grid;gap:0;border-left:2px solid var(--rule);margin-left:6px}
+.tl li{position:relative;padding:0 0 18px 22px;display:grid;gap:2px;min-width:0}
+.tl li::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--accent)}
+.tl .when{font:500 .78rem var(--mono);color:var(--muted)}
+.tl b{font-weight:600}
+/* benches */
+.benches{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.bench{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.bench .tag{font:600 .72rem var(--mono);letter-spacing:.08em;color:var(--accent)}
+.bench dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.9rem}
+.bench dt{color:var(--muted)} .bench dd{margin:0}
+.fig{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:16px;display:grid;gap:12px;min-width:0}
+.figbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:500 .85rem var(--body);background:var(--tint);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:6px 12px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+input[type=range]{accent-color:var(--accent);width:min(320px,100%)}
+canvas{width:100%;display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.82rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+.ticker{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.ticker div{border-top:3px solid var(--c);padding-top:6px;display:grid;gap:0;font-size:.8rem;color:var(--muted)}
+.ticker b{font:600 1rem var(--mono);color:var(--ink)}
+/* pipeline svg */
+.pipe{overflow-x:auto}
+.pipe svg{min-width:720px;width:100%;height:auto;display:block}
+.pipe text{font-family:var(--body);fill:var(--ink)}
+.pipe .box{fill:var(--paper);stroke:var(--rule)}
+.pipe .hot{fill:var(--accent-soft);stroke:var(--accent)}
+.pipe .wire{stroke:var(--rule);stroke-width:2;fill:none}
+.pipe .pkt{fill:var(--accent)}
+.pipe .sub{fill:var(--muted);font-size:11px}
+/* tables */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{padding:7px 10px;border-bottom:1px solid var(--rule);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font:500 .72rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td{font-family:var(--mono);font-variant-numeric:tabular-nums}
+td:first-child{font-family:var(--body)}
+/* ladder */
+.ladder{display:grid;gap:12px;counter-reset:step}
+.step{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;display:grid;grid-template-columns:44px 1fr;gap:4px 14px;min-width:0}
+.step::before{counter-increment:step;content:counter(step);grid-row:span 4;font:600 1.6rem/1 var(--display);color:var(--accent)}
+.step h3{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{font:600 .7rem var(--mono);letter-spacing:.06em;text-transform:uppercase;border-radius:3px;padding:2px 7px;border:1px solid currentColor}
+.chip.fail{color:var(--loss)} .chip.pass{color:var(--gain)} .chip.mixed{color:var(--warn)}
+.step .how{font-size:.9rem;color:var(--muted)}
+.step .here{font-size:.95rem}
+.luck{display:grid;gap:8px;background:var(--tint);border-radius:6px;padding:12px 14px;margin-top:6px}
+.gaps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.gap{background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;gap:6px;align-content:start}
+.gap .bar{height:6px;background:var(--tint);border-radius:3px;overflow:hidden}
+.gap .bar i{display:block;height:100%;background:var(--loss)}
+.lib{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.lib a{display:grid;gap:2px;background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:12px 14px;text-decoration:none;color:var(--ink)}
+.lib a:hover{border-color:var(--accent)}
+.lib a span{font-size:.82rem;color:var(--muted)}
+.lib a b{font-weight:600}
+.cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.cols2>*{min-width:0}
+footer{font-size:.85rem;color:var(--muted);display:grid;gap:6px}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Master run · <span id="runDate"></span> · pretend money only, no orders sent anywhere</div>
+  <h1>Can a market data engineer's stack, plus MiroFish news sentiment, run a fund that makes money?</h1>
+  <p class="lede">You built a Nasdaq feed, order books, an exchange and a firm, then asked whether the strategies on top of it, mixed with a sentiment swarm, could turn $5bn of paper money into profit. This page reruns every model from the project, scores them all with the same tests, and animates the result.</p>
+  <div class="verdict" id="verdict"></div>
+  <div class="tiles" id="tiles"></div>
+</header>
+
+<section aria-labelledby="h-asks">
+  <div class="eyebrow">Your thinking so far</div>
+  <h2 id="h-asks">What you asked for, in order</h2>
+  <p class="muted">Each step built on the last. Together they form one question: does better market data engineering lead to better trading?</p>
+  <ol class="tl">
+    <li><span class="when">18 Oct</span><b>Use Claude Code to do my market data job better</b><span>ICE consolidated feeds, book and trade-state bugs, weekly exchange upgrades, replay and pcap validation. Delivered the QA playbook.</span></li>
+    <li><span class="when">18 to 23 Oct</span><b>Build a trading firm in miniature</b><span>Nine phases: ITCH 5.0 codec and books, MoldUDP64 live feed, the simex exchange with OUCH, the firm hot path, post-trade, FIX, vendor feeds (ICF, Reuters, B-PIPE), auctions, halts and LULD. Plus the Order Flow Inspector.</span></li>
+    <li><span class="when">30 Oct</span><b>Show how HFT, systematic and fundamental funds trade the same data differently</b><span>The Quant Research Lab: market making, stat arb pairs, trend and fundamental strategies running on the C++ exchange.</span></li>
+    <li><span class="when">3 Nov</span><b>Mix the trading system with MiroFish, give it $5bn and run it on real Nasdaq data</b><span>The Paper Fund: five sleeves, real daily prices and news, per-exchange and per-strategy PnL, plus placebo, speed, capacity and tuning tests. Also: can it replace analyst ratings and fair value work?</span></li>
+    <li><span class="when">3 Nov</span><b>Animate each strategy, and map the path from market data developer to quant</b><span>Six strategy explainers, and Feed to Alpha, which compares a quant with a 15-year market data veteran.</span></li>
+    <li><span class="when">3 Nov</span><b>Put rival funds on one exchange and see who wins</b><span>The Fund Arena: ten archetype funds, latency races, 200 alternate histories, and a plan for a small fund.</span></li>
+    <li><span class="when">Today</span><b>Run it all together and show me how to judge it</b><span>This page.</span></li>
+  </ol>
+</section>
+
+<section aria-labelledby="h-sim">
+  <div class="eyebrow">What is being simulated</div>
+  <h2 id="h-sim">One machine, three test benches</h2>
+  <p>Every strategy runs through the same chain. Market data comes in, a book is built, signals are formed, risk checks the order, the order is filled and PnL is booked. The three benches differ in what feeds the chain and what is assumed.</p>
+  <div class="fig pipe" aria-label="Animated diagram of the trading chain">
+    <svg id="pipe" viewBox="0 0 960 250" role="img" aria-label="Feed, book, five strategies, risk, fills and PnL"></svg>
+  </div>
+  <div class="benches" id="benches"></div>
+</section>
+
+<section aria-labelledby="h-run">
+  <div class="eyebrow">Bench A · real prices and news</div>
+  <h2 id="h-run">$5bn over <span id="sessA"></span> trading days</h2>
+  <p>Each line is a sleeve's own capital, starting at 1.0. Press play to watch the run day by day. QQQ is what the same money would have done sitting in the Nasdaq 100.</p>
+  <div class="fig">
+    <div class="figbar">
+      <div class="ctrls"><button id="playA" aria-pressed="false">Play</button><input id="scrubA" type="range" min="0" max="100" value="100" aria-label="Day"><span class="mono" id="dayA"></span></div>
+      <div class="legend" id="legA"></div>
+    </div>
+    <canvas id="cA" height="340"></canvas>
+    <div class="ticker" id="tickA"></div>
+  </div>
+</section>
+
+<section aria-labelledby="h-lab">
+  <div class="eyebrow">Bench B · the C++ exchange, rerun today</div>
+  <h2 id="h-lab">Twenty simulated years on your own exchange</h2>
+  <p id="labIntro"></p>
+  <div class="fig">
+    <div class="figbar">
+      <div class="ctrls" id="labTabs" role="group" aria-label="Strategy"></div>
+      <div class="ctrls"><button id="playB" aria-pressed="false">Replay</button></div>
+    </div>
+    <canvas id="cB" height="300"></canvas>
+    <p class="muted" id="labNote"></p>
+  </div>
+</section>
+
+<section aria-labelledby="h-arena">
+  <div class="eyebrow">Bench C · rival funds, rerun today</div>
+  <h2 id="h-arena">The Fund Arena: who keeps the money after costs</h2>
+  <p id="arenaIntro"></p>
+  <div class="fig">
+    <div class="figbar"><div class="ctrls"><button id="playC" aria-pressed="false">Replay</button></div><span class="muted mono" style="font-size:.8rem">net PnL after running costs, main history</span></div>
+    <canvas id="cC" height="380"></canvas>
+  </div>
+</section>
+
+<section aria-labelledby="h-how">
+  <div class="eyebrow">How to analyse a result</div>
+  <h2 id="h-how">Eight questions, in the order a risk committee asks them</h2>
+  <p>A backtest that makes money has only passed the first question. Each question below says what it asks, how to compute it, and what this project's numbers say. All of them are now one command: <span class="mono">python3 -m paperfund master</span>.</p>
+  <div class="ladder" id="ladder"></div>
+</section>
+
+<section aria-labelledby="h-score">
+  <div class="eyebrow">The full scorecard, Bench A</div>
+  <h2 id="h-score">Every sleeve, every test</h2>
+  <div class="fig tbl"><table id="score"></table></div>
+  <p class="muted" style="font-size:.9rem">Sharpe is annualised. The 95% range comes from 2,000 block-bootstrap resamples. P(SR&gt;0) is the probabilistic Sharpe ratio. Deflated is the same probability after allowing for every variant tried. Beta and alpha are against QQQ.</p>
+</section>
+
+<section aria-labelledby="h-gaps">
+  <div class="eyebrow">Where the gaps are</div>
+  <h2 id="h-gaps">Why it lost: speed, data, or the strategies?</h2>
+  <p>You asked whether the loss was down to the speed of the code, the data, or the quality of the strategies. Each gap below is measured by a test that changes only that one thing.</p>
+  <div class="gaps" id="gaps"></div>
+  <div class="verdict" id="next"></div>
+</section>
+
+<section aria-labelledby="h-lib">
+  <div class="eyebrow">Everything built so far</div>
+  <h2 id="h-lib">Open the detailed pages</h2>
+  <div class="lib" id="lib"></div>
+</section>
+
+<footer>
+  <p>Bench A uses the paper fund run of 3 Nov 2026 on real daily prices and Nasdaq.com news (the raw data files are not kept, so its daily PnL was rescored rather than refetched). Bench B and Bench C were rerun for this page and are deterministic: Bench C reproduced the earlier arena.json byte for byte. Rival funds are archetypes, not real firms. Running costs are estimates.</p>
+  <p>Rebuild: <span class="mono">python3 -m paperfund master --real RESULTS --arena arena.json --qlab-bin build/release/tools/quant-lab/quant-lab --out out/master</span>, then <span class="mono">python3 -m paperfund.master.page out/master/master.json index.html</span>.</p>
+</footer>
+</div>
+
+<script>
+const D = /*MASTER_DATA*/null;
+const RUN_DATE = /*RUN_DATE*/"";
+const R = D.real, LB = D.lab, AR = D.arena;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const $ = id => document.getElementById(id);
+const pct = (x, d = 1) => (x >= 0 ? "+" : "−") + Math.abs(x * 100).toFixed(d) + "%";
+const money = x => { const a = Math.abs(x), s = x < 0 ? "−$" : "$"; return a >= 1e9 ? s + (a / 1e9).toFixed(2) + "bn" : a >= 1e6 ? s + (a / 1e6).toFixed(a >= 1e8 ? 0 : 1) + "m" : a >= 1e3 ? s + (a / 1e3).toFixed(0) + "k" : s + a.toFixed(0); };
+const cls = x => x >= 0 ? "gain" : "loss";
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const SL = [
+  ["systematic_trend", "Trend (systematic)", "--s1"], ["stat_arb", "Stat arb pairs", "--s2"],
+  ["fundamental", "Fundamental value", "--s3"], ["mirofish_sentiment", "MiroFish news", "--s4"],
+  ["hft_market_making", "Market making (HFT)", "--s5"]];
+const C = R.cards, Q = C.qqq, F = C.fund;
+$("runDate").textContent = RUN_DATE;
+$("sessA").textContent = R.sessions;
+
+// ---------- hero
+const labWins = LB.strategies;
+$("verdict").innerHTML = `<b>Short answer: not as built.</b> On real prices the $5bn fund lost <b class="loss">${money(F.pnl)}</b> (${pct(F.pnl / F.capital)}) while QQQ made ${pct(R.curve.benchmark.at(-1) - 1)}. MiroFish news did no better than the same news shifted by a month. On your simulated exchange the same strategies win year after year, because that world was built with the edges in it. The gap between those two results is the most useful thing this project has measured.`;
+const ar = Object.fromEntries(AR.funds.map(f => [f.key, f]));
+const tiles = [
+  [money(F.pnl), "Paper fund on real prices, " + R.start.slice(0, 7) + " to " + R.end.slice(0, 7), "loss"],
+  [pct(R.curve.benchmark.at(-1) - 1), "QQQ buy and hold, same days", "gain"],
+  [`${labWins.pairs.wins + labWins.mm.wins + labWins.trend.wins + labWins.fund.wins}/${4 * LB.seeds}`, "strategy-years profitable on the simulated exchange", ""],
+  [pct(R.placebo.baseline) + " vs " + pct(R.placebo.placebo_news), "MiroFish sleeve: real news vs month-old news", "loss"],
+  [money(ar.your_md_fund.net), `Your $25m market-data fund in the arena, ${Math.round(ar.your_md_fund.p_net_positive * 100)}% of histories profitable`, cls(ar.your_md_fund.net)]];
+$("tiles").innerHTML = tiles.map(([b, l, c]) => `<div class="tile"><span class="big num ${c}">${b}</span><span class="lab">${l}</span></div>`).join("");
+
+// ---------- benches
+const benches = [
+  ["BENCH A", "Paper fund on real data", [["Prices", "Real daily bars, " + R.sessions + " sessions"], ["News", "Real Nasdaq.com headlines into MiroFish"], ["Capital", "$5bn across 5 sleeves"], ["Costs", "Commission, spread, square-root impact, borrow"], ["Assumed", "HFT sleeve modelled from daily bars; fills at next open"]], "Tells you what would have happened. Short history, one path."],
+  ["BENCH B", "Quant Research Lab", [["Prices", "Simulated agents on your matching engine"], ["Feed", "Real ITCH 5.0 bytes, rebuilt by BookBuilder"], ["Runs", LB.seeds + " independent years of " + LB.days + " days"], ["Checks", (LB.integrity.messages / 1e6).toFixed(0) + "m messages, " + LB.integrity.integrity_errors + " book errors"], ["Assumed", "Mean reversion, trends and a correct thesis are built into the world"]], "Tests the plumbing and the logic. Cannot tell you if an edge exists in reality."],
+  ["BENCH C", "Fund Arena", [["Market", "Microsecond order book plus a daily world"], ["Cast", AR.funds.length + " archetype funds, latencies 2 µs to 1 day"], ["Runs", AR.years + " years, " + AR.paths + " alternate histories"], ["Costs", "Each fund's running costs (estimates)"], ["Assumed", "Where returns come from, and how big each edge is"]], "Shows who gets paid when everyone trades at once. A thinking tool, not a forecast."]];
+$("benches").innerHTML = benches.map(([t, h, rows, s]) => `<article class="bench"><span class="tag">${t}</span><h3>${h}</h3><dl>${rows.map(([a, b]) => `<dt>${a}</dt><dd>${b}</dd>`).join("")}</dl><p class="muted" style="font-size:.88rem">${s}</p></article>`).join("");
+
+// ---------- pipeline animation
+(function pipe() {
+  const svg = $("pipe"), ns = "http://www.w3.org/2000/svg";
+  const nodes = [
+    ["feed", 20, 95, 120, 60, "Market data", "ITCH 5.0 / daily bars"], ["book", 170, 95, 110, 60, "Order book", "BookBuilder"],
+    ["news", 170, 185, 110, 50, "News feed", "MiroFish swarm"],
+    ["s1", 330, 10, 150, 38, "Trend", ""], ["s2", 330, 58, 150, 38, "Stat arb pairs", ""], ["s3", 330, 106, 150, 38, "Fundamental", ""],
+    ["s4", 330, 154, 150, 38, "MiroFish news", ""], ["s5", 330, 202, 150, 38, "Market making", ""],
+    ["risk", 530, 95, 110, 60, "Risk + OMS", "limits, netting"], ["fill", 690, 95, 110, 60, "Exchange", "fills, costs"], ["pnl", 840, 95, 100, 60, "PnL", "per sleeve"]];
+  const at = Object.fromEntries(nodes.map(n => [n[0], n]));
+  const edges = [["feed", "book"], ["book", "s1"], ["book", "s2"], ["book", "s3"], ["book", "s5"], ["news", "s4"], ["s1", "risk"], ["s2", "risk"], ["s3", "risk"], ["s4", "risk"], ["s5", "risk"], ["risk", "fill"], ["fill", "pnl"]];
+  const paths = [];
+  edges.forEach(([a, b]) => {
+    const A = at[a], B = at[b], x1 = A[1] + A[3], y1 = A[2] + A[4] / 2, x2 = B[1], y2 = B[2] + B[4] / 2, mx = (x1 + x2) / 2;
+    const p = document.createElementNS(ns, "path");
+    p.setAttribute("d", `M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}`); p.setAttribute("class", "wire");
+    svg.appendChild(p); paths.push(p);
+  });
+  nodes.forEach(([id, x, y, w, h, t, s]) => {
+    const g = document.createElementNS(ns, "g");
+    g.innerHTML = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" class="${id === "news" || id === "s4" ? "hot" : "box"}"/>
+      <text x="${x + w / 2}" y="${y + (s ? h / 2 - 3 : h / 2 + 5)}" text-anchor="middle" font-size="14" font-weight="600">${t}</text>
+      ${s ? `<text x="${x + w / 2}" y="${y + h / 2 + 14}" text-anchor="middle" class="sub">${s}</text>` : ""}`;
+    svg.appendChild(g);
+  });
+  const dots = paths.map(() => { const c = document.createElementNS(ns, "circle"); c.setAttribute("r", 4); c.setAttribute("class", "pkt"); svg.appendChild(c); return c; });
+  const lens = paths.map(p => p.getTotalLength());
+  const off = paths.map((_, i) => (i * 0.137) % 1);
+  function tick(t) {
+    dots.forEach((d, i) => { const u = ((t / 2600) + off[i]) % 1, pt = paths[i].getPointAtLength(u * lens[i]); d.setAttribute("cx", pt.x); d.setAttribute("cy", pt.y); });
+    if (!reduced) requestAnimationFrame(tick);
+  }
+  tick(900);
+})();
+
+// ---------- canvas helper
+function setup(cv) {
+  const r = devicePixelRatio || 1, w = cv.clientWidth, h = +cv.getAttribute("height");
+  cv.width = w * r; cv.height = h * r; cv.style.height = h + "px";
+  const x = cv.getContext("2d"); x.setTransform(r, 0, 0, r, 0, 0); return [x, w, h];
+}
+function axes(x, w, h, pad, lo, hi, fmt, ticks) {
+  x.font = "11px " + css("--mono"); x.fillStyle = css("--muted"); x.strokeStyle = css("--rule"); x.lineWidth = 1;
+  ticks.forEach(v => {
+    const y = pad.t + (hi - v) / (hi - lo) * (h - pad.t - pad.b);
+    x.beginPath(); x.moveTo(pad.l, y); x.lineTo(w - pad.r, y); x.stroke();
+    x.fillText(fmt(v), 4, y + 4);
+  });
+}
+function niceTicks(lo, hi, n) { const st = (hi - lo) / n, m = Math.pow(10, Math.floor(Math.log10(st))), s = [1, 2, 2.5, 5, 10].map(k => k * m).find(k => k >= st); const a = []; for (let v = Math.ceil(lo / s) * s; v <= hi + 1e-9; v += s) a.push(+v.toFixed(10)); return a; }
+
+// ---------- Bench A race
+(function benchA() {
+  const cv = $("cA"), cur = R.curve, n = cur.dates.length;
+  const series = [...SL.map(([k, l, c]) => [k, l, c, 1.6]), ["fund", "Whole fund", "--fund", 3], ["benchmark", "QQQ", "--bench", 2]];
+  $("legA").innerHTML = series.map(([k, l, c]) => `<span><i style="background:var(${c})"></i>${l}</span>`).join("");
+  const scrub = $("scrubA"); scrub.max = n - 1; scrub.value = n - 1;
+  let all = series.flatMap(s => cur[s[0]]); const lo = Math.min(...all) - .02, hi = Math.max(...all) + .02;
+  const caps = Object.fromEntries(SL.map(([k]) => [k, C[k].capital])); caps.fund = F.capital; caps.benchmark = F.capital;
+  function draw(i) {
+    const [x, w, h] = setup(cv), pad = { l: 46, r: 12, t: 10, b: 24 };
+    x.clearRect(0, 0, w, h);
+    axes(x, w, h, pad, lo, hi, v => (v - 1 >= 0 ? "+" : "") + ((v - 1) * 100).toFixed(0) + "%", niceTicks(lo, hi, 5));
+    const X = j => pad.l + j / (n - 1) * (w - pad.l - pad.r), Y = v => pad.t + (hi - v) / (hi - lo) * (h - pad.t - pad.b);
+    x.strokeStyle = css("--muted"); x.setLineDash([3, 3]); x.beginPath(); x.moveTo(pad.l, Y(1)); x.lineTo(w - pad.r, Y(1)); x.stroke(); x.setLineDash([]);
+    [0, Math.floor(n / 2), n - 1].forEach(j => { x.fillStyle = css("--muted"); x.textAlign = j === 0 ? "left" : j === n - 1 ? "right" : "center"; x.fillText(cur.dates[j], X(j), h - 6); });
+    x.textAlign = "left";
+    series.forEach(([k, , c, lw]) => {
+      x.strokeStyle = css(c); x.lineWidth = lw; x.beginPath();
+      for (let j = 0; j <= i; j++) { const v = cur[k][j]; j ? x.lineTo(X(j), Y(v)) : x.moveTo(X(j), Y(v)); }
+      x.stroke();
+      x.fillStyle = css(c); x.beginPath(); x.arc(X(i), Y(cur[k][i]), lw + 1.5, 0, 7); x.fill();
+    });
+    $("dayA").textContent = cur.dates[i];
+    $("tickA").innerHTML = series.map(([k, l, c]) => { const v = (cur[k][i] - 1) * caps[k]; return `<div style="--c:var(${c})">${l}<b class="${cls(v)}">${money(v)}</b></div>`; }).join("");
+  }
+  let raf = 0, i = n - 1;
+  scrub.oninput = () => { i = +scrub.value; draw(i); };
+  $("playA").onclick = e => {
+    const b = e.currentTarget, on = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", on); b.textContent = on ? "Pause" : "Play";
+    cancelAnimationFrame(raf); if (!on) return;
+    if (i >= n - 1) i = 0;
+    let last = 0;
+    const step = t => { if (t - last > 45) { last = t; i = Math.min(n - 1, i + 1); scrub.value = i; draw(i); } if (i < n - 1) raf = requestAnimationFrame(step); else { b.setAttribute("aria-pressed", false); b.textContent = "Play"; } };
+    raf = requestAnimationFrame(step);
+  };
+  draw(i); addEventListener("resize", () => draw(i));
+})();
+
+// ---------- Bench B fan
+(function benchB() {
+  const S = LB.strategies, keys = Object.keys(S); let cur = "pairs", prog = 1, raf = 0;
+  const notes = {
+    mm: "The market maker earns the spread on your simulated AAPL book with tight inventory limits. On real prices, modelled from daily bars, it lost: real informed traders pick off slow quotes, and the lab's agents are not that sharp.",
+    pairs: "Pairs wins in every simulated year because the simulated SEMA and SEMB are built to revert to each other. On real pairs (KO/PEP, V/MA and others) the same logic lost money after costs. A simulator only contains the edges you put into it.",
+    trend: "Trend is a coin flip here, as it was on real data. It needs long, persistent moves; when the world does not supply them it pays costs and gives back gains.",
+    fund: "Fundamental always wins here because the model makes the thesis right. On real data, with real earnings, the cheap-versus-expensive book lost 26.5%. This is the clearest case of a simulation flattering a strategy."};
+  $("labIntro").textContent = `Today's rerun built ${LB.seeds} separate years on the matching engine, ${(LB.integrity.messages / 1e6).toFixed(0)} million ITCH messages in all, with ${LB.integrity.integrity_errors} book integrity errors and ${LB.integrity.book_mismatches} mismatches. Each faint line is one year; the bold line is the median year.`;
+  $("labTabs").innerHTML = keys.map(k => `<button data-k="${k}" aria-pressed="${k === cur}">${S[k].name} · ${S[k].wins}/${S[k].pnl.length}</button>`).join("");
+  $("labTabs").onclick = e => { const k = e.target.dataset.k; if (!k) return; cur = k; [...$("labTabs").children].forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k)); prog = 1; draw(); };
+  function draw() {
+    const s = S[cur], [x, w, h] = setup($("cB")), pad = { l: 64, r: 12, t: 10, b: 22 };
+    const cs = s.curves, n = cs[0].length, m = Math.max(1, Math.floor(prog * (n - 1)));
+    const flat = cs.flat(), lo = Math.min(0, ...flat), hi = Math.max(0, ...flat);
+    x.clearRect(0, 0, w, h);
+    axes(x, w, h, pad, lo, hi, money, niceTicks(lo, hi, 4));
+    const X = j => pad.l + j / (n - 1) * (w - pad.l - pad.r), Y = v => pad.t + (hi - v) / (hi - lo || 1) * (h - pad.t - pad.b);
+    x.strokeStyle = css("--muted"); x.setLineDash([3, 3]); x.beginPath(); x.moveTo(pad.l, Y(0)); x.lineTo(w - pad.r, Y(0)); x.stroke(); x.setLineDash([]);
+    const finals = cs.map(c => c[n - 1]), med = [...finals].sort((a, b) => a - b)[Math.floor(finals.length / 2)], mi = finals.indexOf(med);
+    cs.forEach((c, k) => {
+      x.globalAlpha = k === mi ? 1 : .35; x.lineWidth = k === mi ? 2.5 : 1.2;
+      x.strokeStyle = css(c[n - 1] >= 0 ? "--gain" : "--loss"); x.beginPath();
+      for (let j = 0; j <= m; j++) j ? x.lineTo(X(j), Y(c[j])) : x.moveTo(X(j), Y(c[j]));
+      x.stroke();
+    });
+    x.globalAlpha = 1; x.fillStyle = css("--muted"); x.fillText("day 1", pad.l, h - 6); x.textAlign = "right"; x.fillText("day " + LB.days, w - pad.r, h - 6); x.textAlign = "left";
+    $("labNote").textContent = `${s.wins} of ${s.pnl.length} years profitable; median PnL ${money(s.median_pnl)}; chance of this many winning years by luck alone: ${s.p_luck < 1e-4 ? "under 0.01%" : (s.p_luck * 100).toFixed(1) + "%"}. ${notes[cur]}`;
+  }
+  $("playB").onclick = () => { cancelAnimationFrame(raf); prog = 0; const t0 = performance.now(); const st = t => { prog = Math.min(1, (t - t0) / 2500); draw(); if (prog < 1) raf = requestAnimationFrame(st); }; raf = requestAnimationFrame(st); };
+  draw(); addEventListener("resize", draw);
+})();
+
+// ---------- Bench C bars
+(function benchC() {
+  const fs = [...AR.funds].sort((a, b) => b.net - a.net);
+  const md = AR.funds.find(f => f.key === "mirofish_fund"), you = AR.funds.find(f => f.key === "your_md_fund");
+  $("arenaIntro").textContent = `Ten archetype funds traded one simulated exchange for ${AR.years} years, then ${AR.paths} alternate histories. Speed decides who gets filled first; running costs decide who keeps anything. The MiroFish fund as built lost ${money(md.net)}, about the same yearly loss as the real-data paper fund. Your $25m market-data fund, trading a niche venue passively, made money before costs in most histories but ended ${money(you.net)} net in the typical one.`;
+  let p = 1, raf = 0;
+  function draw() {
+    const [x, w, h] = setup($("cC")), lab = Math.min(190, w * .38), pad = { l: lab, r: 70, t: 6, b: 6 };
+    const lo = Math.min(...fs.map(f => f.net)), hi = Math.max(...fs.map(f => f.net)), rowH = (h - pad.t - pad.b) / fs.length;
+    const X = v => pad.l + (v - lo) / (hi - lo) * (w - pad.l - pad.r);
+    x.clearRect(0, 0, w, h); x.font = "12px " + css("--body");
+    x.strokeStyle = css("--rule"); x.beginPath(); x.moveTo(X(0), 0); x.lineTo(X(0), h); x.stroke();
+    fs.forEach((f, i) => {
+      const y = pad.t + i * rowH, v = f.net * p, mine = f.key.startsWith("your") || f.key === "mirofish_fund";
+      x.fillStyle = css(mine ? "--ink" : "--muted"); x.font = (mine ? "600 " : "") + "12px " + css("--body");
+      x.fillText(f.name.length > 26 ? f.name.slice(0, 25) + "…" : f.name, 0, y + rowH / 2 + 4);
+      x.fillStyle = css(v >= 0 ? "--gain" : "--loss"); x.globalAlpha = mine ? 1 : .75;
+      const a = X(Math.min(0, v)), b = X(Math.max(0, v)); x.fillRect(a, y + rowH * .22, Math.max(1, b - a), rowH * .56); x.globalAlpha = 1;
+      x.fillStyle = css("--ink"); x.font = "11px " + css("--mono");
+      const t = money(v); x.textAlign = v >= 0 ? "left" : "right"; x.fillText(t, v >= 0 ? b + 4 : a - 4, y + rowH / 2 + 4); x.textAlign = "left";
+    });
+  }
+  $("playC").onclick = () => { cancelAnimationFrame(raf); const t0 = performance.now(); const st = t => { p = Math.min(1, (t - t0) / 1800); p = 1 - Math.pow(1 - p, 3); draw(); if (p < 1) raf = requestAnimationFrame(st); }; raf = requestAnimationFrame(st); };
+  draw(); addEventListener("resize", draw);
+})();
+
+// ---------- analysis ladder
+(function ladder() {
+  const ms = C.mirofish_sentiment, tr = C.systematic_trend, cb = R.combos, tu = R.tuning;
+  const grossTrend = tr.gross_pnl, grossMF = ms.gross_pnl;
+  const cap = R.capacity;
+  const steps = [
+    ["Did it make money, and how much risk did it take?", "fail",
+      "Annual return, volatility, Sharpe ratio (return per unit of risk), maximum drawdown and hit rate. Compare to simply holding the index over the same days.",
+      `Fund ${pct(F.ann_return)} a year, Sharpe ${F.sharpe.toFixed(2)}, worst drawdown ${pct(F.max_drawdown)}. QQQ made ${pct(Q.ann_return)} a year with Sharpe ${Q.sharpe.toFixed(2)}. No sleeve beat the index.`],
+    ["Could it be luck?", "fail",
+      "The t-statistic of the mean daily return, a bootstrap range for the Sharpe, and the probabilistic Sharpe ratio, which allows for skew and fat tails. A real edge needs a range that stays above zero.",
+      `Fund Sharpe range ${F.sharpe_ci95[0].toFixed(2)} to ${F.sharpe_ci95[1].toFixed(2)}; chance the true Sharpe is above zero: ${Math.round(F.psr * 100)}%. Even QQQ's range (${Q.sharpe_ci95[0].toFixed(2)} to ${Q.sharpe_ci95[1].toFixed(2)}) crosses zero: you would need about ${Q.min_track_years.toFixed(1)} years of a QQQ-like record to be 95% sure. Twenty-two months is a short sample for anything.`],
+    ["Does the signal beat a fake one?", "fail",
+      "The placebo test. Feed the same news shifted by twenty sessions, so it is the right kind of news on the wrong days. If the strategy does as well, the news adds nothing.",
+      `MiroFish sleeve with real news ${pct(R.placebo.baseline)}, with month-old news ${pct(R.placebo.placebo_news)}. The difference is noise. Turning sentiment off entirely made the fund ${pct(R.scenarios.no_sentiment.fund_return - R.scenarios.baseline.fund_return)} worse, mostly because the overlay trimmed losing positions.`],
+    ["How many things did we try?", "fail",
+      "Every variant tried raises the best Sharpe you would see by luck alone. The deflated Sharpe ratio asks whether the result beats that bar. Walk-forward tuning chooses settings on the first half and reports the second.",
+      `${Object.keys(R.scenarios).length} fund variants were tried, so luck alone would give a best Sharpe near ${F.luck_sharpe.toFixed(2)}. Deflated probability of real skill: ${Math.round(F.dsr * 100)}%. MiroFish tuning: in-sample and out-of-sample Sharpe moved in opposite directions (correlation ${tu.is_oos_corr.toFixed(2)}), and the setting picked in-sample scored ${tu.chosen.out_of_sample_sharpe.toFixed(2)} afterwards. That is overfitting in one number.`, true],
+    ["What do costs take?", "fail",
+      "Compare PnL before and after commission, spread, market impact and borrow. A strategy that only works before costs does not work.",
+      `Before costs the trend sleeve made ${money(grossTrend)} and MiroFish ${money(grossMF)}. After costs they lost ${money(tr.pnl)} and ${money(ms.pnl)}. Costs across the fund came to ${money(F.costs)}.`],
+    ["Does it still work at size?", "mixed",
+      "Rerun at different capital. Bigger orders move the price more, and participation caps leave orders unfilled.",
+      `Fund return at $10k (retail, with FX) ${pct(cap["10k_retail"].return)}, $10m ${pct(cap["10m"].return)}, $500m ${pct(cap["500m"].return)}, $5bn ${pct(cap["5bn"].return)}. Trend turns positive below $500m (${pct(cap["10m"].sleeves.systematic_trend)} at $10m), so size hurts, but no size makes the whole fund profitable.`],
+    ["Is it just the market in disguise?", "pass",
+      "Regress daily returns on QQQ. Beta is how much of the market you carry; alpha is what is left. Investors pay for alpha, not beta.",
+      `Fund beta ${F.beta.toFixed(2)}, so it really was market neutral, as designed. Alpha was ${pct(F.alpha)} a year with t = ${F.alpha_t.toFixed(2)}: the neutrality worked, the alpha did not.`],
+    ["Do the parts help each other, and does it survive other worlds?", "mixed",
+      "Correlations between sleeves, a combination chosen only from past data, and many independent simulated histories. One history is one draw.",
+      `A walk-forward inverse-volatility mix scored Sharpe ${cb.walk_forward_inverse_vol.sharpe.toFixed(2)}, worse than as built (${cb.as_built.sharpe.toFixed(2)}), because it piles into the steadiest sleeve, and steady losers look safe. Picking the best sleeve after the fact (${cb.hindsight_best_sleeve.sleeve.replace("_", " ")}) only reaches Sharpe ${cb.hindsight_best_sleeve.sharpe.toFixed(2)}. Across ${LB.seeds} simulated years pairs, market making and fundamental pass easily, which tells you the code and logic work, not that the edge is real.`]];
+  $("ladder").innerHTML = steps.map(([q, v, how, here, luck]) => `<article class="step"><h3>${q}<span class="chip ${v}">${v === "pass" ? "passed" : v === "fail" ? "failed" : "mixed"}</span></h3><p class="how">${how}</p><p class="here">${here}</p>${luck ? `<div class="luck"><label for="nTrials"><b>Try it:</b> how good does the best of <span class="mono" id="nOut"></span> worthless strategies look?</label><input id="nTrials" type="range" min="2" max="500" value="19"><span>Expected best Sharpe from pure luck, over ${R.sessions} days: <b class="mono" id="luckOut"></b></span></div>` : ""}</article>`).join("");
+  // expected max Sharpe of N zero-skill strategies over T days: sd of Sharpe estimate ~ 1/sqrt(T) per day
+  function inv(p) { const a = [-39.6968302866538, 220.946098424521, -275.928510446969, 138.357751867269, -30.6647980661472, 2.50662827745924], b = [-54.4760987982241, 161.585836858041, -155.698979859887, 66.8013118877197, -13.2806815528857], c = [-.00778489400243029, -.322396458041136, -2.40075827716184, -2.54973253934373, 4.37466414146497, 2.93816398269878], d = [.00778469570904146, .32246712907004, 2.445134137143, 3.75440866190742]; if (p < .02425) { const q = Math.sqrt(-2 * Math.log(p)); return (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1); } if (p > 1 - .02425) return -inv(1 - p); const q = p - .5, r = q * q; return (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1); }
+  const sl = $("nTrials"), g = .5772156649;
+  const upd = () => { const N = +sl.value, sd = 1 / Math.sqrt(R.sessions); const e = sd * ((1 - g) * inv(1 - 1 / N) + g * inv(1 - 1 / (N * Math.E))) * Math.sqrt(252); $("nOut").textContent = N; $("luckOut").textContent = e.toFixed(2); };
+  sl.oninput = upd; upd();
+})();
+
+// ---------- scorecard table
+(function table() {
+  const rows = [...SL.map(([k, l]) => [k, l]), ["fund", "Whole fund"], ["qqq", "QQQ (benchmark)"]];
+  const h = ["", "Ann. return", "Sharpe", "95% range", "t-stat", "P(SR>0)", "Deflated", "Beta", "Alpha t", "Max DD", "PnL", "Costs"];
+  $("score").innerHTML = `<thead><tr>${h.map(x => `<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(([k, l]) => { const c = C[k]; return `<tr${k === "fund" ? ' style="font-weight:600"' : ""}><td>${l}</td><td class="${cls(c.ann_return)}">${pct(c.ann_return)}</td><td>${c.sharpe.toFixed(2)}</td><td>${c.sharpe_ci95[0].toFixed(2)} to ${c.sharpe_ci95[1].toFixed(2)}</td><td>${c.t_stat.toFixed(2)}</td><td>${Math.round(c.psr * 100)}%</td><td>${c.dsr == null ? "" : Math.round(c.dsr * 100) + "%"}</td><td>${c.beta == null ? "1.00" : c.beta.toFixed(2)}</td><td>${c.alpha_t == null ? "" : c.alpha_t.toFixed(2)}</td><td>${pct(c.max_drawdown)}</td><td class="${c.pnl == null ? "" : cls(c.pnl)}">${c.pnl == null ? money((R.curve.benchmark.at(-1) - 1) * F.capital) : money(c.pnl)}</td><td>${c.costs == null ? "" : money(c.costs)}</td></tr>`; }).join("")}</tbody>`;
+})();
+
+// ---------- gaps
+(function gaps() {
+  const sc = R.scenarios, t = R.timing.news_timing.all, ev = R.timing.evaluation;
+  const g = [
+    ["Speed of your code", 15, `Not the problem for daily strategies. Giving MiroFish the price from before the news (an upper bound on speed) made it worse, ${pct(sc.realtime_news.sleeves.mirofish_sentiment.return)}, because it then traded every headline, including the ones that reversed. Speed matters for market making: the colocated version turned ${pct(sc.baseline.sleeves.hft_market_making.return)} into ${pct(sc.hft_colocated.sleeves.hft_market_making.return)}, and in the arena the 2 µs firms take the latency money.`],
+    ["Data", 60, `A large gap. About ${Math.round(t.share_gone_before_daily_fill * 100)}% of a news move (${t.mean_abs_move_realtime_bps.toFixed(0)} bp on average) was already in the price before a daily strategy could fill. Nasdaq.com headlines are dated to the day and are often promotional. Reddit, SEC filings and tick data were blocked from the cloud, and only 22 months of history were used.`],
+    ["Strategy quality", 85, `The biggest gap. Fundamental lost ${pct(C.fundamental.pnl / C.fundamental.capital)} by shorting expensive growth stocks in a growth rally. Pairs lost after costs. The ratings model, the closest thing here to analyst research, had a buy-minus-sell spread of ${pct(ev.buy_minus_sell_monthly_mean)} a month with t = ${ev.buy_minus_sell_t_stat.toFixed(2)} and rank IC ${ev.mean_rank_ic.toFixed(3)}: suggestive, not proven.`],
+    ["The idea of mixing them", 40, `Not disproven, just not shown. A sentiment overlay on top of systematic sleeves is how real funds use alternative data. But here the overlay helped by trimming losers, not by finding winners, and the placebo shows the news itself carried no edge.`]];
+  $("gaps").innerHTML = g.map(([h, s, t]) => `<article class="gap"><h3>${h}</h3><div class="bar" role="img" aria-label="share of the problem ${s} of 100"><i style="width:${s}%"></i></div><p style="font-size:.92rem">${t}</p></article>`).join("");
+  $("next").innerHTML = `<b>What would change the answer.</b> Better inputs come before more tuning. Add timestamped news and filings (SEC EDGAR, a paid wire), test MiroFish on intraday prices so it trades within minutes rather than at the next open, and hold out the last six months untouched until the very end. Keep the placebo and deflated-Sharpe tests in front of every result, as this page does. If the market data advantage is to pay, the arena points to a small, passive book on a less contested venue, not a speed race. As a research and ratings tool, the system is usable now, as long as it is judged on hit rate and IC rather than on PnL.`;
+})();
+
+// ---------- library
+(function lib() {
+  const L = [
+    ["Paper Fund findings", "The $5bn real-data run, its limits and monetisation", "https://claude.ai/artifact/DtAU7Pp6EmroJi2v5v3o7e"],
+    ["Whole fund animation", "How the five sleeves fit together", "https://claude.ai/artifact/6bBxAdL7Uz7dZ1GKA114fg"],
+    ["Trend animation", "Systematic time-series momentum", "https://claude.ai/artifact/LtA9jCDn8w3WftgQSKZayP"],
+    ["Stat arb pairs animation", "Mean reversion between twin stocks", "https://claude.ai/artifact/Q41n4cryDxwDahYzCaHmbe"],
+    ["Fundamental value animation", "Cheap versus dear on earnings yield", "https://claude.ai/artifact/AHWA6jUV3n9pm3Z1Sc84ZQ"],
+    ["MiroFish news animation", "Headlines to swarm votes to trades", "https://claude.ai/artifact/3JW6JkU5a6NxiPkA9jiraR"],
+    ["Market making animation", "Spread capture and adverse selection", "https://claude.ai/artifact/CZMXLViFbhMoYFQvYdwX39"],
+    ["Fund Arena", "Ten rival funds on one exchange", "https://claude.ai/artifact/BWTWdfMn56yoXt57CvjjEt"],
+    ["Small Systematic Fund Plan", "Budget, timeline and gates for a small fund", "https://claude.ai/artifact/97Vn6Kt5iW5BruNMVhwr9V"],
+    ["Feed to Alpha", "From market data developer to quant", "https://claude.ai/artifact/9CpumfeNLTh5k7hHqsLJ8L"],
+    ["Quant Research Lab", "The four strategies on the C++ exchange", "https://claude.ai/code/artifact/e68e59e5-b7b6-4d58-b703-6e6f16ced6fb"],
+    ["Four Ways to Trade One Feed", "HFT, stat arb, trend and fundamental side by side", "https://claude.ai/code/artifact/5379e45e-2479-4b0c-88d8-b0670e65477e"],
+    ["Order Flow Inspector", "Trace one order through the lab", "https://claude.ai/code/artifact/02b3d831-b88f-4987-bb8e-6d6ca86be13c"],
+    ["Trading Lab Blueprint v2", "The architecture of the whole lab", "https://claude.ai/code/artifact/f991c499-5dff-478e-abc0-3ea09c292720"],
+    ["Claude Code Playbook for Market Data QA", "Where it started: your day job", "https://claude.ai/code/artifact/283b56d9-d25d-4bf5-9e0b-020d373d4a9d"]];
+  $("lib").innerHTML = L.map(([t, s, u]) => `<a href="${u}" target="_blank" rel="noopener"><b>${t}</b><span>${s}</span></a>`).join("");
+})();
+</script>

@@ -52,7 +52,19 @@ def main(argv=None) -> int:
     ar.add_argument("--paths", type=int, default=200)
     ar.add_argument("--lob-days", type=int, default=40, help="order-book days simulated per regime")
     ar.add_argument("--seed", type=int, default=11)
+    ms = sub.add_parser("master", help="score every model in the project with the same tests")
+    ms.add_argument("--real", required=True, help="results dir with baseline_5bn/, scenarios/, tuning/, ratings/")
+    ms.add_argument("--arena", required=True, help="arena.json from `paperfund arena`")
+    ms.add_argument("--qlab-bin", help="tools/quant-lab executable (runs any seed not already in --out)")
+    ms.add_argument("--seeds", type=int, default=20)
+    ms.add_argument("--days", type=int, default=252)
+    ms.add_argument("--out", default="out/master")
     a = p.parse_args(argv)
+    if a.cmd == "master":
+        from .master.run import run as master_run
+        res = master_run(Path(a.real), a.qlab_bin, Path(a.arena), Path(a.out), a.seeds, a.days)
+        print(Path(a.out, "master.md").read_text())
+        return 0
     if a.cmd == "arena":
         from .arena import report as arena_report
         from .arena.run import run as arena_run

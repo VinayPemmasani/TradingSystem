@@ -71,3 +71,13 @@ simulated years, then 200 alternate histories (about 3 minutes). No real data an
   alternate histories, risk metrics, correlations, who-pays-whom. Writes `arena.json` and `arena.md`.
 - `python3 -m paperfund.arena.page out/arena/arena.json out/arena/index.html` builds the animated
   Fund Arena page from `arena/web/arena.html`.
+
+## Master run: every model, the same tests
+
+`python3 -m paperfund master --real RESULTS --arena out/arena/arena.json --qlab-bin build/release/tools/quant-lab/quant-lab --out out/master`
+scores the three test benches together: the real-data paper fund (from saved `baseline_5bn/`, `scenarios/`,
+`tuning/` and `ratings/` results), 20 simulated years of the C++ Quant Research Lab, and the arena. Every
+result gets the same ladder: return and risk, t-stat, block-bootstrap Sharpe range, probabilistic and deflated
+Sharpe (counting every variant tried), minimum track record, beta and alpha to QQQ, placebo, costs, capacity
+and a walk-forward combination of sleeves (`master/stats.py`). Writes `master.json` and `master.md`;
+`python3 -m paperfund.master.page out/master/master.json index.html` builds the animated page.
