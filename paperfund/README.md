@@ -28,11 +28,11 @@ Shorts pay borrow. PnL is booked per sleeve, ticker and listing exchange (NASDAQ
 
 ```
 pip install numpy pandas
-python3 -m paperfund.cli demo                       # synthetic world, no data needed
-python3 -m paperfund.cli run --prices data/prices.csv --news data/news.jsonl \
+python3 -m paperfund demo                       # synthetic world, no data needed
+python3 -m paperfund run --prices data/prices.csv --news data/news.jsonl \
     --fundamentals data/eps.csv --out out/baseline
-python3 -m paperfund.cli scenarios ... --out out/scenarios   # placebo, realtime, capacity, robustness
-python3 -m paperfund.cli tune ... --out out/tuning           # walk-forward MiroFish tuning
+python3 -m paperfund scenarios ... --out out/scenarios   # placebo, realtime, capacity, robustness
+python3 -m paperfund tune ... --out out/tuning           # walk-forward MiroFish tuning
 python3 -m unittest discover -s tests -t .
 ```
 
