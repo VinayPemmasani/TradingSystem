@@ -46,7 +46,20 @@ def main(argv=None) -> int:
         if name == "scenarios":
             s.add_argument("--only", nargs="*")
             s.add_argument("--no-robustness", action="store_true")
+    ar = sub.add_parser("arena", help="rival archetype funds on one simulated exchange")
+    ar.add_argument("--out", default="out/arena")
+    ar.add_argument("--years", type=int, default=5)
+    ar.add_argument("--paths", type=int, default=200)
+    ar.add_argument("--lob-days", type=int, default=40, help="order-book days simulated per regime")
+    ar.add_argument("--seed", type=int, default=11)
     a = p.parse_args(argv)
+    if a.cmd == "arena":
+        from .arena import report as arena_report
+        from .arena.run import run as arena_run
+        res = arena_run(a.out, a.years, a.paths, a.lob_days, a.seed)
+        print(arena_report.markdown(res))
+        Path(a.out, "arena.md").write_text(arena_report.markdown(res))
+        return 0
     cfg = FundConfig.load(a.config)
     if a.capital:
         cfg.capital = a.capital

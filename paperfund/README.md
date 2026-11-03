@@ -49,3 +49,25 @@ Data is never committed (`data/` is git-ignored).
 - `capacity_*`: the same strategies at $10k (retail costs incl. FX), $10m, $500m, $5bn.
 - `robustness`: neighbouring parameter values; anything chosen after seeing results is labelled so.
 - `tune`: picks MiroFish settings on the first half, reports the second half.
+
+## Arena: rival funds on one exchange
+
+`python3 -m paperfund arena --out out/arena` runs ten archetype funds against each other for five
+simulated years, then 200 alternate histories (about 3 minutes). No real data and no real firms.
+
+- `arena/lob.py`: a price-time priority order book on a microsecond clock. Fair value jumps (often
+  after a lead signal on another venue's feed); each firm reacts after its own latency, so speed
+  decides who pulls a stale quote, who picks it off and who reaches the front of the new queue.
+  Retail flow, informed sweeps and slow funds' child orders take liquidity. A second, less contested
+  venue has no top speed firms.
+- `arena/world.py`: a daily stock universe and four futures markets with explicit sources of return
+  (mispricing for value, flow pressure for reversal, news drift, trends) plus crisis regimes and
+  crowding events.
+- `arena/funds.py`: the cast (Apex HFT, Sniper Arb, Tier-2 MM, Pod Shop, Trend CTA, Value L/S,
+  Big Bet, the MiroFish fund as built, your market-data fund, and the same team racing HFTs), with
+  each one's risk rules (pod stops, vol targets, margin calls, daily loss limits) and running costs
+  (estimates).
+- `arena/run.py`: order-book days per regime, the main history (the most typical of all paths),
+  alternate histories, risk metrics, correlations, who-pays-whom. Writes `arena.json` and `arena.md`.
+- `python3 -m paperfund.arena.page out/arena/arena.json out/arena/index.html` builds the animated
+  Fund Arena page from `arena/web/arena.html`.

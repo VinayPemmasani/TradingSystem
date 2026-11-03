@@ -1,0 +1,491 @@
+<title>Fund Arena</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column of numbered "tapes" (the exchange's own sequence), wide exhibits break out to 1120px. */
+:root{
+  --bg:#f2f4f6; --panel:#ffffff; --ink:#141c26; --muted:#5a6676; --rule:#d5dbe2; --accent:#0b5d7a;
+  --good:#1d7a46; --bad:#b4372f; --warn:#a86a00; --track:#e6eaee;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif; --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --c-apex_hft:#2f6fd6; --c-sniper_arb:#c23b30; --c-tier2_mm:#7d67c2; --c-pod_shop:#c98a06; --c-cta_trend:#12866f;
+  --c-value_ls:#5f8131; --c-big_bet:#b04680; --c-mirofish_fund:#e0711c; --c-your_md_fund:#0597aa; --c-your_md_race:#7fb8c2;
+  --c-market:#141c26; --c-retail:#8a96a6; --c-informed:#5b2a2a; --c-slow_funds:#a07a3c; --c-your_exec:#0597aa; --c-background:#b9c2cc; --c-local_arb:#c23b30;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f151c; --panel:#161e27; --ink:#e4e9ef; --muted:#93a0b0; --rule:#2a3542; --accent:#5fb6d3;
+  --good:#4cc07f; --bad:#ef6f62; --warn:#e3a93a; --track:#202a35; --c-market:#e4e9ef; --c-informed:#d58a8a; --c-background:#4a5663; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f151c; --panel:#161e27; --ink:#e4e9ef; --muted:#93a0b0; --rule:#2a3542; --accent:#5fb6d3;
+  --good:#4cc07f; --bad:#ef6f62; --warn:#e3a93a; --track:#202a35; --c-market:#e4e9ef; --c-informed:#d58a8a; --c-background:#4a5663; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:56px}
+.col{max-width:720px}
+h1,h2,h3{font-family:var(--display);font-stretch:85%;text-wrap:balance;margin:0;line-height:1.1}
+h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.75rem;font-weight:750}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0}
+.eyebrow{font:500 .72rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+section{display:flex;flex-direction:column;gap:16px}
+.lede{font-size:1.08rem;max-width:68ch}
+.note{color:var(--muted);font-size:.86rem;max-width:80ch}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--accent)}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.verdict div{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.verdict b{font-family:var(--display);font-stretch:85%;font-size:1.05rem}
+.big{font:700 1.6rem/1.1 var(--display);font-stretch:80%}
+.pos{color:var(--good)} .neg{color:var(--bad)}
+.stage{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:10px}
+canvas{width:100%;display:block}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:600 .85rem var(--body);background:var(--ink);color:var(--bg);border:0;border-radius:4px;padding:7px 14px;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+input[type=range]{flex:1;min-width:160px;accent-color:var(--accent)}
+select{font:500 .85rem var(--body);background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:6px}
+.clock{font:500 .9rem var(--mono);min-width:12ch}
+.ticker{font:.82rem/1.4 var(--mono);color:var(--muted);min-height:2.8em}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{padding:7px 8px;border-bottom:1px solid var(--rule);text-align:right;vertical-align:top}
+th{font:600 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+td:first-child,th:first-child{text-align:left}
+td.why{text-align:left;min-width:260px;max-width:400px;color:var(--muted)}
+td.num{white-space:nowrap}
+#pnl th:last-child{text-align:left}
+tr.you td{background:color-mix(in srgb,var(--c-your_md_fund) 9%,transparent)}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+.race{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:760px){.race{grid-template-columns:1fr}}
+.ladder{font:.8rem var(--mono);display:flex;flex-direction:column;gap:3px}
+.lvl{display:grid;grid-template-columns:64px 1fr;gap:8px;align-items:center;min-height:22px}
+.lvl .px{text-align:right;color:var(--muted)}
+.lvl.fair .px{color:var(--ink);font-weight:600}
+.q{display:flex;gap:2px;flex-wrap:wrap}
+.q span{height:18px;border-radius:2px;display:inline-flex;align-items:center;padding:0 4px;color:#fff;font-size:.68rem;white-space:nowrap;transition:opacity .3s}
+.side-ask .q span{opacity:.9}
+.mid{border-top:1px dashed var(--rule);margin:4px 0;font:.72rem var(--mono);color:var(--muted);padding-top:2px}
+.steps{display:flex;flex-direction:column;gap:4px;font-size:.85rem;max-height:420px;overflow:auto}
+.steps div{padding:6px 8px;border-left:3px solid var(--rule);color:var(--muted)}
+.steps div.on{border-left-color:var(--accent);color:var(--ink);background:var(--track)}
+.steps .t{font-family:var(--mono);font-size:.75rem;margin-right:8px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+svg text{fill:var(--muted);font:11px var(--mono)}
+svg .lab{fill:var(--ink);font:600 11px var(--body)}
+.heat td{text-align:center;font:.75rem var(--mono);padding:5px 4px;border:1px solid var(--bg)}
+.heat th{writing-mode:vertical-rl;transform:rotate(180deg);text-align:left;padding:4px 2px;height:160px}
+.heat th.rowh{writing-mode:horizontal-tb;transform:none;height:auto;text-align:left}
+ul.plain{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px;max-width:80ch}
+@media (prefers-reduced-motion:reduce){.q span{transition:none}}
+</style>
+
+<div class="wrap">
+<header class="col" style="display:flex;flex-direction:column;gap:14px">
+  <span class="eyebrow">Paper fund · rival simulation · <span id="hdr-years"></span> simulated years</span>
+  <h1>Fund Arena</h1>
+  <p class="lede">Ten funds trade the same exchange for five years: HFT market makers, a latency sniper, a pod shop, a trend CTA, value and levered funds, the MiroFish paper fund from PR #28, and a small fund built on your market-data skills. Every number on this page comes from that simulation (<span id="hdr-paths"></span> alternate histories), except the real-fund table near the end.</p>
+  <p class="note">Simulation only. Rival funds are archetypes, not real firms, and their running costs are estimates. The order book is simulated microsecond by microsecond for <span id="hdr-lobdays"></span> days and those days are replayed by market regime across the five years.</p>
+</header>
+
+<section>
+  <span class="eyebrow">The answer</span>
+  <div class="verdict" id="verdict"></div>
+</section>
+
+<section>
+  <span class="eyebrow">Tape 1</span>
+  <h2>The web: who trades with whom</h2>
+  <p class="col">The exchange sits in the middle. Dots are orders going in and fills coming back, at each firm's real rate from the order book simulation. Ring size is capital; the number under each fund is what each $1 has become. Press play to run five years.</p>
+  <div class="stage">
+    <canvas id="web" height="560" aria-label="Animated web of funds trading on one exchange"></canvas>
+    <div class="controls">
+      <button id="play">Play</button>
+      <input type="range" id="scrub" min="0" value="0" aria-label="Week">
+      <span class="clock" id="clock">Year 1</span>
+      <select id="speed" aria-label="Speed"><option value="1">1x</option><option value="2" selected>2x</option><option value="4">4x</option></select>
+    </div>
+    <div class="ticker" id="ticker"></div>
+  </div>
+  <div class="card">
+    <h3>Growth of $1, same five years</h3>
+    <div class="scroll"><svg id="eqchart" viewBox="0 0 1080 300" style="min-width:640px;width:100%"></svg></div>
+    <div class="legend" id="eqlegend"></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Tape 2</span>
+  <h2>Why the fastest firm gets filled first</h2>
+  <div class="col" style="display:flex;flex-direction:column;gap:10px">
+    <p>Exchanges fill resting orders by price, then by arrival time. When fair value moves, every resting quote at the old price is suddenly a gift to whoever takes it, and the new best price has an empty queue. Two races follow: snipers race makers to the stale quotes, and makers race each other to the front of the new queue.</p>
+    <p>These are two real moments from the simulated book, slowed down a million times. Each coloured block is one firm's order; its position in the row is its place in the queue.</p>
+  </div>
+  <div class="controls"><select id="ep" aria-label="Episode"></select><button id="epplay">Play</button><button class="ghost" id="epstep">Step</button></div>
+  <div class="race">
+    <div class="card"><h3 id="eptitle"></h3><div class="ladder" id="ladder"></div><div class="legend" id="booklegend"></div></div>
+    <div class="card"><h3>What happens, microsecond by microsecond</h3><div class="steps" id="steps"></div></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Queue position and getting picked off</h3>
+      <div class="scroll"><table id="qtable"></table></div>
+      <p class="note">Front of queue: share of a maker's filled shares where it was first at that price. Picked off: share filled by the sniper or an informed sweep, the trades a maker loses on.</p>
+    </div>
+    <div class="card">
+      <h3>Who pays whom (per stock, per day)</h3>
+      <div class="scroll"><table id="transfer" class="heat"></table></div>
+      <p class="note">Maker's gain from each taker, marked 1 second after the trade. Green: the maker earned the spread. Red: the taker knew the price was about to move.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Tape 3</span>
+  <h2>Final PnL, fund by fund</h2>
+  <p class="col">The most typical of the alternate histories (closest to the median for every fund at once). Net PnL is trading profit after trading costs minus the cost of running the firm. P(net &gt; 0) counts across all histories.</p>
+  <div class="scroll"><table id="pnl"></table></div>
+  <p class="note" id="pnlnote"></p>
+</section>
+
+<section>
+  <span class="eyebrow">Tape 4</span>
+  <h2>Risk: how each firm measures it, and what it buys</h2>
+  <div class="grid2">
+    <div class="card"><h3>Risk against reward</h3><svg id="scatter" viewBox="0 0 520 360"></svg><p class="note">Annual volatility against annual return in the main history; circle size is capital. Up and to the left is better.</p></div>
+    <div class="card"><h3>Who moves together (daily return correlation)</h3><div class="scroll"><table id="corr" class="heat"></table></div></div>
+  </div>
+  <div class="scroll"><table id="risk"></table></div>
+  <div class="col" style="display:flex;flex-direction:column;gap:10px">
+    <h3>Why some firms choose high risk</h3>
+    <ul class="plain">
+      <li><b>The manager's payoff is lopsided.</b> With 2% and 20% fees the manager keeps a fifth of the upside and none of the downside. Big Bet Capital earned <span id="bbfees"></span> in fees while its investors lost <span id="bbinv"></span>.</li>
+      <li><b>Investors pay for a story.</b> A 30% year attracts money; a steady 6% does not. That pulls managers toward leverage until a margin call, which is what happened to Big Bet on day <span id="bbday"></span>.</li>
+      <li><b>Low-risk firms need a real edge per trade.</b> Apex and the sniper run tiny risk (a worst day of <span id="apexworst"></span>) because they make thousands of small, positive bets a day. You can only be low-risk and profitable if the edge is real.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Tape 5</span>
+  <h2>Luck or skill: <span id="npaths"></span> alternate histories</h2>
+  <p class="col">The same funds run through different markets, crises and crowding events. A line is the middle 90% of five-year returns; the dot is the median. For your fund, each history also draws how good the research turned out to be.</p>
+  <div class="card"><div class="scroll"><svg id="mc" viewBox="0 0 1080 420" style="min-width:640px;width:100%"></svg></div></div>
+  <div class="grid2">
+    <div class="card"><h3>Your fund: it depends on the research</h3><svg id="strength" viewBox="0 0 560 250"></svg><p class="note" id="strengthnote"></p></div>
+    <div class="card"><h3>Your fund: when trading profit first covers running costs</h3><svg id="breakeven" viewBox="0 0 520 240"></svg><p class="note" id="benote"></p></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Tape 6</span>
+  <h2>What real funds have done</h2>
+  <p class="col">Public figures, for scale. Each links to where it was reported. The full stories and the plan are in the <a id="doclink" href="#">Small Systematic Fund Plan</a>.</p>
+  <div class="scroll"><table id="real"></table></div>
+</section>
+
+<section class="col">
+  <span class="eyebrow">Tape 7</span>
+  <h2>Recommendation</h2>
+  <ul class="plain" id="reco"></ul>
+  <p class="note">Built from <span class="mono">python3 -m paperfund arena</span> in the trading repo (paperfund/arena). The earlier real-data findings for the MiroFish paper fund: <a href="https://claude.ai/artifact/DtAU7Pp6EmroJi2v5v3o7e">Paper Fund findings</a>.</p>
+</section>
+</div>
+
+<script>
+const D = /*ARENA_DATA*/null;
+const DOC_URL = /*DOC_URL*/"#";
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const col = k => css('--c-' + k) || css('--muted');
+const F = Object.fromEntries(D.funds.map(f => [f.key, f]));
+const NAMES = Object.fromEntries(D.funds.map(f => [f.key, f.name]));
+Object.assign(NAMES, {market:'Market', retail:'Retail orders', informed:'Informed sweeps', slow_funds:'Slow funds (CTA etc.)', your_exec:'Your execution algo', background:'Deep book', local_arb:'Local arb'});
+const money = x => { const a = Math.abs(x), s = x < 0 ? '−' : ''; return a >= 1e9 ? s+'$'+(a/1e9).toFixed(2)+'bn' : a >= 1e6 ? s+'$'+(a/1e6).toFixed(a>=1e8?0:1)+'m' : s+'$'+(a/1e3).toFixed(0)+'k'; };
+const pct = (x, d=1) => (x>=0?'+':'−') + Math.abs(x*100).toFixed(d) + '%';
+const pp = x => (x*100).toFixed(0) + '%';
+const sgn = x => x >= 0 ? 'pos' : 'neg';
+const el = id => document.getElementById(id);
+const YEAR = 252, STEP = D.step_days, NW = D.curves.market.length;
+document.getElementById('doclink').href = DOC_URL;
+el('hdr-years').textContent = D.years; el('hdr-paths').textContent = D.paths; el('hdr-lobdays').textContent = D.lob_days; el('npaths').textContent = D.paths;
+
+// ---------- verdict
+(function(){
+  const y = F.your_md_fund, m = F.mirofish_fund, mc = D.mc.your_md_fund, bs = mc.by_strength || {};
+  const best = [...D.funds].sort((a,b)=>b.net-a.net)[0];
+  el('verdict').innerHTML = `
+  <div><span class="eyebrow">MiroFish fund, as built</span><span class="big ${sgn(m.net)}">${money(m.net)}</span><span>${pct(m.ann)} a year. Lost in ${pp(1-D.mc.mirofish_fund.p_net_positive)} of histories: $5bn of size, next-open fills and a coin-flip news read. PR #28 measured ${'-4.77%'} a year on real data.</span></div>
+  <div><span class="eyebrow">Your market-data fund</span><span class="big ${sgn(y.net)}">${money(y.net)}</span><span>${pct(y.ann)} a year before running costs, ${money(y.net)} after ${money(y.opex)} of them. Profitable in ${pp(mc.p_net_positive)} of histories; ${pp((bs['1.0']||{}).p_net_positive||0)} if the research signal is real, ${pp((bs['0.0']||{}).p_net_positive||0)} if it is noise.</span></div>
+  <div><span class="eyebrow">Biggest winner</span><span class="big pos">${best.name}</span><span>${money(best.net)} net. It is 2 µs from the leading venue and takes quotes that slower firms have not pulled yet. It wins most in crises.</span></div>
+  <div><span class="eyebrow">Racing the HFTs instead</span><span class="big neg">${money(F.your_md_race.net)}</span><span>Same team and budget, market making on the main venue. Third in every race; ${pp(D.lob.makers.your_md_fund.picked_off)} of its fills are trades it loses on.</span></div>`;
+})();
+
+// ---------- web animation
+const web = el('web'), ctx = web.getContext('2d');
+const order = ['apex_hft','sniper_arb','tier2_mm','your_md_fund','your_md_race','mirofish_fund','big_bet','value_ls','cta_trend','pod_shop'];
+let W, H, nodes;
+function layout(){
+  const dpr = window.devicePixelRatio || 1, cw = web.clientWidth;
+  const ch = Math.max(420, Math.min(600, cw * 0.62));
+  web.width = cw * dpr; web.height = ch * dpr; web.style.height = ch + 'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0); W = cw; H = ch;
+  const R = Math.min(W*0.42, H*0.38);
+  nodes = order.map((k,i) => { const a = -Math.PI/2 + i * 2*Math.PI/order.length;
+    const cap = F[k].capital; const r = Math.max(9, Math.min(34, 5 + Math.sqrt(cap/1e9)*6));
+    return {k, x: W/2 + Math.cos(a)*R*(W<520?0.92:1.05), y: H/2 + Math.sin(a)*R, r}; });
+}
+// activity per fund: orders per animation tick, from the order book stats
+const act = {}; const mk = D.lob.makers, tk = D.lob.takers;
+for (const k of order){ const f = F[k]; let a = 0.05;
+  const mm = (D.micro_multipliers[k]||{}); for (const firm in mm){ const s = (mk[firm]||{}).shares_per_day || (tk[firm]||0); a += s/60000; }
+  if (k==='sniper_arb') a += (tk.sniper_arb||0)/60000;
+  if (!Object.keys(mm).length) a += f.capital/8e9;
+  act[k] = Math.min(a, 9); }
+let parts = [], week = 0, playing = false, last = 0, acc = 0;
+const scrub = el('scrub'); scrub.max = NW - 1;
+const REG = ['calm','choppy','crisis'];
+function eventsUpTo(w){ const d = w*STEP, out=[]; for (const f of D.funds) for (const [day,txt] of f.events) if (day <= d && day > d-STEP*6) out.push(`${f.name}: ${txt}`); for (const c of D.crowding_days) if (c <= d && c > d-STEP*6) out.push('Crowding event: crowded value and reversal books are sold at once'); return out; }
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  const ink = css('--ink'), muted = css('--muted'), rule = css('--rule'), panel = css('--panel');
+  const reg = D.regimes[Math.min(week, D.regimes.length-1)];
+  // spokes
+  ctx.lineWidth = 1; ctx.strokeStyle = rule;
+  for (const n of nodes){ ctx.beginPath(); ctx.moveTo(W/2,H/2); ctx.lineTo(n.x,n.y); ctx.stroke(); }
+  // particles
+  for (const p of parts){ const t = p.t; const x = p.inb ? p.n.x+(W/2-p.n.x)*t : W/2+(p.n.x-W/2)*t; const y = p.inb ? p.n.y+(H/2-p.n.y)*t : H/2+(p.n.y-H/2)*t;
+    ctx.beginPath(); ctx.arc(x,y,p.inb?2.2:1.6,0,7); ctx.fillStyle = p.c; ctx.globalAlpha = p.inb?0.9:0.55; ctx.fill(); ctx.globalAlpha = 1; }
+  // exchange
+  ctx.beginPath(); ctx.arc(W/2,H/2,38,0,7); ctx.fillStyle = panel; ctx.fill(); ctx.strokeStyle = reg===2?css('--bad'):reg===1?css('--warn'):css('--accent'); ctx.lineWidth = 3; ctx.stroke();
+  ctx.fillStyle = ink; ctx.font = '600 12px '+css('--body'); ctx.textAlign='center'; ctx.fillText('EXCHANGE', W/2, H/2-2);
+  ctx.fillStyle = muted; ctx.font = '11px '+css('--mono'); ctx.fillText(REG[reg]+' market', W/2, H/2+14);
+  // nodes
+  for (const n of nodes){ const f = F[n.k]; const v = D.curves[n.k][Math.min(week, NW-1)];
+    ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,7); ctx.fillStyle = col(n.k); ctx.fill();
+    if (f.closed_day!==null && week*STEP >= f.closed_day){ ctx.strokeStyle = css('--bad'); ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(n.x-n.r,n.y-n.r); ctx.lineTo(n.x+n.r,n.y+n.r); ctx.stroke(); }
+    ctx.fillStyle = ink; ctx.font = '600 12px '+css('--body'); ctx.textAlign='center';
+    const below = n.y > H/2 - 5; const ty = below ? n.y + n.r + 15 : n.y - n.r - 22;
+    ctx.fillText(f.name, n.x, ty);
+    ctx.font = '500 12px '+css('--mono'); ctx.fillStyle = v>=1?css('--good'):css('--bad');
+    ctx.fillText('$'+v.toFixed(2), n.x, ty+15);
+  }
+  const d = week*STEP; el('clock').textContent = `Year ${Math.floor(d/YEAR)+1}, week ${Math.floor((d%YEAR)/5)+1}`;
+  const ev = eventsUpTo(week); el('ticker').textContent = ev.length ? ev.slice(-2).join('  ·  ') : `Market: $1 → $${D.curves.market[Math.min(week,NW-1)].toFixed(2)}`;
+  scrub.value = week; moveCursor();
+}
+function tick(ts){
+  const dt = Math.min(64, ts - (last||ts)); last = ts;
+  const sp = +el('speed').value;
+  if (playing){ acc += dt*sp; while (acc > 140){ acc -= 140; week++; if (week >= NW){ week = NW-1; playing=false; el('play').textContent='Replay'; } } }
+  const reg = D.regimes[Math.min(week, D.regimes.length-1)]; const boost = [1,1.4,2.2][reg];
+  if (playing || parts.length < 40){
+    for (const n of nodes){ if (F[n.k].closed_day!==null && week*STEP>=F[n.k].closed_day) continue; const rate = act[n.k]*0.06*sp*boost*(playing?1:0.3);
+      let k = rate; while (k > 0){ if (Math.random() < k) parts.push({n, t:0, inb:true, c:col(n.k), v:0.012+Math.random()*0.01}); k -= 1; } }
+  }
+  for (const p of parts){ p.t += p.v*sp; if (p.t >= 1 && p.inb){ p.inb=false; p.t=0; p.v*=1.3; } }
+  parts = parts.filter(p => p.t < 1);
+  if (parts.length > 1400) parts.splice(0, parts.length-1400);
+  draw(); requestAnimationFrame(tick);
+}
+el('play').onclick = () => { if (week >= NW-1) week = 0; playing = !playing; el('play').textContent = playing ? 'Pause' : 'Play'; };
+scrub.oninput = () => { week = +scrub.value; draw(); };
+window.addEventListener('resize', () => { layout(); drawEq(); draw(); });
+
+// ---------- equity chart
+const eqKeys = ['sniper_arb','apex_hft','tier2_mm','your_md_fund','value_ls','pod_shop','cta_trend','market','big_bet','mirofish_fund','your_md_race'];
+let eqScale;
+function drawEq(){
+  const svg = el('eqchart'), w = 1080, h = 300, l = 52, r = 220, t = 12, b = 28;
+  let lo = 0.4, hi = 0; for (const k of eqKeys){ for (const v of D.curves[k]){ hi = Math.max(hi, v); lo = Math.min(lo, v); } }
+  const ly = v => Math.log(v); const y0 = ly(Math.max(lo,0.3)), y1 = ly(hi*1.05);
+  const X = i => l + (w-l-r) * i/(NW-1), Y = v => t + (h-t-b) * (1 - (ly(Math.max(v,0.3))-y0)/(y1-y0));
+  eqScale = {X, t, h, b};
+  let s = '';
+  for (const g of [0.5,0.75,1,1.5,2,3,4,6]) if (g>=Math.max(lo,0.3) && g<=hi*1.05){ s += `<line x1="${l}" x2="${w-r}" y1="${Y(g)}" y2="${Y(g)}" stroke="var(--rule)" stroke-dasharray="${g===1?'':'2 4'}"/><text x="${l-6}" y="${Y(g)+4}" text-anchor="end">$${g}</text>`; }
+  for (let yr=0; yr<=D.years; yr++){ const i = Math.min(NW-1, yr*YEAR/STEP); s += `<text x="${X(i)}" y="${h-8}" text-anchor="middle">${yr===0?'start':'yr '+yr}</text>`; }
+  // regime band
+  D.regimes.forEach((rg,i) => { if (rg===2) s += `<rect x="${X(i)}" y="${t}" width="${(w-l-r)/(NW-1)+0.5}" height="${h-t-b}" fill="var(--bad)" opacity="0.07"/>`; });
+  const ends = [];
+  for (const k of eqKeys){ const c = D.curves[k]; s += `<polyline fill="none" stroke="${col(k)}" stroke-width="${k.startsWith('your_md_fund')||k==='mirofish_fund'?2.6:1.5}" ${k==='your_md_race'?'stroke-dasharray="4 3"':''} ${k==='market'?'stroke-dasharray="1 3"':''} points="${c.map((v,i)=>X(i).toFixed(1)+','+Y(v).toFixed(1)).join(' ')}"/>`; ends.push([k, Y(c[c.length-1]), c[c.length-1]]); }
+  ends.sort((a,b)=>a[1]-b[1]); let prev = -99; for (const e of ends){ const yy = Math.max(e[1], prev+12); prev = yy; s += `<text x="${w-r+6}" y="${yy+4}" class="lab" style="fill:${col(e[0])}">${(NAMES[e[0]]||e[0]).replace(' (as built)','').replace('Your Market-Data Fund','Your fund').replace('Your Fund, racing HFTs','Your fund, racing')} $${e[2].toFixed(2)}</text>`; }
+  s += `<line id="cursor" x1="${l}" x2="${l}" y1="${t}" y2="${h-b}" stroke="var(--ink)" opacity="0.5"/>`;
+  svg.innerHTML = s;
+  el('eqlegend').innerHTML = 'Log scale. Shaded weeks are crisis regime. Dotted line: the market (buy and hold). Dashed: your team racing HFTs on the main venue.';
+}
+function moveCursor(){ const c = document.getElementById('cursor'); if (c && eqScale){ const x = eqScale.X(week); c.setAttribute('x1',x); c.setAttribute('x2',x); } }
+
+// ---------- order book race
+const EP_TITLES = {picked_off:'A stale quote picked off', pulled_in_time:'Quotes pulled in time', queue_race:'The race for the new queue'};
+const epSel = el('ep'); D.episodes.forEach((e,i) => { const o = document.createElement('option'); o.value=i; o.textContent = EP_TITLES[e.tag]||e.tag; epSel.appendChild(o); });
+let ep = 0, epi = 0, epTimer = null;
+const px = t => '$' + (t/100).toFixed(2);
+function describe(e, evs){
+  const n = k => NAMES[k] || k, d = e.detail;
+  if (e.kind==='lead') return `Another venue's feed shows fair value about to move ${d.dir>0?'up':'down'} ${d.ticks} tick${d.ticks>1?'s':''}. Only firms that read that feed directly can react to this.`;
+  if (e.kind==='jump') return `The move reaches this exchange: fair value is now ${px(e.R)}. Any quote left on the wrong side of it is stale.`;
+  if (e.kind==='pull') return `${n(e.who)} cancels its ${d.side} ${e.t.toFixed(1)} µs after the signal${e.who==='your_md_fund'||e.who==='your_exec'?': this is where reading many venues’ feeds pays':''}.`;
+  if (e.kind==='quote'){ const rank = q => { for (const s of ['bids','asks']) for (const [p, qq] of e.book[s]) { const i = qq.findIndex(o=>o[0]===e.who); if (i>=0) return i+1; } return null; }; const r = rank(); return `${n(e.who)} re-quotes around ${px(e.R)}${r?`; it is number ${r} in its queue`:''}.`; }
+  if (e.kind==='trade'){ const f = d.fills.map(x => `${n(x[0])} ${x[2]} sh (place ${x[3]+1})`).join(', '); return `${n(e.who)} ${d.side==='buy'?'buys':'sells'} at ${px(d.fills[0][1])}. Filled in queue order: ${f}.`; }
+  return e.kind;
+}
+function renderBook(e){
+  const lv = []; const asks = [...e.book.asks].reverse(), bids = e.book.bids;
+  const row = (p, q, side) => `<div class="lvl ${Math.abs(p - e.R) < 0.75 ? 'fair':''} side-${side}"><span class="px">${px(p)}</span><span class="q">${q.map(o => `<span style="background:${col(o[0])};width:${Math.max(26, o[1]/9)}px" title="${NAMES[o[0]]||o[0]} ${o[1]}">${o[1]}</span>`).join('')}</span></div>`;
+  let h = '<div class="eyebrow">Asks (sellers)</div>';
+  h += asks.length ? asks.map(([p,q]) => row(p,q,'ask')).join('') : '<div class="note">no asks</div>';
+  h += `<div class="mid">fair value ${px(e.R)} · t = ${e.t.toFixed(1)} µs</div>`;
+  h += bids.length ? bids.map(([p,q]) => row(p,q,'bid')).join('') : '<div class="note">no bids</div>';
+  h += '<div class="eyebrow">Bids (buyers)</div>';
+  el('ladder').innerHTML = h;
+}
+function renderEp(){
+  const E = D.episodes[ep]; el('eptitle').textContent = EP_TITLES[E.tag] || E.tag;
+  const evs = E.events; const e = evs[Math.min(epi, evs.length-1)]; renderBook(e);
+  el('steps').innerHTML = evs.map((x,i) => `<div class="${i===epi?'on':''}" ${i>epi?'style="opacity:.45"':''}><span class="t">${x.t.toFixed(1)} µs</span>${describe(x, evs)}</div>`).join('');
+  const on = el('steps').querySelector('.on'); if (on && playingEp) on.scrollIntoView({block:'nearest'});
+  const who = new Set(); evs.forEach(x => { for (const s of ['bids','asks']) for (const [,q] of x.book[s]) q.forEach(o => who.add(o[0])); });
+  el('booklegend').innerHTML = [...who].map(k => `<span><i class="sw" style="background:${col(k)}"></i>${NAMES[k]||k}</span>`).join('');
+}
+let playingEp = false;
+function epNext(){ const n = D.episodes[ep].events.length; if (epi < n-1){ epi++; renderEp(); } else { stopEp(); } }
+function stopEp(){ playingEp = false; clearInterval(epTimer); el('epplay').textContent = 'Play'; }
+el('epplay').onclick = () => { if (playingEp) return stopEp(); if (epi >= D.episodes[ep].events.length-1) epi = 0; playingEp = true; el('epplay').textContent='Pause'; renderEp(); epTimer = setInterval(epNext, 1600); };
+el('epstep').onclick = () => { stopEp(); epNext(); };
+epSel.onchange = () => { stopEp(); ep = +epSel.value; epi = 0; renderEp(); };
+
+// queue table
+(function(){
+  const rows = Object.entries(D.lob.makers).filter(([k]) => k!=='your_exec').sort((a,b)=>b[1].front_of_queue-a[1].front_of_queue);
+  const lat = {apex_hft:'3 µs', tier2_mm:'60 µs', your_md_fund:'25 µs', mirofish_fund:'2,000 µs'};
+  el('qtable').innerHTML = '<tr><th>Maker</th><th>Latency</th><th>Shares / day</th><th>Front of queue</th><th>Picked off</th></tr>' +
+    rows.map(([k,v]) => `<tr><td><i class="sw" style="background:${col(k)}"></i>${NAMES[k]}</td><td class="num">${lat[k]||''}</td><td class="num">${Math.round(v.shares_per_day).toLocaleString()}</td><td class="num">${pp(v.front_of_queue)}</td><td class="num">${pp(v.picked_off)}</td></tr>`).join('');
+})();
+// transfer heat
+(function(){
+  const makers = ['apex_hft','tier2_mm','your_md_fund','mirofish_fund','your_exec'], takers = ['retail','slow_funds','informed','sniper_arb'];
+  const m = {}; for (const [a,b,v] of D.lob.transfer) m[a+'|'+b] = v;
+  let mx = 1; for (const a of makers) for (const b of takers) mx = Math.max(mx, Math.abs(m[a+'|'+b]||0));
+  let h = '<tr><th class="rowh">Maker \\ taker</th>' + takers.map(t => `<th>${NAMES[t]}</th>`).join('') + '</tr>';
+  for (const a of makers){ h += `<tr><th class="rowh"><i class="sw" style="background:${col(a)}"></i>${NAMES[a]}</th>` + takers.map(b => { const v = m[a+'|'+b]||0; const c = v>=0?'var(--good)':'var(--bad)'; const al = Math.round(Math.min(1, Math.abs(v)/mx)*55); return `<td style="background:color-mix(in srgb, ${c} ${al}%, transparent)">${v>=0?'+':'−'}$${Math.abs(v).toFixed(0)}</td>`; }).join('') + '</tr>'; }
+  el('transfer').innerHTML = h;
+})();
+
+// ---------- pnl table
+const WHY = {
+  sniper_arb: f => `2 µs from the leading venue. It takes quotes slower makers have not pulled; most of its profit is paid by Apex, Tier-2 and MiroFish's quotes. Crises mean bigger, faster moves, so it earns most then.`,
+  apex_hft: f => `First in the queue for ${pp(D.lob.makers.apex_hft.front_of_queue)} of its fills, so it earns the spread from retail and slow funds. It still loses ${money(-1*(D.lob.transfer.find(x=>x[0]==='apex_hft'&&x[1]==='sniper_arb')||[0,0,0])[2])} a stock-day to the sniper, and its ${money(F.apex_hft.opex/D.years)} a year of speed spending eats most of the rest.`,
+  value_ls: f => `A good estimate of fair value and no leverage. ${pct(f.ann)} a year is slow, but it never needed a stop and survived every crowding event.`,
+  cta_trend: f => `Trends in five futures markets paid in crisis stretches and cost in choppy ones (worst drawdown ${pct(f.max_dd,0)}). The manager earned ${money(f.fees)} in fees; investors made ${money(f.investor_pnl)}.`,
+  your_md_fund: f => `Fastest firm on a less contested venue, and passive execution that costs about ${D.lob.exec_bps[1][1].toFixed(2)} bp instead of ${D.lob.exec_bps[0][1].toFixed(2)} bp. In this history the research signal came out at half strength and the first six months went on building, so ${money(f.opex)} of running costs outweighed ${money(f.trading_pnl)} of trading profit.`,
+  your_md_race: f => `The same team and budget, racing on the main venue at 25 µs against 2–3 µs firms. It reaches the front of the queue only ${pp(D.lob.makers.your_md_fund.front_of_queue)} of the time and ${pp(D.lob.makers.your_md_fund.picked_off)} of its fills are trades it loses on.`,
+  tier2_mm: f => `Apex's strategy at 60 µs. Front of queue ${pp(D.lob.makers.tier2_mm.front_of_queue)} of the time against Apex's ${pp(D.lob.makers.apex_hft.front_of_queue)}, and picked off more. Trading profit did not cover ${money(f.opex/D.years)} a year of costs.`,
+  big_bet: f => f.closed_day!==null ? `Same insight as Value L/S, in ten names at four times the risk. A margin call on day ${f.closed_day} at a drawdown past 40% forced it to sell into the fall; the fund closed.` : `Concentrated and levered; high volatility with no extra edge.`,
+  mirofish_fund: f => `$5bn trading next-open fills with retail-grade data and speed. Trading costs of ${money(f.costs)} swamped the edges; the news read is a coin flip, as PR #28 found on real data (−4.77% a year there, ${pct(f.ann)} here).`,
+  pod_shop: f => `Well diversified, with its worst drawdown only ${pct(f.max_dd)} thanks to strict pod stops, but in this small simulated market it has few independent edges and 4% a year of pass-through costs. Real pod shops run hundreds of teams; see Tape 6.`,
+};
+(function(){
+  const rows = [...D.funds].sort((a,b)=>b.net-a.net);
+  let h = '<tr><th>Fund</th><th>Capital</th><th>Speed</th><th>Trading PnL</th><th>Running costs</th><th>Net PnL</th><th>Per year</th><th>Sharpe</th><th>Max DD</th><th>P(net&gt;0)</th><th>Why</th></tr>';
+  for (const f of rows){ const mc = D.mc[f.key];
+    h += `<tr class="${f.key==='your_md_fund'?'you':''}"><td><i class="sw" style="background:${col(f.key)}"></i><b>${f.name}</b><br><span class="note">${f.style}</span></td><td class="num">${money(f.capital)}</td><td class="note" style="text-align:right">${f.latency}</td><td class="num ${sgn(f.trading_pnl)}">${money(f.trading_pnl)}</td><td class="num">${money(-f.opex)}</td><td class="num ${sgn(f.net)}"><b>${money(f.net)}</b></td><td class="num ${sgn(f.ann)}">${pct(f.ann)}</td><td class="num">${f.sharpe.toFixed(2)}</td><td class="num">${f.max_dd>-0.005?'0%':pct(f.max_dd,0)}</td><td class="num">${pp(mc.p_net_positive)}</td><td class="why">${WHY[f.key](f)}</td></tr>`; }
+  h += `<tr><td><i class="sw" style="background:${col('market')}"></i><b>Market</b><br><span class="note">Buy and hold</span></td><td></td><td></td><td></td><td></td><td></td><td class="num ${sgn(D.market.ann)}">${pct(D.market.ann)}</td><td class="num">${D.market.sharpe.toFixed(2)}</td><td class="num">${pct(D.market.max_dd,0)}</td><td></td><td class="why">This history's market went nowhere; the median across all histories was ${pct(D.mc.market.p50)} over five years.</td></tr>`;
+  el('pnl').innerHTML = h;
+  el('pnlnote').textContent = `Per year is the fund's return before running costs (fees not deducted). Running costs: ${D.funds.map(f=>f.name+' '+money(f.opex/D.years)+'/yr').join(', ')} (estimates). HFT dollar PnL = one simulated stock times the number of stocks each firm trades (${Object.entries(D.micro_multipliers).map(([k,v])=>NAMES[k]+' '+Object.values(v)[0][0]).join(', ')}).`;
+})();
+
+// ---------- risk
+(function(){
+  const s = el('scatter'), w = 520, h = 360, l = 48, r = 16, t = 14, b = 34;
+  const pts = D.funds.map(f => [f.key, f.vol, f.ann, f.capital]).concat([['market', D.market.vol, D.market.ann, 5e9]]);
+  const vx = Math.max(...pts.map(p=>p[1]))*1.08, ylo = Math.min(...pts.map(p=>p[2]))-0.03, yhi = Math.max(...pts.map(p=>p[2]))+0.03;
+  const X = v => l + (w-l-r)*v/vx, Y = v => t + (h-t-b)*(1-(v-ylo)/(yhi-ylo));
+  let g = '';
+  for (let v=0; v<=vx; v+=0.05) g += `<line x1="${X(v)}" x2="${X(v)}" y1="${t}" y2="${h-b}" stroke="var(--rule)" stroke-dasharray="2 4"/><text x="${X(v)}" y="${h-b+14}" text-anchor="middle">${(v*100).toFixed(0)}%</text>`;
+  for (let v=Math.ceil(ylo*10)/10; v<=yhi; v+=0.1) g += `<line x1="${l}" x2="${w-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--rule)" ${Math.abs(v)<1e-9?'':'stroke-dasharray="2 4"'}/><text x="${l-6}" y="${Y(v)+4}" text-anchor="end">${(v*100).toFixed(0)}%</text>`;
+  g += `<text x="${(l+w-r)/2}" y="${h-4}" text-anchor="middle">annual volatility</text><text x="12" y="${(t+h-b)/2}" transform="rotate(-90 12 ${(t+h-b)/2})" text-anchor="middle">annual return</text>`;
+  for (const [k,v,a,c] of pts){ const rr = Math.max(4, Math.min(20, 3+Math.sqrt(c/1e9)*3.5)); g += `<circle cx="${X(v)}" cy="${Y(a)}" r="${rr}" fill="${col(k)}" fill-opacity="0.8"/><text x="${X(v)+rr+3}" y="${Y(a)+4}" class="lab" style="fill:${col(k)}">${(NAMES[k]||k).replace(' (as built)','').replace('Your Market-Data Fund','Your fund').replace('Your Fund, racing HFTs','Your fund racing')}</text>`; }
+  s.innerHTML = g;
+  // corr
+  const K = D.corr_keys, C = D.corr; const short = k => (NAMES[k]||k).replace(' (as built)','').replace('Your Market-Data Fund','Your fund').replace('Your Fund, racing HFTs','Your fund racing');
+  let hc = '<tr><th class="rowh"></th>' + K.map(k=>`<th>${short(k)}</th>`).join('') + '</tr>';
+  K.forEach((a,i) => { hc += `<tr><th class="rowh">${short(a)}</th>` + K.map((b,j) => { const v = C[i][j]; const c = v>=0?'var(--accent)':'var(--bad)'; return `<td style="background:color-mix(in srgb, ${c} ${Math.round(Math.abs(v)*60)}%, transparent)">${i===j?'':v.toFixed(2)}</td>`; }).join('') + '</tr>'; });
+  el('corr').innerHTML = hc;
+  // risk table
+  let rt = '<tr><th>Fund</th><th>How it measures and limits risk</th><th>Vol</th><th>Sortino</th><th>Worst day</th><th>99% 1-day VaR</th><th>Skew</th><th>Losing days</th><th>Longest drawdown</th></tr>';
+  for (const f of [...D.funds].sort((a,b)=>a.vol-b.vol)) rt += `<tr><td><i class="sw" style="background:${col(f.key)}"></i>${f.name}</td><td class="why">${f.risk_rules}</td><td class="num">${pct(f.vol).replace('+','')}</td><td class="num">${f.sortino>99?'n/a':f.sortino.toFixed(2)}</td><td class="num">${pct(f.worst_day)}</td><td class="num">${(f.var99*100).toFixed(2)}%</td><td class="num">${f.skew.toFixed(2)}</td><td class="num">${pp(f.losing_days)}</td><td class="num">${f.longest_dd_days} days</td></tr>`;
+  el('risk').innerHTML = rt;
+  const bb = F.big_bet; el('bbfees').textContent = money(bb.fees); el('bbinv').textContent = money(-bb.investor_pnl); el('bbday').textContent = bb.closed_day ?? 'n/a';
+  el('apexworst').textContent = pct(F.apex_hft.worst_day,2);
+})();
+
+// ---------- monte carlo
+(function(){
+  const keys = [...D.funds.map(f=>f.key), 'market'].sort((a,b)=>D.mc[b].p50-D.mc[a].p50);
+  const svg = el('mc'), w = 1080, rowh = 34, l = 210, r = 330, t = 28; const h = t + keys.length*rowh + 20; svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  const lo = Math.min(...keys.map(k=>D.mc[k].p5)), hi = Math.max(...keys.map(k=>D.mc[k].p95));
+  const X = v => l + (w-l-r)*(v-lo)/(hi-lo);
+  let g = '';
+  for (let v=Math.ceil(lo); v<=hi; v+=0.5) g += `<line x1="${X(v)}" x2="${X(v)}" y1="${t-8}" y2="${h-16}" stroke="var(--rule)" ${Math.abs(v)<1e-9?'':'stroke-dasharray="2 4"'}/><text x="${X(v)}" y="${t-12}" text-anchor="middle">${v>=0?'+':''}${(v*100).toFixed(0)}%</text>`;
+  keys.forEach((k,i) => { const m = D.mc[k], y = t + i*rowh + rowh/2;
+    g += `<text x="${l-10}" y="${y+4}" text-anchor="end" class="lab">${NAMES[k]||k}</text>`;
+    g += `<line x1="${X(m.p5)}" x2="${X(m.p95)}" y1="${y}" y2="${y}" stroke="${col(k)}" stroke-width="6" stroke-linecap="round" opacity="0.55"/><circle cx="${X(m.p50)}" cy="${y}" r="6" fill="${col(k)}"/>`;
+    const extra = k==='market' ? '' : `P(net>0) ${pp(m.p_net_positive)} · beat market ${pp(m.p_beat_market)}${m.p_blowup>0.05?` · blew up ${pp(m.p_blowup)}`:''}`;
+    g += `<text x="${w-r+10}" y="${y+4}">${extra}</text>`; });
+  svg.innerHTML = g;
+  // strength
+  const bs = D.mc.your_md_fund.by_strength || {}; const S = [['0.0','Signal was noise'],['0.5','Half strength'],['1.0','As strong as hoped']];
+  const s2 = el('strength'); let g2 = ''; const bw = 110;
+  const vals = S.map(([k]) => (bs[k]||{}).net_p50 || 0); const vm = Math.max(...vals.map(Math.abs))*1.15 || 1;
+  const Yv = v => 110 - v/vm*80;
+  g2 += `<line x1="10" x2="550" y1="${Yv(0)}" y2="${Yv(0)}" stroke="var(--ink)" opacity=".4"/>`;
+  S.forEach(([k,lab],i) => { const v = (bs[k]||{}).net_p50||0, n = (bs[k]||{}).n||0, p = (bs[k]||{}).p_net_positive||0; const x = 32 + i*180;
+    const y0 = Yv(0), y1 = Yv(v); g2 += `<rect x="${x}" y="${Math.min(y0,y1)}" width="${bw}" height="${Math.max(1,Math.abs(y1-y0))}" fill="${v>=0?'var(--good)':'var(--bad)'}" opacity=".8"/>`;
+    g2 += `<text x="${x+bw/2}" y="${v>=0?y1-6:y1+14}" text-anchor="middle" class="lab">${money(v)}</text><text x="${x+bw/2}" y="214" text-anchor="middle" class="lab">${lab}</text><text x="${x+bw/2}" y="230" text-anchor="middle">${n} histories</text><text x="${x+bw/2}" y="244" text-anchor="middle">${pp(p)} profitable</text>`; });
+  s2.innerHTML = g2;
+  el('strengthnote').textContent = 'Median five-year net PnL after running costs. Each history draws the research outcome: 35% noise, 40% half strength, 25% full strength (an assumption, roughly how often new strategies hold up out of sample).';
+  // breakeven
+  const be = D.mc.your_md_fund.breakeven_years || []; const s3 = el('breakeven'); let g3 = '';
+  const tot = D.paths, mxb = Math.max(1, ...be);
+  for (let yr=1; yr<=D.years; yr++){ const c = be[yr]||0; const x = 40 + (yr-1)*92, hh = 150*c/mxb; g3 += `<rect x="${x}" y="${190-hh}" width="70" height="${hh}" fill="var(--c-your_md_fund)" opacity=".85"/><text x="${x+35}" y="${184-hh}" text-anchor="middle" class="lab">${pp(c/tot)}</text><text x="${x+35}" y="208" text-anchor="middle">year ${yr}</text>`; }
+  const never = 1 - D.mc.your_md_fund.p_breakeven_5y; g3 += `<text x="40" y="232">Never within ${D.years} years: ${pp(never)} of histories</text>`;
+  s3.innerHTML = g3;
+  el('benote').textContent = 'The first year-end at which cumulative trading profit covers cumulative running costs (the six-month build counts).';
+})();
+
+// ---------- real funds
+const REAL = [
+  ['Renaissance Medallion','66.1% a year before fees, 39.1% after, 1988–2018','Many small, short-lived signals; size capped; outside money returned','https://www.wealthmanagement.com/alternative-investments/jim-simons-built-the-best-hedge-fund-ever'],
+  ['Citadel','Started 1990 with $4.6m; biggest funds −55% in 2008; $90.4bn net gains for clients by Dec 2025','Survived the worst year, then scaled','https://en.wikipedia.org/wiki/Citadel_LLC'],
+  ['Virtu Financial','One losing day in 1,238 trading days, 2009–2013','Market making at scale with tight inventory limits','https://qz.com/186209/the-high-frequency-trading-firm-thats-about-to-go-public-only-had-one-day-of-trading-losses-in-four-years'],
+  ['SG Trend Index, 2022','+27.35% (SG CTA Index +20.07%) while stocks and bonds fell','Trend pays in crises after years of waiting','https://www.hedgeweek.com/flat-december-sees-ctas-complete-record-year-2022/'],
+  ['Long-Term Capital Management','+43%, +41%, +17% in 1995–97; over 25x leverage; lost $4.6bn in under four months in 1998','Leverage on a crowded trade','https://en.wikipedia.org/wiki/Long-Term_Capital_Management'],
+  ['Amaranth Advisors','Over $9bn of assets; lost about $6.6bn in 2006 on natural gas','One position bigger than the firm','https://en.wikipedia.org/wiki/Brian_Hunter_(trader)'],
+  ['Knight Capital','Lost over $460m in about 45 minutes on 1 Aug 2012 after a bad deployment','Operational risk in trading software','https://www.sec.gov/news/press-release/2013-222'],
+  ['Melvin Capital','−53% in January 2021 on crowded shorts; closed 2022','Crowded short squeeze','https://en.wikipedia.org/wiki/Melvin_Capital'],
+  ['Quant funds, Aug 2007','Unprecedented losses the week of 6 Aug 2007 as similar books unwound','Crowding; the model behind Big Bet and pod stops here','https://www.nber.org/papers/w14465'],
+  ['Emerging managers (AIMA survey)','Average breakeven about $86m of assets (CTAs $78m); a third profitable below $50m','Small can work if the team is lean','https://www.hedgeweek.com/emerging-hedge-fund-managers-are-profitable-below-usd100-million/'],
+  ['Industry attrition (HFR)','11.4% of funds closed in 2005, 8.28% in 2006','About one fund in ten closes each year','https://www.investmentnews.com/alternatives/hedge-funds-dying-on-the-vine/12972'],
+];
+el('real').innerHTML = '<tr><th>Fund</th><th style="text-align:left">Reported figures</th><th style="text-align:left">Why it won or lost</th></tr>' + REAL.map(r => `<tr><td><a href="${r[3]}">${r[0]}</a></td><td class="why" style="color:var(--ink)">${r[1]}</td><td class="why">${r[2]}</td></tr>`).join('');
+
+// ---------- recommendation
+(function(){
+  const y = F.your_md_fund, mc = D.mc.your_md_fund, bs = mc.by_strength||{};
+  const items = [
+    `<b>Do not run the MiroFish fund as built.</b> It lost in ${pp(1-D.mc.mirofish_fund.p_net_positive)} of ${D.paths} histories, for the same reasons PR #28 found on real data: size, slow fills and a news signal with no edge.`,
+    `<b>Do not race the speed firms.</b> Your team on the main venue ends at ${money(F.your_md_race.net)} after costs. Apex spends ${money(F.apex_hft.opex/D.years)} a year to be 3 µs; the edge goes to whoever is fastest, not to whoever knows the protocol best.`,
+    `<b>Build where feed knowledge is the edge.</b> Be the fastest firm on a venue or asset class the top firms ignore, and use lead signals from other venues' feeds to execute passively: ${D.lob.exec_bps[1][1].toFixed(2)} bp per dollar instead of ${D.lob.exec_bps[0][1].toFixed(2)} bp.`,
+    `<b>Treat the strategy research as the real risk.</b> With a real signal the fund is profitable in ${pp((bs['1.0']||{}).p_net_positive||0)} of histories; with noise, ${pp((bs['0.0']||{}).p_net_positive||0)}. Budget 18 months and ${money(y.opex/D.years*1.5)} to find out, and stop if live results after 12 months do not match the backtest.`,
+    `<b>Keep risk small and boring.</b> Big Bet Capital shows why: same signal as Value L/S, four times the risk, a margin call and a closed fund. Low leverage, daily loss limits and kill switches are cheaper than any drawdown.`,
+  ];
+  el('reco').innerHTML = items.map(x => `<li>${x}</li>`).join('');
+})();
+
+layout(); drawEq(); renderEp(); draw(); requestAnimationFrame(tick);
+</script>
