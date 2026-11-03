@@ -1,0 +1,3109 @@
+{
+ "profiles": {
+  "quant": {
+   "label": "Quant dev/researcher",
+   "blurb": "6 years at a systematic fund; Nasdaq, NYSE and CME only; strong statistics, Python and C++ to production standard, never run a feed handler at scale.",
+   "skill": {
+    "cpp": 0.6,
+    "protocols": 0.45,
+    "network": 0.4,
+    "data_quality": 0.55,
+    "trading_core": 0.7,
+    "finance": 0.85,
+    "stats": 0.9,
+    "portfolio": 0.85,
+    "execution": 0.75
+   }
+  },
+  "mdev": {
+   "label": "Market data veteran",
+   "blurb": "15 years, 40-50 feeds across equities, futures, FX, options and fixed income; every production incident there is; no strategy or research experience.",
+   "skill": {
+    "cpp": 0.95,
+    "protocols": 0.97,
+    "network": 0.92,
+    "data_quality": 0.95,
+    "trading_core": 0.65,
+    "finance": 0.45,
+    "stats": 0.25,
+    "portfolio": 0.2,
+    "execution": 0.45
+   }
+  },
+  "mdev_plus": {
+   "label": "Market data veteran after the course",
+   "blurb": "The same person after the 16-week course and a year applying it on the job.",
+   "skill": {
+    "cpp": 0.95,
+    "protocols": 0.97,
+    "network": 0.92,
+    "data_quality": 0.95,
+    "trading_core": 0.75,
+    "finance": 0.7,
+    "stats": 0.62,
+    "portfolio": 0.58,
+    "execution": 0.72
+   }
+  }
+ },
+ "areas": [
+  "cpp",
+  "protocols",
+  "network",
+  "data_quality",
+  "trading_core",
+  "finance",
+  "stats",
+  "portfolio",
+  "execution"
+ ],
+ "issues": [
+  {
+   "id": "MD-413.1",
+   "group": "incident",
+   "title": "Full-day replay finds unknown order refs (OrderMap wrap)",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 95,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.58,
+    "p": 0.254,
+    "minutes": 229,
+    "ev": 253506
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 85,
+    "ev": 904651
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 85,
+    "ev": 904651
+   }
+  },
+  {
+   "id": "MD-413.2",
+   "group": "incident",
+   "title": "EOD report prints 16.600 for 16.06",
+   "level": "easy",
+   "value": 200000,
+   "base_min": 15,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "data_quality": 0.7,
+    "protocols": 0.3
+   },
+   "quant": {
+    "skill": 0.52,
+    "p": 0.879,
+    "minutes": 45,
+    "ev": 175736
+   },
+   "mdev": {
+    "skill": 0.956,
+    "p": 0.997,
+    "minutes": 13,
+    "ev": 199456
+   },
+   "mdev_plus": {
+    "skill": 0.956,
+    "p": 0.997,
+    "minutes": 13,
+    "ev": 199456
+   }
+  },
+  {
+   "id": "MD-413.3",
+   "group": "incident",
+   "title": "PnL off but reconciliation says clean",
+   "level": "medium",
+   "value": 500000,
+   "base_min": 40,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "finance": 0.5,
+    "data_quality": 0.5
+   },
+   "quant": {
+    "skill": 0.7,
+    "p": 0.858,
+    "minutes": 66,
+    "ev": 429074
+   },
+   "mdev": {
+    "skill": 0.7,
+    "p": 0.858,
+    "minutes": 66,
+    "ev": 429074
+   },
+   "mdev_plus": {
+    "skill": 0.825,
+    "p": 0.949,
+    "minutes": 48,
+    "ev": 474534
+   }
+  },
+  {
+   "id": "MD-414.1",
+   "group": "incident",
+   "title": "Full-day replay never finishes",
+   "level": "medium",
+   "value": 300000,
+   "base_min": 45,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.682,
+    "minutes": 107,
+    "ev": 204731
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 40,
+    "ev": 294863
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 40,
+    "ev": 294863
+   }
+  },
+  {
+   "id": "MD-414.2",
+   "group": "incident",
+   "title": "Volume high on auction days (non-printable executions)",
+   "level": "medium",
+   "value": 500000,
+   "base_min": 30,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.48,
+    "p": 0.455,
+    "minutes": 105,
+    "ev": 227561
+   },
+   "mdev": {
+    "skill": 0.964,
+    "p": 0.985,
+    "minutes": 26,
+    "ev": 492436
+   },
+   "mdev_plus": {
+    "skill": 0.964,
+    "p": 0.985,
+    "minutes": 26,
+    "ev": 492436
+   }
+  },
+  {
+   "id": "MD-414.3",
+   "group": "incident",
+   "title": "$4.5M order passes a $100k notional limit",
+   "level": "medium",
+   "value": 10000000,
+   "base_min": 35,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.67,
+    "p": 0.822,
+    "minutes": 63,
+    "ev": 8220063
+   },
+   "mdev": {
+    "skill": 0.74,
+    "p": 0.897,
+    "minutes": 52,
+    "ev": 8965995
+   },
+   "mdev_plus": {
+    "skill": 0.81,
+    "p": 0.942,
+    "minutes": 43,
+    "ev": 9421330
+   }
+  },
+  {
+   "id": "MD-414.4",
+   "group": "incident",
+   "title": "Order burst after the lunch lull gets throttled",
+   "level": "medium",
+   "value": 500000,
+   "base_min": 30,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "protocols": 0.4
+   },
+   "quant": {
+    "skill": 0.6,
+    "p": 0.711,
+    "minutes": 68,
+    "ev": 355475
+   },
+   "mdev": {
+    "skill": 0.778,
+    "p": 0.924,
+    "minutes": 40,
+    "ev": 462141
+   },
+   "mdev_plus": {
+    "skill": 0.838,
+    "p": 0.954,
+    "minutes": 35,
+    "ev": 477218
+   }
+  },
+  {
+   "id": "MD-414.5",
+   "group": "incident",
+   "title": "Orders sent during LULD pause; phantom position limit",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 60,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.5,
+    "trading_core": 0.5
+   },
+   "quant": {
+    "skill": 0.575,
+    "p": 0.245,
+    "minutes": 147,
+    "ev": 245085
+   },
+   "mdev": {
+    "skill": 0.81,
+    "p": 0.729,
+    "minutes": 74,
+    "ev": 729088
+   },
+   "mdev_plus": {
+    "skill": 0.86,
+    "p": 0.808,
+    "minutes": 66,
+    "ev": 808455
+   }
+  },
+  {
+   "id": "MD-414.6",
+   "group": "incident",
+   "title": "Fill rate down, replaces up 3x (queue position)",
+   "level": "medium",
+   "value": 2000000,
+   "base_min": 40,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.4,
+    "trading_core": 0.3,
+    "execution": 0.3
+   },
+   "quant": {
+    "skill": 0.615,
+    "p": 0.738,
+    "minutes": 86,
+    "ev": 1475768
+   },
+   "mdev": {
+    "skill": 0.718,
+    "p": 0.877,
+    "minutes": 63,
+    "ev": 1753498
+   },
+   "mdev_plus": {
+    "skill": 0.829,
+    "p": 0.951,
+    "minutes": 47,
+    "ev": 1901562
+   }
+  },
+  {
+   "id": "MD-414.7",
+   "group": "incident",
+   "title": "FIRM01 self-trades despite self-match prevention",
+   "level": "hard",
+   "value": 2000000,
+   "base_min": 70,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.7,
+    "protocols": 0.3
+   },
+   "quant": {
+    "skill": 0.625,
+    "p": 0.337,
+    "minutes": 145,
+    "ev": 674756
+   },
+   "mdev": {
+    "skill": 0.746,
+    "p": 0.602,
+    "minutes": 102,
+    "ev": 1204093
+   },
+   "mdev_plus": {
+    "skill": 0.816,
+    "p": 0.74,
+    "minutes": 85,
+    "ev": 1479242
+   }
+  },
+  {
+   "id": "MD-414.8",
+   "group": "incident",
+   "title": "Report PnL disagrees with risk (marks)",
+   "level": "medium",
+   "value": 300000,
+   "base_min": 35,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "finance": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.73,
+    "p": 0.888,
+    "minutes": 53,
+    "ev": 266386
+   },
+   "mdev": {
+    "skill": 0.65,
+    "p": 0.794,
+    "minutes": 67,
+    "ev": 238239
+   },
+   "mdev_plus": {
+    "skill": 0.8,
+    "p": 0.937,
+    "minutes": 44,
+    "ev": 281108
+   }
+  },
+  {
+   "id": "MD-414.9",
+   "group": "incident",
+   "title": "FIX client missing two execution reports after a blip",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 60,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.7,
+    "network": 0.3
+   },
+   "quant": {
+    "skill": 0.435,
+    "p": 0.084,
+    "minutes": 257,
+    "ev": 84324
+   },
+   "mdev": {
+    "skill": 0.955,
+    "p": 0.908,
+    "minutes": 53,
+    "ev": 908462
+   },
+   "mdev_plus": {
+    "skill": 0.955,
+    "p": 0.908,
+    "minutes": 53,
+    "ev": 908462
+   }
+  },
+  {
+   "id": "MD-414.10",
+   "group": "incident",
+   "title": "simex fills disagree with the replayed book",
+   "level": "medium",
+   "value": 500000,
+   "base_min": 30,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.64,
+    "p": 0.779,
+    "minutes": 59,
+    "ev": 389513
+   },
+   "mdev": {
+    "skill": 0.77,
+    "p": 0.919,
+    "minutes": 41,
+    "ev": 459543
+   },
+   "mdev_plus": {
+    "skill": 0.83,
+    "p": 0.951,
+    "minutes": 35,
+    "ev": 475600
+   }
+  },
+  {
+   "id": "MD-414.11",
+   "group": "incident",
+   "title": "Latency report better but colo p99 worse",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 70,
+   "scales": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.3,
+    "stats": 0.2
+   },
+   "quant": {
+    "skill": 0.6,
+    "p": 0.289,
+    "minutes": 158,
+    "ev": 289050
+   },
+   "mdev": {
+    "skill": 0.801,
+    "p": 0.713,
+    "minutes": 88,
+    "ev": 712795
+   },
+   "mdev_plus": {
+    "skill": 0.875,
+    "p": 0.828,
+    "minutes": 74,
+    "ev": 828495
+   }
+  },
+  {
+   "id": "CPP01",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "Logger stop() never clears the running flag",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 9,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.929,
+    "minutes": 21,
+    "ev": 46429
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.997,
+    "minutes": 8,
+    "ev": 49856
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.997,
+    "minutes": 8,
+    "ev": 49856
+   }
+  },
+  {
+   "id": "CPP02",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "Thread name copied without its NUL terminator",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 7,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.929,
+    "minutes": 17,
+    "ev": 46429
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.997,
+    "minutes": 6,
+    "ev": 49856
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.997,
+    "minutes": 6,
+    "ev": 49856
+   }
+  },
+  {
+   "id": "CPP03",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "Huge-page free path disagrees with the allocate path at exactly 2 MB",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 12,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.929,
+    "minutes": 28,
+    "ev": 139286
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.997,
+    "minutes": 11,
+    "ev": 149569
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.997,
+    "minutes": 11,
+    "ev": 149569
+   }
+  },
+  {
+   "id": "CPP04",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "TcpStream move-assignment leaves the source owning the fd",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 18,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.682,
+    "minutes": 43,
+    "ev": 170610
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 16,
+    "ev": 245719
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 16,
+    "ev": 245719
+   }
+  },
+  {
+   "id": "CPP05",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "Top-of-book change test compares 24 of 32 bytes",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 25,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.682,
+    "minutes": 59,
+    "ev": 511829
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 22,
+    "ev": 737157
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 22,
+    "ev": 737157
+   }
+  },
+  {
+   "id": "CPP06",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "trimmed() takes the session by value and returns a view into it",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 28,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.682,
+    "minutes": 66,
+    "ev": 170610
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 25,
+    "ev": 245719
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 25,
+    "ev": 245719
+   }
+  },
+  {
+   "id": "CPP07",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "FIX timer helper underflows when the clock steps back",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 35,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.682,
+    "minutes": 83,
+    "ev": 511829
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 31,
+    "ev": 737157
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.983,
+    "minutes": 31,
+    "ev": 737157
+   }
+  },
+  {
+   "id": "CPP08",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "Huge-page mapping has no slack for alignment",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 70,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.262,
+    "minutes": 166,
+    "ev": 786348
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 63,
+    "ev": 2713952
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 63,
+    "ev": 2713952
+   }
+  },
+  {
+   "id": "CPP09",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "Order map backward-shift ignores probe runs that wrap",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 95,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.262,
+    "minutes": 225,
+    "ev": 262116
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 85,
+    "ev": 904651
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 85,
+    "ev": 904651
+   }
+  },
+  {
+   "id": "CPP10",
+   "group": "bugbank",
+   "area": "cpp",
+   "title": "Replace inserts the new order before erasing through a stale pointer",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 80,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.7,
+    "data_quality": 0.3
+   },
+   "quant": {
+    "skill": 0.585,
+    "p": 0.262,
+    "minutes": 189,
+    "ev": 786348
+   },
+   "mdev": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 72,
+    "ev": 2713952
+   },
+   "mdev_plus": {
+    "skill": 0.95,
+    "p": 0.905,
+    "minutes": 72,
+    "ev": 2713952
+   }
+  },
+  {
+   "id": "MD01",
+   "group": "bugbank",
+   "area": "md",
+   "title": "LULD tier boundary: $3.00 gets the 5% band",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 6,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.847,
+    "minutes": 20,
+    "ev": 127025
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.997,
+    "minutes": 5,
+    "ev": 149613
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.997,
+    "minutes": 5,
+    "ev": 149613
+   }
+  },
+  {
+   "id": "MD02",
+   "group": "bugbank",
+   "area": "md",
+   "title": "Locked books counted as crossed",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 5,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.847,
+    "minutes": 17,
+    "ev": 42342
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.997,
+    "minutes": 4,
+    "ev": 49871
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.997,
+    "minutes": 4,
+    "ev": 49871
+   }
+  },
+  {
+   "id": "MD03",
+   "group": "bugbank",
+   "area": "md",
+   "title": "Opening and closing cross prices swapped",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 5,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.847,
+    "minutes": 17,
+    "ev": 42342
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.997,
+    "minutes": 4,
+    "ev": 49871
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.997,
+    "minutes": 4,
+    "ev": 49871
+   }
+  },
+  {
+   "id": "MD04",
+   "group": "bugbank",
+   "area": "md",
+   "title": "Attributed adds (F) are no longer handled",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 22,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.478,
+    "minutes": 74,
+    "ev": 119379
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 19,
+    "ev": 246151
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 19,
+    "ev": 246151
+   }
+  },
+  {
+   "id": "MD05",
+   "group": "bugbank",
+   "area": "md",
+   "title": "48-bit timestamp decoded with the wrong shift",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 18,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.478,
+    "minutes": 61,
+    "ev": 119379
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 16,
+    "ev": 246151
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 16,
+    "ev": 246151
+   }
+  },
+  {
+   "id": "MD06",
+   "group": "bugbank",
+   "area": "md",
+   "title": "Halt reopening midpoint not rounded to the cent",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 30,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.478,
+    "minutes": 101,
+    "ev": 358136
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 26,
+    "ev": 738452
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 26,
+    "ev": 738452
+   }
+  },
+  {
+   "id": "MD07",
+   "group": "bugbank",
+   "area": "md",
+   "title": "Trader reads the tracking number as the stock locate",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 16,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.478,
+    "minutes": 54,
+    "ev": 358136
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 14,
+    "ev": 738452
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.985,
+    "minutes": 14,
+    "ev": 738452
+   }
+  },
+  {
+   "id": "MD08",
+   "group": "bugbank",
+   "area": "md",
+   "title": "LULD reference follows every trade",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 55,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.131,
+    "minutes": 186,
+    "ev": 393733
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.914,
+    "minutes": 48,
+    "ev": 2740704
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.914,
+    "minutes": 48,
+    "ev": 2740704
+   }
+  },
+  {
+   "id": "MD09",
+   "group": "bugbank",
+   "area": "md",
+   "title": "Repeated stock directory message wipes the book",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 65,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.131,
+    "minutes": 219,
+    "ev": 393733
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.914,
+    "minutes": 57,
+    "ev": 2740704
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.914,
+    "minutes": 57,
+    "ev": 2740704
+   }
+  },
+  {
+   "id": "MD10",
+   "group": "bugbank",
+   "area": "md",
+   "title": "Order Replace shares and price offsets swapped in the field list",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 110,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "data_quality": 0.4
+   },
+   "quant": {
+    "skill": 0.49,
+    "p": 0.131,
+    "minutes": 371,
+    "ev": 131244
+   },
+   "mdev": {
+    "skill": 0.962,
+    "p": 0.914,
+    "minutes": 96,
+    "ev": 913568
+   },
+   "mdev_plus": {
+    "skill": 0.962,
+    "p": 0.914,
+    "minutes": 96,
+    "ev": 913568
+   }
+  },
+  {
+   "id": "NET01",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Feed socket left at the kernel's default receive buffer",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 10,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.808,
+    "minutes": 38,
+    "ev": 121268
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.997,
+    "minutes": 9,
+    "ev": 149480
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.997,
+    "minutes": 9,
+    "ev": 149480
+   }
+  },
+  {
+   "id": "NET02",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Multicast loopback disabled on the publisher",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 8,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.808,
+    "minutes": 31,
+    "ev": 121268
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.997,
+    "minutes": 8,
+    "ev": 149480
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.997,
+    "minutes": 8,
+    "ev": 149480
+   }
+  },
+  {
+   "id": "NET03",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Multicast test only recognises 224/8",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 9,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.808,
+    "minutes": 34,
+    "ev": 40423
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.997,
+    "minutes": 8,
+    "ev": 49827
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.997,
+    "minutes": 8,
+    "ev": 49827
+   }
+  },
+  {
+   "id": "NET04",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Partial TCP send re-queues the whole buffer",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 32,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.411,
+    "minutes": 122,
+    "ev": 102740
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 30,
+    "ev": 244847
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 30,
+    "ev": 244847
+   }
+  },
+  {
+   "id": "NET05",
+   "group": "bugbank",
+   "area": "net",
+   "title": "recv() returning 0 treated as no data",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 24,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.411,
+    "minutes": 92,
+    "ev": 102740
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 23,
+    "ev": 244847
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 23,
+    "ev": 244847
+   }
+  },
+  {
+   "id": "NET06",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Gap requests sent before the reorder delay",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 26,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.411,
+    "minutes": 100,
+    "ev": 102740
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 24,
+    "ev": 244847
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 24,
+    "ev": 244847
+   }
+  },
+  {
+   "id": "NET07",
+   "group": "bugbank",
+   "area": "net",
+   "title": "MoldUDP64 payload raised to the MTU",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 30,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.411,
+    "minutes": 115,
+    "ev": 102740
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 28,
+    "ev": 244847
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.979,
+    "minutes": 28,
+    "ev": 244847
+   }
+  },
+  {
+   "id": "NET08",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Sequencer follows any session name",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 60,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.103,
+    "minutes": 230,
+    "ev": 103400
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.887,
+    "minutes": 56,
+    "ev": 887054
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.887,
+    "minutes": 56,
+    "ev": 887054
+   }
+  },
+  {
+   "id": "NET09",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Retransmit store loses its padding when it wraps",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 105,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.103,
+    "minutes": 402,
+    "ev": 103400
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.887,
+    "minutes": 99,
+    "ev": 887054
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.887,
+    "minutes": 99,
+    "ev": 887054
+   }
+  },
+  {
+   "id": "NET10",
+   "group": "bugbank",
+   "area": "net",
+   "title": "Heartbeat advertises messages that are still being batched",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 90,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "network": 0.7,
+    "cpp": 0.3
+   },
+   "quant": {
+    "skill": 0.46,
+    "p": 0.103,
+    "minutes": 345,
+    "ev": 310201
+   },
+   "mdev": {
+    "skill": 0.929,
+    "p": 0.887,
+    "minutes": 84,
+    "ev": 2661163
+   },
+   "mdev_plus": {
+    "skill": 0.929,
+    "p": 0.887,
+    "minutes": 84,
+    "ev": 2661163
+   }
+  },
+  {
+   "id": "LAT01",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "TCP_NODELAY no longer set",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 8,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.858,
+    "minutes": 26,
+    "ev": 42907
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.997,
+    "minutes": 7,
+    "ev": 49836
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.997,
+    "minutes": 7,
+    "ev": 49836
+   }
+  },
+  {
+   "id": "LAT02",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Receive loop sleeps even when busy",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 10,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.858,
+    "minutes": 32,
+    "ev": 128722
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.997,
+    "minutes": 9,
+    "ev": 149507
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.997,
+    "minutes": 9,
+    "ev": 149507
+   }
+  },
+  {
+   "id": "LAT03",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Debug print left on the trading thread",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 6,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.858,
+    "minutes": 19,
+    "ev": 128722
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.997,
+    "minutes": 6,
+    "ev": 149507
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.997,
+    "minutes": 6,
+    "ev": 149507
+   }
+  },
+  {
+   "id": "LAT04",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Fill log grows on the hot thread",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 22,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.5,
+    "minutes": 71,
+    "ev": 375000
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 20,
+    "ev": 735337
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 20,
+    "ev": 735337
+   }
+  },
+  {
+   "id": "LAT05",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Shared memory pages no longer pre-faulted",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 25,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.5,
+    "minutes": 81,
+    "ev": 375000
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 23,
+    "ev": 735337
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 23,
+    "ev": 735337
+   }
+  },
+  {
+   "id": "LAT06",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Publisher batching delay in milliseconds, not microseconds",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 20,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.5,
+    "minutes": 65,
+    "ev": 375000
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 19,
+    "ev": 735337
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 19,
+    "ev": 735337
+   }
+  },
+  {
+   "id": "LAT07",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Price level lookup scans from the worst level",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 30,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.5,
+    "minutes": 97,
+    "ev": 375000
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 28,
+    "ev": 735337
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.98,
+    "minutes": 28,
+    "ev": 735337
+   }
+  },
+  {
+   "id": "LAT08",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Ring consumer reloads the producer index every call",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 60,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.142,
+    "minutes": 194,
+    "ev": 425553
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.892,
+    "minutes": 56,
+    "ev": 2677058
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.892,
+    "minutes": 56,
+    "ev": 2677058
+   }
+  },
+  {
+   "id": "LAT09",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Tick timestamp taken after the book update",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 75,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.142,
+    "minutes": 243,
+    "ev": 425553
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.892,
+    "minutes": 69,
+    "ev": 2677058
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.892,
+    "minutes": 69,
+    "ev": 2677058
+   }
+  },
+  {
+   "id": "LAT10",
+   "group": "bugbank",
+   "area": "lat",
+   "title": "Matching engine key index moved off huge pages",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 65,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "cpp": 0.5,
+    "network": 0.5
+   },
+   "quant": {
+    "skill": 0.5,
+    "p": 0.142,
+    "minutes": 211,
+    "ev": 425553
+   },
+   "mdev": {
+    "skill": 0.935,
+    "p": 0.892,
+    "minutes": 60,
+    "ev": 2677058
+   },
+   "mdev_plus": {
+    "skill": 0.935,
+    "p": 0.892,
+    "minutes": 60,
+    "ev": 2677058
+   }
+  },
+  {
+   "id": "TRD01",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Maker improves the spread one tick later than configured",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 6,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.976,
+    "minutes": 10,
+    "ev": 146345
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.965,
+    "minutes": 11,
+    "ev": 144817
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.987,
+    "minutes": 8,
+    "ev": 148031
+   }
+  },
+  {
+   "id": "TRD02",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Inventory skew leans the wrong way",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 8,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.976,
+    "minutes": 13,
+    "ev": 48782
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.965,
+    "minutes": 14,
+    "ev": 48272
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.987,
+    "minutes": 11,
+    "ev": 49344
+   }
+  },
+  {
+   "id": "TRD03",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Position cap ignores the size of the new quote",
+   "level": "easy",
+   "value": 50000,
+   "base_min": 7,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.976,
+    "minutes": 11,
+    "ev": 48782
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.965,
+    "minutes": 13,
+    "ev": 48272
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.987,
+    "minutes": 9,
+    "ev": 49344
+   }
+  },
+  {
+   "id": "TRD04",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Cash booked at our limit price, not the fill price",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 28,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.869,
+    "minutes": 45,
+    "ev": 217189
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.822,
+    "minutes": 51,
+    "ev": 205502
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.926,
+    "minutes": 37,
+    "ev": 231383
+   }
+  },
+  {
+   "id": "TRD05",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Price collar computed in tenths of a percent",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 18,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.869,
+    "minutes": 29,
+    "ev": 217189
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.822,
+    "minutes": 32,
+    "ev": 205502
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.926,
+    "minutes": 24,
+    "ev": 231383
+   }
+  },
+  {
+   "id": "TRD06",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Replace confirmation updates only the bid's reference",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 30,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.869,
+    "minutes": 48,
+    "ev": 217189
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.822,
+    "minutes": 54,
+    "ev": 205502
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.926,
+    "minutes": 40,
+    "ev": 231383
+   }
+  },
+  {
+   "id": "TRD07",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "New orders join the front of their price level",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 22,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.869,
+    "minutes": 35,
+    "ev": 217189
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.822,
+    "minutes": 40,
+    "ev": 205502
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.926,
+    "minutes": 29,
+    "ev": 231383
+   }
+  },
+  {
+   "id": "TRD08",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Replace for no more than the executed shares leaves a ghost order",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 85,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.522,
+    "minutes": 137,
+    "ev": 522485
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.433,
+    "minutes": 153,
+    "ev": 432907
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.673,
+    "minutes": 113,
+    "ev": 672607
+   }
+  },
+  {
+   "id": "TRD09",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Auction price ignores the reference on ties",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 70,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.522,
+    "minutes": 112,
+    "ev": 1567454
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.433,
+    "minutes": 126,
+    "ev": 1298721
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.673,
+    "minutes": 93,
+    "ev": 2017821
+   }
+  },
+  {
+   "id": "TRD10",
+   "group": "bugbank",
+   "area": "trd",
+   "title": "Self-match guard uses the less aggressive price of a replace in flight",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 100,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "trading_core": 0.6,
+    "finance": 0.2,
+    "cpp": 0.2
+   },
+   "quant": {
+    "skill": 0.71,
+    "p": 0.522,
+    "minutes": 161,
+    "ev": 522485
+   },
+   "mdev": {
+    "skill": 0.67,
+    "p": 0.433,
+    "minutes": 180,
+    "ev": 432907
+   },
+   "mdev_plus": {
+    "skill": 0.78,
+    "p": 0.673,
+    "minutes": 133,
+    "ev": 672607
+   }
+  },
+  {
+   "id": "GW01",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Login no longer checks the password",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 5,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.905,
+    "minutes": 13,
+    "ev": 135698
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.992,
+    "minutes": 6,
+    "ev": 148867
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.995,
+    "minutes": 5,
+    "ev": 149208
+   }
+  },
+  {
+   "id": "GW02",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Sell short exempt rejected as an invalid side",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 6,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.905,
+    "minutes": 16,
+    "ev": 135698
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.992,
+    "minutes": 7,
+    "ev": 148867
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.995,
+    "minutes": 6,
+    "ev": 149208
+   }
+  },
+  {
+   "id": "GW03",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Drop copy passes short-sale side codes through",
+   "level": "easy",
+   "value": 150000,
+   "base_min": 12,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.905,
+    "minutes": 32,
+    "ev": 135698
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.992,
+    "minutes": 14,
+    "ev": 148867
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.995,
+    "minutes": 12,
+    "ev": 149208
+   }
+  },
+  {
+   "id": "GW04",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Duplicate UserRefNum accepted",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 20,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.611,
+    "minutes": 54,
+    "ev": 457979
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.956,
+    "minutes": 23,
+    "ev": 716982
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.969,
+    "minutes": 21,
+    "ev": 726653
+   }
+  },
+  {
+   "id": "GW05",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Reconnect with sequence 0 replays the last message",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 26,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.611,
+    "minutes": 70,
+    "ev": 457979
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.956,
+    "minutes": 30,
+    "ev": 716982
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.969,
+    "minutes": 27,
+    "ev": 726653
+   }
+  },
+  {
+   "id": "GW06",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Client heartbeat interval longer than the server's idle timeout",
+   "level": "medium",
+   "value": 750000,
+   "base_min": 24,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.611,
+    "minutes": 64,
+    "ev": 457979
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.956,
+    "minutes": 27,
+    "ev": 716982
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.969,
+    "minutes": 25,
+    "ev": 726653
+   }
+  },
+  {
+   "id": "GW07",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "FIX checksum skips BeginString and BodyLength",
+   "level": "medium",
+   "value": 250000,
+   "base_min": 15,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.611,
+    "minutes": 40,
+    "ev": 152660
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.956,
+    "minutes": 17,
+    "ev": 238994
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.969,
+    "minutes": 16,
+    "ev": 242218
+   }
+  },
+  {
+   "id": "GW08",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Gap fill points one sequence number short",
+   "level": "hard",
+   "value": 1000000,
+   "base_min": 60,
+   "scales": false,
+   "silent": false,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.206,
+    "minutes": 161,
+    "ev": 205870
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.782,
+    "minutes": 69,
+    "ev": 782109
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.837,
+    "minutes": 62,
+    "ev": 837263
+   }
+  },
+  {
+   "id": "GW09",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Possible duplicates delivered to the application",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 70,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.206,
+    "minutes": 187,
+    "ev": 617611
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.782,
+    "minutes": 80,
+    "ev": 2346327
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.837,
+    "minutes": 73,
+    "ev": 2511788
+   }
+  },
+  {
+   "id": "GW10",
+   "group": "bugbank",
+   "area": "gw",
+   "title": "Partial cancel forgets the order's details",
+   "level": "hard",
+   "value": 3000000,
+   "base_min": 80,
+   "scales": false,
+   "silent": true,
+   "note": "",
+   "weights": {
+    "protocols": 0.6,
+    "trading_core": 0.4
+   },
+   "quant": {
+    "skill": 0.55,
+    "p": 0.206,
+    "minutes": 214,
+    "ev": 617611
+   },
+   "mdev": {
+    "skill": 0.842,
+    "p": 0.782,
+    "minutes": 91,
+    "ev": 2346327
+   },
+   "mdev_plus": {
+    "skill": 0.882,
+    "p": 0.837,
+    "minutes": 83,
+    "ev": 2511788
+   }
+  },
+  {
+   "id": "PF.1",
+   "group": "research",
+   "title": "Real news does no better than placebo news: there is no edge",
+   "level": "hard",
+   "value": 437646685,
+   "base_min": 240,
+   "scales": true,
+   "note": "Fund -$437.6M with real news, -$443.3M with news shifted 20 days. Spotting this before launch avoids the whole loss.",
+   "weights": {
+    "stats": 0.8,
+    "finance": 0.2
+   },
+   "quant": {
+    "skill": 0.89,
+    "p": 0.847,
+    "minutes": 245,
+    "ev": 370615093
+   },
+   "mdev": {
+    "skill": 0.29,
+    "p": 0.024,
+    "minutes": 2312,
+    "ev": 10662646
+   },
+   "mdev_plus": {
+    "skill": 0.636,
+    "p": 0.36,
+    "minutes": 481,
+    "ev": 157488697
+   }
+  },
+  {
+   "id": "PF.2",
+   "group": "research",
+   "title": "Tuned on the past: in-sample Sharpe +0.43 became -2.81 out of sample",
+   "level": "hard",
+   "value": 247800000,
+   "base_min": 180,
+   "scales": true,
+   "note": "Dropping the loss makers after seeing results looks like +$247.8M. It is hindsight; allocating on it repeats the loss.",
+   "weights": {
+    "stats": 0.9,
+    "portfolio": 0.1
+   },
+   "quant": {
+    "skill": 0.895,
+    "p": 0.853,
+    "minutes": 182,
+    "ev": 211269904
+   },
+   "mdev": {
+    "skill": 0.245,
+    "p": 0.016,
+    "minutes": 2429,
+    "ev": 4059677
+   },
+   "mdev_plus": {
+    "skill": 0.616,
+    "p": 0.32,
+    "minutes": 384,
+    "ev": 79175901
+   }
+  },
+  {
+   "id": "PF.3",
+   "group": "research",
+   "title": "Fundamental sleeve fell 37% with no risk budget",
+   "level": "medium",
+   "value": 206600000,
+   "base_min": 120,
+   "scales": true,
+   "note": "Sleeve lost $331.6M; a 10% drawdown stop and vol targeting cap it near $125M.",
+   "weights": {
+    "portfolio": 0.8,
+    "finance": 0.2
+   },
+   "quant": {
+    "skill": 0.85,
+    "p": 0.959,
+    "minutes": 135,
+    "ev": 198110542
+   },
+   "mdev": {
+    "skill": 0.25,
+    "p": 0.095,
+    "minutes": 1555,
+    "ev": 19699199
+   },
+   "mdev_plus": {
+    "skill": 0.604,
+    "p": 0.718,
+    "minutes": 266,
+    "ev": 148398914
+   }
+  },
+  {
+   "id": "PF.4",
+   "group": "research",
+   "title": "Costs of $184.7M on $91bn traded",
+   "level": "medium",
+   "value": 74000000,
+   "base_min": 120,
+   "scales": true,
+   "note": "Lower turnover and better execution cut about 40% of costs.",
+   "weights": {
+    "execution": 0.7,
+    "stats": 0.3
+   },
+   "quant": {
+    "skill": 0.795,
+    "p": 0.934,
+    "minutes": 154,
+    "ev": 69139569
+   },
+   "mdev": {
+    "skill": 0.39,
+    "p": 0.271,
+    "minutes": 639,
+    "ev": 20047494
+   },
+   "mdev_plus": {
+    "skill": 0.69,
+    "p": 0.847,
+    "minutes": 204,
+    "ev": 62665885
+   }
+  },
+  {
+   "id": "PF.5",
+   "group": "research",
+   "title": "Half the news move is gone before the daily fill: should we go faster?",
+   "level": "hard",
+   "value": 65460000,
+   "base_min": 90,
+   "scales": true,
+   "note": "Running the same signal on real-time news lost $65.5M more. Speed only pays once the signal works; the right call is not to build it yet.",
+   "weights": {
+    "stats": 0.6,
+    "data_quality": 0.2,
+    "protocols": 0.2
+   },
+   "quant": {
+    "skill": 0.74,
+    "p": 0.589,
+    "minutes": 133,
+    "ev": 38558587
+   },
+   "mdev": {
+    "skill": 0.534,
+    "p": 0.183,
+    "minutes": 256,
+    "ev": 12000265
+   },
+   "mdev_plus": {
+    "skill": 0.756,
+    "p": 0.623,
+    "minutes": 128,
+    "ev": 40807691
+   }
+  },
+  {
+   "id": "PF.6",
+   "group": "research",
+   "title": "HFT sleeve is not co-located: -9.18% that becomes +11.02%",
+   "level": "medium",
+   "value": 20200000,
+   "base_min": 160,
+   "scales": false,
+   "note": "The co-located scenario turns the $100M sleeve from -$9.2M to +$11.0M.",
+   "weights": {
+    "cpp": 0.3,
+    "network": 0.4,
+    "protocols": 0.3
+   },
+   "quant": {
+    "skill": 0.475,
+    "p": 0.444,
+    "minutes": 574,
+    "ev": 8968519
+   },
+   "mdev": {
+    "skill": 0.944,
+    "p": 0.982,
+    "minutes": 145,
+    "ev": 19835249
+   },
+   "mdev_plus": {
+    "skill": 0.944,
+    "p": 0.982,
+    "minutes": 145,
+    "ev": 19835249
+   }
+  },
+  {
+   "id": "PF.7",
+   "group": "research",
+   "title": "Trend sleeve is too big for its capacity",
+   "level": "medium",
+   "value": 50000000,
+   "base_min": 90,
+   "scales": true,
+   "note": "Trend makes +3.15% at $10M and -0.18% at $1.5bn; right-sizing is worth about $50M.",
+   "weights": {
+    "execution": 0.6,
+    "stats": 0.4
+   },
+   "quant": {
+    "skill": 0.81,
+    "p": 0.942,
+    "minutes": 111,
+    "ev": 47106652
+   },
+   "mdev": {
+    "skill": 0.37,
+    "p": 0.237,
+    "minutes": 533,
+    "ev": 11842749
+   },
+   "mdev_plus": {
+    "skill": 0.68,
+    "p": 0.835,
+    "minutes": 158,
+    "ev": 41739756
+   }
+  },
+  {
+   "id": "PF.8",
+   "group": "research",
+   "title": "Find a real, tradable edge (Sharpe 1 at 5% vol)",
+   "level": "hard",
+   "value": 458000000,
+   "base_min": 2400,
+   "scales": true,
+   "note": "Sharpe 1 at 5% vol on $5bn for 463 sessions. Most researchers never find one.",
+   "weights": {
+    "stats": 0.6,
+    "portfolio": 0.2,
+    "execution": 0.1,
+    "data_quality": 0.1
+   },
+   "quant": {
+    "skill": 0.84,
+    "p": 0.327,
+    "minutes": 2755,
+    "ev": 149945986
+   },
+   "mdev": {
+    "skill": 0.33,
+    "p": 0.005,
+    "minutes": 17851,
+    "ev": 2252272
+   },
+   "mdev_plus": {
+    "skill": 0.655,
+    "p": 0.084,
+    "minutes": 4531,
+    "ev": 38620253
+   }
+  }
+ ],
+ "groups": {
+  "incident": {
+   "quant": {
+    "expected_solved": 8.0,
+    "count": 14,
+    "hours": 26.5,
+    "ev": 13291028,
+    "at_stake": 20800000
+   },
+   "mdev": {
+    "expected_solved": 12.1,
+    "count": 14,
+    "hours": 13.5,
+    "ev": 17754334,
+    "at_stake": 20800000
+   },
+   "mdev_plus": {
+    "expected_solved": 12.8,
+    "count": 14,
+    "hours": 11.6,
+    "ev": 18947412,
+    "at_stake": 20800000
+   },
+   "team": {
+    "ev": 17786700
+   }
+  },
+  "bugbank": {
+   "quant": {
+    "expected_solved": 34.3,
+    "count": 60,
+    "hours": 100.3,
+    "ev": 16905085,
+    "at_stake": 53400000
+   },
+   "mdev": {
+    "expected_solved": 55.1,
+    "count": 60,
+    "hours": 38.9,
+    "ev": 45785151,
+    "at_stake": 53400000
+   },
+   "mdev_plus": {
+    "expected_solved": 56.5,
+    "count": 60,
+    "hours": 35.4,
+    "ev": 47511869,
+    "at_stake": 53400000
+   },
+   "team": {
+    "ev": 46280800
+   }
+  },
+  "research": {
+   "quant": {
+    "expected_solved": 5.9,
+    "count": 8,
+    "hours": 71.5,
+    "ev": 1093714852,
+    "at_stake": 1559706685
+   },
+   "mdev": {
+    "expected_solved": 1.8,
+    "count": 8,
+    "hours": 428.7,
+    "ev": 100399551,
+    "at_stake": 1559706685
+   },
+   "mdev_plus": {
+    "expected_solved": 4.8,
+    "count": 8,
+    "hours": 105.0,
+    "ev": 588732346,
+    "at_stake": 1559706685
+   },
+   "team": {
+    "ev": 1104563882
+   }
+  }
+ },
+ "sweep": [
+  {
+   "capital": 25000000.0,
+   "quant": 44588368,
+   "mdev": 83777553,
+   "mdev_plus": 89139011,
+   "team": 89323796
+  },
+  {
+   "capital": 50000000.0,
+   "quant": 50012099,
+   "mdev": 84180375,
+   "mdev_plus": 91983496,
+   "team": 94747528
+  },
+  {
+   "capital": 100000000.0,
+   "quant": 60859563,
+   "mdev": 84986018,
+   "mdev_plus": 97672467,
+   "team": 105594991
+  },
+  {
+   "capital": 250000000.0,
+   "quant": 93401952,
+   "mdev": 87402947,
+   "mdev_plus": 114739380,
+   "team": 138137381
+  },
+  {
+   "capital": 500000000.0,
+   "quant": 147639269,
+   "mdev": 91431162,
+   "mdev_plus": 143184235,
+   "team": 192374698
+  },
+  {
+   "capital": 1000000000.0,
+   "quant": 256113902,
+   "mdev": 99487592,
+   "mdev_plus": 200073945,
+   "team": 300849331
+  },
+  {
+   "capital": 2000000000.0,
+   "quant": 473063169,
+   "mdev": 115600453,
+   "mdev_plus": 313853364,
+   "team": 517798597
+  },
+  {
+   "capital": 5000000000.0,
+   "quant": 1123910968,
+   "mdev": 163939034,
+   "mdev_plus": 655191623,
+   "team": 1168646396
+  },
+  {
+   "capital": 10000000000.0,
+   "quant": 2208657300,
+   "mdev": 244503337,
+   "mdev_plus": 1224088720,
+   "team": 2253392728
+  },
+  {
+   "capital": 20000000000.0,
+   "quant": 4378149963,
+   "mdev": 405631943,
+   "mdev_plus": 2361882914,
+   "team": 4422885392
+  }
+ ],
+ "monte_carlo": {
+  "quant": {
+   "mean": 1124979342,
+   "p10": 696610000,
+   "p50": 1109656685,
+   "p90": 1566406685,
+   "infra_mean": 30206428,
+   "infra_sd": 5908497,
+   "research_mean": 1094772915,
+   "research_sd": 286551494,
+   "hist": [
+    0,
+    0,
+    2,
+    1,
+    4,
+    8,
+    89,
+    131,
+    120,
+    31,
+    89,
+    746,
+    678,
+    285,
+    274,
+    684,
+    993,
+    186,
+    412,
+    3197,
+    3776,
+    2736,
+    37,
+    317,
+    358,
+    282,
+    84,
+    232,
+    1916,
+    2332
+   ],
+   "hist_top": 1600000000.0
+  },
+  "mdev": {
+   "mean": 164713268,
+   "p10": 80900000,
+   "p50": 138400000,
+   "p90": 295500000,
+   "infra_mean": 63548785,
+   "infra_sd": 4905624,
+   "research_mean": 101164483,
+   "research_sd": 112829836,
+   "hist": [
+    6,
+    7804,
+    6130,
+    2385,
+    738,
+    1032,
+    859,
+    285,
+    101,
+    213,
+    150,
+    163,
+    60,
+    30,
+    13,
+    21,
+    7,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "hist_top": 1600000000.0
+  },
+  "mdev_plus": {
+   "mean": 654864443,
+   "p10": 279560000,
+   "p50": 652500000,
+   "p90": 1096406685,
+   "infra_mean": 66462085,
+   "infra_sd": 4306860,
+   "research_mean": 588402358,
+   "research_sd": 290055409,
+   "hist": [
+    0,
+    27,
+    191,
+    693,
+    379,
+    977,
+    675,
+    2180,
+    1476,
+    2444,
+    125,
+    462,
+    1765,
+    1913,
+    218,
+    840,
+    1298,
+    1729,
+    254,
+    210,
+    705,
+    767,
+    183,
+    39,
+    125,
+    159,
+    21,
+    4,
+    14,
+    127
+   ],
+   "hist_top": 1600000000.0
+  }
+ },
+ "notes": [
+  "Skill levels and incident dollar values are assumptions; paper fund dollar values are measured from PR #28's run.",
+  "Value is loss avoided or gain made over the paper fund's 463 sessions at $5bn."
+ ]
+}

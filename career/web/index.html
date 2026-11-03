@@ -1,0 +1,653 @@
+<title>Feed to Alpha</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: a long, single-column field manual with a sticky section rail; every chart is a live "scope" panel. */
+:root{
+  --bg:#f2f4f3; --panel:#ffffff; --ink:#15211f; --muted:#5b6866; --line:#d5dcda; --soft:#e7ecea;
+  --quant:#a8650d; --mdev:#0b7a84; --plus:#4a5bb0; --team:#6b6f2a;
+  --bid:#16825d; --ask:#c0442a; --warn:#b98a00;
+  --scope:#0f1a19; --scope-ink:#d9e6e3; --scope-grid:#253634;
+  --f-display:"IBM Plex Sans Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1514; --panel:#161f1e; --ink:#e3ebe9; --muted:#9aa9a6; --line:#2a3735; --soft:#1d2827;
+  --quant:#e3a24a; --mdev:#43c1cc; --plus:#8d9cf0; --team:#c3c76a;
+  --bid:#3fbf8c; --ask:#f07a5e; --warn:#e6c04a;
+  --scope:#0a100f; --scope-ink:#d9e6e3; --scope-grid:#1f2e2c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1514; --panel:#161f1e; --ink:#e3ebe9; --muted:#9aa9a6; --line:#2a3735; --soft:#1d2827;
+  --quant:#e3a24a; --mdev:#43c1cc; --plus:#8d9cf0; --team:#c3c76a;
+  --bid:#3fbf8c; --ask:#f07a5e; --warn:#e6c04a;
+  --scope:#0a100f; --scope-ink:#d9e6e3; --scope-grid:#1f2e2c; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2.4rem,6vw,4rem);letter-spacing:-.01em}
+h2{font-size:clamp(1.6rem,3.4vw,2.2rem);margin-bottom:.4rem}
+h3{font-size:1.2rem}
+p{margin:0;max-width:68ch}
+a{color:var(--mdev)}
+.mono,.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font:600 .74rem/1 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+header.hero{padding-block:48px 28px;display:grid;gap:18px}
+.hero .lede{font-size:1.15rem;max-width:62ch}
+.tape{font:600 .78rem/1 var(--f-mono);color:var(--muted);white-space:nowrap;overflow:hidden;border-block:1px solid var(--line);padding-block:8px}
+.tape span{display:inline-block;animation:tape 60s linear infinite}
+@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+nav.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.rail .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:8px;scrollbar-width:none}
+nav.rail a{font:600 .82rem/1 var(--f-mono);text-decoration:none;color:var(--muted);padding:8px 10px;border-radius:4px;white-space:nowrap}
+nav.rail a:hover,nav.rail a:focus-visible{color:var(--ink);background:var(--soft);outline:none}
+section{padding-block:52px 8px;display:grid;gap:20px;scroll-margin-top:52px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;display:grid;gap:10px;align-content:start;min-width:0}
+.tile{display:grid;gap:4px;padding:16px;border-top:3px solid var(--line);background:var(--panel)}
+.tile .big{font:700 2rem/1 var(--f-display)}
+.tile.q{border-top-color:var(--quant)} .tile.m{border-top-color:var(--mdev)} .tile.p{border-top-color:var(--plus)}
+.q-c{color:var(--quant)} .m-c{color:var(--mdev)} .p-c{color:var(--plus)} .t-c{color:var(--team)}
+.verdict{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--quant);padding:20px;border-radius:6px;display:grid;gap:12px}
+.verdict ul{margin:0;padding-left:1.1rem;display:grid;gap:6px;max-width:72ch}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 .74rem/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td.num,th.num{text-align:right}
+.scroll{overflow-x:auto;min-width:0}
+.tablebox{max-height:520px;overflow:auto;border:1px solid var(--line);border-radius:6px;background:var(--panel)}
+.tablebox thead th{position:sticky;top:0;background:var(--panel);z-index:1}
+.bars{display:grid;gap:3px;min-width:120px}
+.bar{height:7px;border-radius:2px;background:var(--soft);position:relative;overflow:hidden}
+.bar i{position:absolute;inset:0 auto 0 0;border-radius:2px}
+.skillrow{display:grid;grid-template-columns:150px 1fr;gap:10px;align-items:center;font-size:.9rem}
+.skillrow .bars{min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font:600 .8rem/1 var(--f-mono)}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;background:currentColor;vertical-align:-1px}
+button,.btn{font:600 .82rem/1 var(--f-mono);border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:9px 12px;border-radius:4px;cursor:pointer}
+button:hover{background:var(--soft)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--mdev);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.scope{background:var(--scope);border-radius:6px;overflow:hidden;position:relative}
+.scope canvas{display:block;width:100%}
+.course{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:820px){.course{grid-template-columns:1fr}}
+.modlist{display:flex;flex-wrap:wrap;gap:6px}
+.modlist button{font-size:.78rem;padding:8px 10px}
+.facts{display:grid;gap:10px;font-size:.94rem}
+.facts dt{font:600 .72rem/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:3px 0 0}
+.facts dd.ok{border-left:3px solid var(--bid);padding-left:8px}
+.facts dd.bad{border-left:3px solid var(--ask);padding-left:8px}
+code,.cmd{font-family:var(--f-mono);font-size:.84rem;background:var(--soft);padding:1px 5px;border-radius:3px;word-break:break-word}
+pre.cmd{display:block;padding:10px;white-space:pre-wrap;margin:0}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.readout{font:600 .82rem/1.4 var(--f-mono);color:var(--muted)}
+input[type=range]{width:min(100%,420px);accent-color:var(--quant)}
+.pill{display:inline-block;font:600 .7rem/1 var(--f-mono);padding:4px 6px;border-radius:3px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.pill.silent{background:color-mix(in srgb,var(--warn) 20%,transparent);color:var(--ink)}
+.two-readings td:first-child{font-weight:600;white-space:nowrap}
+.weeks td:first-child{font-family:var(--f-mono);white-space:nowrap}
+footer{padding-block:48px;color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.tape span{animation:none}}
+</style>
+
+<header class="wrap hero">
+  <div class="eyebrow">MarketData project · career track</div>
+  <h1>Feed to Alpha</h1>
+  <p class="lede">What a market data developer with fifteen years and fifty feeds is missing to become a quant, a course that turns that feed knowledge into an edge, and a head-to-head where a veteran and a quant solve the same 82 problems from this project's own incidents, bug bank and $5bn paper fund.</p>
+  <div class="tape" aria-hidden="true"><span id="tape"></span></div>
+</header>
+
+<nav class="rail" aria-label="Sections"><div class="wrap">
+  <a href="#verdict">Verdict</a><a href="#gaps">Gaps</a><a href="#edge">Your edge</a><a href="#course">Course</a><a href="#duel">Head to head</a><a href="#pay">Is the pay justified</a><a href="#sources">Sources</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="verdict">
+  <div class="eyebrow">The short answer</div>
+  <h2>Your assumption is right about the engineering and wrong about the money</h2>
+  <div class="grid3" id="verdictTiles"></div>
+  <div class="verdict">
+    <ul id="verdictList"></ul>
+    <p class="muted" style="font-size:.88rem">The skill levels and the dollar value of each engineering incident are assumptions, written out in <code>career/head_to_head.py</code> so you can change them. The research dollar values are measured: they come from the paper fund run in PR #28.</p>
+  </div>
+</section>
+
+<section id="gaps">
+  <div class="eyebrow">Part 1</div>
+  <h2>The gap map</h2>
+  <p>Nine skill areas, scored 0 to 1 for the two profiles and for you after the course. The veteran is already better than most quants at the first five. The last four are where strategies make or lose money, and that is the gap.</p>
+  <div class="legend"><span class="q-c">Quant dev/researcher</span><span class="m-c">Market data veteran</span><span class="p-c">Veteran after the course</span></div>
+  <div class="card" id="skills"></div>
+  <h3>Same feed, two readings</h3>
+  <p>A market data developer asks whether the data is right. A quant assumes it is right and asks what it predicts, how sure we are, and what it costs to act on. Here is the same ITCH stream read both ways.</p>
+  <div class="scroll"><table class="two-readings">
+    <thead><tr><th>Event on the feed</th><th>Market data developer asks</th><th>Quant asks</th></tr></thead>
+    <tbody>
+      <tr><td>Add Order (A), 2,000 shares on the bid</td><td>Is the order ref unique? Did the book apply it at the right level?</td><td>Did bid depth just jump versus the ask? Imbalance above 0.6 has predicted an up-tick about 58% of the time. Is that enough to pay half the spread?</td></tr>
+      <tr><td>Order Executed (E), then a Cancel (X) from the same firm</td><td>Is the execution counted once? Is the remaining size right?</td><td>Who just traded? Fast cancels after a fill look like a market maker leaning, which is adverse selection for us.</td></tr>
+      <tr><td>Cross Trade (Q) at the close</td><td>Was the non-printable execution kept out of volume (MD-414 report 2)?</td><td>The closing auction imbalance (NOII) leads the closing price. Can we predict the last ten minutes?</td></tr>
+      <tr><td>LULD band update, then a trading pause</td><td>Do we pull quotes? Do we reject new orders while paused (MD-414 report 5)?</td><td>Volatility just regime-shifted. Cut size, widen quotes, and do not count this day in the mean-reversion fit.</td></tr>
+      <tr><td>Sequence gap on the multicast line</td><td>Request a retransmit, hold the book until it fills.</td><td>Mark the book stale and stop the signal for those milliseconds. A strategy that trades on a stale book is trading on a fiction.</td></tr>
+      <tr><td>Timestamp 34200.000123456 ns after midnight</td><td>Decode 48 bits correctly (MD-415 bug MD05).</td><td>Which clock is this? Exchange, receive, or vendor? A backtest that uses the wrong one sees the future.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>What is actually missing</h3>
+  <div class="grid2">
+    <div class="card"><h3>Statistics you can bet on</h3><p>Distributions, t-stats, information coefficient, multiple testing. The paper fund's tuning picked a setting with in-sample Sharpe +0.43 that went to −2.81 out of sample. Spotting that before launch is the whole job.</p></div>
+    <div class="card"><h3>Research method</h3><p>Hypothesis first, out-of-sample tests, placebo tests, no look-ahead. The paper fund's real news did no better than news shifted twenty days late (−$437.6M against −$443.3M). That single test is worth more than any feed handler optimisation.</p></div>
+    <div class="card"><h3>Portfolio and risk</h3><p>Sizing, volatility targeting, correlation, drawdown budgets. The fundamental sleeve lost 37% with no risk budget. Module 9 replays it with a volatility target and a drawdown cut: −$86.8M instead of −$331.6M.</p></div>
+    <div class="card"><h3>Execution and capacity</h3><p>Costs, market impact, how big a strategy can get. The trend sleeve made +3.15% at $10M and −0.18% at $1.5bn. Same signal; the market impact ate it.</p></div>
+    <div class="card"><h3>Finance basics</h3><p>PnL attribution, marks, Sharpe, drawdown, benchmark. You already reconcile fills; the step is asking why the PnL is what it is.</p></div>
+    <div class="card"><h3>Python research stack</h3><p>numpy, pandas, a notebook habit and plotting. Your C++ is a strength; the research loop is faster in Python and you move the winner to C++.</p></div>
+  </div>
+</section>
+
+<section id="edge">
+  <div class="eyebrow">Part 2</div>
+  <h2>Where fifty feeds are an advantage</h2>
+  <p>Most quants learned markets from bar data and vendor files. You know what the data is before it becomes a bar. These six advantages are real, and the course builds on each one.</p>
+  <div class="grid3">
+    <div class="card"><h3>You can tell a signal from a bug</h3><p>Most research blow-ups are data errors that look like alpha. MD-414's auction-day volume bug creates fake volume spikes that a volume strategy would trade. You find that in minutes; the quant in the duel solves it 46% of the time.</p><span class="pill">Module 10</span></div>
+    <div class="card"><h3>You know which clock is which</h3><p>Exchange, gateway, receive and vendor timestamps differ by microseconds to seconds. Look-ahead bias usually hides there. You can build backtests that cannot see the future.</p><span class="pill">Module 7</span></div>
+    <div class="card"><h3>You know how fills really happen</h3><p>Price-time priority, queue position, replace rules, self-match prevention, auctions, each venue's quirks. Backtests that assume you get filled at the mid are wrong, and you can model the real thing.</p><span class="pill">Module 3</span></div>
+    <div class="card"><h3>Cross-venue and cross-asset structure</h3><p>Futures lead ETFs, ETFs lead stocks, FX fixes move at known times, auctions differ by exchange. Lead-lag and auction strategies need exactly the multi-feed view you have.</p><span class="pill">Capstone</span></div>
+    <div class="card"><h3>Features nobody else can see</h3><p>Add and cancel rates, odd lots, hidden fills, queue depletion speed. They come only from raw order-by-order feeds, and you already parse them.</p><span class="pill">Module 2</span></div>
+    <div class="card"><h3>Research to production with no rewrite</h3><p>Quant teams lose months moving research into a low-latency system. You can do it in weeks, which is why the co-located HFT sleeve swung from −9.18% to +11.02%.</p><span class="pill">Module 8</span></div>
+  </div>
+</section>
+
+<section id="course">
+  <div class="eyebrow">Part 3</div>
+  <h2>The course: ten animated modules</h2>
+  <p>Each module shows a signal firing, what counts as success and failure, and why the money is made or lost. Each ends with a lab you can run in the trading repo, so you learn on the system you built.</p>
+  <div class="modlist" id="modlist" role="tablist" aria-label="Modules"></div>
+  <div class="course">
+    <div style="display:grid;gap:8px;min-width:0">
+      <div class="scope"><canvas id="stage" height="360" aria-label="Module animation"></canvas></div>
+      <div class="controls"><button id="play" aria-pressed="false">Pause</button><button id="restart">Restart</button><span class="readout" id="readout"></span></div>
+    </div>
+    <div class="card"><div class="eyebrow" id="modTag"></div><h3 id="modTitle"></h3><dl class="facts" id="modFacts"></dl></div>
+  </div>
+
+  <h3>Sixteen weeks, about eight hours a week</h3>
+  <div class="scroll"><table class="weeks">
+    <thead><tr><th>Weeks</th><th>Learn</th><th>Lab in the trading repo</th><th>Done when</th></tr></thead>
+    <tbody>
+      <tr><td>1–2</td><td>Returns, PnL, Sharpe, drawdown, benchmarks (Module 1)</td><td><code>research/report.py</code> on an e2e-posttrade run; read <code>paperfund/results/baseline_5bn/summary.json</code></td><td>You can explain why −8.75% against QQQ's +30.38% is a failure even though nothing crashed.</td></tr>
+      <tr><td>3–4</td><td>Probability, t-tests, information coefficient (Module 2)</td><td>Export top-of-book from <code>itch-dump</code>, measure the IC of book imbalance against the next mid move</td><td>You report a hit rate with a confidence interval, not a single number.</td></tr>
+      <tr><td>5–6</td><td>Microstructure: queues, adverse selection, market making (Module 3)</td><td><code>tools/quant-lab</code> market maker; change the replace rule and watch fill rate (MD-414 report 6)</td><td>You can say why a replace costs queue position and what it is worth.</td></tr>
+      <tr><td>7–8</td><td>Honest backtesting: out-of-sample, placebo, look-ahead (Modules 6 and 7)</td><td>Rerun the paperfund placebo and tuning scripts; add one more placebo of your own</td><td>You can show a strategy has no edge without anyone telling you.</td></tr>
+      <tr><td>9–10</td><td>Stat arb and trend (Modules 4 and 5)</td><td><code>firm/strategy/pairs.hpp</code> and <code>trend.hpp</code>; tune on 2025, test on 2026, once</td><td>You pick parameters before you see the test year.</td></tr>
+      <tr><td>11–12</td><td>Costs, impact, capacity (Module 8)</td><td>Paperfund capacity scenarios: find the trend sleeve's break-even size</td><td>You can size a strategy from its cost curve.</td></tr>
+      <tr><td>13–14</td><td>Portfolio and risk: vol targeting, correlation, stops (Module 9)</td><td><code>firm/risk</code> plus a vol-target overlay on the paperfund sleeves</td><td>The fundamental sleeve's drawdown stays inside your budget.</td></tr>
+      <tr><td>15–16</td><td>Capstone: a signal only a multi-feed person would build</td><td>Closing auction imbalance to closing price (simex <code>--scenario</code> auctions), then the public Optiver "Trading at the Close" data on Kaggle</td><td>Out-of-sample IC above zero with a placebo that is not, written up in two pages.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="card"><h3>No top degree needed</h3><p>What gets a market data developer hired into research is a public, honest track record: two or three write-ups with out-of-sample results and placebo tests, a Kaggle market-microstructure competition (Optiver's closing auction one and Jane Street's real-time forecasting one both use order book data), and the production skills you already have. Firms test what you can do in the interview; a portfolio of real research is the strongest answer.</p></div>
+    <div class="card"><h3>Reading list, in order</h3><p>Larry Harris, <i>Trading and Exchanges</i> (you know half of it already). Ernest Chan, <i>Quantitative Trading</i>. Cartea, Jaimungal and Penalva, <i>Algorithmic and High-Frequency Trading</i>. Grinold and Kahn, <i>Active Portfolio Management</i>. Marcos López de Prado, <i>Advances in Financial Machine Learning</i>, chapters on backtest overfitting. MIT OpenCourseWare 18.S096 for the maths.</p></div>
+  </div>
+</section>
+
+<section id="duel">
+  <div class="eyebrow">Part 4</div>
+  <h2>Head to head: two profiles, the same 82 problems</h2>
+  <p>The 14 incident reports from MD-413 and MD-414 (the ones the seven candidates worked), the 60 planted bugs of the MD-415 bug bank, and 8 research problems the $5bn paper fund run found. Each profile gets a chance of solving each problem from its skills, and a time based on how long Priya, the strongest replayed candidate, took.</p>
+  <div class="grid2" id="profileCards"></div>
+  <div class="scroll"><table id="groupTable"></table></div>
+
+  <h3>Replay the queue</h3>
+  <p>Both profiles work their queue in order of value, one problem after another. Each tick on a lane is a problem: filled when solved, hollow when not. The line is the money saved or made.</p>
+  <div class="chips" id="raceMode"><button data-mode="eng" aria-pressed="true">Engineering only (74)</button><button data-mode="all" aria-pressed="false">All 82 problems</button><button data-mode="plus" aria-pressed="false">Add the veteran after the course</button></div>
+  <div class="scope"><canvas id="race" height="340" aria-label="Race replay"></canvas></div>
+  <div class="readout" id="raceReadout"></div>
+
+  <h3>Fund size decides who matters more</h3>
+  <p>Engineering losses are about the same size at a $50M fund as at a $5bn one. Research gains and losses grow with the capital. Drag to see where the lines cross.</p>
+  <label class="readout" for="cap">Fund capital: <span id="capLabel"></span></label>
+  <input type="range" id="cap" min="0" max="900" value="700">
+  <div class="scope"><canvas id="sweep" height="320" aria-label="Value by fund size"></canvas></div>
+  <div class="readout" id="capReadout"></div>
+
+  <h3>The spread of outcomes</h3>
+  <p>20,000 runs in which each problem is solved or not by chance. The veteran's outcome is narrow. The quant's is wide because most of the value sits in two or three research calls.</p>
+  <div class="scope"><canvas id="mc" height="260" aria-label="Distribution of outcomes"></canvas></div>
+  <div class="readout" id="mcReadout"></div>
+
+  <h3>Every problem</h3>
+  <div class="chips" id="filt"><button data-g="all" aria-pressed="true">All</button><button data-g="incident" aria-pressed="false">MD-413 and MD-414</button><button data-g="bugbank" aria-pressed="false">MD-415 bug bank</button><button data-g="research" aria-pressed="false">Paper fund research</button></div>
+  <div class="tablebox"><table id="issues"></table></div>
+</section>
+
+<section id="pay">
+  <div class="eyebrow">Part 5</div>
+  <h2>Is paying a quant more justified?</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>What the market pays</h3>
+      <div class="scroll"><table>
+        <thead><tr><th>Role</th><th>Reported pay</th></tr></thead>
+        <tbody>
+          <tr><td>Quant developer joining a hedge fund</td><td>$250k–$400k total (eFinancialCareers, quoting Balyasny)</td></tr>
+          <tr><td>Senior engineer, Citadel job ads</td><td>$150k–$300k base for 6+ years (Tradermath)</td></tr>
+          <tr><td>Quant researcher, base</td><td>$180k–$250k, median $213k (Tradermath)</td></tr>
+          <tr><td>Quant researcher, bonus</td><td>80–200% of base (Recruiting from Scratch)</td></tr>
+          <tr><td>Senior researcher with a strong year</td><td>£1.5M–£2M reported (Young and Calculated)</td></tr>
+        </tbody>
+      </table></div>
+      <p class="muted" style="font-size:.86rem">Public surveys and job ads from 2025–26; check current figures before you negotiate.</p>
+    </div>
+    <div class="card">
+      <h3>Why the gap is mostly bonus</h3>
+      <p>Base pay for a strong engineer and a researcher is close. The difference is the bonus, and the bonus is a share of the PnL the researcher made. If the researcher made nothing, the bonus is small or the job ends. So the premium pays for upside the firm only gives away after it has earned it.</p>
+      <p id="payModel"></p>
+      <p>The veteran's value is real, but most of it is losses avoided, and that is capped by how big incidents get. The quant's value grows with every dollar of capital, and it can be zero. That is why firms pay the quant more on average and fire more of them.</p>
+    </div>
+  </div>
+  <div class="verdict" style="border-left-color:var(--plus)">
+    <h3>What this means for you</h3>
+    <ul>
+      <li>At a large systematic fund, a veteran who stays a pure market data developer is valued like a senior engineer: well paid, with a ceiling.</li>
+      <li>At an HFT or market-making shop, or a fund under about $200M, your profile is already worth more than the quant's in this model, because speed, fills and data quality are the edge there.</li>
+      <li>The veteran after the course is worth about four times the veteran today in the model at $5bn, and level with the quant at about $450M. Pairing with a researcher beats either alone at every size.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="eyebrow">Sources and links</div>
+  <h2>Everything this page is built on</h2>
+  <div class="grid2">
+    <div class="card"><h3>This project</h3>
+      <p><a href="https://claude.ai/artifact/DtAU7Pp6EmroJi2v5v3o7e">Paper Fund findings</a> (PR #28: −$437.6M, placebo, tuning, scenarios)</p>
+      <p><a href="https://claude.ai/artifact/UnfYLEDVQ41tcBD9Yzbjpc">MD-415 Bug Bank</a> (60 planted bugs and Priya's solves)</p>
+      <p><a href="https://claude.ai/artifact/9fWsciswLejntBDsYiNkWM">MD-413 Candidate Replays</a>, <a href="https://claude.ai/artifact/VqZVJtgzfKbWCqwnk7xqWm">MD-414 Candidate Replays</a>, <a href="https://claude.ai/artifact/Ld3xWAysNnpZrM6CmkawU5">MD-412 Candidate Replays</a></p>
+      <p><a href="https://claude.ai/artifact/VUGESZmjFmHtzMShqArmPQ">Quant Research Lab</a> and <a href="https://claude.ai/artifact/BJs5Vo9xFAdNGNK7WHvkCD">Four Ways to Trade One Feed</a></p>
+      <p>Simulation code: <code>career/head_to_head.py</code> in vinstarworld007/trading</p>
+    </div>
+    <div class="card"><h3>Pay sources</h3>
+      <p><a href="https://www.efinancialcareers.com/news/quant-developer-jobs-in-banking">eFinancialCareers: what's a quant developer</a></p>
+      <p><a href="https://www.tradermath.org/salaries/quant-developer">Tradermath: quant developer salary</a></p>
+      <p><a href="https://www.recruitingfromscratch.com/blog/quantitative-researcher-salary-hedge-funds-2026">Recruiting from Scratch: QR salary at hedge funds 2026</a></p>
+      <p><a href="https://youngandcalculated.substack.com/p/the-detailed-and-honest-reality-of">Young and Calculated: quant pay in 2026</a></p>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="wrap">Simulation only. Skill levels and engineering incident values are assumptions; paper fund values are measured from its run on real daily prices, 2024-12-26 to 2026-10-30.</footer>
+
+<script>
+const DATA = __DATA__;
+const $ = s => document.querySelector(s);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fmt$ = v => { const a=Math.abs(v), s=v<0?'−':''; return a>=1e9?`${s}$${(a/1e9).toFixed(2)}bn`:a>=1e6?`${s}$${(a/1e6).toFixed(1)}M`:a>=1e3?`${s}$${(a/1e3).toFixed(0)}k`:`${s}$${a.toFixed(0)}`; };
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+let C = {};
+function readColors(){ ['--quant','--mdev','--plus','--team','--bid','--ask','--warn','--scope','--scope-ink','--scope-grid','--muted'].forEach(k=>C[k.slice(2)]=css(k)); }
+readColors();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readColors);
+new MutationObserver(readColors).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+function rng(seed){ return function(){ seed|=0; seed=seed+0x6D2B79F5|0; let t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+function gauss(r){ let u=0,v=0; while(!u)u=r(); while(!v)v=r(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function fit(cv){ const dpr=window.devicePixelRatio||1, w=cv.clientWidth, h=+cv.getAttribute('height'); if(cv.width!==Math.round(w*dpr)){cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr); cv.style.height=h+'px';} const ctx=cv.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); return [ctx,w,h]; }
+function txt(ctx,s,x,y,o={}){ ctx.font=`${o.w||400} ${o.size||12}px ${o.mono===false?'"IBM Plex Sans",sans-serif':'"IBM Plex Mono",monospace'}`; ctx.fillStyle=o.color||C['scope-ink']; ctx.textAlign=o.align||'left'; ctx.textBaseline=o.base||'alphabetic'; ctx.fillText(s,x,y); }
+function line(ctx,pts,color,wd=1.6){ ctx.strokeStyle=color; ctx.lineWidth=wd; ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])); ctx.stroke(); }
+function grid(ctx,x0,y0,x1,y1,n=4){ ctx.strokeStyle=C['scope-grid']; ctx.lineWidth=1; for(let i=0;i<=n;i++){ const y=y0+(y1-y0)*i/n; ctx.beginPath(); ctx.moveTo(x0,y); ctx.lineTo(x1,y); ctx.stroke(); } }
+const P = DATA.profiles, G = DATA.groups;
+
+/* ---------- verdict ---------- */
+(function(){
+  const eng = k => ({solved:G.incident[k].expected_solved+G.bugbank[k].expected_solved, hours:G.incident[k].hours+G.bugbank[k].hours, ev:G.incident[k].ev+G.bugbank[k].ev});
+  const eq=eng('quant'), em=eng('mdev');
+  const sw = DATA.sweep, cross = crossover('quant','mdev');
+  $('#verdictTiles').innerHTML = `
+    <div class="tile m"><span class="eyebrow">Engineering, 74 problems</span><span class="big m-c">${em.solved.toFixed(0)} vs ${eq.solved.toFixed(0)}</span><span class="muted">solved by the veteran vs the quant, in ${em.hours.toFixed(0)}h vs ${eq.hours.toFixed(0)}h</span></div>
+    <div class="tile q"><span class="eyebrow">Research, 8 problems at $5bn</span><span class="big q-c">${fmt$(G.research.quant.ev)}</span><span class="muted">for the quant vs ${fmt$(G.research.mdev.ev)} for the veteran</span></div>
+    <div class="tile p"><span class="eyebrow">Where they cross</span><span class="big p-c">${fmt$(cross)}</span><span class="muted">of capital: below it the veteran is worth more</span></div>`;
+  $('#verdictList').innerHTML = `
+    <li>On the engineering problems the veteran wins clearly: about ${em.solved.toFixed(0)} of 74 solved against ${eq.solved.toFixed(0)}, in less than half the time, worth ${fmt$(em.ev)} of losses avoided against ${fmt$(eq.ev)}. Your view of the veteran's knowledge is correct.</li>
+    <li>But a systematic fund makes its money in research, and research value grows with capital. At $5bn the quant's research calls are worth ${fmt$(G.research.quant.ev)} against the veteran's ${fmt$(G.research.mdev.ev)}, mostly from two calls: seeing that the news signal had no edge, and not trusting the tuned parameters.</li>
+    <li>So for a large systematic fund the quant brings more value, about ${(DATA.sweep.find(r=>r.capital===5e9).quant/DATA.sweep.find(r=>r.capital===5e9).mdev).toFixed(1)}× in this model. Below about ${fmt$(cross)} of capital, and in HFT or market making where speed and fills are the edge, the veteran is worth more.</li>
+    <li>Paying the quant more is justified when the pay is mostly a share of PnL, which is how funds pay. It is not justified for a quant who never finds an edge, and the model gives even a good quant only a ${Math.round(DATA.issues.find(i=>i.id==='PF.8').quant[0]*100)}% chance of finding a new one.</li>
+    <li>The best profile is the veteran who learns research: about ${fmt$(DATA.sweep.find(r=>r.capital===5e9).mdev_plus)} at $5bn, ${(DATA.sweep.find(r=>r.capital===5e9).mdev_plus/DATA.sweep.find(r=>r.capital===5e9).mdev).toFixed(1)}× the veteran today. That is what the course is for.</li>`;
+  const msgs = ['ADD 2000 @ 16.06 B','EXEC 300','CANCEL 1700','NOII imb 412k buy','LULD band 15.25–16.85','GAP seq 88123→88131','REPLACE → back of queue','IC 0.036 · t 1.73','OOS Sharpe −2.81','placebo ≈ real','costs $184.7M','co-located +11.02%'];
+  const s = msgs.join('   ·   ') + '   ·   '; $('#tape').textContent = s + s;
+})();
+function crossover(a,b){ const sw=DATA.sweep; for(let i=1;i<sw.length;i++){ const d0=sw[i-1][a]-sw[i-1][b], d1=sw[i][a]-sw[i][b]; if(d0<0&&d1>=0){ const f=d0/(d0-d1); return Math.exp(Math.log(sw[i-1].capital)+f*(Math.log(sw[i].capital)-Math.log(sw[i-1].capital))); } } return NaN; }
+
+/* ---------- skills ---------- */
+(function(){
+  const names={cpp:'C++ / low latency',protocols:'Feed and order protocols',network:'Networking',data_quality:'Data quality',trading_core:'OMS, risk, matching',finance:'PnL and finance',stats:'Statistics, research',portfolio:'Portfolio and risk',execution:'Execution, costs'};
+  $('#skills').innerHTML = Object.keys(names).map(a=>`<div class="skillrow"><span>${names[a]}</span><div class="bars">${['quant','mdev','mdev_plus'].map(k=>`<div class="bar" title="${P[k].label}: ${P[k].skill[a]}"><i style="width:${P[k].skill[a]*100}%;background:var(--${k==='quant'?'quant':k==='mdev'?'mdev':'plus'})"></i></div>`).join('')}</div></div>`).join('');
+})();
+
+/* ---------- course modules ---------- */
+const EQ = DATA.equity;
+const MODULES = [];
+function mod(m){ MODULES.push(m); }
+
+mod({ id:'pnl', tag:'Module 1 · Returns, Sharpe, drawdown', title:'The paper fund against just holding QQQ',
+  facts:{ what:'Equity of the $5bn paper fund and of QQQ over 463 real sessions. The shaded strip is drawdown: how far below its last peak each one is.',
+    analogy:'Think of drawdown as a latency histogram for money: the average says little; the tail tells you if you survive.',
+    signal:'None here. This is the scoreboard every other module is judged on.',
+    ok:'Beats the benchmark after costs, with a Sharpe above about 1 and drawdowns you could sit through.',
+    bad:'The fund: −8.75%, Sharpe −1.26, while QQQ made +30.38%. Nothing crashed and every check was green; the strategy still failed.',
+    money:'Money is made only by being right about direction or spread more often or by more than the costs. Infrastructure decides how much of that edge survives; it cannot create it.',
+    lab:'research/report.py, then read paperfund/results/baseline_5bn/summary.json' },
+  init(s){ s.i=0; },
+  step(s,dt){ s.i=Math.min(EQ.fund.length-1, s.i+dt*70); if(s.i>=EQ.fund.length-1){ s.hold=(s.hold||0)+dt; if(s.hold>3){s.i=0;s.hold=0;} } },
+  draw(ctx,w,h,s){ const n=EQ.fund.length, i=Math.floor(s.i); const L=46,R=w-12,T=26,B=h-90; const all=EQ.fund.concat(EQ.benchmark); const lo=Math.min(...all)*0.98, hi=Math.max(...all)*1.02;
+    const X=k=>L+(R-L)*k/(n-1), Y=v=>B-(B-T)*(v-lo)/(hi-lo); grid(ctx,L,T,R,B);
+    for(let g=0;g<=4;g++){ const v=lo+(hi-lo)*(4-g)/4; txt(ctx,`$${(v/1000).toFixed(1)}bn`,L-6,T+(B-T)*g/4+4,{align:'right',size:10,color:C.muted}); }
+    const series=[['benchmark',C.mdev,'QQQ'],['fund',C.quant,'Fund']];
+    series.forEach(([k,c])=>line(ctx,EQ[k].slice(0,i+1).map((v,j)=>[X(j),Y(v)]),c,2));
+    const dd=k=>{ let pk=-1e18; return EQ[k].slice(0,i+1).map(v=>{pk=Math.max(pk,v); return v/pk-1;}); };
+    const DT=h-74, DB=h-26; txt(ctx,'drawdown',L,DT-4,{size:10,color:C.muted});
+    series.forEach(([k,c])=>{ const d=dd(k); ctx.fillStyle=c+'55'; ctx.beginPath(); ctx.moveTo(X(0),DT); d.forEach((v,j)=>ctx.lineTo(X(j),DT+(DB-DT)*Math.min(1,-v/0.25))); ctx.lineTo(X(d.length-1),DT); ctx.fill(); });
+    txt(ctx,'−25%',L-6,DB+3,{align:'right',size:10,color:C.muted});
+    const f=EQ.fund[i], b=EQ.benchmark[i]; txt(ctx,EQ.date[i],L,16,{size:11,color:C.muted});
+    txt(ctx,`Fund ${fmt$((f-5000)*1e6)}`,R,16,{align:'right',w:600,color:C.quant}); txt(ctx,`QQQ ${fmt$((b-5000)*1e6)}`,R-170,16,{align:'right',w:600,color:C.mdev});
+    return `session ${i+1} of ${n}`; } });
+
+mod({ id:'imb', tag:'Module 2 · A signal from the order book', title:'Book imbalance predicts the next tick, a little',
+  facts:{ what:'A five-level book. Imbalance I = (bid size − ask size) / (bid size + ask size) at the top. When |I| > 0.5 the strategy buys or sells and holds for four updates.',
+    analogy:'You already build this book. The quant only adds one number per update and asks how often it is right.',
+    signal:'Buy when I > 0.5 (more buyers queued than sellers), sell when I < −0.5.',
+    ok:'The mid moved our way by more than the cost of half a spread (0.5 tick) within four updates.',
+    bad:'The mid did not move, or moved against us. Most signals fail; the edge is a hit rate a few points above 50%.',
+    money:'Profit per trade = direction × move − half spread. A 55% hit rate on one-tick moves barely beats the cost, which is why speed and queue position matter so much for this signal.',
+    lab:'Export top-of-book from itch-dump, compute I and the next mid change, report hit rate with a confidence interval.' },
+  init(s){ s.r=rng(7); s.mid=100; s.hist=[]; s.t=0; s.bids=[...Array(5)].map(()=>200+s.r()*800); s.asks=[...Array(5)].map(()=>200+s.r()*800); s.sig=null; s.trades=[]; s.hits=0; s.n=0; s.pnl=0; },
+  step(s,dt){ s.t+=dt; if(s.t<0.28) return; s.t=0; const r=s.r;
+    for(let k=0;k<5;k++){ s.bids[k]=Math.max(50,s.bids[k]+gauss(r)*120); s.asks[k]=Math.max(50,s.asks[k]+gauss(r)*120); }
+    const I=(s.bids[0]-s.asks[0])/(s.bids[0]+s.asks[0]);
+    if(r()<0.45){ const up=r()<0.5+0.32*I; s.mid+=up?0.01:-0.01; if(up){ s.asks.shift(); s.asks.push(200+r()*800); s.bids.unshift(150+r()*400); s.bids.pop(); } else { s.bids.shift(); s.bids.push(200+r()*800); s.asks.unshift(150+r()*400); s.asks.pop(); } }
+    s.hist.push(s.mid); if(s.hist.length>90){ s.hist.shift(); s.trades.forEach(t=>t.x--); }
+    if(s.sig){ s.sig.age++; if(s.sig.age>=4){ const pnl=s.sig.dir*(s.mid-s.sig.px)*100-0.5; s.n++; if(pnl>0)s.hits++; s.pnl+=pnl; s.trades.push({x:s.hist.length-1,ok:pnl>0,dir:s.sig.dir,px:s.mid}); s.sig=null; } }
+    else if(Math.abs(I)>0.5){ s.sig={dir:Math.sign(I),px:s.mid,age:0}; s.trades.push({x:s.hist.length-1,entry:true,dir:Math.sign(I),px:s.mid}); }
+    s.trades=s.trades.filter(t=>t.x>=0); s.I=I; },
+  draw(ctx,w,h,s){ const LW=Math.min(220,w*0.38), mx=LW/2+6, T=34; const rowH=(h-T-50)/10; const maxQ=1200;
+    txt(ctx,'BID',mx-8,22,{align:'right',size:10,color:C.bid,w:600}); txt(ctx,'ASK',mx+8,22,{size:10,color:C.ask,w:600});
+    for(let k=0;k<5;k++){ const ya=T+(4-k)*rowH, yb=T+(5+k)*rowH; const wa=(LW/2-30)*Math.min(1,s.asks[k]/maxQ), wb=(LW/2-30)*Math.min(1,s.bids[k]/maxQ);
+      ctx.fillStyle=C.ask+(k?'77':'ee'); ctx.fillRect(mx+2,ya+2,wa,rowH-4); ctx.fillStyle=C.bid+(k?'77':'ee'); ctx.fillRect(mx-2-wb,yb+2,wb,rowH-4);
+      txt(ctx,(s.mid+0.005+k*0.01).toFixed(2),mx+wa+6,ya+rowH/2+4,{size:10}); txt(ctx,(s.mid-0.005-k*0.01).toFixed(2),mx-wb-6,yb+rowH/2+4,{size:10,align:'right'}); }
+    const I=s.I||0, gy=h-28; ctx.fillStyle=C['scope-grid']; ctx.fillRect(12,gy,LW-12,8); ctx.fillStyle=Math.abs(I)>0.5?(I>0?C.bid:C.ask):C.muted; const cx=12+(LW-12)/2; ctx.fillRect(Math.min(cx,cx+I*(LW-12)/2),gy,Math.abs(I)*(LW-12)/2,8);
+    ctx.fillStyle=C['scope-ink']; [-.5,.5].forEach(v=>ctx.fillRect(cx+v*(LW-12)/2,gy-4,1,16)); txt(ctx,`I = ${I.toFixed(2)}`,12,gy-6,{size:11,w:600});
+    const L=LW+30,R=w-12,TT=30,B=h-40; const hs=s.hist; if(hs.length<2) return ''; const lo=Math.min(...hs)-0.02, hi=Math.max(...hs)+0.02; const X=k=>L+(R-L)*k/89, Y=v=>B-(B-TT)*(v-lo)/(hi-lo);
+    grid(ctx,L,TT,R,B); line(ctx,hs.map((v,k)=>[X(k),Y(v)]),C['scope-ink'],1.5);
+    s.trades.forEach(t=>{ const x=X(t.x), y=Y(t.px); if(t.entry){ ctx.fillStyle=t.dir>0?C.bid:C.ask; ctx.beginPath(); if(t.dir>0){ctx.moveTo(x,y+4);ctx.lineTo(x-5,y+12);ctx.lineTo(x+5,y+12);}else{ctx.moveTo(x,y-4);ctx.lineTo(x-5,y-12);ctx.lineTo(x+5,y-12);} ctx.fill(); } else { txt(ctx,t.ok?'✓':'✗',x,y-8,{align:'center',size:14,w:600,color:t.ok?C.bid:C.ask}); } });
+    txt(ctx,'mid price',L,TT-10,{size:10,color:C.muted}); txt(ctx,`hit rate ${s.n?(100*s.hits/s.n).toFixed(0):'–'}% of ${s.n}`,R,TT-10,{align:'right',size:11,w:600}); txt(ctx,`PnL ${s.pnl>=0?'+':''}${s.pnl.toFixed(1)} ticks after costs`,R,h-14,{align:'right',size:11,w:600,color:s.pnl>=0?C.bid:C.ask});
+    return `▲ buy signal  ▼ sell signal  ✓ beat half a spread  ✗ did not`; } });
+
+mod({ id:'queue', tag:'Module 3 · Who gets filled first', title:'Price-time priority and the queue',
+  facts:{ what:'A new bid level opens at $100.00. Three firms see it on the feed and race to join. Then sellers arrive and eat the queue from the front.',
+    analogy:'It is a FIFO. Your tick-to-trade latency decides your slot; a replace is a dequeue and a push to the back.',
+    signal:'Any signal that wants to buy passively at $100.00. The question here is only whether it gets filled.',
+    ok:'Your order is near the front, so you are filled by ordinary sellers before the price moves.',
+    bad:'You are at the back. You are filled only when a big seller sweeps the whole level, which is exactly when the price is about to fall (adverse selection). Replacing on every small move sends you to the back each time: MD-414 report 6.',
+    money:'Front of queue earns the spread from small, uninformed sellers. Back of queue mostly trades with informed sellers and loses. That is why market makers pay millions for microseconds.',
+    lab:'tools/quant-lab market maker: change the replace rule, compare fill rate and markout.' },
+  init(s){ s.r=rng(11); s.t=0; s.q=[]; s.fills={HFT:0,You:0,Others:0}; s.phase='race'; s.race=[{who:'HFT',lat:5,x:0},{who:'You',lat:40,x:0},{who:'Others',lat:300,x:0}]; s.arrived=[]; s.msg=''; s.id=0; s.cycle=0; s.flash=[]; },
+  step(s,dt){ s.t+=dt; const r=s.r;
+    if(s.phase==='race'){ s.race.forEach(p=>{ p.x=Math.min(1,s.t/(0.4+p.lat/150)); if(p.x>=1&&!s.arrived.includes(p.who)){ s.arrived.push(p.who); s.q.push({who:p.who,size:p.who==='Others'?400:200,id:s.id++,born:s.t}); } }); if(s.arrived.length===3&&s.t>3){ s.phase='trade'; s.t=0; s.next=0.8; } return; }
+    s.next-=dt; if(s.next<=0){ s.next=0.6+r()*0.7;
+      if(r()<0.55){ const who=r()<0.25?'HFT':'Others'; s.q.push({who,size:100+Math.floor(r()*4)*100,id:s.id++}); }
+      else { let sell=100+Math.floor(r()*4)*100; s.msg=`sell ${sell} hits the bid`; while(sell>0&&s.q.length){ const o=s.q[0]; const f=Math.min(sell,o.size); o.size-=f; sell-=f; s.fills[o.who]+=f; s.flash.push({who:o.who,t:0.6}); if(o.size<=0) s.q.shift(); } } }
+    if(s.t>6&&!s.replaced){ const k=s.q.findIndex(o=>o.who==='You'); if(k>=0){ const o=s.q.splice(k,1)[0]; s.q.push({...o,id:s.id++,replaced:true}); s.msg='you replace: back of the queue'; } s.replaced=true; }
+    s.flash.forEach(f=>f.t-=dt); s.flash=s.flash.filter(f=>f.t>0);
+    if(s.t>16||s.q.length>16){ const keep=s.fills; this.init(s); s.fills=keep; s.cycle++; } },
+  draw(ctx,w,h,s){ const col={HFT:C.quant,You:C.plus,Others:C.muted};
+    txt(ctx,'feed event',14,26,{size:10,color:C.muted}); txt(ctx,'exchange',w-14,26,{size:10,color:C.muted,align:'right'});
+    s.race.forEach((p,k)=>{ const y=44+k*22; ctx.fillStyle=C['scope-grid']; ctx.fillRect(14,y,w-28,2); const x=14+(w-28)*p.x; ctx.fillStyle=col[p.who]; ctx.beginPath(); ctx.arc(x,y+1,6,0,7); ctx.fill(); txt(ctx,`${p.who} · ${p.lat} µs`,14,y-6,{size:10,color:col[p.who]}); });
+    const top=130, bh=40; txt(ctx,'BID $100.00 queue → front is on the left; sellers fill from the front',14,top-10,{size:11,color:C.muted});
+    let x=14; const scale=(w-28)/3600; s.q.forEach((o,k)=>{ const bw=Math.max(14,o.size*scale*3); if(x+bw>w-14) return; ctx.fillStyle=col[o.who]+(s.flash.some(f=>f.who===o.who)&&k===0?'ff':'cc'); ctx.fillRect(x,top,bw-3,bh); if(bw>34) txt(ctx,o.who==='Others'?'oth':o.who,x+4,top+16,{size:10,color:C.scope,w:600}); if(bw>34) txt(ctx,String(o.size),x+4,top+32,{size:10,color:C.scope}); if(o.replaced){ txt(ctx,'↺',x+bw/2,top-2,{align:'center',size:14,color:C.warn}); } x+=bw; });
+    txt(ctx,s.msg,14,top+bh+24,{size:12,w:600,color:C.warn});
+    const tot=s.fills.HFT+s.fills.You+s.fills.Others||1; const by=h-70; txt(ctx,'share of shares filled at the front of the book',14,by-8,{size:10,color:C.muted}); let bx=14; ['HFT','You','Others'].forEach(k=>{ const bw=(w-28)*s.fills[k]/tot; ctx.fillStyle=col[k]; ctx.fillRect(bx,by,bw,16); if(bw>60) txt(ctx,`${k} ${(100*s.fills[k]/tot).toFixed(0)}%`,bx+4,by+12,{size:10,color:C.scope,w:600}); bx+=bw; });
+    txt(ctx,'Why first? Same price, earlier timestamp. The 5 µs firm joined first, so it is filled first.',14,h-24,{size:11,mono:false});
+    return s.phase==='race'?'racing to the new level':`queue length ${s.q.length}`; } });
+
+mod({ id:'pairs', tag:'Module 4 · Statistical arbitrage', title:'Pairs: trade the spread back to normal',
+  facts:{ what:'Two stocks that usually move together (think GOOGL and GOOG, or two banks). The spread between them wanders and usually comes back. The z-score says how far it is from normal.',
+    analogy:'Like a sequence gap that usually closes by itself: you bet it will close, and you need a timeout for when it does not.',
+    signal:'z > 2: sell the rich one, buy the cheap one. z < −2: the reverse.',
+    ok:'The spread returns to |z| < 0.3 and you close for a profit.',
+    bad:'The relationship breaks (a merger, a guidance cut) and z runs to 4: you stop out at a loss. The paper fund\'s stat arb sleeve lost 6.48% mostly to costs on many small trades.',
+    money:'Many small wins from reversion, a few large losses from broken relationships, all minus costs on both legs. Edge lives in choosing pairs that stay paired.',
+    lab:'firm/strategy/pairs.hpp in quant-lab; fit on 2025, test on 2026 once.' },
+  init(s){ s.r=rng(5); s.a=[100]; s.b=[100]; s.sp=[0]; s.pos=0; s.trades=[]; s.pnl=0; s.t=0; s.k=0; s.wins=0; s.losses=0; },
+  step(s,dt){ s.t+=dt; if(s.t<0.07) return; s.t=0; const r=s.r; s.k++;
+    const last=s.sp[s.sp.length-1]; const brk=(s.k%420>300&&s.k%420<330)?0.18:0; let sp=last*0.94+gauss(r)*0.35+brk; const m=gauss(r)*0.5;
+    s.a.push(s.a[s.a.length-1]+m+(sp-last)/2); s.b.push(s.b[s.b.length-1]+m-(sp-last)/2); s.sp.push(sp);
+    const z=sp/1.0; const N=s.sp.length-1;
+    if(s.pos===0&&Math.abs(z)>2){ s.pos=-Math.sign(z); s.entry=sp; s.trades.push({i:N,z,type:'in'}); }
+    else if(s.pos!==0&&(Math.abs(z)<0.3||Math.abs(z)>4)){ const p=s.pos*(sp-s.entry)*100-12; s.pnl+=p; p>0?s.wins++:s.losses++; s.trades.push({i:N,z,type:p>0?'win':'loss'}); s.pos=0; }
+    if(s.sp.length>220){ s.a.shift(); s.b.shift(); s.sp.shift(); s.trades.forEach(t=>t.i--); s.trades=s.trades.filter(t=>t.i>=0); } },
+  draw(ctx,w,h,s){ const L=40,R=w-12; const n=s.sp.length; const X=k=>L+(R-L)*k/219; const T1=24,B1=h*0.45; const all=s.a.concat(s.b); const lo=Math.min(...all), hi=Math.max(...all)+0.01;
+    grid(ctx,L,T1,R,B1,2); line(ctx,s.a.map((v,k)=>[X(k),B1-(B1-T1)*(v-lo)/(hi-lo)]),C.quant,1.5); line(ctx,s.b.map((v,k)=>[X(k),B1-(B1-T1)*(v-lo)/(hi-lo)]),C.mdev,1.5);
+    txt(ctx,'stock A',L,16,{size:10,color:C.quant}); txt(ctx,'stock B',L+60,16,{size:10,color:C.mdev});
+    const T2=h*0.52,B2=h-34, zmax=4.5, Z=v=>T2+(B2-T2)*(zmax-Math.max(-zmax,Math.min(zmax,v)))/(2*zmax);
+    [[2,C.warn],[-2,C.warn],[4,C.ask],[-4,C.ask],[0,C['scope-grid']]].forEach(([v,c])=>{ ctx.strokeStyle=c; ctx.setLineDash(v?[4,4]:[]); ctx.beginPath(); ctx.moveTo(L,Z(v)); ctx.lineTo(R,Z(v)); ctx.stroke(); ctx.setLineDash([]); txt(ctx,(v>0?'+':'')+v,L-6,Z(v)+4,{align:'right',size:10,color:C.muted}); });
+    line(ctx,s.sp.map((v,k)=>[X(k),Z(v)]),C['scope-ink'],1.5); txt(ctx,'z-score of the spread',L,T2-6,{size:10,color:C.muted});
+    s.trades.forEach(t=>{ const x=X(t.i), y=Z(t.z); if(t.type==='in'){ ctx.fillStyle=C.warn; ctx.beginPath(); ctx.arc(x,y,4,0,7); ctx.fill(); } else txt(ctx,t.type==='win'?'✓':'✗',x,y-6,{align:'center',size:14,w:600,color:t.type==='win'?C.bid:C.ask}); });
+    txt(ctx,`${s.wins} wins · ${s.losses} stop-outs · PnL $${s.pnl.toFixed(0)} after $12 cost per round trip`,R,h-12,{align:'right',size:11,w:600,color:s.pnl>=0?C.bid:C.ask});
+    return '● enter at |z| > 2   ✓ closed near 0   ✗ stopped at |z| > 4'; } });
+
+mod({ id:'trend', tag:'Module 5 · Systematic trend', title:'Trend following: lose small in chop, win big in trends',
+  facts:{ what:'A price that alternates between trending and choppy regimes. The strategy is long when price is above its 40-step average and short when below.',
+    analogy:'A low-pass filter on price. Too short a window and it chases noise; too long and it is late.',
+    signal:'Price crosses its moving average.',
+    ok:'A long trend: the position stays on for a big move.',
+    bad:'Chop: price crosses back and forth and every flip costs money (whipsaw). The paper fund\'s 60-day trend sleeve was flat (−0.18%); a 120-day window made +8.8% on the same data, but picking that after seeing it is hindsight.',
+    money:'Win rate is often under 40%. The money comes from a few large trends that pay for many small losses.',
+    lab:'firm/strategy/trend.hpp; paperfund scenarios trend_lookback_20 to 250.' },
+  init(s){ s.r=rng(21); s.p=[100]; s.reg=[]; s.k=0; s.pos=0; s.eq=[0]; s.flips=0; s.t=0; },
+  step(s,dt){ s.t+=dt; if(s.t<0.05) return; s.t=0; const r=s.r; s.k++; const phase=Math.floor(s.k/120)%4; const drift=[0.35,0,-0.3,0][phase];
+    const last=s.p[s.p.length-1]; const np=last+drift+gauss(r)*(phase%2?1.6:0.9); s.p.push(np); s.reg.push(phase);
+    const n=s.p.length, lb=40; let ma=null; if(n>lb){ ma=s.p.slice(-lb).reduce((a,b)=>a+b,0)/lb; }
+    const pnl=s.pos*(np-last); const npos=ma===null?0:(np>ma?1:-1); const cost=npos!==s.pos&&s.pos!==0?0.4:0; if(npos!==s.pos&&s.pos!==0) s.flips++; s.pos=npos; s.eq.push(s.eq[s.eq.length-1]+pnl-cost);
+    if(s.p.length>300){ s.p.shift(); s.reg.shift(); s.eq.shift(); } },
+  draw(ctx,w,h,s){ const L=40,R=w-12,T=24,B=h*0.62; const n=s.p.length; const X=k=>L+(R-L)*k/299; const lo=Math.min(...s.p)-2, hi=Math.max(...s.p)+2; const Y=v=>B-(B-T)*(v-lo)/(hi-lo);
+    s.reg.forEach((g,k)=>{ if(g%2){ ctx.fillStyle=C['scope-grid']; ctx.fillRect(X(k),T,(R-L)/299+1,B-T); } });
+    line(ctx,s.p.map((v,k)=>[X(k),Y(v)]),C['scope-ink'],1.5);
+    const ma=s.p.map((v,k)=>k>=39?s.p.slice(k-39,k+1).reduce((a,b)=>a+b,0)/40:null); line(ctx,ma.map((v,k)=>v===null?null:[X(k),Y(v)]).filter(Boolean),C.warn,1.5);
+    txt(ctx,'price',L,16,{size:10}); txt(ctx,'40-step average',L+44,16,{size:10,color:C.warn}); txt(ctx,'grey = choppy regime',R,16,{size:10,color:C.muted,align:'right'});
+    const T2=B+18,B2=h-30; const elo=Math.min(...s.eq), ehi=Math.max(...s.eq)+0.01; grid(ctx,L,T2,R,B2,2); line(ctx,s.eq.map((v,k)=>[X(k),B2-(B2-T2)*(v-elo)/(ehi-elo||1)]),s.eq[s.eq.length-1]>=s.eq[0]?C.bid:C.ask,2);
+    txt(ctx,'strategy equity',L,T2-4,{size:10,color:C.muted}); txt(ctx,`position ${s.pos>0?'LONG':s.pos<0?'SHORT':'flat'} · ${s.flips} flips`,R,h-12,{align:'right',size:11,w:600,color:s.pos>0?C.bid:C.ask});
+    return 'equity rises in trends and bleeds in the grey chop'; } });
+
+const TUNE=[['all',.06,.06,-1.68],['all',.12,.09,-2.58],['all',.24,-.55,-1.69],['clean',.06,.28,-1.97],['clean',.12,.43,-2.81],['clean',.24,.06,-1.67],['events',.06,-1.34,-.97],['events',.12,-1.22,-1.88],['events',.24,-.77,-.08]];
+mod({ id:'overfit', tag:'Module 6 · Overfitting', title:'The best setting in the past was the worst in the future',
+  facts:{ what:'The paper fund tried nine MiroFish settings (three news filters × three entry thresholds) on data up to 2025-10-16, then tested on the rest. These are the real Sharpe ratios.',
+    analogy:'Like tuning a feed handler on one capture file: it can be perfect for that file and wrong for tomorrow\'s traffic.',
+    signal:'Whichever setting looked best in-sample: news filter "clean", entry 0.12, Sharpe +0.43.',
+    ok:'The chosen setting stays positive out of sample, and does better than a placebo.',
+    bad:'It went to −2.81, the worst of the nine. The placebo (shifted news) did better out of sample in most settings.',
+    money:'Choosing among many tries guarantees the winner looks good by luck. Money is lost when capital is sized on that luck.',
+    lab:'paperfund tuning: add three more settings and watch the best in-sample Sharpe rise while out-of-sample does not.' },
+  init(s){ s.t=0; },
+  step(s,dt){ s.t+=dt; if(s.t>10) s.t=0; },
+  draw(ctx,w,h,s){ const L=46,R=w-12,T=30,B=h-60; const Y=v=>T+(B-T)*(1-(v+3)/3.6); const bw=(R-L)/TUNE.length;
+    grid(ctx,L,T,R,B,6); [-3,-2,-1,0,.5].forEach(v=>txt(ctx,v.toFixed(1),L-6,Y(v)+4,{align:'right',size:10,color:C.muted})); ctx.strokeStyle=C['scope-ink']; ctx.beginPath(); ctx.moveTo(L,Y(0)); ctx.lineTo(R,Y(0)); ctx.stroke();
+    const a=Math.min(1,s.t/2.5), b=Math.max(0,Math.min(1,(s.t-4)/2.5));
+    TUNE.forEach(([f,e,is,oos],k)=>{ const x=L+k*bw+bw*0.15, ww=bw*0.32; const best=f==='clean'&&e===.12;
+      const h1=is*a; ctx.fillStyle=best?C.quant:C.quant+'88'; ctx.fillRect(x,Math.min(Y(0),Y(h1)),ww,Math.abs(Y(h1)-Y(0)));
+      const h2=oos*b; ctx.fillStyle=best?C.ask:C.mdev+'99'; ctx.fillRect(x+ww+2,Math.min(Y(0),Y(h2)),ww,Math.abs(Y(h2)-Y(0)));
+      txt(ctx,f,x+ww,B+16,{align:'center',size:10,color:best?C.quant:C.muted}); txt(ctx,String(e),x+ww,B+30,{align:'center',size:10,color:C.muted});
+      if(best&&a>=1) txt(ctx,'chosen',x+ww/2,Y(is)-8,{align:'center',size:11,w:600,color:C.quant}); if(best&&b>=1) txt(ctx,'−2.81',x+ww*1.5,Y(oos)+16,{align:'center',size:11,w:600,color:C.ask}); });
+    txt(ctx,'in-sample Sharpe',L,18,{size:10,color:C.quant}); txt(ctx,'out-of-sample Sharpe',L+120,18,{size:10,color:C.mdev}); txt(ctx,'filter / entry',R,h-10,{size:10,align:'right',color:C.muted});
+    return s.t<4?'fitting on the past…':'testing on the future'; } });
+
+mod({ id:'timing', tag:'Module 7 · Time and look-ahead', title:'Half the move is gone before a daily strategy can trade',
+  facts:{ what:'A news story lands at 11:00. Over 1,733 paper fund news events the average price move was 374 bps in real time, and 187 bps from the next daily fill.',
+    analogy:'Your exchange, receive and vendor timestamps. Which one a backtest uses decides whether it can see the future.',
+    signal:'A news sentiment score crossing a threshold.',
+    ok:'The backtest only uses news stamped before the decision time, and the fill is at a price you could really get.',
+    bad:'Lane 1: the backtest joins the day\'s news to that day\'s open price, so it trades before the news existed and captures the whole move. That is look-ahead. Real-time trading (lane 3) is fast but this signal is a coin flip, and it lost $65.5M more than the daily version.',
+    money:'Speed helps only once the signal is right. Your timestamp knowledge prevents the fake backtest; it does not make a bad signal good.',
+    lab:'paperfund ratings_and_timing.json: rebuild the 49.9% "gone before the daily fill" number from the event list.' },
+  init(s){ s.t=0; },
+  step(s,dt){ s.t+=dt; if(s.t>9) s.t=0; },
+  draw(ctx,w,h,s){ const L=150,R=w-14; const lanes=[['Backtest with look-ahead',C.warn,'09:30 (before the news)',374,0],['Daily strategy, honest',C.quant,'next day 09:30',187,0.85],['Real-time, honest',C.mdev,'11:00:00.4',374,0.02]];
+    const nx=L+(R-L)*0.25; const p=Math.min(1,s.t/6);
+    lanes.forEach(([name,c,fill,cap,fx],k)=>{ const y=40+k*((h-90)/3), hh=(h-110)/3; txt(ctx,name,14,y+16,{size:11,w:600,color:c,mono:false}); txt(ctx,`fill ${fill}`,14,y+32,{size:10,color:C.muted});
+      ctx.strokeStyle=C['scope-grid']; ctx.strokeRect(L,y,R-L,hh);
+      const path=[]; for(let i=0;i<=100;i++){ const x=L+(R-L)*i/100; const tt=i/100; let v=0; if(tt>0.25) v=1-Math.exp(-(tt-0.25)*9); path.push([x,y+hh-6-(hh-14)*v*0.9]); }
+      line(ctx,path.slice(0,Math.floor(p*100)+1),C['scope-ink'],1.5);
+      ctx.strokeStyle=C.warn; ctx.setLineDash([3,3]); ctx.beginPath(); ctx.moveTo(nx,y); ctx.lineTo(nx,y+hh); ctx.stroke(); ctx.setLineDash([]);
+      const fxp = k===0?L+(R-L)*0.02 : k===1?L+(R-L)*0.85 : nx+3; if(p*(R-L)+L>fxp){ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(fxp,path[Math.round((fxp-L)/(R-L)*100)][1],5,0,7); ctx.fill();
+        txt(ctx,k===0?'captures 374 bps (impossible)':k===1?'captures 187 bps':'captures the move, if the direction is right',Math.min(fxp+10,R-4),y+14,{size:10,color:c,align:fxp>R-200?'right':'left'}); } });
+    txt(ctx,'news 11:00',nx,h-16,{align:'center',size:10,color:C.warn}); txt(ctx,'09:30',L,h-16,{size:10,color:C.muted}); txt(ctx,'next open',R,h-16,{size:10,align:'right',color:C.muted});
+    return 'average absolute move after a news event, paper fund, 1,733 events'; } });
+
+const CAP=[[1e4,-2.40],[1e7,3.15],[5e8,2.15],[5e9,-0.18]];
+mod({ id:'cost', tag:'Module 8 · Costs and capacity', title:'The same signal makes money small and loses it big',
+  facts:{ what:'The paper fund\'s trend sleeve run at four fund sizes. Dots are the real results; the curves show gross edge, cost, and what is left.',
+    analogy:'Throughput against latency: past a point, more load (size) makes every message (trade) worse.',
+    signal:'Unchanged trend signal at every size.',
+    ok:'Size where net return is highest: here around $10M to $500M.',
+    bad:'At $10k, fixed fees eat it (−2.40%). At $5bn the orders move the price against us (−0.18%), and the fund paid $184.7M in costs on $91bn traded.',
+    money:'Net = gross edge − spread − market impact. Impact grows roughly with the square root of the share of daily volume you trade.',
+    lab:'paperfund capacity_10k_retail to capacity_5bn; find break-even capital for each sleeve.' },
+  init(s){ s.t=0; },
+  step(s,dt){ s.t+=dt; if(s.t>10) s.t=0; },
+  draw(ctx,w,h,s){ const L=50,R=w-14,T=30,B=h-46; const lx=v=>L+(R-L)*(Math.log10(v)-4)/(10-4); const Y=v=>T+(B-T)*(1-(v+4)/10);
+    grid(ctx,L,T,R,B,5); [-4,-2,0,2,4,6].forEach(v=>txt(ctx,(v>0?'+':'')+v+'%',L-6,Y(v)+4,{align:'right',size:10,color:C.muted}));
+    [[1e4,'$10k'],[1e6,'$1M'],[1e8,'$100M'],[1e10,'$10bn']].forEach(([v,l])=>txt(ctx,l,lx(v),B+16,{align:'center',size:10,color:C.muted}));
+    ctx.strokeStyle=C['scope-ink']; ctx.beginPath(); ctx.moveTo(L,Y(0)); ctx.lineTo(R,Y(0)); ctx.stroke();
+    const xs=[]; for(let e=4;e<=10;e+=0.05) xs.push(Math.pow(10,e)); const gross=()=>4.2, cost=c=>0.6+0.97*Math.pow(c/1e8,0.35)+5.96*Math.sqrt(1e4/c); const net=c=>gross()-cost(c);
+    const p=Math.min(1,s.t/4); const k=Math.floor(xs.length*p);
+    line(ctx,xs.slice(0,k).map(c=>[lx(c),Y(gross())]),C.bid,1.5); line(ctx,xs.slice(0,k).map(c=>[lx(c),Y(Math.min(5.9,cost(c)))]),C.ask,1.5); line(ctx,xs.slice(0,k).map(c=>[lx(c),Y(Math.max(-4,net(c)))]),C.warn,2.5);
+    if(s.t>4.5) CAP.forEach(([c,v])=>{ ctx.fillStyle=C['scope-ink']; ctx.beginPath(); ctx.arc(lx(c),Y(v),5,0,7); ctx.fill(); txt(ctx,`${v>0?'+':''}${v}%`,lx(c)+8,Y(v)-6,{size:11,w:600}); });
+    txt(ctx,'gross edge',L+4,18,{size:10,color:C.bid}); txt(ctx,'costs',L+84,18,{size:10,color:C.ask}); txt(ctx,'net (model)',L+132,18,{size:10,color:C.warn}); txt(ctx,'● real paper fund result',R,18,{size:10,align:'right'});
+    return 'trend sleeve return by fund size'; } });
+
+mod({ id:'risk', tag:'Module 9 · Portfolio and risk', title:'A risk budget would have saved the fundamental sleeve',
+  facts:{ what:'The real fundamental sleeve from the paper fund (red), and the same trades with two risk rules (blue): size down when volatility is high, and cut to a quarter after a 10% drawdown.',
+    analogy:'Circuit breakers and LULD bands for your own book.',
+    signal:'The same fundamental positions; only the size changes.',
+    ok:'Losses stay inside the budget, so the fund survives to trade its next idea.',
+    bad:'No budget: the sleeve fell 37.4% and lost $331.6M.',
+    money:'Risk rules do not create edge. They stop a bad period from ending the fund, and keep size high when the strategy is working.',
+    lab:'firm/risk plus a vol-target overlay on paperfund equity.csv.' },
+  init(s){ s.i=0; if(!MODULES._risk){ const e=EQ.fundamental; const r=e.map((v,k)=>k?v/e[k-1]-1:0); let eq=[e[0]], pk=e[0], expo=1; for(let k=1;k<e.length;k++){ const win=r.slice(Math.max(1,k-20),k); const sd=win.length>5?Math.sqrt(win.reduce((a,b)=>a+b*b,0)/win.length)*Math.sqrt(252):0.15; let x=Math.min(1,0.10/Math.max(sd,1e-6)); const dd=eq[k-1]/pk-1; if(dd<-0.10) x*=0.25; const v=eq[k-1]*(1+x*r[k]); eq.push(v); pk=Math.max(pk,v); } MODULES._risk=eq; } },
+  step(s,dt){ s.i=Math.min(EQ.fundamental.length-1,s.i+dt*70); if(s.i>=EQ.fundamental.length-1){ s.hold=(s.hold||0)+dt; if(s.hold>3){s.i=0;s.hold=0;} } },
+  draw(ctx,w,h,s){ const raw=EQ.fundamental, cap=MODULES._risk, n=raw.length, i=Math.floor(s.i); const L=50,R=w-12,T=30,B=h-40; const lo=Math.min(...raw,...cap)*0.97, hi=Math.max(...raw,...cap)*1.02; const X=k=>L+(R-L)*k/(n-1), Y=v=>B-(B-T)*(v-lo)/(hi-lo);
+    grid(ctx,L,T,R,B); for(let g=0;g<=4;g++){ const v=lo+(hi-lo)*(4-g)/4; txt(ctx,`$${(v/1000).toFixed(2)}bn`,L-6,T+(B-T)*g/4+4,{align:'right',size:10,color:C.muted}); }
+    line(ctx,raw.slice(0,i+1).map((v,k)=>[X(k),Y(v)]),C.ask,2); line(ctx,cap.slice(0,i+1).map((v,k)=>[X(k),Y(v)]),C.plus,2);
+    const mdd=a=>{ let pk=-1e18,m=0; a.slice(0,i+1).forEach(v=>{pk=Math.max(pk,v); m=Math.min(m,v/pk-1);}); return m; };
+    txt(ctx,`no budget: ${fmt$((raw[i]-raw[0])*1e6)}, worst drawdown ${(mdd(raw)*100).toFixed(1)}%`,L,18,{size:11,w:600,color:C.ask});
+    txt(ctx,`with budget: ${fmt$((cap[i]-cap[0])*1e6)}, worst ${(mdd(cap)*100).toFixed(1)}%`,R,h-14,{size:11,w:600,align:'right',color:C.plus});
+    return EQ.date[i]; } });
+
+mod({ id:'dq', tag:'Module 10 · Data quality is alpha hygiene', title:'A volume bug creates trades that cannot win',
+  facts:{ what:'Daily volume for one stock over 30 days. Every seventh day has a big closing auction. With the MD-414 bug, non-printable cross executions are counted twice in volume (report 2).',
+    analogy:'This one is yours. You would catch it from the vendor check in minutes; a quant who trusts the feed trades on it.',
+    signal:'Buy when volume is more than 1.8× its 10-day average (a common momentum rule).',
+    ok:'Clean data: the signal fires only on real volume surges, which carry information.',
+    bad:'Buggy data: auction days look like surges, the signal fires, and those trades are coin flips that pay costs. The research looks fine and the live PnL does not.',
+    money:'Bad data turns a working signal into a losing one without any error message. This is where a market data veteran saves a research team the most money.',
+    lab:'Plant MD-414\'s "count every C execution" commit, rerun a volume signal on the synthetic day, compare.' },
+  init(s){ s.r=rng(3); s.days=[]; for(let d=0;d<30;d++){ const auction=d%7===4; const real=1e6*(1+0.25*gauss(s.r))+(d===11||d===23?1.3e6:0); s.days.push({real:Math.max(3e5,real),bug:Math.max(3e5,real)+(auction?1.2e6:0),auction,surge:d===11||d===23}); } s.t=0; },
+  step(s,dt){ s.t+=dt; if(s.t>12) s.t=0; },
+  draw(ctx,w,h,s){ const L=40,R=w-12; const show=Math.min(30,Math.floor(s.t*4)); const bw=(R-L)/30; const mx=3.2e6;
+    const panel=(y0,y1,key,label,col)=>{ txt(ctx,label,L,y0-6,{size:11,w:600,color:col,mono:false}); let fires=0, wins=0;
+      for(let d=0;d<show;d++){ const v=s.days[d][key]; const avg=d>=3?s.days.slice(Math.max(0,d-10),d).reduce((a,b)=>a+b[key],0)/Math.min(10,d):v; const fire=d>=3&&v>1.8*avg; const x=L+d*bw;
+        ctx.fillStyle=s.days[d].auction?C.warn+'cc':C['scope-ink']+'88'; const hh=(y1-y0)*Math.min(1,v/mx); ctx.fillRect(x+2,y1-hh,bw-4,hh);
+        if(fire){ fires++; const good=s.days[d].surge; if(good) wins++; txt(ctx,good?'✓':'✗',x+bw/2,y1-hh-4,{align:'center',size:13,w:600,color:good?C.bid:C.ask}); } }
+      return [fires,wins]; };
+    const h2=(h-60)/2; const [f1,w1]=panel(30,30+h2-14,'real','Clean volume',C.mdev); const [f2,w2]=panel(48+h2,h-30,'bug','Volume with the MD-414 bug',C.ask);
+    txt(ctx,`${f1} signals, ${w1} real surges`,R,24,{align:'right',size:11,w:600,color:C.mdev}); txt(ctx,`${f2} signals, ${w2} real surges`,R,42+h2,{align:'right',size:11,w:600,color:C.ask});
+    txt(ctx,'amber bars = auction days',L,h-10,{size:10,color:C.warn});
+    return `day ${show} of 30`; } });
+
+/* course runner */
+(function(){
+  const cv=$('#stage'); let cur=0, state={}, playing=!reduce, last=performance.now();
+  const ml=$('#modlist'); ml.innerHTML=MODULES.map((m,k)=>`<button role="tab" data-k="${k}" aria-pressed="${k===0}">${k+1}. ${m.tag.split('· ')[1]}</button>`).join('');
+  function select(k){ cur=k; state={}; MODULES[k].init(state); [...ml.children].forEach((b,j)=>b.setAttribute('aria-pressed',j===k)); const m=MODULES[k];
+    $('#modTag').textContent=m.tag; $('#modTitle').textContent=m.title; const f=m.facts;
+    $('#modFacts').innerHTML=`<div><dt>What you see</dt><dd>${f.what}</dd></div><div><dt>In market data terms</dt><dd>${f.analogy}</dd></div><div><dt>Signal</dt><dd>${f.signal}</dd></div><div><dt>Success</dt><dd class="ok">${f.ok}</dd></div><div><dt>Failure</dt><dd class="bad">${f.bad}</dd></div><div><dt>Why money is made or lost</dt><dd>${f.money}</dd></div><div><dt>Lab</dt><dd><code>${f.lab}</code></dd></div>`;
+    if(!playing){ for(let i=0;i<600;i++) m.step(state,1/60); } draw(); }
+  function draw(){ const [ctx,w,h]=fit(cv); ctx.fillStyle=C.scope; ctx.fillRect(0,0,w,h); const r=MODULES[cur].draw(ctx,w,h,state); $('#readout').textContent=r||''; }
+  function loop(t){ const dt=Math.min(0.05,(t-last)/1000); last=t; if(playing){ MODULES[cur].step(state,dt); draw(); } requestAnimationFrame(loop); }
+  ml.addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) select(+b.dataset.k); });
+  $('#play').textContent=playing?'Pause':'Play'; $('#play').onclick=()=>{ playing=!playing; $('#play').textContent=playing?'Pause':'Play'; };
+  $('#restart').onclick=()=>select(cur);
+  addEventListener('resize',draw); select(0); requestAnimationFrame(loop);
+})();
+
+/* ---------- duel ---------- */
+(function(){
+  $('#profileCards').innerHTML=['quant','mdev'].map(k=>`<div class="card"><span class="eyebrow ${k==='quant'?'q-c':'m-c'}">${k==='quant'?'Profile A':'Profile B'}</span><h3>${P[k].label}</h3><p>${P[k].blurb}</p></div>`).join('');
+  const rows=[['incident','MD-413 and MD-414 reports'],['bugbank','MD-415 bug bank'],['research','Paper fund research']];
+  $('#groupTable').innerHTML=`<thead><tr><th>Problems</th><th class="num">At stake</th><th class="num q-c">Quant: solved</th><th class="num q-c">hours</th><th class="num q-c">value</th><th class="num m-c">Veteran: solved</th><th class="num m-c">hours</th><th class="num m-c">value</th><th class="num p-c">After course</th></tr></thead><tbody>`+
+    rows.map(([g,l])=>{ const x=G[g]; return `<tr><td>${l} (${x.quant.count})</td><td class="num">${fmt$(x.quant.at_stake)}</td><td class="num">${x.quant.expected_solved}</td><td class="num">${x.quant.hours}</td><td class="num">${fmt$(x.quant.ev)}</td><td class="num">${x.mdev.expected_solved}</td><td class="num">${x.mdev.hours}</td><td class="num">${fmt$(x.mdev.ev)}</td><td class="num">${fmt$(x.mdev_plus.ev)}</td></tr>`; }).join('')+'</tbody>';
+
+  /* race */
+  const cv=$('#race'); let mode='eng', t0=performance.now();
+  function plan(k, set){ const r=rng(k==='quant'?101:k==='mdev'?202:303); const list=DATA.issues.filter(i=>set==='eng'?i.group!=='research':true).slice().sort((a,b)=>b.value-a.value); let t=0, v=0; return list.map(i=>{ const [p,m]=i[k]; const ok=r()<p; t+=m/60; if(ok) v+=i.value; return {t,v,ok,i}; }); }
+  let plans={};
+  function rebuild(){ const set=mode==='eng'?'eng':'all'; plans={quant:plan('quant',set),mdev:plan('mdev',set)}; if(mode==='plus') plans.mdev_plus=plan('mdev_plus','all'); t0=performance.now(); }
+  function draw(){ const [ctx,w,h]=fit(cv); ctx.fillStyle=C.scope; ctx.fillRect(0,0,w,h); const keys=Object.keys(plans); const col={quant:C.quant,mdev:C.mdev,mdev_plus:C.plus};
+    const maxT=Math.max(...keys.map(k=>plans[k][plans[k].length-1].t)); const maxV=Math.max(...keys.map(k=>plans[k][plans[k].length-1].v));
+    const el=reduce?1e9:(performance.now()-t0)/1000; const clock=Math.min(maxT, el*maxT/12);
+    const L=92,R=w-14,T=20,laneH=18, B=h-30-keys.length*(laneH+6); const X=t=>L+(R-L)*t/maxT, Y=v=>B-(B-T)*v/maxV; grid(ctx,L,T,R,B);
+    for(let g=0;g<=4;g++) txt(ctx,fmt$(maxV*(4-g)/4),L-6,T+(B-T)*g/4+4,{align:'right',size:10,color:C.muted});
+    keys.forEach((k,j)=>{ const pl=plans[k]; const pts=[[X(0),Y(0)]]; let lastv=0; pl.forEach(e=>{ if(e.t<=clock){ pts.push([X(e.t),Y(lastv)]); pts.push([X(e.t),Y(e.v)]); lastv=e.v; } }); pts.push([X(clock),Y(lastv)]); line(ctx,pts,col[k],2.2);
+      const ly=B+16+j*(laneH+6); txt(ctx,k==='quant'?'Quant':k==='mdev'?'Veteran':'After course',L-6,ly+12,{align:'right',size:10,color:col[k]});
+      pl.forEach(e=>{ if(e.t<=clock){ const x=X(e.t); ctx.strokeStyle=col[k]; ctx.fillStyle=col[k]; if(e.ok) ctx.fillRect(x-1.5,ly,3,laneH); else ctx.strokeRect(x-1.5,ly+0.5,3,laneH-1); } });
+      txt(ctx,`${pl.filter(e=>e.t<=clock&&e.ok).length} solved · ${fmt$(lastv)}`,R,ly+12,{align:'right',size:10,color:col[k],w:600}); });
+    txt(ctx,`hour ${clock.toFixed(0)}`,L,14,{size:10,color:C.muted});
+    $('#raceReadout').textContent=mode==='eng'?'Engineering only: the veteran finishes the queue far sooner and saves more.':'With research included the quant\'s few research calls outweigh everything else at $5bn.';
+    if(!reduce&&clock<maxT) requestAnimationFrame(draw); }
+  $('#raceMode').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; mode=b.dataset.mode; [...e.currentTarget.children].forEach(x=>x.setAttribute('aria-pressed',x===b)); rebuild(); draw(); });
+  rebuild(); draw(); addEventListener('resize',()=>{ if(reduce) draw(); });
+
+  /* sweep */
+  const sw=DATA.sweep, scv=$('#sweep'), slider=$('#cap'); const lmin=Math.log(sw[0].capital), lmax=Math.log(sw[sw.length-1].capital);
+  const interp=(k,c)=>{ const lc=Math.log(c); for(let i=1;i<sw.length;i++){ const a=Math.log(sw[i-1].capital), b=Math.log(sw[i].capital); if(lc<=b){ const f=(lc-a)/(b-a); return sw[i-1][k]+f*(sw[i][k]-sw[i-1][k]); } } return sw[sw.length-1][k]; };
+  function drawSweep(){ const [ctx,w,h]=fit(scv); ctx.fillStyle=C.scope; ctx.fillRect(0,0,w,h); const L=64,R=w-14,T=24,B=h-36; const X=c=>L+(R-L)*(Math.log(c)-lmin)/(lmax-lmin);
+    const ly=v=>Math.log10(Math.max(v,1e7)); const vmin=7, vmax=ly(Math.max(...sw.map(r=>r.team)))+0.1; const Y=v=>B-(B-T)*(ly(v)-vmin)/(vmax-vmin);
+    grid(ctx,L,T,R,B,3); [1e7,1e8,1e9].forEach(v=>txt(ctx,fmt$(v),L-6,Y(v)+4,{align:'right',size:10,color:C.muted})); [25e6,100e6,1e9,5e9,20e9].forEach(c=>txt(ctx,fmt$(c),X(c),B+16,{align:'center',size:10,color:C.muted}));
+    const col={quant:C.quant,mdev:C.mdev,mdev_plus:C.plus,team:C.team};
+    Object.keys(col).forEach(k=>{ const pts=[]; for(let i=0;i<=80;i++){ const c=Math.exp(lmin+(lmax-lmin)*i/80); pts.push([X(c),Y(interp(k,c))]); } if(k==='team') ctx.setLineDash([5,4]); line(ctx,pts,col[k],2); ctx.setLineDash([]); });
+    const cr=crossover('quant','mdev'); if(cr){ ctx.strokeStyle=C.warn; ctx.setLineDash([3,3]); ctx.beginPath(); ctx.moveTo(X(cr),T); ctx.lineTo(X(cr),B); ctx.stroke(); ctx.setLineDash([]); txt(ctx,`cross ${fmt$(cr)}`,X(cr)+4,T+12,{size:10,color:C.warn}); }
+    const c=Math.exp(lmin+(lmax-lmin)*slider.value/900); ctx.strokeStyle=C['scope-ink']; ctx.beginPath(); ctx.moveTo(X(c),T); ctx.lineTo(X(c),B); ctx.stroke();
+    Object.keys(col).forEach(k=>{ ctx.fillStyle=col[k]; ctx.beginPath(); ctx.arc(X(c),Y(interp(k,c)),4,0,7); ctx.fill(); });
+    txt(ctx,'quant',L+4,14,{size:10,color:C.quant}); txt(ctx,'veteran',L+50,14,{size:10,color:C.mdev}); txt(ctx,'after course',L+110,14,{size:10,color:C.plus}); txt(ctx,'both together',L+200,14,{size:10,color:C.team}); txt(ctx,'value over 463 sessions (log)',R,14,{size:10,align:'right',color:C.muted});
+    $('#capLabel').textContent=fmt$(c);
+    const q=interp('quant',c), m=interp('mdev',c), p=interp('mdev_plus',c), t=interp('team',c);
+    $('#capReadout').textContent=`At ${fmt$(c)}: quant ${fmt$(q)}, veteran ${fmt$(m)}, veteran after the course ${fmt$(p)}, both together ${fmt$(t)}. ${q>m?'The quant brings more value here.':'The veteran brings more value here.'}`; }
+  slider.addEventListener('input',drawSweep); addEventListener('resize',drawSweep); drawSweep();
+
+  /* monte carlo */
+  function drawMC(){ const [ctx,w,h]=fit($('#mc')); ctx.fillStyle=C.scope; ctx.fillRect(0,0,w,h); const L=40,R=w-14,T=24,B=h-34; const mc=DATA.mc; const col={quant:C.quant,mdev:C.mdev,mdev_plus:C.plus};
+    const top=mc.quant.hist_top, nb=mc.quant.hist.length; const mx=Math.max(...Object.values(mc).flatMap(v=>v.hist)); const X=i=>L+(R-L)*i/nb, Y=v=>B-(B-T)*v/mx;
+    grid(ctx,L,T,R,B,3); [0,0.4e9,0.8e9,1.2e9,1.6e9].forEach(v=>txt(ctx,fmt$(v),X(v/top*nb),B+16,{align:'center',size:10,color:C.muted}));
+    Object.keys(col).forEach(k=>{ const hs=mc[k].hist; const pts=[[X(0),B]]; hs.forEach((v,i)=>{ pts.push([X(i),Y(v)]); pts.push([X(i+1),Y(v)]); }); pts.push([X(nb),B]); ctx.fillStyle=col[k]+'33'; ctx.beginPath(); pts.forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p)); ctx.fill(); line(ctx,pts,col[k],1.8); });
+    txt(ctx,'quant',L+4,14,{size:10,color:C.quant}); txt(ctx,'veteran',L+50,14,{size:10,color:C.mdev}); txt(ctx,'after course',L+110,14,{size:10,color:C.plus}); txt(ctx,'total value per run, $5bn fund',R,14,{size:10,align:'right',color:C.muted});
+    $('#mcReadout').textContent=`Middle 80% of runs: quant ${fmt$(mc.quant.p10)} to ${fmt$(mc.quant.p90)}; veteran ${fmt$(mc.mdev.p10)} to ${fmt$(mc.mdev.p90)}; after the course ${fmt$(mc.mdev_plus.p10)} to ${fmt$(mc.mdev_plus.p90)}.`; }
+  drawMC(); addEventListener('resize',drawMC);
+
+  /* issue table */
+  const levels={easy:'easy',medium:'medium',hard:'hard'};
+  function table(g){ const rows=DATA.issues.filter(i=>g==='all'||i.group===g);
+    $('#issues').innerHTML=`<thead><tr><th>ID</th><th>Problem</th><th class="num">At stake</th><th>Chance solved (quant / veteran / after course)</th><th class="num">Hours Q / V</th></tr></thead><tbody>`+
+      rows.map(i=>`<tr><td class="mono">${i.id}</td><td>${i.title} <span class="pill">${levels[i.level]}</span>${i.silent?' <span class="pill silent">silent</span>':''}${i.note?`<div class="muted" style="font-size:.84rem">${i.note}</div>`:''}</td><td class="num">${fmt$(i.value)}</td><td><div class="bars">${['quant','mdev','mdev_plus'].map(k=>`<div class="bar" title="${Math.round(i[k][0]*100)}%"><i style="width:${i[k][0]*100}%;background:var(--${k==='quant'?'quant':k==='mdev'?'mdev':'plus'})"></i></div>`).join('')}</div><span class="mono muted" style="font-size:.78rem">${Math.round(i.quant[0]*100)}% / ${Math.round(i.mdev[0]*100)}% / ${Math.round(i.mdev_plus[0]*100)}%</span></td><td class="num">${(i.quant[1]/60).toFixed(1)} / ${(i.mdev[1]/60).toFixed(1)}</td></tr>`).join('')+'</tbody>'; }
+  $('#filt').addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; [...e.currentTarget.children].forEach(x=>x.setAttribute('aria-pressed',x===b)); table(b.dataset.g); });
+  table('all');
+
+  /* pay model text */
+  const at=c=>DATA.sweep.find(r=>r.capital===c);
+  $('#payModel').textContent=`In this model, a researcher owning a $500M book brings about ${fmt$(at(5e8).quant)} over the 463 sessions against the veteran's ${fmt$(at(5e8).mdev)}. At $5bn it is ${fmt$(at(5e9).quant)} against ${fmt$(at(5e9).mdev)}. Pod payouts are commonly reported at 10–20% of net PnL, so the quant's pay follows what they make; a quant who finds no edge does not collect it.`;
+})();
+</script>

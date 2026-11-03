@@ -1,0 +1,542 @@
+[
+ {
+  "id": "CPP01",
+  "area": "cpp",
+  "level": "easy",
+  "title": "Logger stop() never clears the running flag",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 9
+ },
+ {
+  "id": "CPP02",
+  "area": "cpp",
+  "level": "easy",
+  "title": "Thread name copied without its NUL terminator",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 7
+ },
+ {
+  "id": "CPP03",
+  "area": "cpp",
+  "level": "easy",
+  "title": "Huge-page free path disagrees with the allocate path at exactly 2 MB",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 12
+ },
+ {
+  "id": "CPP04",
+  "area": "cpp",
+  "level": "medium",
+  "title": "TcpStream move-assignment leaves the source owning the fd",
+  "silent": false,
+  "caught_by": "Unit tests, e2e firm, e2e FIX",
+  "priya_min": 18
+ },
+ {
+  "id": "CPP05",
+  "area": "cpp",
+  "level": "medium",
+  "title": "Top-of-book change test compares 24 of 32 bytes",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 25
+ },
+ {
+  "id": "CPP06",
+  "area": "cpp",
+  "level": "medium",
+  "title": "trimmed() takes the session by value and returns a view into it",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 28
+ },
+ {
+  "id": "CPP07",
+  "area": "cpp",
+  "level": "medium",
+  "title": "FIX timer helper underflows when the clock steps back",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 35
+ },
+ {
+  "id": "CPP08",
+  "area": "cpp",
+  "level": "hard",
+  "title": "Huge-page mapping has no slack for alignment",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 70
+ },
+ {
+  "id": "CPP09",
+  "area": "cpp",
+  "level": "hard",
+  "title": "Order map backward-shift ignores probe runs that wrap",
+  "silent": false,
+  "caught_by": "Unit tests, Book digest",
+  "priya_min": 95
+ },
+ {
+  "id": "CPP10",
+  "area": "cpp",
+  "level": "hard",
+  "title": "Replace inserts the new order before erasing through a stale pointer",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 80
+ },
+ {
+  "id": "MD01",
+  "area": "md",
+  "level": "easy",
+  "title": "LULD tier boundary: $3.00 gets the 5% band",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 6
+ },
+ {
+  "id": "MD02",
+  "area": "md",
+  "level": "easy",
+  "title": "Locked books counted as crossed",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 5
+ },
+ {
+  "id": "MD03",
+  "area": "md",
+  "level": "easy",
+  "title": "Opening and closing cross prices swapped",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 5
+ },
+ {
+  "id": "MD04",
+  "area": "md",
+  "level": "medium",
+  "title": "Attributed adds (F) are no longer handled",
+  "silent": false,
+  "caught_by": "Unit tests, Book digest, e2e live feed",
+  "priya_min": 22
+ },
+ {
+  "id": "MD05",
+  "area": "md",
+  "level": "medium",
+  "title": "48-bit timestamp decoded with the wrong shift",
+  "silent": false,
+  "caught_by": "Unit tests, Book digest, e2e firm, e2e live feed, e2e FIX",
+  "priya_min": 18
+ },
+ {
+  "id": "MD06",
+  "area": "md",
+  "level": "medium",
+  "title": "Halt reopening midpoint not rounded to the cent",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 30
+ },
+ {
+  "id": "MD07",
+  "area": "md",
+  "level": "medium",
+  "title": "Trader reads the tracking number as the stock locate",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 16
+ },
+ {
+  "id": "MD08",
+  "area": "md",
+  "level": "hard",
+  "title": "LULD reference follows every trade",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 55
+ },
+ {
+  "id": "MD09",
+  "area": "md",
+  "level": "hard",
+  "title": "Repeated stock directory message wipes the book",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 65
+ },
+ {
+  "id": "MD10",
+  "area": "md",
+  "level": "hard",
+  "title": "Order Replace shares and price offsets swapped in the field list",
+  "silent": false,
+  "caught_by": "Unit tests, Book digest",
+  "priya_min": 110
+ },
+ {
+  "id": "NET01",
+  "area": "net",
+  "level": "easy",
+  "title": "Feed socket left at the kernel's default receive buffer",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 10
+ },
+ {
+  "id": "NET02",
+  "area": "net",
+  "level": "easy",
+  "title": "Multicast loopback disabled on the publisher",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 8
+ },
+ {
+  "id": "NET03",
+  "area": "net",
+  "level": "easy",
+  "title": "Multicast test only recognises 224/8",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 9
+ },
+ {
+  "id": "NET04",
+  "area": "net",
+  "level": "medium",
+  "title": "Partial TCP send re-queues the whole buffer",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 32
+ },
+ {
+  "id": "NET05",
+  "area": "net",
+  "level": "medium",
+  "title": "recv() returning 0 treated as no data",
+  "silent": false,
+  "caught_by": "Unit tests, e2e FIX",
+  "priya_min": 24
+ },
+ {
+  "id": "NET06",
+  "area": "net",
+  "level": "medium",
+  "title": "Gap requests sent before the reorder delay",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 26
+ },
+ {
+  "id": "NET07",
+  "area": "net",
+  "level": "medium",
+  "title": "MoldUDP64 payload raised to the MTU",
+  "silent": false,
+  "caught_by": "e2e firm, e2e live feed",
+  "priya_min": 30
+ },
+ {
+  "id": "NET08",
+  "area": "net",
+  "level": "hard",
+  "title": "Sequencer follows any session name",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 60
+ },
+ {
+  "id": "NET09",
+  "area": "net",
+  "level": "hard",
+  "title": "Retransmit store loses its padding when it wraps",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 105
+ },
+ {
+  "id": "NET10",
+  "area": "net",
+  "level": "hard",
+  "title": "Heartbeat advertises messages that are still being batched",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 90
+ },
+ {
+  "id": "LAT01",
+  "area": "lat",
+  "level": "easy",
+  "title": "TCP_NODELAY no longer set",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 8
+ },
+ {
+  "id": "LAT02",
+  "area": "lat",
+  "level": "easy",
+  "title": "Receive loop sleeps even when busy",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 10
+ },
+ {
+  "id": "LAT03",
+  "area": "lat",
+  "level": "easy",
+  "title": "Debug print left on the trading thread",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 6
+ },
+ {
+  "id": "LAT04",
+  "area": "lat",
+  "level": "medium",
+  "title": "Fill log grows on the hot thread",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 22
+ },
+ {
+  "id": "LAT05",
+  "area": "lat",
+  "level": "medium",
+  "title": "Shared memory pages no longer pre-faulted",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 25
+ },
+ {
+  "id": "LAT06",
+  "area": "lat",
+  "level": "medium",
+  "title": "Publisher batching delay in milliseconds, not microseconds",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 20
+ },
+ {
+  "id": "LAT07",
+  "area": "lat",
+  "level": "medium",
+  "title": "Price level lookup scans from the worst level",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 30
+ },
+ {
+  "id": "LAT08",
+  "area": "lat",
+  "level": "hard",
+  "title": "Ring consumer reloads the producer index every call",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 60
+ },
+ {
+  "id": "LAT09",
+  "area": "lat",
+  "level": "hard",
+  "title": "Tick timestamp taken after the book update",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 75
+ },
+ {
+  "id": "LAT10",
+  "area": "lat",
+  "level": "hard",
+  "title": "Matching engine key index moved off huge pages",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 65
+ },
+ {
+  "id": "TRD01",
+  "area": "trd",
+  "level": "easy",
+  "title": "Maker improves the spread one tick later than configured",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 6
+ },
+ {
+  "id": "TRD02",
+  "area": "trd",
+  "level": "easy",
+  "title": "Inventory skew leans the wrong way",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 8
+ },
+ {
+  "id": "TRD03",
+  "area": "trd",
+  "level": "easy",
+  "title": "Position cap ignores the size of the new quote",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 7
+ },
+ {
+  "id": "TRD04",
+  "area": "trd",
+  "level": "medium",
+  "title": "Cash booked at our limit price, not the fill price",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 28
+ },
+ {
+  "id": "TRD05",
+  "area": "trd",
+  "level": "medium",
+  "title": "Price collar computed in tenths of a percent",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 18
+ },
+ {
+  "id": "TRD06",
+  "area": "trd",
+  "level": "medium",
+  "title": "Replace confirmation updates only the bid's reference",
+  "silent": false,
+  "caught_by": "e2e firm",
+  "priya_min": 30
+ },
+ {
+  "id": "TRD07",
+  "area": "trd",
+  "level": "medium",
+  "title": "New orders join the front of their price level",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 22
+ },
+ {
+  "id": "TRD08",
+  "area": "trd",
+  "level": "hard",
+  "title": "Replace for no more than the executed shares leaves a ghost order",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 85
+ },
+ {
+  "id": "TRD09",
+  "area": "trd",
+  "level": "hard",
+  "title": "Auction price ignores the reference on ties",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 70
+ },
+ {
+  "id": "TRD10",
+  "area": "trd",
+  "level": "hard",
+  "title": "Self-match guard uses the less aggressive price of a replace in flight",
+  "silent": false,
+  "caught_by": "e2e firm",
+  "priya_min": 100
+ },
+ {
+  "id": "GW01",
+  "area": "gw",
+  "level": "easy",
+  "title": "Login no longer checks the password",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 5
+ },
+ {
+  "id": "GW02",
+  "area": "gw",
+  "level": "easy",
+  "title": "Sell short exempt rejected as an invalid side",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 6
+ },
+ {
+  "id": "GW03",
+  "area": "gw",
+  "level": "easy",
+  "title": "Drop copy passes short-sale side codes through",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 12
+ },
+ {
+  "id": "GW04",
+  "area": "gw",
+  "level": "medium",
+  "title": "Duplicate UserRefNum accepted",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 20
+ },
+ {
+  "id": "GW05",
+  "area": "gw",
+  "level": "medium",
+  "title": "Reconnect with sequence 0 replays the last message",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 26
+ },
+ {
+  "id": "GW06",
+  "area": "gw",
+  "level": "medium",
+  "title": "Client heartbeat interval longer than the server's idle timeout",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 24
+ },
+ {
+  "id": "GW07",
+  "area": "gw",
+  "level": "medium",
+  "title": "FIX checksum skips BeginString and BodyLength",
+  "silent": false,
+  "caught_by": "Unit tests, e2e FIX",
+  "priya_min": 15
+ },
+ {
+  "id": "GW08",
+  "area": "gw",
+  "level": "hard",
+  "title": "Gap fill points one sequence number short",
+  "silent": false,
+  "caught_by": "Unit tests",
+  "priya_min": 60
+ },
+ {
+  "id": "GW09",
+  "area": "gw",
+  "level": "hard",
+  "title": "Possible duplicates delivered to the application",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 70
+ },
+ {
+  "id": "GW10",
+  "area": "gw",
+  "level": "hard",
+  "title": "Partial cancel forgets the order's details",
+  "silent": true,
+  "caught_by": "Silent",
+  "priya_min": 80
+ }
+]
