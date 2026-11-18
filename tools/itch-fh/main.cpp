@@ -4,6 +4,7 @@
 //   itch-fh                                         239.1.1.1:30001, re-requests to 127.0.0.1:30002
 //   itch-fh --rx-cpu 2 --book-cpu 3 --symbol AAPL
 //   itch-fh --group 127.0.0.1:30001                 unicast feed (CI, or no loopback multicast)
+//   itch-fh --aeron aeron:ipc                       also republish the feed over Aeron IPC
 //
 // Two threads, joined by lock-free rings (see lab/feed/receiver.hpp):
 //
@@ -13,6 +14,14 @@
 //   book thread  MoldUDP64 sequencing (gaps, duplicates, reordering), ITCH
 //                decode and book updates. No syscalls or locks on the message
 //                path.
+//
+// With --aeron, the book thread also republishes every ITCH message, in
+// sequence and with gaps already filled, on an Aeron exclusive publication
+// (stream 1001 by default) through the media driver in --aeron-dir; any number
+// of trader processes subscribe with `trader --md-aeron aeron:ipc`. Each
+// frame's reserved value carries the message's rx timestamp (rdtsc) so a
+// subscriber on the same machine can measure feed handler to trader latency.
+// See docs/aeron.md.
 //
 // Runs until End of Session with every message delivered, then prints feed and
 // book reports. Exits 0 when nothing was lost and every integrity check is
@@ -30,6 +39,7 @@
 #include <thread>
 #include <vector>
 
+#include "lab/aeron/aeron.hpp"
 #include "lab/book/book_builder.hpp"
 #include "lab/book/report.hpp"
 #include "lab/core/affinity.hpp"
@@ -47,6 +57,10 @@ struct Options {
   std::size_t depth = 10;
   std::size_t top = 10;
   std::vector<lab::book::StripDef> strips;
+  std::string aeron_channel;  // empty: no Aeron output
+  std::string aeron_dir;      // empty: lab::aeron::default_dir()
+  std::int32_t aeron_stream = lab::aeron::kItchStream;
+  double aeron_wait_seconds = 10;  // wait this long for a first subscriber before joining the feed
 };
 
 void usage() {
@@ -54,7 +68,9 @@ void usage() {
                "usage: itch-fh [--group IP:PORT] [--iface IP] [--retrans IP:PORT]\n"
                "               [--rx-cpu N] [--book-cpu N] [--gap-delay-us N] [--timeout-ms N]\n"
                "               [--retries N] [--idle-seconds S] [--symbol SYM] [--depth N]\n"
-               "               [--top N] [--strip NAME=A+B]...\n");
+               "               [--top N] [--strip NAME=A+B]...\n"
+               "               [--aeron CHANNEL] [--aeron-dir DIR] [--aeron-stream N]\n"
+               "               [--aeron-wait-seconds S]\n");
 }
 
 bool parse(int argc, char** argv, Options& o) {
@@ -86,6 +102,14 @@ bool parse(int argc, char** argv, Options& o) {
       o.depth = std::strtoul(v, nullptr, 10);
     else if (a == "--top")
       o.top = std::strtoul(v, nullptr, 10);
+    else if (a == "--aeron")
+      o.aeron_channel = v;
+    else if (a == "--aeron-dir")
+      o.aeron_dir = v;
+    else if (a == "--aeron-stream")
+      o.aeron_stream = static_cast<std::int32_t>(std::atoi(v));
+    else if (a == "--aeron-wait-seconds")
+      o.aeron_wait_seconds = std::strtod(v, nullptr);
     else if (a == "--strip") {
       const auto d = lab::book::parse_strip(v);
       if (!d) return false;
@@ -102,9 +126,36 @@ extern "C" void on_signal(int) { g_interrupted.store(true, std::memory_order_rel
 
 struct BookThread {
   lab::LatencyHistogram rx_to_book;  // ticks from rx timestamp to the message's book update
+  lab::aeron::Publication* aeron = nullptr;
+  std::uint64_t aeron_published = 0;
+  std::uint64_t aeron_retries = 0;  // offers refused as back-pressured or admin action
+  std::uint64_t aeron_dropped = 0;  // no subscriber connected
+  bool aeron_closed = false;
   std::atomic<bool> stop{false};
   std::atomic<bool> finished{false};
 };
+
+// Hands one message to Aeron. A slow subscriber back-pressures this thread
+// (and so the packet ring behind it) rather than losing messages.
+void publish(BookThread& t, std::span<const std::byte> msg, std::uint64_t rx_tsc) {
+  for (;;) {
+    switch (t.aeron->offer(msg, static_cast<std::int64_t>(rx_tsc))) {
+      case lab::aeron::Offer::kOk:
+        ++t.aeron_published;
+        return;
+      case lab::aeron::Offer::kBackPressured:
+      case lab::aeron::Offer::kAdminAction:
+        ++t.aeron_retries;
+        continue;
+      case lab::aeron::Offer::kNotConnected:
+        ++t.aeron_dropped;
+        return;
+      default:
+        t.aeron_closed = true;
+        return;
+    }
+  }
+}
 
 void book_loop(const Options& opt, lab::feed::FeedReceiver& rx, lab::book::BookBuilder& books,
                BookThread& t) {
@@ -118,6 +169,7 @@ void book_loop(const Options& opt, lab::feed::FeedReceiver& rx, lab::book::BookB
   auto deliver = [&](std::uint64_t, std::span<const std::byte> msg, std::uint64_t rx_tsc) {
     books.apply(msg);
     t.rx_to_book.record(lab::rdtscp() - rx_tsc);
+    if (t.aeron != nullptr && !t.aeron_closed) publish(t, msg, rx_tsc);
   };
   while (!t.stop.load(std::memory_order_relaxed)) {
     rx.poll(deliver);
@@ -148,6 +200,29 @@ int main(int argc, char** argv) {
     return 2;
   }
   std::fprintf(stderr, "itch-fh: listening on %s\n", rx->describe().c_str());
+
+  std::unique_ptr<lab::aeron::Client> aeron;
+  std::unique_ptr<lab::aeron::Publication> aeron_pub;
+  if (!opt.aeron_channel.empty()) {
+    try {
+      aeron = std::make_unique<lab::aeron::Client>(lab::aeron::ClientOptions{.dir = opt.aeron_dir});
+      aeron_pub =
+          std::make_unique<lab::aeron::Publication>(*aeron, opt.aeron_channel, opt.aeron_stream);
+    } catch (const std::exception& e) {
+      std::fprintf(stderr, "itch-fh: %s\n", e.what());
+      return 2;
+    }
+    // Subscribers that join later start at the live position and would miss
+    // the stock directory, so wait for the first one before taking the feed.
+    const auto until =
+        std::chrono::steady_clock::now() + std::chrono::duration<double>(opt.aeron_wait_seconds);
+    while (!aeron_pub->connected() && std::chrono::steady_clock::now() < until) {
+      std::this_thread::sleep_for(std::chrono::milliseconds{5});
+    }
+    std::fprintf(stderr, "itch-fh: publishing on %s stream %d (%s)\n", opt.aeron_channel.c_str(),
+                 opt.aeron_stream, aeron_pub->connected() ? "subscribed" : "no subscriber yet");
+    bt->aeron = aeron_pub.get();
+  }
 
   const auto wall_start = std::chrono::steady_clock::now();
   rx->start();
@@ -186,6 +261,15 @@ int main(int argc, char** argv) {
               lab::book::format_feed_time(b.last_timestamp()).c_str());
   std::printf("Live orders  %zu\n", b.orders().size());
   std::printf("Book digest  %016llx\n", static_cast<unsigned long long>(b.digest()));
+  if (aeron_pub) {
+    std::printf(
+        "Aeron        %llu messages published on %s stream %d, %llu bytes; %llu retries,"
+        " %llu dropped with no subscriber\n",
+        static_cast<unsigned long long>(bt->aeron_published), opt.aeron_channel.c_str(),
+        opt.aeron_stream, static_cast<unsigned long long>(aeron_pub->position()),
+        static_cast<unsigned long long>(bt->aeron_retries),
+        static_cast<unsigned long long>(bt->aeron_dropped));
+  }
   lab::book::print_message_types(stdout, b);
   lab::book::print_integrity(stdout, b.checks());
   lab::book::print_top(stdout, b, opt.top);

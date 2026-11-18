@@ -91,6 +91,23 @@ jobs:
           DURATION: 20
         run: timeout 300 scripts/e2e-scenarios.sh build/${{ matrix.preset }}
 
+      - name: Aeron IPC round trips (aeron-ping, Aeron and the lab's shm ring)
+        if: matrix.preset == 'release'
+        run: |
+          build/release/tools/aeron-ping/aeron-ping --messages 100000
+          build/release/tools/aeron-ping/aeron-ping --transport shm --messages 100000
+
+      - name: End-to-end Aeron IPC market data (itch-fh to two traders)
+        # Under ThreadSanitizer two traders cannot keep up with the feed on a CI
+        # runner; tests/aeron covers the Aeron code there.
+        if: matrix.preset != 'tsan'
+        env:
+          RATE: 50000
+          ORDER_RATE: 1000
+          ORDERS: 5000
+          DURATION: 40  # traders stop at End of Messages; this is only the upper bound
+        run: timeout 300 scripts/e2e-aeron.sh build/${{ matrix.preset }}
+
       - name: End-to-end quant lab (four strategies on engine, feed, risk and OMS)
         env:
           DAYS: 60

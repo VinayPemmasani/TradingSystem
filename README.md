@@ -145,6 +145,9 @@ cmake --preset asan    && cmake --build --preset asan    && ctest --preset asan
 | `tools/ouch-client` | Trades random orders into simex on several accounts and checks every response |
 | `tools/itch-gen` | Writes a synthetic ITCH day, for trying the tools without a multi-GB download |
 | `tools/lab-check` | Checks the machine (CPUs, TSC, huge pages, loopback multicast, disk) and measures a core-to-core round trip |
+| `libs/aeron` | A thin C++ layer over the Aeron C client and media driver: embedded driver, client, exclusive publication and subscription, no allocation in `offer()` or `poll()` |
+| `tools/aeron-driver` | The Aeron media driver as its own process, with the lab's settings |
+| `tools/aeron-ping` | Round trips between two processes over Aeron IPC or over `lab::SpscRing` in `/dev/shm` |
 | `scripts/` | WSL setup, sample data download, `.wslconfig` template |
 | `docs/core-plan.md` | Which thread runs on which core |
 | `docs/specs/itch50-layout.md` | ITCH 5.0 field tables the codec implements, with the source |
@@ -159,6 +162,8 @@ cmake --preset asan    && cmake --build --preset asan    && ctest --preset asan
 | `scripts/e2e-fix.sh` | Two FIX sessions trading through `fixgw`, one dropped and resumed midway; FIX fills checked against the drop copy |
 | `scripts/e2e-agents.sh` | `trader` making markets among the agents, with no replay |
 | `scripts/e2e-scenarios.sh` | simex `--scenario all` with an implied strip, agents, `itch-fh` and two vendors; checks every scenario ran and every book agrees |
+| `scripts/e2e-aeron.sh` | simex, `itch-fh` republishing over Aeron IPC, and two traders reading it; every trader reads every message through End of Messages |
+| `docs/aeron.md` | How Aeron IPC works underneath (log buffer, frame header, publish and poll, flow control) and how the lab uses it |
 | `scripts/e2e-quant-lab.sh` | The quant lab for a shortened year: clean books every day, consistent OMS, every strategy trades within its limits, and the page builds |
 | `docs/scenarios.md` | Auctions, halts, LULD, circuit breakers, IPOs and implied strips: what each part of the lab does |
 | `bench/` | Microbenchmarks: core library, ITCH codec and books, MoldUDP64, matching engine (with p50/p99/p99.9), FIX codec |
@@ -181,15 +186,20 @@ cmake --preset asan    && cmake --build --preset asan    && ctest --preset asan
    result against the direct feed. ICE's and Bloomberg's wire formats are
    licensed, so those two protocols are the lab's own, documented in
    `docs/specs/vendor-*.md`.
-9. **Market scenarios** (this): opening and closing auctions with imbalance
+9. **Market scenarios**: opening and closing auctions with imbalance
    messages, news halts, LULD bands, limit states, pauses and reopening
    auctions, market-wide circuit breakers, an IPO, an operational halt, a
    broken trade, Reg SHO, and implied strip books, in simex, on the feed, in
    the feed handler, in the synthetic day and through the vendors. See
    `docs/scenarios.md`.
-10. **Quant Research Lab** (this): stat arb, trend and fundamental strategies
+10. **Quant Research Lab**: stat arb, trend and fundamental strategies
     beside the market maker, run together for a simulated year by
     `quant-lab`, and a page that replays the run (see below).
+11. **Aeron IPC** (this): the real Aeron C client and media driver, fetched at
+    configure time. `itch-fh --aeron aeron:ipc` republishes its gap-free feed
+    over shared memory and any number of `trader --md-aeron aeron:ipc`
+    processes read it; `aeron-ping` compares Aeron with the lab's own
+    shared-memory ring. See `docs/aeron.md`.
 
 ## Quant Research Lab
 

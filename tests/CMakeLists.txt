@@ -77,3 +77,8 @@ add_executable(vendor_tests
   vendor/test_ws_json.cpp)
 target_link_libraries(vendor_tests PRIVATE lab::vendor GTest::gtest_main)
 gtest_discover_tests(vendor_tests DISCOVERY_TIMEOUT 30)
+
+add_executable(aeron_tests
+  aeron/test_aeron.cpp)
+target_link_libraries(aeron_tests PRIVATE lab::aeron GTest::gtest_main)
+gtest_discover_tests(aeron_tests DISCOVERY_TIMEOUT 30)

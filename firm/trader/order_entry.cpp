@@ -195,6 +195,7 @@ void OrderEntry::receive() {
         r.type = OrderResponse::kSessionEnd;
         push(r);
         stats_.session_ended = true;
+        session_over_.store(true, std::memory_order_release);
       }
       return;
     }
@@ -215,6 +216,7 @@ void OrderEntry::receive() {
           r.rx_tsc = rx_tsc;
           push(r);
           stats_.session_ended = true;
+          session_over_.store(true, std::memory_order_release);
           break;
         }
         default:

@@ -2,6 +2,7 @@
 //
 //   trader --md 127.0.0.1:31001 --retrans 127.0.0.1:31002 --connect 127.0.0.1:15000
 //          --account FIRM01:lab --symbols SYM0001,SYM0002 --duration 30
+//   trader --md-aeron aeron:ipc --account FIRM01:lab --symbols SYM0001,SYM0002
 //
 // Threads:
 //   rx       MoldUDP64 receive and retransmission requests (FeedReceiver)
@@ -9,6 +10,10 @@
 //            symbols to the trading thread
 //   trader   market maker, pre-trade risk, OMS; order requests to order entry
 //   oe       OUCH 5.0 over SoupBinTCP: sends requests, decodes responses
+// With --md-aeron there is no rx thread: the md thread reads the ITCH feed that
+// itch-fh republishes over Aeron IPC (already in sequence, gaps filled), so
+// several traders share one feed handler. Each frame carries itch-fh's rx
+// timestamp, so tick to wire then starts at itch-fh's packet receive.
 // Only rx and oe make syscalls. At the end it cancels its orders and reports
 // positions, PnL, risk blocks and latency (feed packet to order on the wire,
 // order round trip). Exits 0 when the feed lost nothing, books are clean, and
@@ -25,9 +30,11 @@
 #include <thread>
 #include <vector>
 
+#include "lab/aeron/aeron.hpp"
 #include "lab/book/book_builder.hpp"
 #include "lab/core/affinity.hpp"
 #include "lab/core/endian.hpp"
+#include "lab/core/histogram.hpp"
 #include "lab/feed/receiver.hpp"
 #include "lab/ouch/messages.hpp"
 #include "order_entry.hpp"
@@ -43,6 +50,9 @@ struct Options {
   double duration = 0;  // 0: until the feed or the session ends
   std::string fills_csv;
   std::string market_csv;
+  std::string aeron_channel;  // set: market data from Aeron instead of the UDP feed
+  std::string aeron_dir;
+  std::int32_t aeron_stream = lab::aeron::kItchStream;
 };
 
 [[noreturn]] void usage() {
@@ -53,7 +63,8 @@ struct Options {
                "              [--risk-max-position N] [--max-order-qty N] [--collar-bps N]\n"
                "              [--max-orders-per-sec N] [--max-open-orders N]\n"
                "              [--rx-cpu N] [--md-cpu N] [--trader-cpu N] [--oe-cpu N]\n"
-               "              [--fills-csv FILE] [--market-csv FILE]\n");
+               "              [--fills-csv FILE] [--market-csv FILE]\n"
+               "              [--md-aeron CHANNEL] [--aeron-dir DIR] [--aeron-stream N]\n");
   std::exit(2);
 }
 
@@ -65,7 +76,13 @@ Options parse(int argc, char** argv) {
     const std::string a = argv[i];
     if (i + 1 >= argc) usage();
     const char* v = argv[++i];
-    if (a == "--md") {
+    if (a == "--md-aeron") {
+      o.aeron_channel = v;
+    } else if (a == "--aeron-dir") {
+      o.aeron_dir = v;
+    } else if (a == "--aeron-stream") {
+      o.aeron_stream = static_cast<std::int32_t>(std::atoi(v));
+    } else if (a == "--md") {
       o.feed.group = v;
     } else if (a == "--iface") {
       o.feed.iface = v;
@@ -141,7 +158,8 @@ class MarketData {
         out_{out},
         books_{std::make_unique<lab::book::BookBuilder>()},
         instrument_of_(65536, -1),
-        last_(symbols.size()) {
+        last_(symbols.size()),
+        fh_to_md_{std::make_unique<lab::LatencyHistogram>()} {
     log_.reserve(log_capacity);
   }
 
@@ -171,6 +189,40 @@ class MarketData {
     }
     finished_.store(true, std::memory_order_release);
   }
+
+  // The same, reading itch-fh's feed from Aeron. Stops at the ITCH End of
+  // Messages event, or when the publisher goes away.
+  void run(lab::aeron::Subscription& sub, int cpu, const std::atomic<bool>& stop) {
+    lab::set_thread_name("trader-md");
+    if (cpu >= 0) (void)lab::pin_this_thread(cpu);
+    bool end_of_messages = false;
+    auto deliver = [&](const lab::aeron::Message& m) {
+      const auto fh_rx_tsc = static_cast<std::uint64_t>(m.reserved);
+      fh_to_md_->record(lab::rdtscp() - fh_rx_tsc);
+      ++aeron_messages_;
+      on_message(m.data, fh_rx_tsc);
+      // System Event (S), event code at offset 11: 'C' is End of Messages.
+      if (m.data.size() >= 12 && static_cast<char>(m.data[0]) == 'S' &&
+          static_cast<char>(m.data[11]) == 'C') {
+        end_of_messages = true;
+      }
+    };
+    bool had_publisher = false;
+    while (!stop.load(std::memory_order_relaxed) && !end_of_messages) {
+      if (sub.poll(deliver, 64) > 0) continue;
+      const bool has_publisher = sub.images() > 0;
+      if (had_publisher && !has_publisher) break;
+      had_publisher = has_publisher;
+    }
+    ended_cleanly_ = end_of_messages;
+    finished_.store(true, std::memory_order_release);
+  }
+
+  // After the Aeron run(): messages read, latency from itch-fh's packet
+  // receive to this thread, and whether End of Messages arrived.
+  std::uint64_t aeron_messages() const noexcept { return aeron_messages_; }
+  const lab::LatencyHistogram& fh_to_md() const noexcept { return *fh_to_md_; }
+  bool ended_cleanly() const noexcept { return ended_cleanly_; }
 
   bool finished() const noexcept { return finished_.load(std::memory_order_acquire); }
   const lab::book::BookBuilder& books() const noexcept { return *books_; }
@@ -230,6 +282,9 @@ class MarketData {
   std::uint64_t tops_sent_ = 0;
   std::uint64_t ring_full_spins_ = 0;
   std::size_t listed_ = 0;
+  std::unique_ptr<lab::LatencyHistogram> fh_to_md_;
+  std::uint64_t aeron_messages_ = 0;
+  bool ended_cleanly_ = false;
   std::atomic<bool> finished_{false};
 };
 
@@ -253,26 +308,43 @@ int main(int argc, char** argv) {
   auto trading = std::make_unique<trader::Trading>(opt.trading, rings->tops, rings->requests,
                                                    rings->responses, clock);
   std::unique_ptr<lab::feed::FeedReceiver> rx;
+  std::unique_ptr<lab::aeron::Client> aeron;
+  std::unique_ptr<lab::aeron::Subscription> aeron_sub;
+  const bool use_aeron = !opt.aeron_channel.empty();
   try {
-    rx = std::make_unique<lab::feed::FeedReceiver>(opt.feed);
+    if (use_aeron) {
+      aeron = std::make_unique<lab::aeron::Client>(lab::aeron::ClientOptions{.dir = opt.aeron_dir});
+      aeron_sub =
+          std::make_unique<lab::aeron::Subscription>(*aeron, opt.aeron_channel, opt.aeron_stream);
+    } else {
+      rx = std::make_unique<lab::feed::FeedReceiver>(opt.feed);
+    }
   } catch (const std::exception& e) {
     std::fprintf(stderr, "trader: %s\n", e.what());
     return 2;
   }
-  rx->start();
+  if (rx) rx->start();
   std::atomic<bool> md_stop{false}, trading_stop{false}, oe_stop{false};
-  std::thread md_thread{[&] { md->run(*rx, opt.md_cpu, md_stop); }};
+  std::thread md_thread{[&] {
+    if (use_aeron)
+      md->run(*aeron_sub, opt.md_cpu, md_stop);
+    else
+      md->run(*rx, opt.md_cpu, md_stop);
+  }};
+  const std::string md_source =
+      use_aeron ? "Aeron " + opt.aeron_channel + " stream " + std::to_string(opt.aeron_stream)
+                : rx->describe();
   try {
     oe->login();
   } catch (const std::exception& e) {
     std::fprintf(stderr, "trader: order entry on %s: %s\n", opt.oe.connect.c_str(), e.what());
     md_stop = true;
     md_thread.join();
-    rx->stop();
+    if (rx) rx->stop();
     return 2;
   }
   std::fprintf(stderr, "trader: %s on %s, market data %s, %zu symbols\n", opt.oe.user.c_str(),
-               opt.oe.connect.c_str(), rx->describe().c_str(), opt.trading.symbols.size());
+               opt.oe.connect.c_str(), md_source.c_str(), opt.trading.symbols.size());
 
   const auto start = std::chrono::steady_clock::now();
   std::thread oe_thread{[&] { oe->run(oe_stop); }};
@@ -285,9 +357,18 @@ int main(int argc, char** argv) {
     std::this_thread::sleep_for(std::chrono::milliseconds{20});
     const double secs =
         std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
-    if (g_interrupted.load() || md->finished() || oe->stats().session_ended ||
+    if (g_interrupted.load() || md->finished() || oe->session_over() ||
         (opt.duration > 0 && secs >= opt.duration)) {
       break;
+    }
+  }
+  // An Aeron feed has no gaps to wait for, but the md thread may still be a
+  // few messages behind itch-fh when the exchange ends the session: let it
+  // read through End of Messages first.
+  if (use_aeron) {
+    const auto drain_until = std::chrono::steady_clock::now() + std::chrono::seconds{2};
+    while (!md->finished() && std::chrono::steady_clock::now() < drain_until) {
+      std::this_thread::sleep_for(std::chrono::milliseconds{5});
     }
   }
   trading_stop = true;
@@ -296,7 +377,7 @@ int main(int argc, char** argv) {
   oe_thread.join();
   md_stop = true;
   md_thread.join();
-  rx->stop();
+  if (rx) rx->stop();
   const double secs =
       std::chrono::duration<double>(std::chrono::steady_clock::now() - start).count();
 
@@ -304,7 +385,14 @@ int main(int argc, char** argv) {
   const auto& oes = oe->stats();
   std::printf("trader %s ran %.2f s on %zu symbols (%zu listed on the feed)\n", opt.oe.user.c_str(),
               secs, opt.trading.symbols.size(), md->listed());
-  rx->print_report(stdout);
+  if (rx) {
+    rx->print_report(stdout);
+  } else {
+    std::printf("Market data  %llu ITCH messages from %s, %s\n",
+                static_cast<unsigned long long>(md->aeron_messages()), md_source.c_str(),
+                md->ended_cleanly() ? "through End of Messages" : "stopped before End of Messages");
+    md->fh_to_md().print(stdout, "itch-fh rx to trader md", scale);
+  }
   const auto& checks = md->books().checks();
   std::printf("Books        %llu integrity errors, %llu top-of-book updates to the trader\n",
               static_cast<unsigned long long>(checks.error_count()),
@@ -321,7 +409,8 @@ int main(int argc, char** argv) {
   oes.round_trip.print(stdout, "Order round trip", scale);
 
   bool ok = trading_ok;
-  if (rx->sequencer().stats().lost != 0 || checks.error_count() != 0) {
+  const bool md_lost = rx ? rx->sequencer().stats().lost != 0 : md->aeron_messages() == 0;
+  if (md_lost || checks.error_count() != 0) {
     std::printf("CHECK FAILED: market data lost messages or failed integrity checks\n");
     ok = false;
   }
