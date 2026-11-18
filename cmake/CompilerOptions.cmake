@@ -13,6 +13,17 @@ endif()
 
 if(LAB_NATIVE)
   target_compile_options(lab_options INTERFACE -march=native)
+  # On CPUs with AVX10 (e.g. some CI runners), clang 18 warns that -march=native
+  # enables avx10.1-256 and promotes it to avx10.1-512. That warning says nothing
+  # about lab code, so keep it from failing -Werror builds.
+  # GCC accepts any -Wno-* silently, so limit this to Clang.
+  if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    include(CheckCXXCompilerFlag)
+    check_cxx_compiler_flag(-Wno-invalid-feature-combination LAB_HAS_WNO_INVALID_FEATURE_COMBINATION)
+    if(LAB_HAS_WNO_INVALID_FEATURE_COMBINATION)
+      target_compile_options(lab_options INTERFACE -Wno-invalid-feature-combination)
+    endif()
+  endif()
 endif()
 
 if(LAB_SANITIZE)
