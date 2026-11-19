@@ -1,0 +1,6 @@
+sink=/dev/null calls=100000  timer overhead p50 20.0 ns (included below)
+run 0  endl: p50   422.9 p99   1021.9 p99.9   3647.6 alloc/call 0.00 | '\n': p50  254.3 p99   768.6 p99.9   1566.7 | ring: p50 121.9 p99  157.1 p99.9 2081.9 alloc/call 0.00 written 100000 dropped 0
+run 1  endl: p50   444.8 p99   1089.5 p99.9   4281.0 alloc/call 0.00 | '\n': p50  266.7 p99   822.9 p99.9   1658.1 | ring: p50 101.9 p99  119.0 p99.9  229.5 alloc/call 0.00 written 100000 dropped 0
+run 2  endl: p50   461.0 p99    997.1 p99.9   3638.1 alloc/call 0.00 | '\n': p50  266.7 p99   781.9 p99.9   1586.7 | ring: p50 135.2 p99  225.7 p99.9  275.2 alloc/call 0.00 written 100000 dropped 0
+run 3  endl: p50   450.5 p99   1078.1 p99.9   5325.7 alloc/call 0.00 | '\n': p50  266.7 p99   796.2 p99.9   1363.8 | ring: p50 114.3 p99  134.3 p99.9  235.2 alloc/call 0.00 written 100000 dropped 0
+run 4  endl: p50   418.1 p99    702.9 p99.9   2768.6 alloc/call 0.00 | '\n': p50  258.1 p99   770.5 p99.9   1319.0 | ring: p50 121.9 p99  142.9 p99.9  228.6 alloc/call 0.00 written 100000 dropped 0

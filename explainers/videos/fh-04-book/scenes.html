@@ -1,0 +1,106 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">FEED HANDLERS · 04 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Building an<br>order-by-order book</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">Two structures, the spec's rules, a check on every message.</div>
+<div class="lvl" data-cue="1" data-d="0.0" style="left:140px;top:650px;width:300px;background:var(--red)">50.12 · 600</div>
+<div class="lvl" data-cue="1" data-d="0.1" style="left:140px;top:710px;width:220px;background:#c0544b">50.13 · 400</div>
+<div class="lvl" data-cue="1" data-d="0.2" style="left:140px;top:790px;width:260px;background:var(--green)">50.11 · 500</div>
+<div class="lvl" data-cue="1" data-d="0.3" style="left:140px;top:850px;width:380px;background:#2f8a5b">50.10 · 900</div>
+<div class="msg" data-cue="1" data-d="0.5" style="left:560px;top:790px;width:120px;background:#9fe3bf">#13 200</div>
+<div class="msg" data-cue="1" data-d="0.6" style="left:690px;top:790px;width:120px;background:#9fe3bf">#18 300</div>
+<div class="lbl" data-cue="1" data-d="0.8" style="left:830px;top:808px">← each order, in queue order</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Totals vs every order</div>
+<div class="lbl" data-cue="0" data-d="0.2" style="left:120px;top:240px">price level feed</div>
+<div class="lvl" data-cue="0" data-d="0.4" style="left:120px;top:290px;width:600px;background:var(--green)">50.10 · 500 sh · 2 orders</div>
+<div class="lbl" data-cue="1" style="left:900px;top:240px">order by order feed (ITCH)</div>
+<div class="msg" data-cue="1" data-d="0.2" style="left:900px;top:285px;width:420px;background:#9fe3bf;font-size:22px">#11 · B · 300 · 50.10</div>
+<div class="msg" data-cue="1" data-d="0.4" style="left:1340px;top:285px;width:420px;background:#9fe3bf;font-size:22px">#12 · B · 200 · 50.10</div>
+<svg class="full"><path class="draw" data-cue="2" d="M1100 365 C1100 460 700 430 560 370" stroke="#4fd18b" stroke-width="4" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="lbl c-green" data-cue="2" data-d="0.5" style="left:760px;top:450px">you sum the levels yourself</div>
+<div class="tag c-green" data-cue="2" data-d="0.8" style="left:900px;top:380px">+ arrive · shrink · leave, per order</div>
+<div class="lbl" data-cue="3" style="left:120px;top:580px">the cost: every one is a message</div>
+<div class="msg" data-cue="4" data-d="0.0" style="left:120px;top:630px;width:260px;background:var(--green)">A add</div>
+<div class="msg" data-cue="4" data-d="0.3" style="left:400px;top:630px;width:260px;background:var(--amber)">E execute</div>
+<div class="msg" data-cue="4" data-d="0.6" style="left:680px;top:630px;width:260px;background:var(--violet)">X cancel</div>
+<div class="msg" data-cue="4" data-d="0.9" style="left:960px;top:630px;width:260px;background:var(--blue)">D delete</div>
+<div class="msg" data-cue="4" data-d="1.2" style="left:1240px;top:630px;width:260px;background:var(--pink)">U replace</div>
+<div class="body" data-cue="4" data-d="1.5" style="left:120px;top:730px">…applied one at a time, in sequence order.</div>
+</div>
+
+<div class="scene" id="s-structs">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two structures</div>
+<div class="lbl" data-cue="1" style="left:120px;top:220px">OrderMap · reference → Order</div>
+<table class="t" data-cue="1" data-d="0.2" style="left:120px;top:260px"><tr><th>ref</th><th>price</th><th>shares</th><th>locate</th><th>side</th></tr><tr><td class="c-amber">11</td><td>501000</td><td>300</td><td>13</td><td>buy</td></tr><tr><td class="c-amber">12</td><td>501000</td><td>200</td><td>13</td><td>buy</td></tr><tr><td class="c-amber">14</td><td>501200</td><td>600</td><td>13</td><td>sell</td></tr></table>
+<div class="code" data-cue="3" style="left:120px;top:560px;width:740px;font-size:22px"><span class="line"><span class="c">// libs/book/include/lab/book/order_book.hpp</span></span><span class="line"><span class="k">struct</span> <span class="v">Level</span> {</span><span class="line">  std::uint32_t price = <span class="r">0</span>;</span><span class="line">  std::uint32_t orders = <span class="r">0</span>;</span><span class="line">  std::uint64_t shares = <span class="r">0</span>;</span><span class="line">};</span><span class="line">std::vector&lt;Level&gt; levels_;  <span class="c">// worst ... best</span></span></div>
+<div class="lbl" data-cue="2" style="left:960px;top:220px">per instrument · bids vector, best at the back</div>
+<div class="lvl" data-cue="2" data-d="0.1" style="left:960px;top:270px;width:200px;background:#1f5a3f;color:#cfe">50.06</div>
+<div class="lvl" data-cue="2" data-d="0.2" style="left:1170px;top:270px;width:200px;background:#25694a;color:#06141a">50.08</div>
+<div class="lvl" data-cue="2" data-d="0.3" style="left:1380px;top:270px;width:200px;background:#2f8a5b">50.09</div>
+<div class="lvl" data-cue="2" data-d="0.4" style="left:1590px;top:270px;width:200px;background:var(--green)" data-hl="4">50.10 ★</div>
+<div class="lbl" data-cue="2" data-d="0.6" style="left:960px;top:340px">asks vector, best (lowest) at the back</div>
+<div class="lvl" data-cue="2" data-d="0.7" style="left:960px;top:390px;width:200px;background:#8a3a33;color:#fdd">50.16</div>
+<div class="lvl" data-cue="2" data-d="0.8" style="left:1170px;top:390px;width:200px;background:#a8463d">50.14</div>
+<div class="lvl" data-cue="2" data-d="0.9" style="left:1380px;top:390px;width:200px;background:#c0544b">50.13</div>
+<div class="lvl" data-cue="2" data-d="1.0" style="left:1590px;top:390px;width:200px;background:var(--red)" data-hl="4">50.12 ★</div>
+<svg class="full"><path class="draw" data-cue="4" d="M1780 490 L1100 490" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="lbl c-amber" data-cue="4" data-d="0.4" style="left:1100px;top:510px;width:700px">find(): scan from the back, stop once past the price</div>
+</div>
+
+<div class="scene" id="s-rules">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The rules (ITCH 5.0, section 4.3)</div>
+<table class="t" style="left:120px;top:220px;font-size:28px">
+<tr data-cue="1"><td class="c-green">A, F</td><td>Add Order (with attribution)</td><td class="c-green">insert order, add to level</td></tr>
+<tr data-cue="2"><td class="c-amber">E, C</td><td>Executed (with price)</td><td class="c-amber">reduce</td></tr>
+<tr data-cue="3"><td></td><td class="c-muted">… executed to zero</td><td class="c-amber">order leaves, no D follows</td></tr>
+<tr data-cue="4"><td class="c-violet">X</td><td>Order Cancel</td><td class="c-violet">reduce</td></tr>
+<tr data-cue="4" data-d="0.6"><td class="c-blue">D</td><td>Order Delete</td><td class="c-blue">remove</td></tr>
+<tr data-cue="5"><td class="c-pink">U</td><td>Order Replace</td><td class="c-pink">remove original, add new ref, same side and stock</td></tr>
+<tr data-cue="6"><td class="c-muted">P, Q, B</td><td>Trade, Cross, Broken</td><td class="c-muted">visible book untouched</td></tr>
+</table>
+<div class="note" data-cue="0" data-d="0.5" style="left:120px;top:830px">libs/book/include/lab/book/book_builder.hpp · docs/specs/itch50-layout.md</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example · one stock</div>
+<div class="msg" data-cue="1" style="left:120px;top:230px;width:640px;background:var(--green);justify-content:flex-start">A  #11  buy 300 @ 50.10</div>
+<div class="msg" data-cue="2" style="left:120px;top:310px;width:640px;background:var(--green);justify-content:flex-start">A  #12  buy 200 @ 50.10</div>
+<div class="msg" data-cue="4" style="left:120px;top:390px;width:640px;background:var(--amber);justify-content:flex-start">E  #11  executed 100</div>
+<div class="msg" data-cue="5" style="left:120px;top:470px;width:640px;background:var(--pink);justify-content:flex-start">U  #12 → #13  200 @ 50.11</div>
+<div class="msg" data-cue="7" style="left:120px;top:550px;width:640px;background:var(--blue);justify-content:flex-start">D  #11</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:900px;top:230px">bids</div>
+<div id="ex-r0" class="px" style="left:900px;top:290px;opacity:0"></div>
+<div id="ex-b0" class="lvl" style="left:1060px;top:280px;width:0;background:var(--green);opacity:0"></div>
+<div id="ex-r1" class="px" style="left:900px;top:430px;opacity:0"></div>
+<div id="ex-b1" class="lvl" style="left:1060px;top:420px;width:0;background:#2f8a5b;opacity:0"></div>
+<div id="ex-c0" class="lbl" style="left:1060px;top:340px;opacity:0"></div>
+<div id="ex-c1" class="lbl" style="left:1060px;top:480px;opacity:0"></div>
+<div class="lbl" data-cue="1" data-d="0.3" style="left:900px;top:520px">OrderMap</div>
+<div id="ex-map" class="code" data-cue="1" data-d="0.3" style="left:900px;top:560px;width:900px;font-size:23px;white-space:pre"></div>
+</div>
+
+<div class="scene" id="s-map">
+<div class="h2" data-cue="0" style="left:120px;top:110px">OrderMap: identity hash, linear probing</div>
+<div id="mp-grid" data-cue="0" data-d="0.2" style="left:120px;top:240px;width:1680px;height:110px"></div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:360px">16 slots shown · slot = ref &amp; mask · live refs slide forward through the day</div>
+<div class="code" data-cue="1" style="left:120px;top:440px;width:1180px;font-size:22px"><span class="line"><span class="c">// libs/book/include/lab/book/order_map.hpp</span></span><span class="line" data-hl="1" data-hlend="5"><span class="k">std::size_t</span> home(std::uint64_t key) <span class="k">const noexcept</span> {</span><span class="line" data-hl="1" data-hlend="5">  <span class="k">return static_cast</span>&lt;std::size_t&gt;(key) &amp; mask_;</span><span class="line">}</span><span class="line"><span class="c">// Identity hash. Nasdaq assigns order reference numbers sequentially through</span></span><span class="line"><span class="c">// the day, and most orders are cancelled soon after they are added ...</span></span><span class="line" data-hl="4" data-hlend="5"><span class="c">// (A multiplicative hash measured ~35% slower on the itch_bench book rebuild.)</span></span></div>
+<div class="stat c-amber" data-cue="4" style="left:1400px;top:450px">~35%</div>
+<div class="lbl" data-cue="4" data-d="0.2" style="left:1400px;top:530px;width:400px">slower with a multiplicative hash (lab benchmark)</div>
+<div class="tag c-green" data-cue="5" style="left:1400px;top:640px">erase: backward shift, no tombstones</div>
+<div class="tag" data-cue="5" data-d="0.3" style="left:1400px;top:700px">reserve 4M live orders at startup</div>
+</div>
+
+<div class="scene" id="s-checks">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A check for every rule</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:1100px;font-size:23px"><span class="line"><span class="c">// IntegrityChecks, libs/book/.../book_builder.hpp</span></span><span class="line">unknown_order_reference    <span class="c">// E, C, X, D or U for an order not on the book</span></span><span class="line">duplicate_order_reference  <span class="c">// A, F or U reusing a live reference</span></span><span class="line">over_execution             <span class="c">// executed or cancelled more than remained</span></span><span class="line">book_inconsistency         <span class="c">// level totals disagree with the orders</span></span></div>
+<div class="node green" data-cue="2" style="left:1290px;top:220px;width:510px;text-align:left"><div class="t" style="font-size:28px">digest()</div><div class="s">FNV-1a over every level, state and volume<br>live feed == file replay</div></div>
+<div class="code" data-cue="3" style="left:120px;top:560px;width:1100px;font-size:23px"><span class="line"><span class="c">// BookSide::insert_at, order_book.hpp</span></span><span class="line" data-hl="3"><span class="x">levels_.push_back(level);</span>   <span class="c">// can grow the vector: an allocation</span></span></div>
+<div class="tag c-amber" data-cue="3" data-d="0.5" style="left:1290px;top:580px">live: reserve levels at startup</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:120px;top:180px"><span class="c-amber">Order map</span> + <span class="c-green">sorted levels</span></div>
+<div class="sub" data-cue="0" data-d="0.6" style="left:120px;top:320px;width:1600px">kept in step by the spec's rules,<br>checked on every message.</div>
+</div>

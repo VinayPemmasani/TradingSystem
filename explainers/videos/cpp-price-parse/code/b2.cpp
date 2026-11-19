@@ -47,7 +47,7 @@ void bench(const char* name, const std::vector<std::string_view>& in, F f, int r
               r.back(), (unsigned long long)(sink % 7));
 }
 
-int main_bench() {
+void main_bench() {
   std::string store;
   store.reserve(16'000'000);
   const auto in = make(store);

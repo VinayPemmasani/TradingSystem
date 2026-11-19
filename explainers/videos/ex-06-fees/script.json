@@ -1,0 +1,36 @@
+[
+ {
+  "id": "title",
+  "title": "Fees and rebates",
+  "text": "Many US stock exchanges charge one side of each trade, and pay the other. Which side pays depends on who adds liquidity, and who takes it."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "A fee of three tenths of a cent sounds tiny. On a stock with a one cent spread, it is 30 percent of the spread. It is also the legal ceiling: Rule 610 caps the fee to take a protected quote at three tenths of a cent a share. In 2024 the SEC voted to cut it to a tenth of a cent, but compliance is delayed to November 2027. For a market maker earning a fraction of a cent a share, the fee schedule can decide whether a strategy works at all."
+ },
+ {
+  "id": "maker",
+  "title": "Maker-taker",
+  "text": "Under maker-taker pricing, the maker posts a resting order, adding liquidity. The taker trades against it, removing liquidity. The taker pays a fee, and the maker earns a rebate. At Nasdaq, the remove fee is 0.30 cents a share, and the base add credit is 0.18 cents. An inverted venue flips the signs. On Cboe BYX, the taker earns 0.02 cents, and the maker pays 0.20 cents. Why pay to rest? Routers that count fees send orders there first, so a resting order can fill sooner.",
+  "hold": 0.6
+ },
+ {
+  "id": "example",
+  "title": "Net cost",
+  "text": "Say a stock is quoted $20.00 bid, $20.01 offered on both venues, and you buy 10,000 shares. Take on Nasdaq, and each share costs $20.0130 after the fee. Take on BYX, and the rebate brings it to $20.0098. Post a bid on Nasdaq and get filled, and you pay $19.9982. Post on BYX instead, and you pay $20.0020, but you may be filled sooner. Between the best and the worst of these, the gap is 148 dollars on this one order.",
+  "hold": 0.8
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, each execution report carries the OUCH liquidity flag. The resting order gets A, for added, and the incoming order gets R, for removed. Auction crosses get their own flags. But the lab counts no fees or rebates, so its profit figures are gross. A desk would apply each venue's schedule, flag by flag, to every fill. Leaving fees out flatters any strategy that takes liquidity often.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They compare venues on net cost per share, not on the quote alone. They know their tier, because credits rise with their share of volume. And they treat a rebate as pay for waiting, while the price can move against them. They put fees into every backtest from day one. Fees are part of the price.",
+  "hold": 1.0
+ }
+]

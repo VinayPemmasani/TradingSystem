@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Imbalance",
+  "text": "Order book imbalance compares the shares waiting to buy with the shares waiting to sell. It is the most common book signal, and one of the cheapest. Here is what it predicts, how well, and where it misleads."
+ },
+ {
+  "id": "define",
+  "title": "Definition",
+  "text": "Gould and Bonart define queue imbalance at the best prices: bid size minus ask size, over their sum. It runs from minus one, only sellers, to plus one, only buyers. That is the signals video's ratio, rescaled: two I minus one. With 900 shares bid and 100 offered, it is plus 0.8. Deeper versions add more levels, with weights that fall with distance from the touch."
+ },
+ {
+  "id": "predict",
+  "title": "What it predicts",
+  "text": "What does it predict? On a year of Nasdaq data for ten liquid stocks, from 2014, they fit a logistic regression: the chance that the next mid move is up, given imbalance. The link was strongly significant for every stock. It helped much more for large-tick stocks than for small-tick ones. A large-tick price moves when a long queue runs out, and imbalance says which queue is closer to empty."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Here is the arithmetic, on the toy queue model from the microprice video. Fitting the logistic curve to it gives a slope of about four. At imbalance zero, up and down are equally likely. At plus 0.5, it is one over one plus e to the minus two: 88 percent up. Real books are far noisier, so a real slope is fitted per stock, and checked on days it has not seen."
+ },
+ {
+  "id": "maker",
+  "title": "Why makers care",
+  "text": "Cartea, Donnelly and Jaimungal found a second use, in 2014 Nasdaq data for eleven stocks: imbalance helps predict the sign of the next market order. That matters to a market maker. When imbalance is strongly negative, sellers are likely to come next. A resting bid then tends to be hit just before the price drops. In their tests, adding imbalance to the strategy raised profits, mainly by cutting that adverse selection."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's TopOfBook carries two levels per side, enough for level-one and two-level imbalance. One detail matters: take your own order out first. The market maker's others function already removes its resting order from the best prices. Sizes need the same treatment, or your own 100-share bid inflates the bid queue. A first test: lean both quotes a tick when imbalance passes 0.6. Add that rule to the research backtest's quote function, and compare runs with and without it."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Now the traps. Visible size can be cancelled in microseconds, and spoofers fake it on purpose. Hidden and iceberg orders do not show at all. Imbalance is a cheap hint about the next tick, strongest where queues are long."
+ }
+]

@@ -1,0 +1,84 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 01 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Microprice</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Not a size-weighted guess: an expected future mid.</div>
+<div class="fcard violet" data-cue="0" data-d="1.0" style="left:140px;top:560px;width:760px"><span class="lbl">signals video · weighted mid</span><div class="math"><i>M</i><sub>w</sub><span class="eq">=</span><i>I p</i><sub>a</sub> + (1 − <i>I</i>) <i>p</i><sub>b</sub></div></div>
+<div class="fcard amber" data-cue="1" style="left:980px;top:560px;width:800px"><span class="lbl">Stoikov 2018 · micro-price</span><div class="math"><i>P</i><sup>micro</sup><span class="eq">=</span>lim<sub><i>i</i>→∞</sub> E[ <i>M</i><sub>τ<sub>i</sub></sub> | book now ]</div></div>
+<div class="src" data-cue="1" data-d="0.5" style="left:980px;top:720px">S. Stoikov, Quantitative Finance 18(12), 2018</div>
+</div>
+
+<div class="scene" id="s-flaw">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The weighted mid can move the wrong way</div>
+<div id="fl-lad" data-cue="0" data-anim="fade" style="left:150px;top:290px"></div>
+<div class="tag c-teal" id="fl-mid" style="left:860px;top:480px">mid</div>
+<div class="tag c-violet" id="fl-mw" style="left:860px;top:450px">weighted mid</div>
+<div id="fl-lmid" style="left:150px;top:500px;width:690px;border-top:3px dashed var(--teal)"></div>
+<div id="fl-lmw" style="left:150px;top:470px;width:690px;border-top:3px solid var(--violet)"></div>
+<div class="fcard" data-cue="1" style="left:1130px;top:250px;width:680px"><span class="lbl">before</span><div class="math" style="font-size:36px"><i>I</i> = <span class="frac"><span>900</span><span>900 + 100</span></span> = <span class="val c-violet">0.9</span></div><div class="math" style="font-size:36px"><i>M</i><sub>w</sub> = 0.9·50.01 + 0.1·50.00 = <span class="val c-violet">50.009</span></div></div>
+<div class="tag c-red" data-cue="2" style="left:1130px;top:500px">ask 100 @ 50.01 cancelled</div>
+<div class="fcard" data-cue="2" data-d="0.4" style="left:1130px;top:560px;width:680px"><span class="lbl">after</span><div class="math" style="font-size:36px"><i>I</i> = <span class="frac"><span>900</span><span>900 + 2,700</span></span> = <span class="val c-violet">0.25</span></div><div class="math" style="font-size:36px"><i>M</i><sub>w</sub> = 0.25·50.02 + 0.75·50.00 = <span class="val c-violet">50.005</span></div></div>
+<div class="stat c-pink" data-cue="4" style="left:1130px;top:810px;font-size:52px">−0.4¢ after a seller left</div>
+<div class="tag c-pink" data-cue="5" style="left:150px;top:760px">re-jumps on every top-of-book update</div>
+</div>
+
+<div class="scene" id="s-define">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Defined as an expectation</div>
+<div id="df-ch" data-cue="0" data-anim="fade" style="left:110px;top:220px;width:1000px;height:420px"></div>
+<div class="tag c-amber" data-cue="1" style="left:1150px;top:250px"><i>P</i>¹ = E[ M at τ₁ | book now ]</div>
+<div class="tag c-amber" data-cue="2" style="left:1150px;top:310px"><i>P</i>² = E[ M at τ₂ | book now ]</div>
+<div class="tag c-amber" data-cue="3" style="left:1150px;top:370px"><i>P</i><sup>micro</sup> = lim <i>P</i><sup><i>i</i></sup></div>
+<div class="fcard amber" data-cue="4" style="left:120px;top:660px;width:900px"><div class="math"><i>P</i><sup>micro</sup><span class="eq">=</span><i>M</i> + <i>g</i>(<i>I</i>, <i>S</i>)</div><div class="note" style="margin-top:8px">g = g₁ + g₂ + …   g₁ = E[ M<sub>τ₁</sub> − M | I, S ]<br>g<sub>i+1</sub> = E[ g<sub>i</sub>(I<sub>τ₁</sub>, S<sub>τ₁</sub>) | I, S ]   (I imbalance, S spread)</div></div>
+<div class="fcard" data-cue="5" style="left:1150px;top:470px;width:680px"><span class="lbl">toy 1 · mid jumps ±1, ignoring I</span><div class="math" style="font-size:36px"><i>g</i> = 0  ⇒  <i>P</i><sup>micro</sup> = <i>M</i></div></div>
+<div class="fcard violet" data-cue="6" style="left:1150px;top:640px;width:680px"><span class="lbl">toy 2 · I a Brownian motion, spread 1 tick</span><div class="math" style="font-size:36px"><i>P</i><sup>micro</sup> = <i>M</i> + <i>I</i> − ½ = <i>M</i><sub>w</sub></div></div>
+</div>
+
+<div class="scene" id="s-estimate">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Estimating g from the book</div>
+<div class="lbl" data-cue="1" style="left:120px;top:225px">imbalance bucket →</div>
+<div id="es-grid" data-cue="0" data-d="0.4" data-anim="fade" style="left:290px;top:260px;width:900px;height:260px"></div>
+<div class="node green" data-cue="2" style="left:1300px;top:240px;width:250px"><div class="t" style="font-size:28px">mid ↑</div><div class="s">absorbing</div></div>
+<div class="node red" data-cue="2" style="left:1300px;top:420px;width:250px"><div class="t" style="font-size:28px">mid ↓</div><div class="s">absorbing</div></div>
+<svg class="full">
+<path id="es-p1" d="M500 330 C 640 250 760 250 880 330" fill="none" stroke="none"/>
+<path id="es-p2" d="M1060 330 C 1150 300 1220 280 1300 280" fill="none" stroke="none"/>
+<path id="es-p3" d="M320 460 C 420 540 560 540 680 460" fill="none" stroke="none"/>
+<path id="es-p4" d="M200 460 C 600 620 1100 600 1300 470" fill="none" stroke="none"/>
+<path class="draw" data-cue="4" data-d="0.4" d="M380 560 C 600 640 900 640 1110 560" stroke="#a98bff" stroke-width="3" fill="none" marker-end="url(#ah-violet)" marker-start="url(#ah-violet)"/>
+</svg>
+<div class="pkt" data-path="es-p1" data-cue="2" data-dur="1.4" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="es-p2" data-cue="2" data-d="0.4" data-dur="1.4" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="pkt" data-path="es-p3" data-cue="2" data-d="0.8" data-dur="1.4" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="es-p4" data-cue="2" data-d="1.1" data-dur="2" data-loop="1" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="fcard amber" data-cue="3" style="left:1300px;top:600px;width:520px"><span class="lbl">first adjustment</span><div class="math" style="font-size:38px"><i>g</i>₁ = (1 − <i>Q</i>)<sup>−1</sup> <i>R</i>₁ <i>K</i></div><div class="note">Q: state → state · R₁: state → mid change · K: the changes</div></div>
+<div class="tag c-violet" data-cue="4" style="left:500px;top:650px">mirror: swap bids and asks  ⇒  g(1 − I, S) = −g(I, S)</div>
+<div class="chip" data-cue="5" style="left:290px;top:760px;background:var(--teal)">BAC · large tick</div>
+<div class="chip" data-cue="5" data-d="0.3" style="left:560px;top:760px;background:var(--blue)">CVX · small tick</div>
+</div>
+
+<div class="scene" id="s-toy">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: a toy queue model</div>
+<div class="node" data-cue="1" style="left:120px;top:250px;width:560px;text-align:left"><div class="t" style="font-size:28px">one-tick spread · lots of 100</div><div class="s">each event: random side<br>add a lot 45% · remove a lot 55%<br>queue empty → mid moves ½ tick<br>then refills symmetrically</div></div>
+<div id="ty-q" data-cue="1" data-d="0.3" style="left:120px;top:540px;width:560px;height:140px"></div>
+<div id="ty-ch" data-cue="2" data-anim="fade" style="left:780px;top:230px;width:1040px;height:580px"></div>
+<div class="tag c-amber" data-cue="2" data-d="0.6" style="left:900px;top:250px">g, toy model</div>
+<div class="tag c-violet" data-cue="2" data-d="0.9" style="left:900px;top:300px">weighted mid: S(I − ½)</div>
+<table class="t" data-cue="5" style="left:120px;top:720px"><tr><th>I = 0.75</th><th>g, ticks</th></tr><tr><td>3 v 1 lots</td><td class="c-teal">0.31</td></tr><tr><td>12 v 4</td><td class="c-teal">0.35</td></tr><tr><td>30 v 10</td><td class="c-teal">0.40</td></tr></table>
+<div class="src" data-cue="2" style="left:780px;top:830px">computed: exact solve on a 160×160 queue grid, queues 1–30 lots, 10 buckets</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: a table lookup</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1680px;font-size:25px"><span class="line"><span class="c">// sketch, not in the repo: per TopOfBook t with both sides present, integers only</span></span><span class="line" data-hl="1" data-hlend="2"><span class="v">uint64_t</span> qb = t.bid_qty[<span class="r">0</span>], qa = t.ask_qty[<span class="r">0</span>];</span><span class="line" data-hl="1" data-hlend="2"><span class="v">uint32_t</span> b  = std::min&lt;<span class="v">uint64_t</span>&gt;(qb * kBuckets / (qb + qa), kBuckets - <span class="r">1</span>);</span><span class="line" data-hl="1" data-hlend="2"><span class="v">uint32_t</span> s  = std::min((t.ask_px[<span class="r">0</span>] - t.bid_px[<span class="r">0</span>]) / kTick, kMaxSpread);</span><span class="line" data-hl="1" data-hlend="2"><span class="v">int32_t</span>  fair = (t.bid_px[<span class="r">0</span>] + t.ask_px[<span class="r">0</span>]) / <span class="r">2</span> + g[s][b];   <span class="c">// Price(4)</span></span></div>
+<div class="node blue" data-cue="2" style="left:120px;top:580px;width:380px"><div class="t" style="font-size:28px">itch-dump --tob-csv</div><div class="s">feed_ns, bid, bid_qty, ask, ask_qty</div></div>
+<div class="node violet" data-cue="2" data-d="0.4" style="left:620px;top:580px;width:380px"><div class="t" style="font-size:28px">research/ fit</div><div class="s">g[spread][bucket], mirrored</div></div>
+<div class="node amber" data-cue="3" style="left:1120px;top:580px;width:680px"><div class="t" style="font-size:28px">MarketMaker anchor</div><div class="s">today: others' best bid and ask<br>swap in: micro-price ± half spread</div></div>
+<svg class="full"><path class="draw" data-cue="2" data-d="0.3" d="M505 640 L615 640" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="3" d="M1005 640 L1115 640" stroke="#a98bff" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/></svg>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Thin buckets</div><div class="cs">Extreme imbalance is rare, so its g is noisy.</div></div>
+<div class="card" data-cue="0" data-d="0.5" style="left:690px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Rare spreads</div><div class="cs">Wide-spread states have few samples.</div></div>
+<div class="card" data-cue="0" data-d="1.0" style="left:1260px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Tick size</div><div class="cs">A large-tick table is wrong for a small-tick stock.</div></div>
+<div class="tag c-teal" data-cue="1" style="left:120px;top:410px">refit per symbol · fit on earlier days, test on later ones</div>
+<div class="big" data-cue="2" style="left:120px;top:520px;width:1700px"><span class="c-amber">Micro-price</span> = the expected mid,<br>learned from data.</div>
+</div>

@@ -1,0 +1,72 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 05 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Lead-lag:<br>futures lead cash</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">One source of value, two prices, one moves first.</div>
+<div id="ti-ch" data-cue="1" data-anim="fade" style="left:140px;top:640px;width:1100px;height:260px"></div>
+<div class="tag c-blue" data-cue="1" data-d="0.3" style="left:1300px;top:680px">futures</div>
+<div class="tag c-teal" data-cue="1" data-d="0.6" style="left:1300px;top:740px">cash index</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Where price discovery happens</div>
+<div class="node" data-cue="0" data-d="0.4" style="left:120px;top:330px;width:240px"><div class="t" style="font-size:28px">news</div></div>
+<div class="node blue" data-cue="1" style="left:520px;top:290px;width:420px"><div class="t" style="font-size:28px">index futures</div><div class="s">one contract · leverage · cheap</div></div>
+<div class="node teal" data-cue="1" data-d="0.5" style="left:1150px;top:290px;width:560px"><div class="t" style="font-size:28px">500 stocks → cash index</div><div class="s">many orders · slower to reprice</div></div>
+<svg class="full"><path id="wy-p1" d="M365 360 L515 360" stroke="#8ea3b1" stroke-width="3" fill="none" class="draw" data-cue="1" marker-end="url(#ah)"/><path id="wy-p2" d="M945 360 L1145 360" stroke="#6aa8ff" stroke-width="3" fill="none" class="draw" data-cue="1" data-d="0.7" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="wy-p1" data-cue="1" data-dur="1.6" data-loop="1" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="pkt" data-path="wy-p2" data-cue="1" data-d="0.8" data-dur="1.6" data-loop="1" style="background:var(--teal)"></div>
+<div class="fcard blue" data-cue="2" style="left:120px;top:540px;width:820px"><span class="lbl">Stoll &amp; Whaley · JFQA 1990 · 5-minute returns</span><div class="body">S&amp;P 500 and MMI futures lead the index by <span class="c-amber">about 5 minutes</span>, sometimes 10+; mild feedback the other way</div></div>
+<div class="fcard blue" data-cue="3" style="left:1000px;top:540px;width:820px"><span class="lbl">Hasbrouck · J. Finance 2003</span><div class="body">S&amp;P 500 and Nasdaq-100: <span class="c-amber">most price discovery in the E-mini</span></div></div>
+</div>
+
+<div class="scene" id="s-today">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Now it is a race</div>
+<div class="chip" data-cue="1" style="left:120px;top:210px;background:var(--blue)">ES futures vs SPY ETF · 2011 · Budish, Cramton &amp; Shim</div>
+<div class="lbl" data-cue="2" style="left:120px;top:300px">return correlation by horizon</div>
+<div id="td-ch" data-cue="2" data-anim="fade" style="left:120px;top:340px;width:900px;height:480px"></div>
+<div class="lbl" data-cue="4" style="left:1150px;top:300px">median arbitrage duration</div>
+<div class="lbl" data-cue="4" data-d="0.2" style="left:1150px;top:380px">2005</div>
+<div class="grow bar" data-cue="4" data-d="0.3" data-w="600" style="left:1240px;top:372px;background:var(--amber)"></div>
+<div class="stat c-amber" data-cue="4" data-d="1.0" style="left:1250px;top:430px;font-size:54px">97 ms</div>
+<div class="lbl" data-cue="4" data-d="1.4" style="left:1150px;top:560px">2011</div>
+<div class="grow bar" data-cue="4" data-d="1.5" data-w="43" style="left:1240px;top:552px;background:var(--amber)"></div>
+<div class="stat c-amber" data-cue="4" data-d="2.0" style="left:1250px;top:610px;font-size:54px">7 ms</div>
+</div>
+
+<div class="scene" id="s-measure">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measuring a lead: lagged correlation</div>
+<div class="fcard amber" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:760px"><div class="math"><i>ρ</i>(<i>k</i>) = corr( <i>f</i><sub><i>t</i></sub> , <i>c</i><sub><i>t</i>+<i>k</i></sub> )</div><div class="note">f futures return · c cash return · k steps later</div></div>
+<div class="tag c-pink" data-cue="1" style="left:120px;top:420px">returns, not prices: trending prices correlate at every lag</div>
+<div class="fcard" data-cue="2" style="left:120px;top:520px;width:760px"><span class="lbl">my simulation · 20,000 steps</span><div class="math" style="font-size:34px"><i>c</i><sub><i>t</i></sub> = 0.1 <i>f</i><sub><i>t</i></sub> + 0.3 <i>f</i><sub><i>t</i>−1</sub> + 0.6 <i>f</i><sub><i>t</i>−2</sub> + <i>ε</i></div></div>
+<div id="ms-ch" data-cue="2" data-d="0.5" data-anim="fade" style="left:960px;top:220px;width:860px;height:600px"></div>
+</div>
+
+<div class="scene" id="s-predict">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Using the lead</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:900px"><span class="lbl">least squares on the last two futures returns</span><div class="math" style="font-size:38px"><i>c</i><sub><i>t</i>+1</sub> ≈ <span class="c-amber">0.30</span> <i>f</i><sub><i>t</i></sub> + <span class="c-amber">0.60</span> <i>f</i><sub><i>t</i>−1</sub></div></div>
+<div class="fcard amber" data-cue="1" style="left:120px;top:440px;width:900px"><div class="math" style="font-size:38px">0.30 × (+2) + 0.60 × 0 = <span class="val c-amber">+0.6 points</span></div><div class="note">futures +2 one step ago, flat before</div></div>
+<div class="node blue" data-cue="2" style="left:1150px;top:230px;width:640px"><div class="t" style="font-size:28px">futures tick +2</div></div>
+<div class="node amber" data-cue="3" style="left:1150px;top:430px;width:640px"><div class="t" style="font-size:28px">follower fair value +0.6</div><div class="s">quotes skew up at once</div></div>
+<svg class="full"><path class="draw" data-cue="3" d="M1470 310 L1470 425" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div id="pd-ch" data-cue="3" data-d="0.4" data-anim="fade" style="left:1150px;top:600px;width:640px;height:240px"></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: strips</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:1100px;font-size:24px"><span class="c"># exchange/agents: a strip is traded like a symbol</span>
+agents --symbols SYM0001,SYM0002 --strip SPRD=SYM0001+SYM0002
+<span class="c">// value of the strip = sum of the legs' values</span></div>
+<div class="node teal" data-cue="2" style="left:120px;top:470px;width:360px"><div class="t" style="font-size:26px">leg SYM0001</div></div>
+<div class="node teal" data-cue="2" style="left:120px;top:620px;width:360px"><div class="t" style="font-size:26px">leg SYM0002</div></div>
+<div class="node violet" data-cue="2" data-d="0.4" style="left:640px;top:540px;width:380px"><div class="t" style="font-size:26px">strip SPRD</div><div class="s">makers quote around value</div></div>
+<svg class="full"><path class="draw" data-cue="2" data-d="0.2" d="M485 510 L635 570" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path class="draw" data-cue="2" data-d="0.2" d="M485 660 L635 610" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="node blue" data-cue="3" style="left:1150px;top:470px;width:670px"><div class="t" style="font-size:26px">itch-dump → leg and strip mids</div><div class="s">ρ(k) of leg returns vs strip returns<br>peak at k &gt; 0 ⇒ the strip trails</div></div>
+<div class="tag c-blue" data-cue="4" style="left:120px;top:760px">same recipe · any two prices tied by one value, e.g. ETF vs basket</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:230px;border-color:var(--pink)"><div class="ct c-pink">Stale prints</div><div class="cs">Infrequent trading fakes a lag.</div></div>
+<div class="card" data-cue="1" style="left:690px;top:150px;width:540px;height:230px;border-color:var(--pink)"><div class="ct c-pink">Clocks</div><div class="cs">Compare venues only on synchronized time.</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:150px;width:540px;height:230px;border-color:var(--pink)"><div class="ct c-pink">Decay</div><div class="cs">A known lead shrinks as others trade it.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:480px;width:1700px"><span class="c-amber">Measure</span> the lead with lagged correlations;<br><span class="c-blue">move fair value</span> when the leader moves.</div>
+</div>

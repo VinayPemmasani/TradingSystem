@@ -1,0 +1,102 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 02 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Adverse<br>selection</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">Trading with people who know more than you.</div>
+<svg class="full"><path id="ti-p1" d="M140 760 L1180 760" fill="none" stroke="#2c4351" stroke-width="3"/></svg>
+<div class="pkt" data-path="ti-p1" data-cue="1" data-dur="3" data-loop="1" style="background:#8ea3b1;box-shadow:none"></div>
+<div class="pkt" data-path="ti-p1" data-cue="1" data-dur="3" data-loop="1" data-phase="0.33" style="background:#8ea3b1;box-shadow:none"></div>
+<div class="pkt" data-path="ti-p1" data-cue="1" data-dur="3" data-loop="1" data-phase="0.66" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="node teal" data-cue="1" style="left:1200px;top:700px;width:300px"><div class="t">dealer</div><div class="s">who is who?</div></div>
+<div class="tag c-amber" data-cue="2" style="left:1540px;top:730px">charges everyone</div>
+</div>
+
+<div class="scene" id="s-model">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Glosten &amp; Milgrom (1985)</div>
+<div class="node teal" data-cue="0" data-d="0.4" style="left:1000px;top:400px;width:320px"><div class="t">dealer</div><div class="s">one trade per arrival</div></div>
+<div class="node violet" data-cue="1" style="left:140px;top:260px;width:420px"><div class="t c-violet">insider</div><div class="s">knows the value V</div></div>
+<div class="node" data-cue="2" style="left:140px;top:520px;width:420px"><div class="t">random trader</div><div class="s">buys or sells, 50 / 50</div></div>
+<svg class="full">
+<path class="draw" data-cue="1" data-d="0.4" d="M570 320 C 760 320 820 440 990 450" stroke="#a98bff" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path class="draw" data-cue="2" data-d="0.4" d="M570 580 C 760 580 820 480 990 470" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+</svg>
+<div class="tag c-teal" data-cue="3" style="left:1000px;top:560px">competition: E[profit per trade] = 0</div>
+<div class="fcard red" data-cue="4" style="left:1380px;top:250px;width:440px"><span class="lbl">ask</span><div class="math" style="font-size:38px">E[ <i>V</i> | next is a buy ]</div></div>
+<div class="fcard green" data-cue="5" style="left:1380px;top:640px;width:440px"><span class="lbl">bid</span><div class="math" style="font-size:38px">E[ <i>V</i> | next is a sell ]</div></div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: one insider in five</div>
+<div class="node" data-cue="1" style="left:120px;top:440px;width:200px"><div class="t">V</div><div class="s">prior</div></div>
+<div class="node teal" data-cue="1" data-d="0.3" style="left:440px;top:280px;width:260px"><div class="t">101</div><div class="s">p = ½</div></div>
+<div class="node teal" data-cue="1" data-d="0.5" style="left:440px;top:600px;width:260px"><div class="t">99</div><div class="s">p = ½</div></div>
+<svg class="full">
+<path class="draw" data-cue="1" data-d="0.2" d="M330 480 L430 340" stroke="#3fd0dc" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="1" data-d="0.4" d="M330 500 L430 650" stroke="#3fd0dc" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="3" d="M710 330 L820 330" stroke="#4fd18b" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="3" d="M710 650 L820 650" stroke="#4fd18b" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+</svg>
+<div class="fcard" data-cue="2" style="left:830px;top:240px;width:420px"><span class="lbl">P(buy | 101)</span><div class="math" style="font-size:34px"><span class="c-violet">0.2</span> + 0.8 × ½ = <span class="val">0.6</span></div></div>
+<div class="fcard" data-cue="3" style="left:830px;top:560px;width:420px"><span class="lbl">P(buy | 99)</span><div class="math" style="font-size:34px"><span class="c-violet">0</span> + 0.8 × ½ = <span class="val">0.4</span></div></div>
+<div class="fcard amber" data-cue="4" style="left:1290px;top:240px;width:560px"><span class="lbl">Bayes</span><div class="math" style="font-size:27px">P(101 | buy) = <span class="frac"><span>0.6 × ½</span><span>0.6 × ½ + 0.4 × ½</span></span> = <span class="val c-amber">0.6</span></div></div>
+<div class="fcard red" data-cue="5" style="left:1300px;top:440px;width:520px"><div class="math" style="font-size:34px">ask = 0.6·101 + 0.4·99 = <span class="val c-red">100.20</span></div><div class="math" style="font-size:34px">bid = <span class="val c-green">99.80</span> · spread <span class="val c-amber">0.40</span></div></div>
+<div class="fcard violet" data-cue="6" style="left:120px;top:800px;width:760px"><div class="math" style="font-size:34px">spread = <i>μ</i> (<i>V</i><sub>H</sub> − <i>V</i><sub>L</sub>) = 0.2 × 2 = 0.40</div></div>
+<div class="fcard amber" data-cue="7" style="left:1300px;top:690px;width:520px"><div class="math" style="font-size:34px"><i>μ</i> = ½ ⇒ spread = <span class="val c-amber">$<span class="count" data-cue="7" data-d="0.2" data-from="0.40" data-to="1.00" data-dec="2">0.40</span></span></div></div>
+</div>
+
+<div class="scene" id="s-pays">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A transfer, passed through the dealer</div>
+<div class="node teal" data-cue="0" data-d="0.3" style="left:800px;top:440px;width:320px"><div class="t">dealer</div><div class="s">net <span id="pa-net">0¢</span></div></div>
+<div class="node" data-cue="1" style="left:140px;top:240px;width:300px"><div class="t">random</div><div class="s c-red">−20¢</div></div>
+<div class="node" data-cue="1" data-d="0.2" style="left:140px;top:400px;width:300px"><div class="t">random</div><div class="s c-red">−20¢</div></div>
+<div class="node" data-cue="1" data-d="0.4" style="left:140px;top:560px;width:300px"><div class="t">random</div><div class="s c-red">−20¢</div></div>
+<div class="node" data-cue="1" data-d="0.6" style="left:140px;top:720px;width:300px"><div class="t">random</div><div class="s c-red">−20¢</div></div>
+<div class="node violet" data-cue="2" style="left:1480px;top:440px;width:320px"><div class="t c-violet">insider</div><div class="s c-green">+80¢</div></div>
+<svg class="full">
+<path id="pa-a" d="M450 290 C 620 300 700 450 790 480" fill="none" stroke="#8ea3b1" stroke-width="2" class="draw" data-cue="1" data-d="0.2"/>
+<path id="pa-b" d="M450 450 C 620 450 700 480 790 495" fill="none" stroke="#8ea3b1" stroke-width="2" class="draw" data-cue="1" data-d="0.4"/>
+<path id="pa-c" d="M450 610 C 620 600 700 520 790 510" fill="none" stroke="#8ea3b1" stroke-width="2" class="draw" data-cue="1" data-d="0.6"/>
+<path id="pa-d" d="M450 770 C 620 760 700 540 790 525" fill="none" stroke="#8ea3b1" stroke-width="2" class="draw" data-cue="1" data-d="0.8"/>
+<path id="pa-e" d="M1130 495 L1470 495" fill="none" stroke="#a98bff" stroke-width="3" class="draw" data-cue="2" data-d="0.3" marker-end="url(#ah-violet)"/>
+</svg>
+<div class="pkt" data-path="pa-a" data-cue="3" data-dur="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="pa-b" data-cue="3" data-d="0.15" data-dur="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="pa-c" data-cue="3" data-d="0.3" data-dur="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="pa-d" data-cue="3" data-d="0.45" data-dur="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="pa-e" data-cue="3" data-d="1.4" data-dur="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="fcard amber" data-cue="3" data-d="0.6" style="left:700px;top:640px;width:520px"><div class="math" style="font-size:34px">4 × 20¢ − 80¢ = <span class="val c-amber">0</span></div></div>
+<div class="tag c-blue" data-cue="5" style="left:700px;top:800px">mostly-uninformed retail flow is cheap to fill → ms-05</div>
+</div>
+
+<div class="scene" id="s-learn">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Every trade leaks information</div>
+<div id="le-ch" data-cue="0" data-anim="fade" style="left:120px;top:210px;width:1100px;height:620px"></div>
+<div class="fcard" data-cue="1" style="left:1280px;top:220px;width:540px"><span class="lbl">after a buy</span><div class="math" style="font-size:34px">P(101) = <span class="val c-amber">0.60</span></div><div class="math" style="font-size:34px">bid <span class="val c-green">100.00</span> · ask <span class="val c-red">100.38</span></div></div>
+<div class="fcard teal" data-cue="4" style="left:1280px;top:460px;width:540px"><span class="lbl">Glosten &amp; Milgrom</span><div class="cs" style="font:400 28px/1.35 var(--body)">Trade prices form a martingale: no bid-ask bounce for Roll to see.</div></div>
+<div class="fcard pink" data-cue="5" style="left:1280px;top:680px;width:540px"><div class="cs" style="font:400 28px/1.35 var(--body)"><span class="c-pink">Too many insiders:</span> no spread breaks even. No quotes.</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: exchange/agents</div>
+<div class="node" data-cue="1" style="left:120px;top:250px;width:470px;text-align:left"><div class="t">noise traders</div><div class="s">marketable IOC, random side</div></div>
+<div class="node violet" data-cue="2" style="left:120px;top:470px;width:470px;text-align:left"><div class="t c-violet">value traders</div><div class="s">know s.value · act at |gap| ≥ 3 ticks</div></div>
+<div class="node teal" data-cue="0" data-d="0.6" style="left:1250px;top:360px;width:540px"><div class="t">makers</div><div class="s">quote around value + noise ± 2 ticks</div></div>
+<svg class="full">
+<path class="draw" data-cue="1" data-d="0.3" d="M600 300 C 900 300 1000 400 1240 410" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="lb-v" d="M600 520 C 900 520 1000 450 1240 440" stroke="#a98bff" stroke-width="3" fill="none" class="draw" data-cue="3" marker-end="url(#ah-violet)"/>
+</svg>
+<div class="pkt" data-path="lb-v" data-cue="3" data-d="0.6" data-dur="1.1" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="tag c-violet" data-cue="3" data-d="0.8" style="left:820px;top:540px">stale quote hit</div>
+<div class="code" data-cue="2" data-d="0.4" style="left:120px;top:660px;width:1000px;font-size:22px"><span class="c">// exchange/agents/main.cpp</span>
+<span class="k">const double</span> gap = (s.value - s.last_px) / kTick;
+<span class="k">if</span> (... std::abs(gap) &gt;= opt_.value_threshold) <span class="c">// 3</span></div>
+<div class="tag c-blue" data-cue="4" style="left:1250px;top:560px">prints fills and PnL per population</div>
+<div class="tag c-blue" data-cue="5" style="left:1250px;top:620px">agents --value-rate 10 vs 5 (default)</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What real makers do</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Markouts</div><div class="cs">Price move after each fill, by counterparty and venue.</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Fast cancels</div><div class="cs">A stale quote is a free option.</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:230px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Widen, step back</div><div class="cs">When flow turns one-sided.</div></div>
+<div class="big" data-cue="4" style="left:120px;top:540px;width:1700px"><span class="c-violet">Information</span> makes a spread<br>even when trading is free.</div>
+</div>

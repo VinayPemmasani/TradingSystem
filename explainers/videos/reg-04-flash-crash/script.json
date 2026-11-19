@@ -1,0 +1,42 @@
+[
+ {
+  "id": "title",
+  "title": "The flash crash",
+  "text": "On the afternoon of 6 May 2010, US stock index futures and stocks fell five to six percent in minutes, then mostly bounced back. Some shares traded at a penny. Others traded at $100,000."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "The joint report by CFTC and SEC staff, dated 30 September 2010, traced what happened, minute by minute. It showed how one automated sell program, a thin order book and fast intermediaries can interact. Its findings fed into single-stock circuit breakers, clearer rules for breaking trades, and later the limit up limit down plan."
+ },
+ {
+  "id": "sell",
+  "title": "The sell program",
+  "text": "At 2:32 p.m., a mutual fund complex began selling 75,000 E-mini S&P 500 futures, worth about $4.1 billion, to hedge an equity position. Its algorithm targeted 9 percent of the previous minute's volume, with no regard to price or time. So as volume rose, it sold faster. High-frequency traders bought at first, then started selling to each other. Between 2:45:13 and 2:45:27 they traded over 27,000 contracts, 49 percent of volume, while buying only about 200 net.",
+  "hold": 0.4
+ },
+ {
+  "id": "minutes",
+  "title": "Minute by minute",
+  "text": "An earlier program of the same size, by the same trader, took more than five hours. This one took about 20 minutes. From 2:41 to 2:44, the E-mini fell about 3 percent. In the 15 seconds to 2:45:27, it fell another 1.7 percent, to a low of 1056. Buy-side depth was down to about $58 million, under 1 percent of its morning level. Then CME's Stop Logic paused trading for five seconds. By 3:08, the E-mini was back near its earlier level.",
+  "hold": 0.5
+ },
+ {
+  "id": "stocks",
+  "title": "Stocks and stub quotes",
+  "text": "Stocks followed the futures down. As market makers pulled back, some left stub quotes, placeholder prices far from the market. Market orders then hit them. From 2:40 to 3:00, over 20,000 trades in more than 300 securities executed 60 percent or more away from their 2:40 prices. Exchanges and FINRA cancelled those trades after the close. Still, over 98 percent of shares traded within 10 percent of their 2:40 values.",
+  "hold": 0.5
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab has a version of each fix. simex runs limit up limit down bands and trading pauses. The trader pulls both of its quotes when a stock is halted or paused. And pre-trade risk rejects any order priced more than 5 percent from the mid, so one order cannot sweep deep into a thin book.",
+  "hold": 0.6
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "What did pros learn? An execution algorithm needs a price limit, not just a volume target. High volume is not the same thing as liquidity. Futures and stocks are tied together through index products. And short pauses work: five seconds helped the E-mini find buyers. This is education, not legal advice.",
+  "hold": 1.0
+ }
+]

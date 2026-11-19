@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Merger arbitrage",
+  "text": "When one company agrees to buy another, the target's stock usually trades a little below the offer price. Merger arbitrage buys that gap, and waits for the deal to close. It is the best-known event-driven strategy."
+ },
+ {
+  "id": "mech",
+  "title": "The mechanics",
+  "text": "In a cash deal, the arbitrageur simply buys the target. If the deal closes, each share is paid the offer price, and the gap becomes profit. In a stock deal, the target is paid in acquirer shares. So the arbitrageur buys the target and shorts the acquirer at the exchange ratio. That locks in the spread, whatever the acquirer's stock does next."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Say a buyer offers 50 dollars cash, and the target trades at 48. If the deal closes, the gain is 2 dollars a share, about four percent. If it breaks, say the stock falls back to 35, its price before the offer. The market price then implies a probability. 48 equals p times 50, plus one minus p, times 35, so p is about 87 percent. The spread is a price for deal risk."
+ },
+ {
+  "id": "risk",
+  "title": "How it loses",
+  "text": "The payoff is lopsided: many small gains, and occasional large losses when a deal breaks. Deals fail on antitrust, financing, a shareholder vote, or a better bid that never comes. In the US, merging parties above the filing thresholds generally must wait 30 days before closing, and a second request from the regulators extends the wait. Mitchell and Pulvino studied 4,750 mergers from 1963 to 1998. Returns were mostly unrelated to the market, except in sharp market declines, much like selling index put options."
+ },
+ {
+  "id": "event",
+  "title": "Other events",
+  "text": "The same pattern runs through event-driven investing. Spin-offs, index additions, bankruptcies and earnings all create a dated catalyst, and a price that reflects the odds. The edge is a better estimate of those odds, and the patience to hold through the event. The tail risk is the event going the other way. Each kind of event needs its own research: a legal reading for a merger, a court calendar for a bankruptcy, the index rules for an addition."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's thesis trader has the same shape. Its idea comes from outside the feed: an analyst's fair value. It moves through phases: research, build, hold, exit. It buys only while the price is at least ten percent below fair value, and sells once within three percent. A drop of 25 percent below its average cost means the thesis was wrong, and it exits. A merger arb desk swaps fair value for the deal price, and adds the break price as its stop."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Merger arbitrage harvests a premium for carrying deal risk. It loses big when deals break, often when markets fall, so legal research, position limits and diversification across deals matter most."
+ }
+]

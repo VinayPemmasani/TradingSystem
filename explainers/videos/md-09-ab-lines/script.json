@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "A/B arbitration",
+  "text": "Many exchanges publish the same feed twice, on two separate lines. You take both, merge them, and keep the first copy of every packet. When both lines lose the same data, you rebuild from a snapshot. This is how."
+ },
+ {
+  "id": "why",
+  "title": "Why two lines",
+  "text": "UDP multicast has no acknowledgements, so loss is normal, and recovery takes time. A second copy, on a separate path, turns most losses into nothing. CME strongly recommends processing both its A and B incremental feeds, because a packet missed on one may arrive on the other. OPRA sends every message on two redundant streams too.",
+  "hold": 0.8
+ },
+ {
+  "id": "algo",
+  "title": "The arbitration loop",
+  "text": "The algorithm is small. Keep one number: the next sequence you expect. A packet arrives on either line. If its sequence is below that number, it is a duplicate: drop it. If it equals it, process it and move on. If it is above, a packet is missing on this line, so hold the packet, and give the other line a short time to fill the hole. In the common case, that is one comparison per packet. Whichever line delivers a sequence first wins it. So the merged feed is as fast as the faster line, packet by packet.",
+  "hold": 0.8
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Here is an illustrative run. Line A loses packet 102. Line B loses packet 104. Packet 101 arrives on A first, and B's copy is dropped. 102 comes only on B, so it fills A's hole. 103 wins on A again. 104 comes only from A. The merged stream is complete, even though each line on its own had a gap.",
+  "hold": 0.8
+ },
+ {
+  "id": "both",
+  "title": "When both lines lose it",
+  "text": "Sometimes both copies are lost, for example when the problem is upstream of the split. Now there is a real gap. You have three ways back, depending on the venue. Ask for a retransmission, like a MoldUDP64 re-request. Replay over TCP, like CME's TCP recovery. Or rebuild the book from a snapshot: CME's market recovery loop, or Cboe's spin server.",
+  "hold": 0.8
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab runs one line, but its sequencer already does the hard part. It drops duplicates by sequence number. It holds packets that arrive ahead of a gap, in a preallocated window. And it waits a hundred microseconds before asking for a retransmission, in case the missing packet was only late. Feed it two identical lines, and duplicates are just more drops.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Pitfalls",
+  "text": "Three cautions. Arbitrate on sequence numbers, never by comparing payloads, and on Cboe, by unit and sequence, because the framing can differ between feeds. Count which line wins, so you notice when one path gets slower. And keep the wait for the other line short. Two lines turn most losses into nothing; a snapshot handles the rest.",
+  "hold": 1.0
+ }
+]

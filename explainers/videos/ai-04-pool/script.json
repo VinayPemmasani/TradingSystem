@@ -1,0 +1,14 @@
+[
+{"id": "title", "title": "Allocation per message",
+ "text": "Pattern four: allocation per message. Every new order needs an object to hold it. Where that memory comes from decides your tail latency."},
+{"id": "general", "title": "The general version",
+ "text": "With no latency budget stated, the natural code is std::make_unique for every new order, kept in a vector of unique pointers. A cancel moves the last order into the gap, and the unique pointer frees the old one. Ownership is automatic, nothing leaks, and the code is short. It is good C++. But each new order is a call to malloc, and each cancel is a call to free."},
+{"id": "cost", "title": "What malloc costs",
+ "text": "malloc is general purpose, so its cost is not fixed. Most calls hit glibc's per-thread cache and take tens of nanoseconds. Others walk free lists and merge neighbouring blocks. Freed blocks scatter through the heap, so a new order lands wherever a hole is, often on a cold cache line. When live orders surge, the heap grows, and each new page faults on first touch, inside the message handler. In this test, a session swinging between fifty and a hundred and fifty thousand live orders took 3,708 page faults while timing.", "hold": 0.8},
+{"id": "hot", "title": "The hot-path version",
+ "text": "The hot-path version allocates once. At startup, a pool reserves room for the maximum number of live orders, and writes every byte, so every page is mapped before trading starts. Free slots form a list threaded through the slots themselves. Acquire pops the head; release pushes it back. Two pointer moves: no lock, no system call. When the pool is empty, the order is rejected. A full pool is an error you handle, not a hidden malloc.", "hold": 0.8},
+{"id": "measured", "title": "Measured",
+ "text": "Measured on a shared cloud VM, pinned to one core: two million messages, new orders and cancels, with the live count swinging between fifty and a hundred and fifty thousand. make_unique allocated on half the messages; the pool on none. The median was 177 nanoseconds versus 65. p99 was 858 versus 335. At p99.9, make_unique took 4.6 microseconds, while the pool stayed at 445 nanoseconds. Page faults while timing: 3,708 versus zero. All of these include about 22 nanoseconds of timer overhead.", "hold": 1.0},
+{"id": "nuance", "title": "When make_unique is fine",
+ "text": "make_unique is the right default almost everywhere: startup, configuration, cold paths, and objects whose count you cannot bound. A pool needs a stated maximum, and memory reserved for the whole session. Put those constraints in the prompt: the maximum live orders, and no allocation after startup. Then measure the tail, not just the median. The rule: allocate at startup, recycle on the hot path.", "hold": 1.0}
+]

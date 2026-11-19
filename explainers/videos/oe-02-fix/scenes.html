@@ -1,0 +1,87 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 02 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">FIX 4.4</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">One order, from NewOrderSingle to the final fill.</div>
+<div class="node" data-cue="1" style="left:140px;top:580px;width:300px;height:130px;border-color:var(--teal)">Firm</div>
+<div class="node" data-cue="1" style="left:1480px;top:580px;width:300px;height:130px;border-color:var(--blue)">Venue</div>
+<svg class="full"><path id="f2-a" class="draw" data-cue="1" data-d="0.2" d="M 450 620 L 1470 620" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="f2-b" class="draw" data-cue="1" data-d="1.2" d="M 1470 670 L 450 670" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="msg c-amber" data-cue="1" data-d="0.6" style="left:840px;top:560px;border-color:var(--amber)">35=D</div>
+<div class="msg c-green" data-cue="1" data-d="1.6" style="left:640px;top:690px;border-color:var(--green)">35=8 New</div>
+<div class="msg c-green" data-cue="1" data-d="2.2" style="left:840px;top:690px;border-color:var(--green)">35=8 Partial</div>
+<div class="msg c-green" data-cue="1" data-d="2.8" style="left:1080px;top:690px;border-color:var(--green)">35=8 Filled</div>
+</div>
+
+<div class="scene" id="s-frame">
+<div class="h2" data-cue="0" style="left:120px;top:110px">tag=value, separated by SOH</div>
+<div class="raw" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:1680px"><span class="fld" data-hl="1" data-hlend="2">8=FIX.4.4</span><i>␁</i><span class="fld" data-hl="2" data-hlend="3">9=127</span><i>␁</i><span class="fld" data-hl="3" data-hlend="4">35=D</span><i>␁</i><span class="fld" data-hl="4" data-hlend="5">49=FIXA</span><i>␁</i><span class="fld" data-hl="4" data-hlend="5">56=SIMEX</span><i>␁</i><span class="fld" data-hl="4" data-hlend="5">34=12</span><i>␁</i><span class="fld" data-hl="4" data-hlend="5">52=20261119-14:30:00.000</span><i>␁</i><span class="fld">11=ORD-7</span><i>␁</i><span class="fld">55=AAPL</span><i>␁</i><span class="fld">54=1</span><i>␁</i><span class="fld">60=20261119-14:30:00.000</span><i>␁</i><span class="fld">38=100</span><i>␁</i><span class="fld">40=2</span><i>␁</i><span class="fld">44=187.25</span><i>␁</i><span class="fld">59=0</span><i>␁</i><span class="fld" data-hl="5">10=245</span><i>␁</i></div>
+<div class="tag" data-cue="0" data-d="0.8" style="left:120px;top:420px;color:var(--pink);border-color:var(--pink)">␁ = SOH = byte 0x01</div>
+<div class="card" data-cue="1" style="left:120px;top:500px;width:540px;height:150px;border-color:var(--teal)"><div class="ct c-teal">8 BeginString</div><div class="cd">always first · FIX.4.4</div></div>
+<div class="card" data-cue="2" style="left:690px;top:500px;width:540px;height:150px;border-color:var(--teal)"><div class="ct c-teal">9 BodyLength</div><div class="cd">from "35=" to the SOH before 10=</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:500px;width:540px;height:150px;border-color:var(--teal)"><div class="ct c-teal">35 MsgType</div><div class="cd">D order · 8 report · A logon</div></div>
+<div class="card" data-cue="4" style="left:120px;top:690px;width:1110px;height:150px;border-color:var(--violet)"><div class="ct c-violet">header: 49 sender · 56 target · 34 MsgSeqNum · 52 time</div><div class="cd">who, to whom, which number (video 07), when</div></div>
+<div class="card" data-cue="5" style="left:1260px;top:690px;width:540px;height:150px;border-color:var(--amber)"><div class="ct c-amber">10 CheckSum</div><div class="cd">Σ bytes mod 256 · 3 digits</div></div>
+</div>
+
+<div class="scene" id="s-order">
+<div class="h2" data-cue="0" style="left:120px;top:110px">NewOrderSingle: buy 100 at 187.25</div>
+<table class="t" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1060px">
+<tr><th>tag</th><th>name</th><th>value</th><th>means</th></tr>
+<tr data-hl="1" data-hlend="2"><td class="c-amber">35</td><td>MsgType</td><td>D</td><td>NewOrderSingle</td></tr>
+<tr data-hl="2" data-hlend="3"><td class="c-amber">11</td><td>ClOrdID</td><td>ORD-7</td><td>our id · unique</td></tr>
+<tr><td class="c-amber">55</td><td>Symbol</td><td>AAPL</td><td></td></tr>
+<tr data-hl="3" data-hlend="4"><td class="c-amber">54</td><td>Side</td><td>1</td><td>buy</td></tr>
+<tr><td class="c-amber">38</td><td>OrderQty</td><td>100</td><td></td></tr>
+<tr data-hl="3" data-hlend="4"><td class="c-amber">40</td><td>OrdType</td><td>2</td><td>limit</td></tr>
+<tr data-hl="3" data-hlend="4"><td class="c-amber">44</td><td>Price</td><td>187.25</td><td>decimal text</td></tr>
+<tr data-hl="4" data-hlend="5"><td class="c-amber">59</td><td>TimeInForce</td><td>0</td><td>day</td></tr>
+</table>
+<div class="card" data-cue="5" style="left:1260px;top:220px;width:540px;border-color:var(--teal)"><div class="ct">9=<span class="c-teal">127</span> · 10=<span class="c-amber">245</span></div><div class="cd">body characters · checksum</div></div>
+<div class="lbl" data-cue="6" style="left:1260px;top:430px">same order, bytes on the wire</div>
+<div class="grow bar" data-cue="6" data-d="0.2" data-w="540" style="left:1260px;top:470px;background:var(--teal)"></div>
+<div class="lbl" data-cue="6" data-d="0.6" style="left:1260px;top:520px">FIX · <span class="count" data-cue="6" data-d="0.2" data-from="0" data-to="150" data-post=" bytes">0</span></div>
+<div class="grow bar" data-cue="6" data-d="0.8" data-w="169" style="left:1260px;top:580px;background:var(--amber)"></div>
+<div class="lbl" data-cue="6" data-d="1.2" style="left:1260px;top:630px">OUCH · 47 bytes (+3 Soup header)</div>
+</div>
+
+<div class="scene" id="s-reports">
+<div class="h2" data-cue="0" style="left:120px;top:110px">ExecutionReport · 35=8</div>
+<div class="tag c-violet" data-cue="1" style="left:120px;top:210px;border-color:var(--violet)">150 ExecType = what just happened</div>
+<div class="tag c-green" data-cue="1" data-d="0.4" style="left:640px;top:210px;border-color:var(--green)">39 OrdStatus = where the order stands</div>
+<table class="t" data-cue="2" style="left:120px;top:290px;width:1680px">
+<tr><th>150</th><th>39</th><th>32 LastQty</th><th>31 LastPx</th><th>14 CumQty</th><th>151 LeavesQty</th><th>6 AvgPx</th></tr>
+<tr data-hl="2" data-hlend="3"><td class="c-violet">0 New</td><td class="c-green">0 New</td><td>·</td><td>·</td><td>0</td><td>100</td><td>0</td></tr>
+<tr data-cue="3" data-hl="3" data-hlend="4"><td class="c-violet">F Trade</td><td class="c-green">1 Partial</td><td>40</td><td>187.25</td><td>40</td><td>60</td><td>187.25</td></tr>
+<tr data-cue="4" data-hl="4" data-hlend="5"><td class="c-violet">F Trade</td><td class="c-green">2 Filled</td><td>60</td><td>187.20</td><td>100</td><td>0</td><td>187.22</td></tr>
+</table>
+<div class="lbl" data-cue="2" style="left:120px;top:620px">100 shares</div>
+<div style="left:120px;top:660px;width:1680px;height:44px;border-radius:8px;background:var(--panel);border:2px solid var(--amber)" data-cue="2"></div>
+<div class="grow bar" data-cue="3" data-w="672" style="left:122px;top:662px;height:40px;background:var(--green)"></div>
+<div class="grow bar" data-cue="4" data-w="1004" style="left:794px;top:662px;height:40px;background:#3fbf7a"></div>
+<div class="card" data-cue="5" style="left:120px;top:760px;width:1680px;border-color:var(--green)"><div class="ct">LeavesQty = OrderQty − CumQty · <span class="c-green">AvgPx = (40×187.25 + 60×187.20) / 100 = 187.22</span></div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: fixgw</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:250px;width:340px;height:130px;border-color:var(--teal)">fix-client<small>FIX 4.4</small></div>
+<div class="node" data-cue="0" data-d="0.4" style="left:790px;top:250px;width:340px;height:130px;border-color:var(--violet)">fixgw<small>FIX ⇄ OUCH</small></div>
+<div class="node" data-cue="0" data-d="0.6" style="left:1460px;top:250px;width:340px;height:130px;border-color:var(--blue)">simex<small>OUCH 5.0</small></div>
+<svg class="full">
+<path id="f2-l1" class="draw" data-cue="1" d="M 465 300 L 785 300" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path id="f2-l2" class="draw" data-cue="1" data-d="0.4" d="M 1135 300 L 1455 300" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="3" d="M 1455 345 L 1135 345" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="3" data-d="0.4" d="M 785 345 L 465 345" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="msg c-amber" data-cue="1" data-d="0.2" style="left:540px;top:245px;border-color:var(--amber)">35=D</div>
+<div class="msg c-amber" data-cue="1" data-d="0.6" style="left:1200px;top:245px;border-color:var(--amber)">O · ref 1043</div>
+<div class="card" data-cue="1" data-d="0.8" style="left:790px;top:440px;width:340px;border-color:var(--violet)"><div class="cs">ClOrdID ORD-7<br>↔ UserRefNum 1043</div><div class="cd">fixgw keeps the map</div></div>
+<div class="card" data-cue="2" style="left:120px;top:440px;width:620px;border-color:var(--amber)"><div class="cs">44=187.25 → 1,872,500</div><div class="cs c-red">44=187.255 → 35=3 Reject</div><div class="cd">373=6 incorrect data format</div></div>
+<div class="card" data-cue="3" style="left:1180px;top:440px;width:620px;border-color:var(--green)"><div class="cs">A Accepted → 150=0 New</div><div class="cs">E Executed → 150=F Trade</div><div class="cd">C Canceled → 150=4</div></div>
+<div class="card" data-cue="4" style="left:120px;top:700px;width:1680px;border-color:var(--teal)"><div class="ct c-teal">fix-client checks every report</div><div class="cd">CumQty += LastQty · LeavesQty = OrderQty − CumQty · ExecIDs unique</div></div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">FIX or native?</div>
+<div class="card" data-cue="1" style="left:120px;top:240px;width:820px;height:300px;border-color:var(--teal)"><div class="ct c-teal">FIX tag=value</div><div class="cs">parse every character<br>150 bytes for this order</div><div class="cd">one engine, many brokers and venues</div></div>
+<div class="card" data-cue="0" data-d="0.2" style="left:980px;top:240px;width:820px;height:300px;border-color:var(--amber)"><div class="ct c-amber">OUCH binary</div><div class="cs">fixed offsets<br>47 bytes for this order</div><div class="cd">one venue's own protocol</div></div>
+<div class="take" data-cue="3" style="left:120px;top:620px;width:1680px">FIX for reach, <span class="c-amber">native binary where every microsecond counts.</span></div>
+<div class="lbl" data-cue="4" style="left:120px;top:760px;font-size:26px">lab: trader → OUCH → simex · fix-client → FIX → fixgw → OUCH → simex</div>
+</div>

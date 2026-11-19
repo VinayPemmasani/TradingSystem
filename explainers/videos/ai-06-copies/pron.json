@@ -1,0 +1,20 @@
+[
+["\\bstd::string_view\\b", "standard string view"],
+["\\bstd::string\\b", "standard string"],
+["\\bstd::span\\b", "standard span"],
+["\\bstd::to_chars\\b", "standard to chars"],
+["\\bto_string\\b", "to string"],
+["\\bon_order\\b", "on order"],
+["\\blimit_for\\b", "limit for"],
+["\\bmake_tag\\b", "make tag"],
+["\\bmemcpy\\b", "mem copy"],
+["\\bmalloc\\b", "malloc"],
+["\\bp99\\b", "P ninety nine"],
+["\\b2\\.3\\b", "two point three"],
+["\\b0\\.7\\b", "zero point seven"],
+["\\b162\\b", "a hundred and sixty two"],
+["\\b102\\b", "a hundred and two"],
+["\\b248\\b", "two hundred and forty eight"],
+["\\b100\\b", "a hundred"],
+["\\b220\\b", "two hundred and twenty"]
+]

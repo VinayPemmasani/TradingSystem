@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Timestamps",
+"text": "To know how fast a feed handler is, you have to stamp time in the right places, with a cheap clock, and report it honestly."
+},
+{
+"id": "clocks",
+"title": "Which clock",
+"text": "Several clocks are in play. The exchange stamps every ITCH message, in nanoseconds since midnight. A network card can stamp packets in hardware. And your own code can read the CPU's timestamp counter. The lab uses the last one: the rx thread reads rdtsc right after each recvmmsg call returns, and stores the value with every packet. Each one answers a different question: when the venue acted, when the packet reached your machine, and when your code saw it."
+},
+{
+"id": "carry",
+"title": "Carry raw ticks",
+"text": "rdtsc costs a few nanoseconds and makes no system call. The raw ticks travel with the data: in the packet slot, in the 64 byte top of book, and even in the reserved field of every Aeron frame. Conversion to nanoseconds happens off the hot path. It uses a ratio calibrated at startup against the monotonic clock, over 50 milliseconds. A tick is just a number to subtract, so stamping and carrying it costs almost nothing on the hot path."
+},
+{
+"id": "intervals",
+"title": "Intervals",
+"text": "At the far end, the book thread reads rdtscp, which waits for earlier instructions to finish, and records the difference: receive to book. The trader adds more stamps on each order request: the market data tick behind it, and when the trading thread decided. So it can report the time from a packet arriving to the order it caused leaving the socket. itch-fh prints that receive to book line at the end of every run."
+},
+{
+"id": "histogram",
+"title": "Histogram",
+"text": "Every interval goes into a histogram, never an average. Values below 64 are exact. Above that, each power of two is split into 32 buckets, so any value is reported within about 3 percent. Recording is a handful of instructions and never allocates. The report prints the median, p90, p99, p99.9, p99.99 and the maximum. Because the buckets are fixed, two histograms merge by adding their counts, across threads or across runs."
+},
+{
+"id": "traps",
+"title": "Traps",
+"text": "Now the traps. The lab stamps a whole batch with one reading, so a packet that waited behind others in the batch looks younger than it is. A software stamp after recvmmsg misses the time spent in the network card and the kernel. Comparing the exchange's timestamp with yours needs both clocks synchronised. And on a virtual machine the host can pause a pinned thread, so the lab's docs say to compare runs, not trust absolute tails. None of this makes the numbers useless. It decides what a number means, so label every latency with where its two stamps were taken."
+},
+{
+"id": "takeaway",
+"title": "Takeaway",
+"text": "Stamp with a cheap clock at the edges, carry raw ticks with the data, convert later, and report percentiles.",
+"hold": 1.0
+}
+]

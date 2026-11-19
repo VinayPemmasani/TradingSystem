@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Options market making",
+  "text": "An options market maker quotes thousands of contracts on one stock, and hedges almost all of the stock risk away. What is left is a bet on volatility, and on the spread it earns from customers."
+ },
+ {
+  "id": "delta",
+  "title": "Delta hedging",
+  "text": "Start with Black and Scholes, 1973. An option's delta is how much its price moves when the stock moves by a dollar. A maker who sells calls with a total delta of 5,100 shares buys 5,100 shares of stock. Now small stock moves cancel out. But delta changes as the stock moves, and that rate of change is gamma. So the hedge must be adjusted, again and again."
+ },
+ {
+  "id": "pnl",
+  "title": "Where the P&L comes from",
+  "text": "For a delta-hedged option, the profit over a short interval is roughly one half, times gamma, times the stock price squared, times realized variance minus implied variance. Long options win when the stock moves more than the implied volatility priced in. Short options win when it moves less. The maker's real edge is buying a little below fair value and selling a little above, then keeping the volatility exposure small."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Take a 30-day at-the-money call, with the stock at 100, implied volatility at 20 percent, and zero rates. Black-Scholes gives a price of about 2.29, a delta of 0.51, and a gamma of 0.07. The hedged position breaks even on a daily move of about 1.26 dollars. On a two-dollar day, a long hedged call makes about eight cents a share. On a fifty-cent day it loses about five cents, which is the time decay."
+ },
+ {
+  "id": "lose",
+  "title": "How it loses",
+  "text": "A maker short options loses on big gaps, like earnings or a takeover, because the hedge cannot be adjusted through a jump. Informed traders pick off stale quotes, across thousands of strikes, whenever the stock moves first. A shift in implied volatility hits every option at once, through vega. And hedging costs money: every rebalance crosses a spread in the stock. Before earnings or other scheduled news, a maker must decide whether its quotes still price the coming jump."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab has no options yet, but the pieces map across. Its stock maker leans quotes by its inventory in shares. An options maker leans by its net delta and vega instead. And the delta hedge is just a target position: minus the book's delta in shares. The work_toward helper in execution.hpp already turns a target into child orders. The other half is data. OPRA projected about 12.3 billion options messages a day for October 2025. The lab's whole Nasdaq stock day from 2019 had 368 million."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Options market making harvests the spread on volatility, after hedging away direction. It loses on jumps, stale quotes and volatility shifts, so it needs fast models, the full options feed, and constant hedging."
+ }
+]

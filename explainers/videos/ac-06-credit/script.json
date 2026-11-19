@@ -1,0 +1,40 @@
+[
+ {
+  "id": "title",
+  "title": "Corporate bonds",
+  "text": "Corporate bonds are loans to companies, cut into tradable securities. There are tens of thousands of them, and many trade only now and then, so the market runs on asking dealers for prices."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: investment grade and high yield bonds issued by companies. In 2014 data, about 28 thousand public issues were reportable to TRACE on a typical day. Who trades: dealer banks, asset managers, insurers, pension funds and bond ETFs. Where: over the counter, by phone or on electronic platforms that run request for quote. Dealers must report each trade to FINRA's TRACE within 15 minutes, and it is published at once. Speed is seconds to minutes, not microseconds. Trades settle on T+1. SIFMA reports about 67 billion dollars traded a day in 2026 so far, on 12.1 trillion outstanding."
+ },
+ {
+  "id": "rfq",
+  "title": "Request for quote",
+  "text": "The distinctive mechanism is request for quote. A client who wants to sell sends the bond and size to several dealers at once. Each dealer answers with a price, often as a spread over a Treasury benchmark, good only for a short window. The client picks the best, and the losers learn only that they lost. Portfolio trading goes further, pricing a whole list of bonds as one package.",
+  "hold": 1.0
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Here is an illustrative RFQ. A fund sells 10 million dollars of a company's 10 year bond, asking four dealers. Three answer, at spreads of 118, 120 and 123 basis points over the Treasury, and the fourth passes. For a seller, the lowest spread is the highest price, so dealer one wins at 118. Within 15 minutes the trade appears on TRACE, but because investment grade sizes above 5 million are capped, it shows only as 5MM+.",
+  "hold": 1.5
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab trades no bonds, but its transaction cost analysis carries over. It compares each fill with the mid just before it, then with the mid a little later, to measure adverse selection. A credit desk runs the same markouts, with TRACE prints and composite prices standing in for the mid."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. Many bonds trade rarely, so the last print can be days old. One company can have many bonds, each with its own maturity and terms. The public tape caps large sizes, so block flow is partly hidden. And dealer balance sheets set the liquidity, which can vanish in a stress."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Credit is many bonds and few trades, priced by asking. The skill is pricing what has not traded yet."
+ }
+]

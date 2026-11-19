@@ -1,0 +1,22 @@
+/* shared look for ai-13..16 */
+.code.sm{font-size:21px;line-height:1.48;padding:16px 24px}
+.code.sm .line{margin:0 -24px;padding:0 24px}
+.code.left{border-color:var(--red)} .code.right{border-color:var(--teal)}
+.code .line.hl{background:rgba(255,179,71,.14);box-shadow:inset 4px 0 0 var(--amber)}
+.code.right .line.hl{background:rgba(63,208,220,.16);box-shadow:inset 4px 0 0 var(--teal)}
+.code.hl{box-shadow:none!important}
+.side{font:700 24px var(--mono);letter-spacing:.14em}
+.note{font:500 22px/1.45 var(--mono);color:var(--muted)}
+.chip{padding:8px 16px;border-radius:10px;font:600 23px var(--mono);background:#08121a;border:2px solid var(--line);white-space:nowrap}
+.chip.red{border-color:var(--red);color:#ff9d93} .chip.teal{border-color:var(--teal);color:var(--teal)} .chip.amber{border-color:var(--amber);color:var(--amber)}
+.blab{font:600 23px var(--mono);color:#d4e0e7;text-align:right;width:420px}
+.gl{font:700 27px var(--body);color:#e6eef2}
+.bv{font:700 25px var(--mono);white-space:nowrap}
+.bar{height:30px;border-radius:6px}
+.card2{border-radius:16px;border:2px solid var(--line);background:var(--panel);padding:18px 26px}
+.card2 .ct{font:700 30px var(--body)} .card2 .cs{font:500 23px/1.4 var(--mono);color:#cfe0e8;margin-top:8px}
+.rule{border:3px solid var(--teal);border-radius:18px;background:#0d2229;padding:22px 32px;font:700 36px/1.3 var(--body)}
+.dec{border-radius:14px;border:2px solid var(--amber);background:#2a2214;font:700 26px var(--mono);color:var(--amber);text-align:center;padding:12px 10px}
+.node{border-radius:14px;border:2px solid var(--line);background:var(--panel);font:600 24px var(--mono);text-align:center;padding:14px 10px}
+
+.slot13{position:absolute;width:100px;height:70px;border-radius:10px;border:2px solid var(--line);background:#0f1b23;display:grid;place-items:center;font:700 22px var(--mono);color:#06141a;opacity:0}

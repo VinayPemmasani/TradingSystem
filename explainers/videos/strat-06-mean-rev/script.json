@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Short-term mean reversion",
+  "text": "Short-term mean reversion bets that yesterday's biggest movers will give some of it back. Every day it buys the losers and sells the winners, measured against the market. It is the mirror image of the trend video."
+ },
+ {
+  "id": "rule",
+  "title": "The contrarian rule",
+  "text": "The classic version comes from Lehmann, and from Lo and MacKinlay, both in 1990. Each stock's weight is minus one over N, times its return yesterday minus the market's average return. Stocks that beat the market are sold, and stocks that lagged are bought. The weights sum to zero, so the book is dollar neutral, and a move in the whole market cancels out."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Take three stocks, on a day the market average is up one percent. A rose four percent, B rose one, and C fell two. Against the market, that is plus three, zero, and minus three. With N equal to three, the weights are minus one percent of capital, zero, and plus one percent. So sell A, leave B alone, and buy C. Each weight is tiny, so a real book holds hundreds of these positions at once. Tomorrow, recompute everything."
+ },
+ {
+  "id": "edge",
+  "title": "Edge and risk",
+  "text": "Why would it pay? Part of a one-day move is temporary pressure: someone who must trade now pushes the price, and the contrarian is paid for taking the other side. That makes it a cousin of market making, holding for a day instead of seconds. It loses when the move was news, not pressure. It loses to costs, because it turns over much of the book every day. And it loses when everyone holds the same trade."
+ },
+ {
+  "id": "aug",
+  "title": "August 2007",
+  "text": "Khandani and Lo simulated exactly this strategy for August 2007. Before leverage, it lost 1.16 percent on the 7th, 2.83 on the 8th, and 2.86 on the 9th. Then on the 10th it gained 5.92 percent. A sharp loss that quickly reverses is the mark of a forced liquidation. They argue a large market-neutral portfolio was unwound, and leverage, used to keep thinning returns attractive, magnified the damage. The losses then spread to other long-short funds, as their stop-loss and de-leveraging rules kicked in."
+ },
+ {
+  "id": "lab",
+  "title": "Building it",
+  "text": "In the lab, the pairs trader is mean reversion on a single spread. The cross-sectional version spreads the same idea across thousands of stocks. Each day, compute every stock's target, then let work_toward in execution.hpp turn the gap to each target into child orders of bounded size. Around it you need clean daily data, borrow for hundreds of shorts, and a cost model, because turnover is the strategy's biggest expense."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Short-term mean reversion harvests temporary price pressure, much like a slow market maker. It loses on news, costs and crowded exits, so leverage and turnover decide whether it survives a bad week."
+ }
+]

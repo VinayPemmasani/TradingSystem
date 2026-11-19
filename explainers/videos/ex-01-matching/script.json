@@ -1,0 +1,40 @@
+[
+ {
+  "id": "title",
+  "title": "Matching engine",
+  "text": "Every exchange has one program at its heart that decides who traded with whom. It reads orders one at a time, and turns them into trades."
+ },
+ {
+  "id": "seq",
+  "title": "One sequence",
+  "text": "Orders arrive from many places at once, but the engine must see them in one order. So the matching thread stamps every command with the next sequence number. In the lab's simulator, simex, the order gateway and a historical replay both feed that one thread. It matches each command, then sends replies back to the firms. It publishes ITCH messages to the public feed, and writes every command to a journal. Replay the journal, and you get the same trades, every time."
+ },
+ {
+  "id": "book",
+  "title": "The book",
+  "text": "The engine's state is the order book, one per instrument. Each side is sorted by price. Bids are buy orders, best means highest. Asks are sell orders, best means lowest. And each price level is a queue. The order that arrived first sits at the front, and trades first."
+ },
+ {
+  "id": "match",
+  "title": "Matching an order",
+  "text": "Here is a book. Two sellers wait at $10.01: A with 100 shares, then B with 200. C offers 500 at $10.02. A buyer sends 400 shares, limit $10.02. The engine walks the asks from the best price. A fills 100 at $10.01, then B fills 200. The last 100 trade with C at $10.02, and C keeps 400. Every fill prints at the resting order's price, not the buyer's limit. A buy at $10.00 would not trade at all. It joins the bids at $10.00, at the back of the queue, behind E and F.",
+  "hold": 0.8
+ },
+ {
+  "id": "out",
+  "title": "What comes out",
+  "text": "In the lab's simulator, each fill becomes three messages. The buyer and the seller each get a private report on their order entry session. In OUCH that is an Order Executed message, with the price and a match number. The public feed gets one ITCH Order Executed message: the resting order's reference, the shares, and the same match number. It says which resting order traded, but never who took it."
+ },
+ {
+  "id": "lab",
+  "title": "The lab's engine",
+  "text": "The lab's engine is lab::match::Engine, and it runs on one thread. It reserves its memory up front: a pool of about a million orders, and 512 price levels per side. Each side is a sorted vector, with the best price at the back. So the top of the book is the last element. Each level is a linked list, from the head, the oldest order, to the tail. Matching is this loop: take the head, trade the smaller quantity, and pop the head when it reaches zero.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "The matching rule is the easy part. The hard parts are determinism, a fair sequence, and doing it all without allocating or locking. A matching engine is a sorted set of FIFO queues behind one sequence number.",
+  "hold": 1.0
+ }
+]

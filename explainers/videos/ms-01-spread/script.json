@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "The spread",
+  "text": "The bid-ask spread is the price of trading right now. Whoever crosses it gets immediacy, and pays a little for it. Here is what that money pays for, and how to measure it, even from trade prices alone."
+ },
+ {
+  "id": "cost",
+  "title": "What it costs",
+  "text": "Picture a stock quoted at 100.00 bid and 100.02 offered. The mid is 100.01, and the quoted spread is two cents. A buyer who lifts the offer pays one cent over the mid: half the spread. A round trip, buying and then selling straight away, costs the full two cents. Ten round trips of 1,000 shares a day cost 200 dollars, before any fees."
+ },
+ {
+  "id": "parts",
+  "title": "Three components",
+  "text": "Theory splits the spread into three parts. Order processing: the dealer's running costs, such as fees, systems and people. Inventory: the risk of holding a position the dealer did not choose. Adverse selection: the expected loss to traders who know more, from Glosten and Milgrom in 1985. Huang and Stoll's 1997 estimates found order processing the largest part, with smaller adverse selection and inventory parts."
+ },
+ {
+  "id": "measure",
+  "title": "Effective and realized",
+  "text": "The quoted spread is what is shown, not what was paid. The effective spread is twice the distance from the trade price to the mid. Say a buyer pays 100.02 with the mid at 100.01: two cents. Five minutes later the mid is 100.015. The realized spread is twice the price minus that later mid: one cent, the dealer's revenue. The other cent is price impact, the information the buyer carried."
+ },
+ {
+  "id": "roll",
+  "title": "Roll's estimator",
+  "text": "What if you only have trade prices? Richard Roll's 1984 insight: trades bounce between the bid and the ask. That bounce makes consecutive price changes negatively correlated. If value is a random walk and each trade hits bid or ask by a coin flip, their covariance is minus the spread squared over four. I simulated 100,000 such trades with a two cent spread. The covariance came out at minus 0.99 cents squared, so the estimate is 1.99 cents."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's agents program builds a market from these same parts. Each maker quotes a half spread either side of its own noisy estimate of value. It leans a tick for every 500 shares it holds: that is inventory. Value traders know the true value, and pick off makers whose estimate is stale: that is adverse selection. At the end it prints each population's profit, and the market's spread. Feed its trades to Roll's estimator, and check it against that spread."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Roll's estimator has traps. When price changes trend, the covariance turns positive, and the square root fails. Price ticks and quotes that react to trades also bias it. The spread pays for costs, inventory risk and information, and the next video takes the information part apart."
+ }
+]

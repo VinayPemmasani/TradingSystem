@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Crypto",
+  "text": "Crypto markets trade around the clock, on exchanges that are venue, broker and custodian in one firm. Their signature product is a futures contract that never expires."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: coins such as bitcoin and ether, stablecoins, and derivatives on them. Who trades: retail, crypto funds and market makers. Where: mostly on centralised exchanges, each with its own order book, plus decentralised exchanges on chain. Market data is usually JSON over WebSocket, though Binance also offers binary SBE. Matching is electronic and never stops, every day of the year. Inside an exchange, trades settle at once on its own ledger, and only withdrawals touch the blockchain. Reported volumes vary widely between sources, so this video quotes none."
+ },
+ {
+  "id": "perp",
+  "title": "The perpetual",
+  "text": "The distinctive product is the perpetual future. BitMEX launched the first one, XBTUSD, in May 2016. A perpetual has no expiry, so nothing forces its price back to spot. Funding does that instead. On Binance, every eight hours, longs pay shorts when the funding rate is positive, which happens when the perpetual trades above the index. When it trades below, shorts pay longs, pulling the price back."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Here is Binance's own worked example. Over eight hours, the average premium of the perpetual over the index was 0.0429 percent. The interest part is fixed at 0.01 percent per interval. The difference sits inside the clamp of plus or minus 0.05 percent, so the funding rate comes out at 0.01 percent. A long position of one million USDT pays 100 USDT to the shorts at that funding time. Three times a day, that adds up."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's vendor server already speaks this style of feed. Its OMM JSON session runs over WebSocket, the transport most crypto exchanges use. Binance's depth stream tags each update with its first and last update IDs, so a client can spot gaps, much like MoldUDP64 sequence numbers. A crypto desk wraps that in what never closes: risk checks, funding accrual and inventory across venues."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. The exchange holds your collateral, so a failed exchange means lost funds. When margin runs out, the exchange liquidates positions itself, and liquidations can cascade. Prices differ between exchanges, and moving coins between them takes time on chain. And there is no closing bell, so systems and people need round the clock cover."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Crypto is exchange, broker and custodian in one, open every hour. The perpetual swaps expiry for funding, and funding is a cost you must model."
+ }
+]

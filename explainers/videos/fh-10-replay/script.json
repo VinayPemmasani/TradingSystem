@@ -1,0 +1,43 @@
+[
+{
+"id": "title",
+"title": "Replay testing",
+"text": "You cannot wait for a bad day in the market to test a feed handler. You replay one: recorded traffic, fed back at a controlled speed, with faults you choose."
+},
+{
+"id": "pcap",
+"title": "Captures",
+"text": "Many firms record their feeds as pcap files. Each packet is stored with a 16 byte record header: a timestamp in seconds and micro or nanoseconds, the captured length, and the original length. Replaying a capture reproduces the exact bytes, packet boundaries and timing the handler saw. So a bug from the open can be rerun at your desk."
+},
+{
+"id": "lab",
+"title": "The lab's replay",
+"text": "The lab does the same thing with Nasdaq's ITCH day files. itch-replay reads a recorded day and publishes it as a live MoldUDP64 feed, with heartbeats, End of Session, and a re-request server. It can pace by a fixed message rate, run as fast as possible, or follow the original timing in the ITCH timestamps. It is the same publisher code the lab's simulated exchange uses, so the handler is tested against what it will really receive."
+},
+{
+"id": "faults",
+"title": "Seeded faults",
+"text": "Then it breaks things on purpose. A seeded fault injector decides, packet by packet, whether to drop it, start a burst of losses, duplicate it, or hold it back and send it after the next one. Same seed, same faults, so a failing run can be replayed exactly."
+},
+{
+"id": "oracle",
+"title": "An oracle",
+"text": "A test needs an oracle. itch-dump rebuilds every book straight from the file, with no network at all. itch-fh rebuilds them from the live feed. Both print a digest: an FNV-1a hash over every price level, trading state and traded volume. Equal digests mean the live handler rebuilt exactly the books the file did. The test also demands that nothing was lost and every integrity check is zero, so matching digests by luck is not enough."
+},
+{
+"id": "runs",
+"title": "Two runs",
+"text": "I ran the test twice on this shared box while it was heavily overloaded. With no faults, a million messages went through and the digests matched. With the default faults, 40 gaps were not recovered before the retry limit, and they were given up. 440 updates hit unknown orders, the digests differed, and the test failed, saying exactly why. Both results are useful: one proves the pipeline works, and the other shows exactly where it breaks."
+},
+{
+"id": "pros",
+"title": "Make it honest",
+"text": "What makes replay honest? Faults in bursts, not only single drops. Replay faster than real time, to find where you break. Check timing as well as correctness, because a book can be right and late. And run it on every change: the lab's rules say to run this test after any feed, sequencing or book change, and CI runs it."
+},
+{
+"id": "takeaway",
+"title": "Takeaway",
+"text": "Record real traffic, replay it with seeded faults, and compare against an oracle that never touched the network.",
+"hold": 1.0
+}
+]

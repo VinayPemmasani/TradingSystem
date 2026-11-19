@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "US Treasuries",
+  "text": "US Treasuries are US government debt, and the benchmark for interest rates everywhere. They trade over the counter, yet the market between dealers runs on fast electronic order books."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: bills, notes and bonds, sold by the Treasury at auction. Who trades: primary dealers, principal trading firms, central banks, funds and banks. Where: in two tiers. Clients trade with dealers by request for quote, while dealers and fast firms trade on interdealer order books. There is no real-time public tape, but FINRA publishes on-the-run trades after each day's close. The interdealer tier is fully electronic and fast, the client tier slower. Trades settle on T+1, delivery versus payment, on Fedwire Securities. SIFMA reports about 1.2 trillion dollars traded a day in 2026 so far, against 31.8 trillion outstanding."
+ },
+ {
+  "id": "tiers",
+  "title": "Two tiers",
+  "text": "The distinctive part is the two tiers. On interdealer platforms, anonymous order books match dealers and principal trading firms. A Federal Reserve study of 2019 data found principal trading firms did 61 percent of the electronic interdealer volume. Clients such as asset managers send a request for quote to a few dealers and take the best answer. Dealers absorb that flow, then hedge it in the interdealer book."
+ },
+ {
+  "id": "example",
+  "title": "Price, yield, DV01",
+  "text": "Prices are quoted per 100 of face value, and they move opposite to yields. Take an illustrative 10 year note with a 4 percent coupon, priced at par. Its duration is about 8.2, so a one basis point rise in yield cuts the price by about 0.082 points. On 10 million dollars of notes, that is about 8,200 dollars per basis point. Traders call this the DV01, and size positions with it."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The interdealer tier is the same price time order book the lab's matching engine implements. What changes is the instrument. Prices are points per 100 of face value, and the risk is measured in yield, so a bond desk wraps the book in curve math."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. Most trading is in the newest issues, the on-the-run ones, so older issues are harder to trade. Prices are in points but risk is in yield, so always convert. Repo financing decides who can hold what, and stress in repo spills into cash. And clearing is changing: the SEC rule requires central clearing of eligible cash trades from December 31, 2026, and repo from June 30, 2027."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Treasuries are two markets in one: a fast anonymous order book between dealers, and request for quote with clients. Think in yield, and size in DV01."
+ }
+]

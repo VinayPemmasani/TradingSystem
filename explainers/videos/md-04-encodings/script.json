@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Three encodings",
+"text": "The same price can travel as text, as squeezed bytes, or as a fixed binary field. Market data has used all three. Here is why binary won."
+},
+{
+"id": "tagvalue",
+"title": "FIX tag=value",
+"text": "Classic FIX is text. Each field is a tag number, an equals sign, and a value, ended by the SOH byte, hex 01. Tag 9 gives the body length, and tag 10 is a checksum: the byte sum modulo 256, as three digits. It is readable and flexible. But a parser must scan every byte to find the next field, and turn decimal text into numbers."
+},
+{
+"id": "fast",
+"title": "FAST",
+"text": "FAST, FIX Adapted for STreaming, attacked the size. Integers use stop bit encoding: seven data bits per byte, with the high bit set on the last byte. The spec's own example: 942,755 becomes three bytes, 39 45 A3. Templates and a presence map say which fields are in the stream. And operators like copy, delta and increment drop values that repeat. Small on the wire, but decoding is serial, branchy, and depends on state from earlier messages."
+},
+{
+"id": "sbe",
+"title": "Simple Binary Encoding",
+"text": "Simple Binary Encoding takes the opposite view. Fields have fixed positions and fixed lengths, in native binary types. A small header gives the block length, template ID, schema ID and version. To read a price, you load eight bytes from a known offset. No scanning, no branches. In 2013, CME announced that SBE in MDP 3.0 replaces its FAST compression model."
+},
+{
+"id": "example",
+"title": "One update, three ways",
+"text": "Take one illustrative book entry: price 4123.25, quantity 10. As tag=value, 270 and 271, it is nineteen bytes of text. In FAST, the price mantissa is three bytes plus an exponent, and the quantity one byte, or nothing at all if a copy operator says it did not change. In SBE, it is an eight byte price and a four byte quantity: twelve bytes, at offsets you know in advance."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab sees both worlds. ITCH and OUCH are fixed-offset binary, so the decoder is a list of loads at known offsets. Its FIX gateway parses tag=value for orders, and converts price text into the same integer with four implied decimals, rejecting anything finer. That gateway is a translator: FIX text on the client side, OUCH binary toward the simulated exchange."
+},
+{
+"id": "take",
+"title": "Takeaway",
+"text": "One more SBE detail matters in production. The header's block length lets an old decoder step over fields added in a newer schema version, so feeds can grow without breaking you. Binary won because the bottleneck moved from the wire to the CPU. When every field sits at a known offset, decoding is just reading memory.",
+"hold": 1.0
+}
+]

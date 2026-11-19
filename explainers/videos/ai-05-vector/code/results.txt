@@ -1,0 +1,15 @@
+ai: fresh vector       p50  186.7 ns  p99  293.3 ns  p99.9   440.0 ns  mean  191.1 ns  allocs/call 5.08
+reserved vector+clear  p50   51.4 ns  p99   84.8 ns  p99.9   104.8 ns  mean   55.4 ns  allocs/call 0.00
+fast: array+size       p50   54.3 ns  p99   84.8 ns  p99.9   104.8 ns  mean   57.6 ns  allocs/call 0.00
+ai: fresh vector       p50  170.5 ns  p99  284.8 ns  p99.9   495.2 ns  mean  185.6 ns  allocs/call 5.08
+reserved vector+clear  p50   45.7 ns  p99   76.2 ns  p99.9    93.3 ns  mean   48.5 ns  allocs/call 0.00
+fast: array+size       p50   47.6 ns  p99   76.2 ns  p99.9    91.4 ns  mean   49.6 ns  allocs/call 0.00
+ai: fresh vector       p50  141.9 ns  p99  257.1 ns  p99.9   420.0 ns  mean  148.7 ns  allocs/call 5.08
+reserved vector+clear  p50   49.5 ns  p99   84.8 ns  p99.9   107.6 ns  mean   54.6 ns  allocs/call 0.00
+fast: array+size       p50   74.3 ns  p99  114.3 ns  p99.9   163.8 ns  mean   78.9 ns  allocs/call 0.00
+ai: fresh vector       p50  142.9 ns  p99  199.0 ns  p99.9   340.0 ns  mean  144.9 ns  allocs/call 5.08
+reserved vector+clear  p50   50.5 ns  p99   83.8 ns  p99.9   101.9 ns  mean   53.7 ns  allocs/call 0.00
+fast: array+size       p50   53.3 ns  p99   81.9 ns  p99.9    97.1 ns  mean   56.1 ns  allocs/call 0.00
+ai: fresh vector       p50  143.8 ns  p99  196.2 ns  p99.9   342.9 ns  mean  146.1 ns  allocs/call 5.08
+reserved vector+clear  p50   50.5 ns  p99   83.8 ns  p99.9   104.8 ns  mean   54.0 ns  allocs/call 0.00
+fast: array+size       p50   52.4 ns  p99   83.8 ns  p99.9   101.9 ns  mean   56.2 ns  allocs/call 0.00

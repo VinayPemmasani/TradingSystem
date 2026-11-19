@@ -1,0 +1,191 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">PATTERN 08 / 16</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:220px">Dispatch the<br>compiler can’t see</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:520px;width:1600px">Virtual interfaces and std::function per call, versus a type fixed at build time.</div>
+<div class="tagx" data-cue="1" style="left:140px;top:660px;border-color:var(--red);color:var(--red)">virtual int quote(int) const = 0;</div>
+<div class="tagx" data-cue="1" data-d="0.4" style="left:640px;top:660px;border-color:var(--red);color:var(--red)">std::function&lt;int(int)&gt;</div>
+<div class="tagx" data-cue="2" style="left:140px;top:740px;border-color:var(--green);color:var(--green)">the call itself: a few ns, predicted</div>
+<div class="tagx" data-cue="3" style="left:140px;top:810px;border-color:var(--amber);color:var(--amber)">the cost: no inlining → no SIMD, no folding</div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The general version</div>
+<div class="side c-red" data-cue="0" style="left:120px;top:200px">general-purpose</div>
+<div class="code left" data-cue="0" data-d="0.3" style="left:120px;top:245px;width:900px;font-size:27px;"><span class="line" data-hl="1" data-hlend="2"><span class="k">struct</span> <span class="v">Quoter</span> {          <span class="c">// pluggable strategy</span></span><span class="line">  <span class="k">virtual</span> ~<span class="v">Quoter</span>() = <span class="k">default</span>;</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">virtual</span> <span class="k">int</span> quote(<span class="k">int</span> mid) <span class="k">const</span> = <span class="r">0</span>;</span><span class="line">};</span><span class="line"><span class="k">void</span> quote_all(<span class="k">const</span> <span class="v">Quoter</span>&amp; q, <span class="k">const</span> <span class="v">Prices</span>&amp; mid,</span><span class="line" data-hl="2" data-hlend="3">               <span class="v">Prices</span>&amp; out) {</span><span class="line">  <span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; kN; ++i)</span><span class="line" data-hl="2" data-hlend="3">    out[i] = q.quote(mid[i]);  <span class="c">// indirect call</span></span><span class="line" data-hl="2" data-hlend="3">}</span></div>
+<div class="code left" data-cue="3" data-d="0" style="left:1080px;top:245px;width:760px;font-size:24px;"><span class="line"><span class="k">struct</span> <span class="v">Clamp</span> : <span class="v">Quoter</span> {</span><span class="line">  <span class="k">int</span> edge, lo, hi;</span><span class="line">  <span class="v">Clamp</span>(<span class="k">int</span> e, <span class="k">int</span> l, <span class="k">int</span> h)</span><span class="line">      : edge(e), lo(l), hi(h) {}</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">int</span> quote(<span class="k">int</span> mid) <span class="k">const</span> <span class="k">override</span> {</span><span class="line" data-hl="3" data-hlend="4">    <span class="k">return</span> <span class="v">std::clamp</span>(mid - edge, lo, hi);</span><span class="line">  }</span><span class="line">};</span></div>
+<div class="code left" data-cue="4" data-d="0" style="left:120px;top:700px;width:1000px;font-size:24px;"><span class="line" data-hl="4" data-hlend="5"><span class="k">using</span> <span class="v">QuoteFn</span> = <span class="v">std::function</span>&lt;<span class="k">int</span>(<span class="k">int</span>)&gt;;</span><span class="line" data-hl="4" data-hlend="5"><span class="v">QuoteFn</span> f = [c](<span class="k">int</span> mid) { <span class="k">return</span> c.quote(mid); };</span></div>
+<div class="tagx" data-cue="1" data-d="0.6" style="left:1080px;top:200px;border-color:var(--muted);color:#cfdbe2">chosen at run time, from config</div>
+<div class="chk" data-cue="5" style="left:1180px;top:720px"><i style="background:var(--green)"></i>flexible · testable</div>
+</div>
+<div class="scene" id="s-machine">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What the call hides</div>
+<div class="tagx" data-cue="0" data-d="0.0" style="left:120px;top:220px;border-color:var(--violet);color:var(--violet)">load vptr</div>
+<div class="tagx" data-cue="0" data-d="0.35" style="left:350px;top:220px;border-color:var(--violet);color:var(--violet)">load slot</div>
+<div class="tagx" data-cue="0" data-d="0.7" style="left:580px;top:220px;border-color:var(--red);color:var(--red)">call *%rax</div>
+<div class="tagx" data-cue="0" data-d="1.0499999999999998" style="left:810px;top:220px;border-color:var(--teal);color:var(--teal)">body</div>
+<div class="tagx" data-cue="0" data-d="1.4" style="left:1040px;top:220px;border-color:var(--red);color:var(--red)">ret</div>
+<div class="tagx" data-cue="1" style="left:1290px;top:220px;border-color:var(--green);color:var(--green)">target predicted ✓</div>
+<div class="lbl" data-cue="2" style="left:120px;top:330px">indirect call · one price per call, in order</div>
+<div id="m8a-0" class="cellx" data-cue="2" data-anim="fade" style="left:120px;top:370px"></div>
+<div id="m8a-1" class="cellx" data-cue="2" data-anim="fade" style="left:172px;top:370px"></div>
+<div id="m8a-2" class="cellx" data-cue="2" data-anim="fade" style="left:224px;top:370px"></div>
+<div id="m8a-3" class="cellx" data-cue="2" data-anim="fade" style="left:276px;top:370px"></div>
+<div id="m8a-4" class="cellx" data-cue="2" data-anim="fade" style="left:328px;top:370px"></div>
+<div id="m8a-5" class="cellx" data-cue="2" data-anim="fade" style="left:380px;top:370px"></div>
+<div id="m8a-6" class="cellx" data-cue="2" data-anim="fade" style="left:432px;top:370px"></div>
+<div id="m8a-7" class="cellx" data-cue="2" data-anim="fade" style="left:484px;top:370px"></div>
+<div id="m8a-8" class="cellx" data-cue="2" data-anim="fade" style="left:536px;top:370px"></div>
+<div id="m8a-9" class="cellx" data-cue="2" data-anim="fade" style="left:588px;top:370px"></div>
+<div id="m8a-10" class="cellx" data-cue="2" data-anim="fade" style="left:640px;top:370px"></div>
+<div id="m8a-11" class="cellx" data-cue="2" data-anim="fade" style="left:692px;top:370px"></div>
+<div id="m8a-12" class="cellx" data-cue="2" data-anim="fade" style="left:744px;top:370px"></div>
+<div id="m8a-13" class="cellx" data-cue="2" data-anim="fade" style="left:796px;top:370px"></div>
+<div id="m8a-14" class="cellx" data-cue="2" data-anim="fade" style="left:848px;top:370px"></div>
+<div id="m8a-15" class="cellx" data-cue="2" data-anim="fade" style="left:900px;top:370px"></div>
+<div id="m8a-16" class="cellx" data-cue="2" data-anim="fade" style="left:952px;top:370px"></div>
+<div id="m8a-17" class="cellx" data-cue="2" data-anim="fade" style="left:1004px;top:370px"></div>
+<div id="m8a-18" class="cellx" data-cue="2" data-anim="fade" style="left:1056px;top:370px"></div>
+<div id="m8a-19" class="cellx" data-cue="2" data-anim="fade" style="left:1108px;top:370px"></div>
+<div id="m8a-20" class="cellx" data-cue="2" data-anim="fade" style="left:1160px;top:370px"></div>
+<div id="m8a-21" class="cellx" data-cue="2" data-anim="fade" style="left:1212px;top:370px"></div>
+<div id="m8a-22" class="cellx" data-cue="2" data-anim="fade" style="left:1264px;top:370px"></div>
+<div id="m8a-23" class="cellx" data-cue="2" data-anim="fade" style="left:1316px;top:370px"></div>
+<div id="m8a-24" class="cellx" data-cue="2" data-anim="fade" style="left:1368px;top:370px"></div>
+<div id="m8a-25" class="cellx" data-cue="2" data-anim="fade" style="left:1420px;top:370px"></div>
+<div id="m8a-26" class="cellx" data-cue="2" data-anim="fade" style="left:1472px;top:370px"></div>
+<div id="m8a-27" class="cellx" data-cue="2" data-anim="fade" style="left:1524px;top:370px"></div>
+<div id="m8a-28" class="cellx" data-cue="2" data-anim="fade" style="left:1576px;top:370px"></div>
+<div id="m8a-29" class="cellx" data-cue="2" data-anim="fade" style="left:1628px;top:370px"></div>
+<div id="m8a-30" class="cellx" data-cue="2" data-anim="fade" style="left:1680px;top:370px"></div>
+<div id="m8a-31" class="cellx" data-cue="2" data-anim="fade" style="left:1732px;top:370px"></div>
+<div id="m8a-32" class="cellx" data-cue="2" data-anim="fade" style="left:120px;top:422px"></div>
+<div id="m8a-33" class="cellx" data-cue="2" data-anim="fade" style="left:172px;top:422px"></div>
+<div id="m8a-34" class="cellx" data-cue="2" data-anim="fade" style="left:224px;top:422px"></div>
+<div id="m8a-35" class="cellx" data-cue="2" data-anim="fade" style="left:276px;top:422px"></div>
+<div id="m8a-36" class="cellx" data-cue="2" data-anim="fade" style="left:328px;top:422px"></div>
+<div id="m8a-37" class="cellx" data-cue="2" data-anim="fade" style="left:380px;top:422px"></div>
+<div id="m8a-38" class="cellx" data-cue="2" data-anim="fade" style="left:432px;top:422px"></div>
+<div id="m8a-39" class="cellx" data-cue="2" data-anim="fade" style="left:484px;top:422px"></div>
+<div id="m8a-40" class="cellx" data-cue="2" data-anim="fade" style="left:536px;top:422px"></div>
+<div id="m8a-41" class="cellx" data-cue="2" data-anim="fade" style="left:588px;top:422px"></div>
+<div id="m8a-42" class="cellx" data-cue="2" data-anim="fade" style="left:640px;top:422px"></div>
+<div id="m8a-43" class="cellx" data-cue="2" data-anim="fade" style="left:692px;top:422px"></div>
+<div id="m8a-44" class="cellx" data-cue="2" data-anim="fade" style="left:744px;top:422px"></div>
+<div id="m8a-45" class="cellx" data-cue="2" data-anim="fade" style="left:796px;top:422px"></div>
+<div id="m8a-46" class="cellx" data-cue="2" data-anim="fade" style="left:848px;top:422px"></div>
+<div id="m8a-47" class="cellx" data-cue="2" data-anim="fade" style="left:900px;top:422px"></div>
+<div id="m8a-48" class="cellx" data-cue="2" data-anim="fade" style="left:952px;top:422px"></div>
+<div id="m8a-49" class="cellx" data-cue="2" data-anim="fade" style="left:1004px;top:422px"></div>
+<div id="m8a-50" class="cellx" data-cue="2" data-anim="fade" style="left:1056px;top:422px"></div>
+<div id="m8a-51" class="cellx" data-cue="2" data-anim="fade" style="left:1108px;top:422px"></div>
+<div id="m8a-52" class="cellx" data-cue="2" data-anim="fade" style="left:1160px;top:422px"></div>
+<div id="m8a-53" class="cellx" data-cue="2" data-anim="fade" style="left:1212px;top:422px"></div>
+<div id="m8a-54" class="cellx" data-cue="2" data-anim="fade" style="left:1264px;top:422px"></div>
+<div id="m8a-55" class="cellx" data-cue="2" data-anim="fade" style="left:1316px;top:422px"></div>
+<div id="m8a-56" class="cellx" data-cue="2" data-anim="fade" style="left:1368px;top:422px"></div>
+<div id="m8a-57" class="cellx" data-cue="2" data-anim="fade" style="left:1420px;top:422px"></div>
+<div id="m8a-58" class="cellx" data-cue="2" data-anim="fade" style="left:1472px;top:422px"></div>
+<div id="m8a-59" class="cellx" data-cue="2" data-anim="fade" style="left:1524px;top:422px"></div>
+<div id="m8a-60" class="cellx" data-cue="2" data-anim="fade" style="left:1576px;top:422px"></div>
+<div id="m8a-61" class="cellx" data-cue="2" data-anim="fade" style="left:1628px;top:422px"></div>
+<div id="m8a-62" class="cellx" data-cue="2" data-anim="fade" style="left:1680px;top:422px"></div>
+<div id="m8a-63" class="cellx" data-cue="2" data-anim="fade" style="left:1732px;top:422px"></div>
+<div class="lbl" data-cue="3" style="left:120px;top:500px">inlined · g++ -O2 vectorizes: 4 prices per instruction (SSE2)</div>
+<div id="m8b-0" class="cellx" data-cue="3" data-anim="fade" style="left:120px;top:540px"></div>
+<div id="m8b-1" class="cellx" data-cue="3" data-anim="fade" style="left:172px;top:540px"></div>
+<div id="m8b-2" class="cellx" data-cue="3" data-anim="fade" style="left:224px;top:540px"></div>
+<div id="m8b-3" class="cellx" data-cue="3" data-anim="fade" style="left:276px;top:540px"></div>
+<div id="m8b-4" class="cellx" data-cue="3" data-anim="fade" style="left:328px;top:540px"></div>
+<div id="m8b-5" class="cellx" data-cue="3" data-anim="fade" style="left:380px;top:540px"></div>
+<div id="m8b-6" class="cellx" data-cue="3" data-anim="fade" style="left:432px;top:540px"></div>
+<div id="m8b-7" class="cellx" data-cue="3" data-anim="fade" style="left:484px;top:540px"></div>
+<div id="m8b-8" class="cellx" data-cue="3" data-anim="fade" style="left:536px;top:540px"></div>
+<div id="m8b-9" class="cellx" data-cue="3" data-anim="fade" style="left:588px;top:540px"></div>
+<div id="m8b-10" class="cellx" data-cue="3" data-anim="fade" style="left:640px;top:540px"></div>
+<div id="m8b-11" class="cellx" data-cue="3" data-anim="fade" style="left:692px;top:540px"></div>
+<div id="m8b-12" class="cellx" data-cue="3" data-anim="fade" style="left:744px;top:540px"></div>
+<div id="m8b-13" class="cellx" data-cue="3" data-anim="fade" style="left:796px;top:540px"></div>
+<div id="m8b-14" class="cellx" data-cue="3" data-anim="fade" style="left:848px;top:540px"></div>
+<div id="m8b-15" class="cellx" data-cue="3" data-anim="fade" style="left:900px;top:540px"></div>
+<div id="m8b-16" class="cellx" data-cue="3" data-anim="fade" style="left:952px;top:540px"></div>
+<div id="m8b-17" class="cellx" data-cue="3" data-anim="fade" style="left:1004px;top:540px"></div>
+<div id="m8b-18" class="cellx" data-cue="3" data-anim="fade" style="left:1056px;top:540px"></div>
+<div id="m8b-19" class="cellx" data-cue="3" data-anim="fade" style="left:1108px;top:540px"></div>
+<div id="m8b-20" class="cellx" data-cue="3" data-anim="fade" style="left:1160px;top:540px"></div>
+<div id="m8b-21" class="cellx" data-cue="3" data-anim="fade" style="left:1212px;top:540px"></div>
+<div id="m8b-22" class="cellx" data-cue="3" data-anim="fade" style="left:1264px;top:540px"></div>
+<div id="m8b-23" class="cellx" data-cue="3" data-anim="fade" style="left:1316px;top:540px"></div>
+<div id="m8b-24" class="cellx" data-cue="3" data-anim="fade" style="left:1368px;top:540px"></div>
+<div id="m8b-25" class="cellx" data-cue="3" data-anim="fade" style="left:1420px;top:540px"></div>
+<div id="m8b-26" class="cellx" data-cue="3" data-anim="fade" style="left:1472px;top:540px"></div>
+<div id="m8b-27" class="cellx" data-cue="3" data-anim="fade" style="left:1524px;top:540px"></div>
+<div id="m8b-28" class="cellx" data-cue="3" data-anim="fade" style="left:1576px;top:540px"></div>
+<div id="m8b-29" class="cellx" data-cue="3" data-anim="fade" style="left:1628px;top:540px"></div>
+<div id="m8b-30" class="cellx" data-cue="3" data-anim="fade" style="left:1680px;top:540px"></div>
+<div id="m8b-31" class="cellx" data-cue="3" data-anim="fade" style="left:1732px;top:540px"></div>
+<div id="m8b-32" class="cellx" data-cue="3" data-anim="fade" style="left:120px;top:592px"></div>
+<div id="m8b-33" class="cellx" data-cue="3" data-anim="fade" style="left:172px;top:592px"></div>
+<div id="m8b-34" class="cellx" data-cue="3" data-anim="fade" style="left:224px;top:592px"></div>
+<div id="m8b-35" class="cellx" data-cue="3" data-anim="fade" style="left:276px;top:592px"></div>
+<div id="m8b-36" class="cellx" data-cue="3" data-anim="fade" style="left:328px;top:592px"></div>
+<div id="m8b-37" class="cellx" data-cue="3" data-anim="fade" style="left:380px;top:592px"></div>
+<div id="m8b-38" class="cellx" data-cue="3" data-anim="fade" style="left:432px;top:592px"></div>
+<div id="m8b-39" class="cellx" data-cue="3" data-anim="fade" style="left:484px;top:592px"></div>
+<div id="m8b-40" class="cellx" data-cue="3" data-anim="fade" style="left:536px;top:592px"></div>
+<div id="m8b-41" class="cellx" data-cue="3" data-anim="fade" style="left:588px;top:592px"></div>
+<div id="m8b-42" class="cellx" data-cue="3" data-anim="fade" style="left:640px;top:592px"></div>
+<div id="m8b-43" class="cellx" data-cue="3" data-anim="fade" style="left:692px;top:592px"></div>
+<div id="m8b-44" class="cellx" data-cue="3" data-anim="fade" style="left:744px;top:592px"></div>
+<div id="m8b-45" class="cellx" data-cue="3" data-anim="fade" style="left:796px;top:592px"></div>
+<div id="m8b-46" class="cellx" data-cue="3" data-anim="fade" style="left:848px;top:592px"></div>
+<div id="m8b-47" class="cellx" data-cue="3" data-anim="fade" style="left:900px;top:592px"></div>
+<div id="m8b-48" class="cellx" data-cue="3" data-anim="fade" style="left:952px;top:592px"></div>
+<div id="m8b-49" class="cellx" data-cue="3" data-anim="fade" style="left:1004px;top:592px"></div>
+<div id="m8b-50" class="cellx" data-cue="3" data-anim="fade" style="left:1056px;top:592px"></div>
+<div id="m8b-51" class="cellx" data-cue="3" data-anim="fade" style="left:1108px;top:592px"></div>
+<div id="m8b-52" class="cellx" data-cue="3" data-anim="fade" style="left:1160px;top:592px"></div>
+<div id="m8b-53" class="cellx" data-cue="3" data-anim="fade" style="left:1212px;top:592px"></div>
+<div id="m8b-54" class="cellx" data-cue="3" data-anim="fade" style="left:1264px;top:592px"></div>
+<div id="m8b-55" class="cellx" data-cue="3" data-anim="fade" style="left:1316px;top:592px"></div>
+<div id="m8b-56" class="cellx" data-cue="3" data-anim="fade" style="left:1368px;top:592px"></div>
+<div id="m8b-57" class="cellx" data-cue="3" data-anim="fade" style="left:1420px;top:592px"></div>
+<div id="m8b-58" class="cellx" data-cue="3" data-anim="fade" style="left:1472px;top:592px"></div>
+<div id="m8b-59" class="cellx" data-cue="3" data-anim="fade" style="left:1524px;top:592px"></div>
+<div id="m8b-60" class="cellx" data-cue="3" data-anim="fade" style="left:1576px;top:592px"></div>
+<div id="m8b-61" class="cellx" data-cue="3" data-anim="fade" style="left:1628px;top:592px"></div>
+<div id="m8b-62" class="cellx" data-cue="3" data-anim="fade" style="left:1680px;top:592px"></div>
+<div id="m8b-63" class="cellx" data-cue="3" data-anim="fade" style="left:1732px;top:592px"></div>
+<div class="code" data-cue="4" style="left:120px;top:690px;width:1100px;font-size:24px"><span class="line"><span class="k">cmp</span>  %r13, %rax      <span class="c"># is it Clamp::quote?</span></span><span class="line"><span class="k">je</span>   inline_copy    <span class="c"># yes: guarded inline body</span></span><span class="line"><span class="k">call</span> *%rax          <span class="c"># no: real call</span></span></div>
+<div class="tagx" data-cue="5" style="left:1260px;top:720px;border-color:var(--amber);color:var(--amber)">no call, but still 1 price per step</div>
+<div class="lbl" data-cue="4" data-d="0.4" style="left:1260px;top:800px">g++ speculative devirtualization</div>
+</div>
+<div class="scene" id="s-hot">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The hot-path version</div>
+<div class="side c-red" data-cue="0" style="left:70px;top:190px">general</div>
+<div class="code left dimc" data-cue="0" data-d="0" style="left:70px;top:230px;width:860px;font-size:23px;"><span class="line"><span class="k">struct</span> <span class="v">Quoter</span> {          <span class="c">// pluggable strategy</span></span><span class="line">  <span class="k">virtual</span> ~<span class="v">Quoter</span>() = <span class="k">default</span>;</span><span class="line">  <span class="k">virtual</span> <span class="k">int</span> quote(<span class="k">int</span> mid) <span class="k">const</span> = <span class="r">0</span>;</span><span class="line">};</span><span class="line"><span class="k">void</span> quote_all(<span class="k">const</span> <span class="v">Quoter</span>&amp; q, <span class="k">const</span> <span class="v">Prices</span>&amp; mid,</span><span class="line">               <span class="v">Prices</span>&amp; out) {</span><span class="line">  <span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; kN; ++i)</span><span class="line">    out[i] = q.quote(mid[i]);  <span class="c">// indirect call</span></span><span class="line">}</span></div>
+<div class="side c-teal" data-cue="0" data-d="0.4" style="left:980px;top:190px">hot path</div>
+<div class="code right" data-cue="0" data-d="0.4" style="left:980px;top:230px;width:870px;font-size:23px;"><span class="line" data-hl="1" data-hlend="2"><span class="k">struct</span> <span class="v">Clamp</span> {           <span class="c">// no base, no vtable</span></span><span class="line" data-hl="1" data-hlend="2">  <span class="k">int</span> edge, lo, hi;</span><span class="line">  <span class="k">int</span> quote(<span class="k">int</span> mid) <span class="k">const</span> {</span><span class="line">    <span class="k">return</span> <span class="v">std::clamp</span>(mid - edge, lo, hi);</span><span class="line">  }</span><span class="line">};</span><span class="line" data-hl="2" data-hlend="3"><span class="k">template</span> &lt;<span class="k">class</span> <span class="v">Q</span>&gt;       <span class="c">// type fixed at build</span></span><span class="line" data-hl="2" data-hlend="4"><span class="k">void</span> quote_all(<span class="v">Q</span> q, <span class="k">const</span> <span class="v">Prices</span>&amp; mid,</span><span class="line" data-hl="3" data-hlend="4">               <span class="v">Prices</span>&amp; out) {</span><span class="line">  <span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; kN; ++i)</span><span class="line" data-hl="2" data-hlend="3">    out[i] = q.quote(mid[i]);  <span class="c">// inlined, SIMD</span></span><span class="line">}</span></div>
+<div class="tagx" data-cue="3" data-d="0.5" style="left:980px;top:690px;border-color:var(--teal);color:var(--teal)">Q q by value: out can’t alias it</div>
+<div class="tagx" data-cue="4" style="left:70px;top:690px;border-color:var(--muted);color:#cfdbe2">CRTP: Base&lt;D&gt; calls static_cast&lt;const D*&gt;(this)</div>
+<div class="tagx" data-cue="4" data-d="1.5" style="left:70px;top:750px;border-color:var(--muted);color:#cfdbe2">a few strategies: choose once, then run_loop&lt;S&gt;()</div>
+</div>
+<div class="scene" id="s-measured">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measured</div>
+<div class="lbl" data-cue="0" data-d="0.6" style="left:120px;top:200px">quote 64 instruments per tick · ns per quote</div>
+<div class="brow" data-cue="1" data-d="0" style="left:120px;top:240px"><div class="nm" style="width:520px">std::function</div><div class="b grow" data-cue="1" data-d="0.2" data-w="473" style="background:var(--red)"></div><div class="v" style="color:var(--red)">2.7–4.3 ns</div></div>
+<div class="brow" data-cue="2" data-d="0" style="left:120px;top:296px"><div class="nm" style="width:520px">virtual, other TU</div><div class="b grow" data-cue="2" data-d="0.2" data-w="335" style="background:var(--red)"></div><div class="v" style="color:var(--red)">1.8–3.0 ns</div></div>
+<div class="brow" data-cue="3" data-d="0" style="left:120px;top:352px"><div class="nm" style="width:520px">virtual, g++ speculates</div><div class="b grow" data-cue="3" data-d="0.2" data-w="93" style="background:var(--amber)"></div><div class="v" style="color:var(--amber)">0.82–0.85 ns</div></div>
+<div class="brow" data-cue="4" data-d="0" style="left:120px;top:408px"><div class="nm" style="width:520px">template, inlined + SIMD</div><div class="b grow" data-cue="4" data-d="0.2" data-w="29" style="background:var(--teal)"></div><div class="v" style="color:var(--teal)">0.26–0.27 ns</div></div>
+<div class="lbl" data-cue="5" style="left:120px;top:510px">serial chain: each quote feeds the next · ns per quote</div>
+<div class="brow" data-cue="5" data-d="0.3" style="left:120px;top:550px"><div class="nm" style="width:520px">virtual, other TU</div><div class="b grow" data-cue="5" data-d="0.5" data-w="847" style="background:var(--red)"></div><div class="v" style="color:var(--red)">3.6–7.7 ns</div></div>
+<div class="brow" data-cue="5" data-d="0.6" style="left:120px;top:606px"><div class="nm" style="width:520px">template</div><div class="b grow" data-cue="5" data-d="0.8" data-w="880" style="background:var(--teal)"></div><div class="v" style="color:var(--teal)">5.1–8.0 ns</div></div>
+<div class="tagx" data-cue="6" style="left:660px;top:780px;border-color:var(--amber);color:var(--amber)">serial: ranges overlap → no measurable difference</div>
+<div class="foot" data-cue="0" data-d="0.5" style="left:120px;top:720px">measured on a shared 4-vCPU cloud VM · g++ 13 -O2 · taskset · best of 15 passes, 51k quotes each · range over 5 runs per build</div>
+</div>
+<div class="scene" id="s-nuance">
+<div class="h2" data-cue="0" style="left:120px;top:110px">It’s the inlining, not the call</div>
+<div class="chk" data-cue="0" data-d="0.5" style="left:120px;top:230px"><i style="background:var(--green)"></i>monomorphic call: predicted, a nanosecond or two</div>
+<div class="chk" data-cue="1" style="left:120px;top:295px"><i style="background:var(--red)"></i>blocks inlining → no folding, hoisting, SIMD</div>
+<div class="chk" data-cue="2" style="left:120px;top:360px"><i style="background:var(--teal)"></i>constraint: strategy known at build, or chosen once</div>
+<div class="chk" data-cue="3" style="left:120px;top:425px"><i style="background:var(--green)"></i>interfaces are fine: plugins, tests, once-per-tick calls</div>
+<div class="rule" data-cue="4" style="left:120px;top:600px;width:1680px;text-align:center">Fix the type at build time. Let the compiler see the body.</div>
+</div>

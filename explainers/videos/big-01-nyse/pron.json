@@ -1,0 +1,4 @@
+[["\\bNYSE\\b", "N Y S E"], ["\\bICE\\b", "ice"], ["\\bETFs\\b", "E T Fs"], ["\\bDMM\\b", "D M M"], ["\\bITCH\\b", "itch"], ["\\bUS\\b", "U S"],
+ ["\\b1792\\b", "seventeen ninety two"], ["\\b1817\\b", "eighteen seventeen"], ["\\b2006\\b", "two thousand six"], ["\\b2013\\b", "twenty thirteen"], ["\\b2019\\b", "twenty nineteen"], ["\\b2025\\b", "twenty twenty five"],
+ ["3\\.35 billion", "three point three five billion"], ["10\\.5 million", "ten and a half million"], ["9\\.9 billion", "nine point nine billion"], ["\\b4 PM\\b", "four P M"],
+ ["type 100", "type one hundred"], ["is 102", "is one oh two"], ["is 103", "is one oh three"], ["\\b205\\b", "two hundred and five"], ["\\b24\\b", "twenty four"]]

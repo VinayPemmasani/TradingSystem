@@ -1,0 +1,13 @@
+[
+["\\bPITCH\\b","pitch"],
+["\\bITCH\\b","itch"],
+["\\bCboe\\b","C boe"],
+["\\bTCP\\b","T C P"],
+["\\bID\\b","I D"],
+["hex 21","hex two one"],
+["189\\.25","one eighty nine point two five"],
+["34,200","thirty four thousand two hundred"],
+["9:30","nine thirty"],
+["1,250","twelve hundred and fifty"],
+["little-endian","little endian"]
+]

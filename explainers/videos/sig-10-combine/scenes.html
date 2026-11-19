@@ -1,0 +1,63 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 10 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Combining signals</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Many weak signals, one forecast, learned online.</div>
+<div class="chip" data-cue="0" data-d="0.8" style="left:140px;top:560px;background:var(--amber)">microprice</div>
+<div class="chip" data-cue="0" data-d="1.0" style="left:140px;top:630px;background:var(--violet)">imbalance</div>
+<div class="chip" data-cue="0" data-d="1.2" style="left:140px;top:700px;background:var(--green)">trade flow</div>
+<div class="chip" data-cue="0" data-d="1.4" style="left:140px;top:770px;background:var(--blue)">futures lead</div>
+<svg class="full"><path class="draw" data-cue="1" d="M340 580 C 600 580 700 690 900 690" stroke="#8ea3b1" stroke-width="3" fill="none"/><path class="draw" data-cue="1" d="M340 650 C 600 650 700 690 900 690" stroke="#8ea3b1" stroke-width="3" fill="none"/><path class="draw" data-cue="1" d="M340 720 C 600 720 700 690 900 690" stroke="#8ea3b1" stroke-width="3" fill="none"/><path class="draw" data-cue="1" d="M340 790 C 600 790 700 690 900 690" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="node amber" data-cue="1" data-d="0.8" style="left:910px;top:640px;width:420px"><div class="t" style="font-size:30px">one forecast</div><div class="s">w · x</div></div>
+</div>
+
+<div class="scene" id="s-setup">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One forecast</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:860px"><span class="lbl">target</span><div class="math"><i>y</i> = ( <i>m</i><sub><i>t</i>+<i>h</i></sub> − <i>m</i><sub><i>t</i></sub> ) / tick</div><div class="note">h: where the signals peak (sig-09)</div></div>
+<div class="fcard violet" data-cue="1" style="left:120px;top:460px;width:860px"><span class="lbl">features, scaled by their running sd (sig-04)</span><div class="math"><b>x</b> = [ micro − mid, <i>ρ</i>, TFI, lead ] / <i>σ</i></div></div>
+<div class="fcard amber" data-cue="2" style="left:1060px;top:230px;width:760px"><div class="math"><i>ŷ</i> = <b>w</b> · <b>x</b> = Σ <i>w</i><sub><i>j</i></sub> <i>x</i><sub><i>j</i></sub></div></div>
+<div class="fcard amber" data-cue="3" style="left:1060px;top:460px;width:760px"><div class="math">fair = mid + <i>ŷ</i> · tick</div><div class="note">what the signals video quoted around</div></div>
+</div>
+
+<div class="scene" id="s-ridge">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Least squares and ridge</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:800px"><span class="lbl">least squares</span><div class="math"><b>w</b> = (<i>X</i><sup>T</sup><i>X</i>)<sup>−1</sup> <i>X</i><sup>T</sup><b>y</b></div></div>
+<div id="rg-ch" data-cue="1" data-anim="fade" style="left:1040px;top:220px;width:780px;height:560px"></div>
+<div class="tag c-pink" data-cue="2" style="left:120px;top:440px">correlated features → weights split almost at random</div>
+<div class="fcard amber" data-cue="3" style="left:120px;top:540px;width:800px"><span class="lbl">ridge</span><div class="math"><b>w</b> = (<i>X</i><sup>T</sup><i>X</i> + <i>λI</i>)<sup>−1</sup> <i>X</i><sup>T</sup><b>y</b></div><div class="note">shrinks weights toward zero and toward each other</div></div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example (simulation)</div>
+<div id="wk-ch" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:220px;width:1100px;height:600px"></div>
+<div class="tag c-muted" data-cue="0" data-d="0.6" style="left:1280px;top:240px">corr(micro, ρ) = 0.9 · 250 training samples</div>
+<div class="lbl" data-cue="3" style="left:1280px;top:330px">out-of-sample R², 50,000 later samples</div>
+<div class="lbl" data-cue="3" data-d="0.2" style="left:1280px;top:390px">least squares</div><div class="grow bar" data-cue="3" data-d="0.2" data-w="232" style="left:1480px;top:382px;background:#8ea3b1"></div><div class="lbl" data-cue="3" data-d="0.8" style="left:1730px;top:390px">2.9%</div>
+<div class="lbl" data-cue="3" data-d="0.5" style="left:1280px;top:450px">ridge</div><div class="grow bar" data-cue="3" data-d="0.5" data-w="292" style="left:1480px;top:442px;background:var(--amber)"></div><div class="lbl" data-cue="3" data-d="1.1" style="left:1790px;top:450px">3.7%</div>
+<div class="lbl" data-cue="4" style="left:1280px;top:510px">true weights</div><div class="grow bar" data-cue="4" data-w="350" style="left:1480px;top:502px;background:var(--green)"></div><div class="lbl" data-cue="4" data-d="0.6" style="left:1840px;top:510px">4.4%</div>
+</div>
+
+<div class="scene" id="s-online">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Learning online</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1100px;font-size:25px"><span class="c">// per sample, k features (sketch)</span>
+<span class="line" data-hl="1" data-hlend="2">A = gamma * A + x * x.T;      <span class="c">// k × k</span></span><span class="line" data-hl="2" data-hlend="3">b = gamma * b + x * y;        <span class="c">// k</span></span><span class="line" data-hl="3" data-hlend="4">every refresh: w = solve(A + lambda * I, b);</span></div>
+<div class="stat c-amber" data-cue="3" style="left:1300px;top:240px;font-size:56px">k = 4</div>
+<div class="lbl" data-cue="3" data-d="0.3" style="left:1300px;top:320px;width:500px">a few dozen multiply-adds per sample,<br>a 4 × 4 solve per refresh</div>
+<div id="on-tl" data-cue="4" data-anim="fade" style="left:120px;top:560px;width:1700px;height:220px"></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab</div>
+<div class="node violet" data-cue="0" data-d="0.3" style="left:120px;top:260px;width:400px"><div class="t" style="font-size:26px">research/ (Python)</div><div class="s">fit on earlier days<br>test on later ones</div></div>
+<div class="node blue" data-cue="1" style="left:640px;top:260px;width:360px"><div class="t" style="font-size:26px">weights</div><div class="s">constants in the trader</div></div>
+<div class="node amber" data-cue="2" style="left:1120px;top:260px;width:340px"><div class="t" style="font-size:26px">fair value</div><div class="s">dot product, doubles<br>round to whole ticks</div></div>
+<div class="node green" data-cue="3" style="left:1560px;top:260px;width:260px"><div class="t" style="font-size:26px">MarketMaker</div><div class="s">skew · hold</div></div>
+<svg class="full"><path class="draw" data-cue="1" d="M525 320 L635 320" stroke="#a98bff" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/><path class="draw" data-cue="2" d="M1005 320 L1115 320" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="3" d="M1465 320 L1555 320" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="fcard" data-cue="4" style="left:120px;top:560px;width:1100px"><span class="lbl">Cont, Cucuringu &amp; Zhang · Quantitative Finance 2023</span><div class="body">order flow from several book levels merged into one integrated OFI variable</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Leakage</div><div class="cs">No feature measured after the decision.</div></div>
+<div class="card" data-cue="1" style="left:690px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Small R²</div><div class="cs">Too good means a bug, until proven otherwise.</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Cap it</div><div class="cs">Watch weights drift; clamp the forecast.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:480px;width:1700px"><span class="c-amber">Small, regularized, honest</span>:<br>many signals, one price.</div>
+</div>

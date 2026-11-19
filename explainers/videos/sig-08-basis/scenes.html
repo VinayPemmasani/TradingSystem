@@ -1,0 +1,61 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 08 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Fair value from<br>futures basis</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">Carry ties the futures to the cash.</div>
+<div id="ti-ch" data-cue="1" data-anim="fade" style="left:140px;top:640px;width:1300px;height:260px"></div>
+<div class="tag c-blue" data-cue="1" data-d="0.4" style="left:1480px;top:660px">futures</div>
+<div class="tag c-amber" data-cue="1" data-d="0.8" style="left:1480px;top:740px">basis</div>
+<div class="tag c-teal" data-cue="1" data-d="0.6" style="left:1480px;top:820px">cash index</div>
+</div>
+
+<div class="scene" id="s-carry">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Cost of carry</div>
+<div class="node teal" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:780px;text-align:left"><div class="t" style="font-size:28px">buy the stocks today</div><div class="s"><span class="c-red">− pay financing</span> until expiry · <span class="c-green">+ collect dividends</span></div></div>
+<div class="node blue" data-cue="1" style="left:1000px;top:230px;width:800px;text-align:left"><div class="t" style="font-size:28px">buy the futures</div><div class="s">no financing · no dividends</div></div>
+<div class="fcard amber" data-cue="2" style="left:120px;top:450px;width:1100px"><span class="lbl">CME fair value</span><div class="math"><i>F</i> = <i>S</i> [ 1 + <i>r</i> · <span class="frac"><span><i>x</i></span><span>360</span></span> ] − <i>D</i></div><div class="note">S cash index · r rate · x days to expiry · D dividends in index points</div></div>
+<div class="tag c-pink" data-cue="3" style="left:1300px;top:480px">r, x known · D forecast</div>
+<div class="fcard" data-cue="4" style="left:120px;top:720px;width:700px"><div class="math">basis = <i>F</i> − <i>S</i></div></div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example</div>
+<table class="t" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:640px"><tr><th>input</th><th>value</th></tr><tr><td>cash index S</td><td>6,000.00</td></tr><tr><td>rate r</td><td>4.0%</td></tr><tr><td>days x</td><td>60</td></tr><tr><td>dividends D</td><td>12.00 pts</td></tr></table>
+<div class="fcard" data-cue="1" style="left:900px;top:230px;width:920px"><div class="body">financing 6,000 × 0.04 × 60/360 = <span class="c-red">+40.00</span><br>dividends <span class="c-green">− 12.00</span></div></div>
+<div class="fcard amber" data-cue="1" data-d="1.5" style="left:900px;top:420px;width:920px"><div class="math" style="font-size:40px"><i>F</i>* = 6,000 + 40 − 12 = <span class="val c-amber">6,028.00</span></div><div class="note">fair basis 28.00</div></div>
+<div class="fcard pink" data-cue="2" style="left:900px;top:630px;width:920px"><div class="math" style="font-size:40px">6,031.50 − 6,028.00 = <span class="val c-pink">3.50 rich</span></div></div>
+<div class="tag c-pink" data-cue="3" style="left:900px;top:780px">3.50 / 6,028 = 0.058% above carry</div>
+</div>
+
+<div class="scene" id="s-invert">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Run it backwards: price the cash</div>
+<div class="fcard amber" data-cue="1" style="left:120px;top:230px;width:1000px"><div class="math"><i>S</i>* = <span class="frac"><span><i>F</i> + <i>D</i></span><span>1 + <i>r x</i> / 360</span></span> = <span class="frac"><span>6,043.50</span><span>1.00667</span></span> = <span class="val c-amber">6,003.48</span></div></div>
+<div id="iv-ch" data-cue="2" data-anim="fade" style="left:120px;top:520px;width:1100px;height:260px"></div>
+<div class="node violet" data-cue="3" style="left:1280px;top:250px;width:540px"><div class="t" style="font-size:28px">cash / ETF maker</div><div class="s">centers quotes on S*,<br>not on the printed index</div></div>
+</div>
+
+<div class="scene" id="s-practice">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Intraday: hold the basis</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:560px"><span class="lbl">changes only with</span><div class="body">rates · dividends · days</div></div>
+<div class="fcard amber" data-cue="1" style="left:120px;top:420px;width:560px"><div class="math" style="font-size:38px"><i>S</i>* = <i>F</i> − 28.00</div><div class="note">on every futures tick</div></div>
+<div id="pr-ch" data-cue="1" data-anim="fade" style="left:760px;top:220px;width:1060px;height:600px"></div>
+<div class="tag c-pink" data-cue="3" style="left:120px;top:620px">printed index: last trades, lags in fast markets</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: strips, no carry</div>
+<div class="node teal" data-cue="1" style="left:120px;top:250px;width:380px"><div class="t" style="font-size:26px">leg A mid</div><div class="s">100.02</div></div>
+<div class="node teal" data-cue="1" data-d="0.3" style="left:120px;top:420px;width:380px"><div class="t" style="font-size:26px">leg B mid</div><div class="s">99.97</div></div>
+<div class="node amber" data-cue="1" data-d="0.8" style="left:640px;top:330px;width:420px"><div class="t" style="font-size:26px">fair = A + B</div><div class="s">199.99</div></div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.5" d="M505 295 L635 360" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path class="draw" data-cue="1" data-d="0.5" d="M505 465 L635 400" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="node violet" data-cue="2" style="left:1200px;top:330px;width:600px"><div class="t" style="font-size:26px">strip mid − fair = basis</div><div class="s">illustrative: 200.00 − 199.99 = +0.01</div></div>
+<div id="lb-g" data-cue="2" data-d="0.5" data-anim="fade" style="left:640px;top:600px;width:1100px;height:140px"></div>
+<div class="tag c-pink" data-cue="3" style="left:120px;top:780px">stays wide → a trade, or a stale book</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Dividends</div><div class="cs">are forecasts.</div></div>
+<div class="card" data-cue="0" data-d="1.0" style="left:690px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Rate</div><div class="cs">your own funding cost.</div></div>
+<div class="card" data-cue="0" data-d="2.0" style="left:1260px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Rolls</div><div class="cs">recompute the basis each roll.</div></div>
+<div class="tag c-muted" data-cue="1" style="left:120px;top:410px">same arithmetic, other carry: FX forwards, commodity futures</div>
+<div class="big" data-cue="2" style="left:120px;top:500px;width:1700px"><span class="c-amber">Hold the basis</span>; let the leader's price<br>set the follower's fair value.</div>
+</div>

@@ -1,0 +1,3 @@
+[["\\bHKEX\\b", "H K E X"], ["\\bHKSCC\\b", "H K S C C"], ["\\bLME\\b", "L M E"], ["\\bIPOs\\b", "I P Os"], ["\\bIPO\\b", "I P O"], ["ChinaClear", "China Clear"],
+ ["\\b1980\\b", "nineteen eighty"], ["\\b1990\\b", "nineteen ninety"], ["\\b2000\\b", "two thousand"], ["\\b2012\\b", "twenty twelve"], ["\\b2014\\b", "twenty fourteen"], ["\\b2016\\b", "twenty sixteen"], ["\\b2025\\b", "twenty twenty five"],
+ ["2,300", "twenty three hundred"], ["2,900", "twenty nine hundred"], ["29\\.2 billion", "twenty nine point two billion"]]

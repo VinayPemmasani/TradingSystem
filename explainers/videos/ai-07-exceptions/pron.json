@@ -1,0 +1,15 @@
+[
+["\\bstd::runtime_error\\b", "standard runtime error"],
+["\\bruntime_error\\b", "runtime error"],
+["\\bstd::expected\\b", "standard expected"],
+["\\bC\\+\\+23\\b", "C plus plus twenty three"],
+["\\bC\\+\\+", "C plus plus"],
+["\\bto_string\\b", "to string"],
+["\\bon_order\\b", "on order"],
+["\\bnoinline\\b", "no inline"],
+["\\bp99\\b", "P ninety nine"],
+["\\b3\\.2\\b", "three point two"],
+["\\b2\\.7\\b", "two point seven"],
+["\\b2\\.9\\b", "two point nine"],
+["\\b1\\.4\\b", "one point four"]
+]

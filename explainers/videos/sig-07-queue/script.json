@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Queue position",
+  "text": "A resting order earns the spread only if it fills, and it fills only when the shares ahead of it are gone. This video tracks the queue ahead, and turns it into a fill probability. It builds on the queue count from the signals video."
+ },
+ {
+  "id": "why",
+  "title": "Why position matters",
+  "text": "Under price-time priority, each price level is a queue. Join late, and you wait behind everyone. Moallemi and Yuan put a value on queue position, and found that for some large-tick stocks it can be of the same order as the bid-ask spread. That is why the lab's market maker leaves an order alone within one tick: a replace goes to the back."
+ },
+ {
+  "id": "model",
+  "title": "Modeling the queue",
+  "text": "With order-level data, as the signals video showed, you can count shares ahead exactly. With only top of book, you model it, as the lab's research backtest does. Joining a level puts you behind every share already there; stepping inside the spread puts you first. Shares traded at your price come off the front. Other shares that leave were cancelled, and they come off pro rata, because you cannot see where they were."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Say you are 600 shares back in a 1,000-share bid. Then 200 shares trade, and the level shows 700. So 100 were cancelled, and pro rata, 60 of those were ahead of you. Ahead is now 600, minus 200, minus 60: 340. You fill once more shares trade at your price than are ahead of you. The queue moved you forward 260 shares while you did nothing."
+ },
+ {
+  "id": "prob",
+  "title": "Fill probability",
+  "text": "When will that be? If shares trade at your price at 50 a second, 340 ahead is about seven seconds. But the price may move away first. Cont, Stoikov and Talreja modeled the book as queues with random arrivals and cancels. From the book's state, they computed the probability that an order at the bid executes before the ask quote moves. Multiply it by what a fill earns, net of adverse selection, and you have a value for the quote."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the backtest, each resting order keeps one number, ahead, updated on every top of book row. The hold ticks setting trades queue position against a stale price. At zero, every change of quote means a replace, and a trip to the back. At one, an order stays unless the quote moves more than a tick. The README's sweep, hold ticks zero, one and two, shows the effect. Each extra tick of hold keeps more of your place, at the cost of quoting a staler price."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pitfalls: the pro rata cancel rule is an assumption, so check it on order-level data where you have it. The backtest fills a whole lot at once, and ignores its own effect on the market. Know what is ahead of you: it decides whether you fill, and what the fill is worth."
+ }
+]

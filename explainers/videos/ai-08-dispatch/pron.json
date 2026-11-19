@@ -1,0 +1,11 @@
+[
+["\\bstd::function\\b", "standard function"],
+["\\bquote_all\\b", "quote all"],
+["\\bvtable\\b", "V table"],
+["\\bg\\+\\+", "G plus plus"],
+["\\bO2\\b", "O two"],
+["\\bSIMD\\b", "sim D"],
+["\\bCRTP\\b", "C R T P"],
+["\\b0\\.85\\b", "zero point eight five"],
+["\\b0\\.27\\b", "zero point two seven"]
+]

@@ -1,0 +1,144 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">NETWORK · 02 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">UDP vs TCP<br>in trading</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1000px">Why market data and orders choose different transports.</div>
+<div class="node ex" data-cue="0" data-d="0.8" style="left:1250px;top:300px;width:520px;height:110px;font-size:30px">Market data → UDP<small>multicast, best effort</small></div>
+<div class="node" data-cue="0" data-d="1.1" style="left:1250px;top:460px;width:520px;height:110px;font-size:30px;border-color:var(--pink)">Orders → TCP<small>one session, reliable</small></div>
+<div class="node bad" data-cue="1" data-d="0.3" style="left:1250px;top:640px;width:520px;height:90px;font-size:28px;color:var(--red)">packet lost: now what?</div>
+</div>
+<div class="scene" id="s-headers">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two contracts in two headers</div>
+<div class="h3" data-cue="0" style="left:140px;top:230px;color:var(--amber)">UDP · 8 bytes</div>
+<div class="bit" data-cue="0" data-d="0.0" data-anim="fade" style="left:140px;top:300px;width:170px;height:80px;background:#ffb347;font-size:22px;">src port</div>
+<div class="bit" data-cue="0" data-d="0.1" data-anim="fade" style="left:310px;top:300px;width:170px;height:80px;background:#ffb347;font-size:22px;">dst port</div>
+<div class="bit" data-cue="0" data-d="0.2" data-anim="fade" style="left:480px;top:300px;width:170px;height:80px;background:#ffb347;font-size:22px;">length</div>
+<div class="bit" data-cue="0" data-d="0.30000000000000004" data-anim="fade" style="left:650px;top:300px;width:170px;height:80px;background:#ffb347;font-size:22px;">checksum</div>
+<div class="fcard" data-cue="1" style="left:140px;top:430px;width:680px;background:rgba(19,33,43,.85);border:2px solid var(--amber);border-radius:16px;padding:20px 26px"><div class="body">“delivery and duplicate protection are not guaranteed”</div><div class="src" style="margin-top:8px">RFC 768</div></div>
+<div class="h3" data-cue="2" style="left:1000px;top:230px;color:var(--pink)">TCP · 20 bytes minimum</div>
+<div class="bit" data-cue="2" data-d="0.0" data-anim="fade" style="left:1000px;top:300px;width:340px;height:58px;background:#ff8fc8;font-size:22px">src port</div>
+<div class="bit" data-cue="2" data-d="0.0" data-anim="fade" style="left:1340px;top:300px;width:340px;height:58px;background:#ff8fc8;font-size:22px">dst port</div>
+<div class="bit" data-cue="2" data-d="0.08" data-anim="fade" data-hl="2" data-hld="0.6" data-hlend="3" style="left:1000px;top:362px;width:680px;height:58px;background:#ff8fc8;font-size:22px">sequence number</div>
+<div class="bit" data-cue="2" data-d="0.16" data-anim="fade" data-hl="2" data-hld="0.6" data-hlend="3" style="left:1000px;top:424px;width:680px;height:58px;background:#ff8fc8;font-size:22px">acknowledgement number</div>
+<div class="bit" data-cue="2" data-d="0.24" data-anim="fade" style="left:1000px;top:486px;width:340px;height:58px;background:#ff8fc8;font-size:22px">offset · flags</div>
+<div class="bit" data-cue="2" data-d="0.24" data-anim="fade" style="left:1340px;top:486px;width:340px;height:58px;background:#ff8fc8;font-size:22px">window</div>
+<div class="bit" data-cue="2" data-d="0.32" data-anim="fade" style="left:1000px;top:548px;width:340px;height:58px;background:#ff8fc8;font-size:22px">checksum</div>
+<div class="bit" data-cue="2" data-d="0.32" data-anim="fade" style="left:1340px;top:548px;width:340px;height:58px;background:#ff8fc8;font-size:22px">urgent ptr</div>
+<svg class="full">
+<path class="draw" data-cue="3" d="M1060 760 L1640 800" stroke="#ff8fc8" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="3" data-d="0.5" d="M1640 820 L1060 860" stroke="#ff8fc8" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="3" data-d="1.0" d="M1060 880 L1640 920" stroke="#ff8fc8" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+</svg>
+<div class="tl" data-cue="3" style="left:1300px;top:740px;color:#ff8fc8">SYN</div>
+<div class="tl" data-cue="3" data-d="0.5" style="left:1280px;top:810px;color:#ff8fc8">SYN-ACK</div>
+<div class="tl" data-cue="3" data-d="1.0" style="left:1300px;top:870px;color:#ff8fc8">ACK</div>
+<div class="fcard" data-cue="3" data-d="0.4" style="left:140px;top:640px;width:680px;background:rgba(19,33,43,.85);border:2px solid var(--pink);border-radius:16px;padding:20px 26px"><div class="body">“a reliable, in-order, byte-stream service”</div><div class="src" style="margin-top:8px">RFC 9293</div></div>
+</div>
+<div class="scene" id="s-loss">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Packet 3 of 6 is lost</div>
+<div class="h3" data-cue="0" style="left:120px;top:210px;color:var(--pink)">TCP</div>
+<div class="lbl" data-cue="0" style="left:300px;top:225px">ON THE WIRE</div>
+<div class="bit" data-cue="0" data-d="0.0" data-anim="fade" style="left:300px;top:265px;width:80px;height:64px;background:#ff8fc8;font-size:22px;">1</div>
+<div class="bit" data-cue="0" data-d="0.15" data-anim="fade" style="left:390px;top:265px;width:80px;height:64px;background:#ff8fc8;font-size:22px;">2</div>
+<div class="bit" data-cue="0" data-d="0.3" data-anim="fade" style="left:480px;top:265px;width:80px;height:64px;background:#ff6b5e;font-size:22px;">3 ✗</div>
+<div class="bit" data-cue="0" data-d="0.44999999999999996" data-anim="fade" style="left:570px;top:265px;width:80px;height:64px;background:#ff8fc8;font-size:22px;">4</div>
+<div class="bit" data-cue="0" data-d="0.6" data-anim="fade" style="left:660px;top:265px;width:80px;height:64px;background:#ff8fc8;font-size:22px;">5</div>
+<div class="bit" data-cue="0" data-d="0.75" data-anim="fade" style="left:750px;top:265px;width:80px;height:64px;background:#ff8fc8;font-size:22px;">6</div>
+<div class="lbl" data-cue="1" style="left:900px;top:225px">KERNEL HOLDS</div>
+<div class="bit" data-cue="1" data-d="0.2" data-anim="fade" style="left:900px;top:265px;width:80px;height:64px;background:#5c7381;font-size:22px;">4</div>
+<div class="bit" data-cue="1" data-d="0.30000000000000004" data-anim="fade" style="left:990px;top:265px;width:80px;height:64px;background:#5c7381;font-size:22px;">5</div>
+<div class="bit" data-cue="1" data-d="0.4" data-anim="fade" style="left:1080px;top:265px;width:80px;height:64px;background:#5c7381;font-size:22px;">6</div>
+<div class="lbl" data-cue="1" style="left:1240px;top:225px">APP SEES</div>
+<div class="bit" data-cue="1" data-d="0.4" data-anim="fade" style="left:1240px;top:265px;width:80px;height:64px;background:#ff8fc8;font-size:22px;">1</div>
+<div class="bit" data-cue="1" data-d="0.5" data-anim="fade" style="left:1330px;top:265px;width:80px;height:64px;background:#ff8fc8;font-size:22px;">2</div>
+<div class="tag" data-cue="2" style="left:1430px;top:280px;color:var(--muted)">… nothing</div>
+<div class="panel" data-cue="3" data-anim="fade" style="left:300px;top:370px;width:1500px;height:120px"></div>
+<div class="kv" data-cue="3" data-d="0.2" style="left:330px;top:385px">dup ACKs → fast retransmit: <b>≥ 1 round trip</b></div>
+<div class="kv" data-cue="4" style="left:330px;top:430px">timer fires → RTO: <b style="color:var(--red)">≥ 200 ms on Linux</b> <span class="src">(TCP_RTO_MIN = HZ/5)</span></div>
+<div class="h3" data-cue="5" style="left:120px;top:590px;color:var(--amber)">UDP</div>
+<div class="lbl" data-cue="5" style="left:300px;top:605px">APP SEES, IMMEDIATELY</div>
+<div class="bit" data-cue="5" data-d="0.0" data-anim="fade" style="left:300px;top:645px;width:80px;height:64px;background:#ffb347;font-size:22px;">1</div>
+<div class="bit" data-cue="5" data-d="0.1" data-anim="fade" style="left:390px;top:645px;width:80px;height:64px;background:#ffb347;font-size:22px;">2</div>
+<div class="bit" data-cue="5" data-d="0.3" data-anim="fade" style="left:480px;top:645px;width:80px;height:64px;background:transparent;border:3px dashed var(--red);color:var(--red)">?</div>
+<div class="bit" data-cue="5" data-d="0.30000000000000004" data-anim="fade" style="left:570px;top:645px;width:80px;height:64px;background:#ffb347;font-size:22px;">4</div>
+<div class="bit" data-cue="5" data-d="0.4" data-anim="fade" style="left:660px;top:645px;width:80px;height:64px;background:#ffb347;font-size:22px;">5</div>
+<div class="bit" data-cue="5" data-d="0.5" data-anim="fade" style="left:750px;top:645px;width:80px;height:64px;background:#ffb347;font-size:22px;">6</div>
+<div class="tag" data-cue="5" data-d="1.0" style="left:880px;top:660px;color:var(--amber)">gap detected → your code decides: re-request, snapshot, or move on</div>
+</div>
+<div class="scene" id="s-md">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Market data: UDP plus its own sequence numbers</div>
+<svg class="full">
+<path id="md-p0" class="draw" data-cue="1" data-d="0.0" d="M420 410 C560 410 560 320 700 320" stroke="#3a5260" stroke-width="3" fill="none"/>
+<path id="md-p1" class="draw" data-cue="1" data-d="0.1" d="M420 410 C560 410 560 450 700 450" stroke="#3a5260" stroke-width="3" fill="none"/>
+<path id="md-p2" class="draw" data-cue="1" data-d="0.2" d="M420 410 C560 410 560 580 700 580" stroke="#3a5260" stroke-width="3" fill="none"/>
+<path id="md-rq" class="draw" data-cue="5" d="M890 580 C1000 580 1000 850 1180 850" stroke="#ffb347" stroke-width="3" stroke-dasharray="1 0" fill="none" marker-end="url(#ah-amber)"/>
+</svg>
+<div class="node ex" data-cue="0" style="left:160px;top:360px;width:260px;height:100px">Exchange</div>
+<div class="node sv" data-cue="0" data-d="0.3" style="left:700px;top:280px;width:190px;height:80px;font-size:22px">server 1</div>
+<div class="pkt" data-path="md-p0" data-cue="1" data-d="0.5" data-dur="1.5" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="node sv" data-cue="0" data-d="0.4" style="left:700px;top:410px;width:190px;height:80px;font-size:22px">server 2</div>
+<div class="pkt" data-path="md-p1" data-cue="1" data-d="0.5" data-dur="1.5" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="node bad" data-cue="0" data-d="0.5" style="left:700px;top:540px;width:190px;height:80px;font-size:22px">slow server</div>
+<div class="pkt" data-path="md-p2" data-cue="1" data-d="0.5" data-dur="1.5" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="tag" data-cue="2" style="left:420px;top:700px;color:var(--red)">no flow control: the slow one only hurts itself</div>
+<div class="lbl" data-cue="3" style="left:1000px;top:240px">MOLDUDP64 HEADER · 20 BYTES</div>
+<div class="bit" data-cue="4" data-d="0" data-anim="fade" style="left:1000px;top:280px;width:500px;height:74px;background:#ffb347;font-size:22px;">session · 10</div>
+<div class="bit" data-cue="4" data-d="0.15" data-anim="fade" style="left:1500px;top:280px;width:240px;height:74px;background:#ffb347;font-size:22px;">seq · 8</div>
+<div class="bit" data-cue="4" data-d="0.3" data-anim="fade" style="left:1740px;top:280px;width:60px;height:74px;background:#ffb347;font-size:22px;">cnt 2</div>
+<div class="tl" data-cue="4" data-d="0.6" style="left:1000px;top:370px">sequence number of the first message; the rest count up from it</div>
+<div class="node" data-cue="5" style="left:1180px;top:800px;width:420px;height:100px;border-color:var(--amber);border-style:dashed">Re-request server<small>unicast</small></div>
+<div class="tag" data-cue="5" data-d="0.6" style="left:1020px;top:640px;color:var(--amber)">request: session · seq · count (20 bytes)</div>
+<div class="tag" data-cue="6" style="left:1000px;top:470px;color:var(--amber)">quiet feed: heartbeat ~1/s carries the next seq</div>
+<div class="src" data-cue="4" data-d="1" style="left:1000px;top:420px">Nasdaq MoldUDP64 v1.00 · lab docs/specs/moldudp64-layout.md</div>
+</div>
+<div class="scene" id="s-oe">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Orders: one TCP session, nothing lost</div>
+<svg class="full"><path id="oe-a" class="draw" data-cue="1" d="M480 360 L1380 360" stroke="#ff8fc8" stroke-width="4" fill="none"/><path id="oe-b" d="M1380 400 L480 400" stroke="none" fill="none"/></svg>
+<div class="node sv" data-cue="0" style="left:160px;top:320px;width:320px;height:110px">Firm<small>order gateway</small></div>
+<div class="node ex" data-cue="0" style="left:1380px;top:320px;width:360px;height:110px">Exchange<small>order entry port</small></div>
+<div class="pkt" data-path="oe-a" data-cue="1" data-d="0" data-dur="1.8" data-loop="1" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+<div class="pkt" data-path="oe-a" data-cue="1" data-d="0.6" data-dur="1.8" data-loop="1" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+<div class="pkt" data-path="oe-a" data-cue="1" data-d="1.2" data-dur="1.8" data-loop="1" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+<div class="tag" data-cue="1" data-d="0.4" style="left:640px;top:270px;color:var(--pink)">new · cancel · new: exactly once, in order</div>
+<div class="tag" data-cue="2" style="left:820px;top:430px;color:var(--muted)">TCP</div>
+<div class="lbl" data-cue="3" style="left:160px;top:540px">SOUPBINTCP PACKET</div>
+<div class="bit" data-cue="3" data-d="0" data-anim="fade" style="left:160px;top:580px;width:200px;height:74px;background:#ff8fc8;font-size:22px;">length · 2</div>
+<div class="bit" data-cue="3" data-d="0.15" data-anim="fade" style="left:360px;top:580px;width:140px;height:74px;background:#ff8fc8;font-size:22px;">type · 1</div>
+<div class="bit" data-cue="3" data-d="0.3" data-anim="fade" style="left:500px;top:580px;width:640px;height:74px;background:#d7b2c6;font-size:22px;">payload: one OUCH message</div>
+<div class="kv" data-cue="3" data-d="0.8" style="left:160px;top:690px"><b>L</b> login → <b>A</b> accepted · <b>S</b> sequenced data · <b>U</b> unsequenced data<br><b>H</b> / <b>R</b> heartbeat after 1 s idle</div>
+<div class="src" data-cue="3" data-d="1" style="left:160px;top:800px">Nasdaq SoupBinTCP 3.00 · lab docs/specs/soupbintcp-layout.md</div>
+<div class="tag" data-cue="4" style="left:1240px;top:500px;color:var(--pink)">reconnect: login asks for next seq</div>
+<div class="node" data-cue="5" style="left:1240px;top:580px;width:500px;height:160px;border-color:var(--green);font-size:30px">lost segment<small style="font-size:24px;color:#dce8ee">costs time, never correctness</small></div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: libs/feed and libs/net</div>
+<div class="lbl" data-cue="1" style="left:140px;top:220px">ONE ETHERNET PAYLOAD (MTU 1500)</div>
+<div class="bit" data-cue="1" data-d="0" data-anim="fade" style="left:140px;top:260px;width:180px;height:74px;background:#5c7381;font-size:22px;">IP 20</div>
+<div class="bit" data-cue="1" data-d="0.15" data-anim="fade" style="left:320px;top:260px;width:140px;height:74px;background:#ffb347;font-size:22px;">UDP 8</div>
+<div class="bit" data-cue="1" data-d="0.3" data-anim="fade" style="left:460px;top:260px;width:1300px;height:74px;background:#4fd18b;font-size:22px;">RxPacket::kMaxLen = 1472 bytes of MoldUDP64</div>
+<div class="lbl" data-cue="2" style="left:140px;top:400px">GAP RECOVERY (ReceiverConfig defaults)</div>
+<div class="bar" data-cue="2" data-anim="fade" style="left:140px;top:470px;width:1620px;height:4px;background:var(--line)"></div>
+<div class="node bad" data-cue="2" style="left:140px;top:440px;width:120px;height:64px;font-size:20px">gap</div>
+<div class="grow bar" data-cue="2" data-d="0.3" data-w="140" style="left:260px;top:456px;height:32px;background:var(--amber)"></div>
+<div class="tl" data-cue="2" data-d="0.5" style="left:262px;top:520px;color:var(--amber)">100 µs reorder wait</div>
+<div class="node" data-cue="2" data-d="1.2" data-anim="scale" style="left:430px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">1</div>
+<div class="node" data-cue="2" data-d="1.45" data-anim="scale" style="left:560px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">2</div>
+<div class="node" data-cue="2" data-d="1.7" data-anim="scale" style="left:690px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">3</div>
+<div class="node" data-cue="2" data-d="1.95" data-anim="scale" style="left:820px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">4</div>
+<div class="node" data-cue="2" data-d="2.2" data-anim="scale" style="left:950px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">5</div>
+<div class="node" data-cue="2" data-d="2.45" data-anim="scale" style="left:1080px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">6</div>
+<div class="node" data-cue="2" data-d="2.7" data-anim="scale" style="left:1210px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">7</div>
+<div class="node" data-cue="2" data-d="2.95" data-anim="scale" style="left:1340px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">8</div>
+<div class="node" data-cue="2" data-d="3.2" data-anim="scale" style="left:1470px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">9</div>
+<div class="node" data-cue="2" data-d="3.45" data-anim="scale" style="left:1600px;top:446px;width:56px;height:56px;border-color:var(--amber);font-size:20px">10</div>
+<div class="tl" data-cue="2" data-d="2" style="left:620px;top:520px">re-request every 20 ms if no progress, up to 10 times, then give up</div>
+<div class="code" data-cue="3" style="left:140px;top:610px;font-size:25px"><span class="c">// libs/net/src/tcp.cpp</span>
+TcpStream::TcpStream(<span class="v">int</span> fd) : fd_{fd} {
+  out_.reserve(<span class="r">1 &lt;&lt; 16</span>);<span class="line hl">  set_nodelay(fd_);   <span class="c">// TCP_NODELAY = 1</span></span>}
+<span class="c">// send(): what the kernel will not take now goes to out_; flush() drains it</span></div>
+</div>
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Choose by what a loss should cost</div>
+<div class="node bad" data-cue="0" data-d="0.3" style="left:140px;top:680px;width:1640px;height:100px;font-size:30px;color:#ffb3aa">a lost packet costs either a gap or a wait</div>
+<div class="node ex" data-cue="1" style="left:140px;top:260px;width:780px;height:330px;font-size:44px;display:block;padding:40px;text-align:left">UDP<div class="body" style="margin-top:20px;font-size:34px">newest data now<br><span class="c-amber">you repair gaps yourself</span></div></div>
+<div class="node" data-cue="2" style="left:1000px;top:260px;width:780px;height:330px;font-size:44px;display:block;padding:40px;text-align:left;border-color:var(--pink)">TCP<div class="body" style="margin-top:20px;font-size:34px">every byte, in order<br><span class="c-pink">you pay in waiting</span></div></div>
+</div>

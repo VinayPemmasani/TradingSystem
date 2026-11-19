@@ -1,0 +1,42 @@
+[
+ {
+  "id": "title",
+  "title": "Clearing and CCPs",
+  "text": "When you trade on an exchange, you rarely end up owing the stranger on the other side. A central counterparty steps in. It becomes the buyer to every seller, and the seller to every buyer."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "That one step removes the risk of each trader failing the others, and puts it in one place built to absorb it. If one member fails, the rest are still paid. The global standard for managing it is the Principles for Financial Market Infrastructures, from CPMI and IOSCO, published in April 2012."
+ },
+ {
+  "id": "novate",
+  "title": "Novation and netting",
+  "text": "Here is the mechanism. A sells to B on the exchange. At clearing, that one trade becomes two: A sells to the CCP, and the CCP sells to B. This is novation. Now every member has a single counterparty, so trades can be netted. Buy 10,000 shares and sell 9,800 in a day, and only the net 200 settle. At NSCC, the US equity clearing house, netting cuts the value of payments by an average of 98 percent or more each day.",
+  "hold": 0.4
+ },
+ {
+  "id": "margin",
+  "title": "Margin",
+  "text": "A CCP protects itself with margin. Variation margin moves each day's gains and losses, marked to market at least daily. Take a long position of 10 futures worth $50 per index point. If the index falls 20 points, you pay $10,000 that day, and the seller receives it. Initial margin is collateral posted up front, for the moves that could happen while a defaulter is closed out. The standard is coverage to at least 99 percent, one-tailed.",
+  "hold": 0.5
+ },
+ {
+  "id": "waterfall",
+  "title": "Default waterfall",
+  "text": "If a member defaults and its margin is not enough, the CCP works down a waterfall. Take CME's base products. First, the defaulter's own margin and guaranty fund contribution. Then $100 million of CME's own capital. Then the other members' guaranty fund. Then capped assessments on the surviving members. CME sizes the fund to survive the default of the two members whose failure would cost most under extreme but plausible stress. That is called Cover 2.",
+  "hold": 0.5
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab has no clearing house, but it has the record clearing starts from. simex sends every firm execution on its drop copy. Each report carries a match number, the same one OUCH and ITCH use for that trade. One shared key per trade lets both sides, and a clearing house, agree on what happened. The firm checks its fills against that record after every session.",
+  "hold": 0.6
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They plan for margin calls as a cash need, and keep liquidity for volatile days. They model margin before they trade, not after. They reconcile with their clearing broker every day. And they remember that the guaranty fund is shared: other members' failures can cost them too. This is education, not legal advice.",
+  "hold": 1.0
+ }
+]

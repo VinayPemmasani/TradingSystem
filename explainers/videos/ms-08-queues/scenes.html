@@ -1,0 +1,66 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 08 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Queue dynamics</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:410px;width:1500px">at a single price level</div>
+<div id="ti-q" data-cue="1" data-anim="fade" style="left:140px;top:600px;width:1500px;height:120px"></div>
+</div>
+
+<div class="scene" id="s-fifo">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Price, then time</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:140px;top:250px">bid 30.00 · front →</div>
+<div id="ff-q" data-cue="0" data-d="0.3" data-anim="fade" style="left:140px;top:300px;width:1680px;height:140px"></div>
+<div class="tag c-red" data-cue="3" style="left:140px;top:500px">trade at the front: the queue moves up</div>
+<div class="tag" data-cue="3" data-d="1.2" style="left:140px;top:560px">cancel ahead: you move up</div>
+<div class="tag c-pink" data-cue="4" style="left:140px;top:640px">replace (price or more size): back of the line</div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: 100 shares at the back</div>
+<div class="node green" data-cue="1" style="left:120px;top:250px;width:260px"><div class="t" id="wk-px">bid 30.00</div></div>
+<div id="wk-q" data-cue="1" data-anim="fade" style="left:420px;top:250px;width:1400px;height:90px"></div>
+<div class="fcard" data-cue="2" style="left:120px;top:440px;width:820px"><div class="math" style="font-size:32px">ahead: 5,000 − 1,500 traded − 2,000 cancelled</div><div class="math" style="font-size:32px">= <span class="val">1,500</span> · behind: <span class="val">400</span></div></div>
+<div class="fcard red" data-cue="4" style="left:1000px;top:440px;width:820px"><div class="math" style="font-size:32px">sell sweep 2,000 = 1,500 + <span class="c-amber">100</span> + 400</div></div>
+<div class="tag c-red" data-cue="6" style="left:1000px;top:600px">level empty → bid 29.99</div>
+<div class="tag c-amber" data-cue="7" style="left:120px;top:640px">a minute of waiting · filled at the worst moment</div>
+</div>
+
+<div class="scene" id="s-adverse">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why the back of the queue is worse</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;border-color:var(--pink)"><div class="ct c-pink">Back of the queue</div><div class="cs">filled by the order that empties the level → price moves through</div></div>
+<div class="card" data-cue="2" style="left:1000px;top:230px;width:820px;border-color:var(--green)"><div class="ct c-green">Front of the queue</div><div class="cs">filled by small trades → queue still stands</div></div>
+<div class="fcard violet" data-cue="3" style="left:120px;top:500px;width:1700px"><span class="lbl">Moallemi &amp; Yuan, 2016–17 · Nasdaq ITCH, August 2013</span><div class="cs" style="font:400 30px/1.45 var(--body)">Adverse selection rises with queue position. Queue value can be of the same order as the spread.</div></div>
+<div class="lbl" data-cue="6" style="left:120px;top:730px">BAC: front vs average queue spot</div>
+<div class="grow bar" data-cue="6" data-d="0.2" data-w="300" style="left:620px;top:722px;background:var(--amber)"></div>
+<div class="grow bar" data-cue="6" data-d="0.2" data-w="1200" style="left:620px;top:782px;background:#3a5566"></div>
+<div class="lbl" data-cue="6" data-d="0.6" style="left:940px;top:730px">0.21–0.26 tick</div>
+<div class="lbl" data-cue="6" data-d="0.4" style="left:120px;top:790px">one tick, for scale</div>
+</div>
+
+<div class="scene" id="s-tick">
+<div class="h2" data-cue="0" style="left:120px;top:110px">With a one-tick spread, queues are the price</div>
+<div id="tk-lad" data-cue="0" data-d="0.3" data-anim="fade" style="left:220px;top:320px"></div>
+<div class="node teal" data-cue="0" data-d="0.6" style="left:1180px;top:300px;width:600px"><div class="t" id="tk-mid">mid 30.005</div><div class="s">moves only when a best queue runs out</div></div>
+<div class="tag c-amber" data-cue="1" style="left:1180px;top:500px">size + depletion speed → next tick</div>
+<div class="tag c-blue" data-cue="2" style="left:1180px;top:570px">= imbalance (sig-02), from the queue's side</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1700px;font-size:22px"><span class="c">// libs/match/include/lab/match/engine.hpp</span>
+<span class="c">// Price-time priority limit order book matching engine ...</span>
+<span class="line" data-hl="1" data-hlend="2"><span class="c">// Replaces a live order: the old one leaves the book, the replacement</span></span><span class="line" data-hl="1" data-hlend="2"><span class="c">// keeps its side and instrument, loses time priority and may trade at once.</span></span></div>
+<div class="node blue" data-cue="2" style="left:120px;top:480px;width:820px;text-align:left"><div class="t" style="font-size:26px">ITCH: A add · E execute · X cancel · D delete</div><div class="s">order reference on each → shares ahead of you</div></div>
+<div class="tag c-green" data-cue="2" data-d="0.6" style="left:120px;top:640px">ahead −= executions and cancels ahead · adds behind: no change</div>
+<div class="code" data-cue="3" style="left:1000px;top:480px;width:820px;font-size:22px"><span class="c">// firm/strategy/.../market_maker.hpp</span>
+<span class="c">// Leave a working order alone while it is within</span>
+<span class="c">// this many ticks of the quote: every replace goes</span>
+<span class="c">// to the back of the queue.</span>
+<span class="v">uint32_t</span> hold_ticks = <span class="r">1</span>;</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Join early</div><div class="cs">Time is the tiebreak.</div></div>
+<div class="card" data-cue="0" data-d="0.8" style="left:690px;top:150px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Replace rarely</div><div class="cs">Each one resets your place.</div></div>
+<div class="card" data-cue="0" data-d="1.6" style="left:1260px;top:150px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Cancel early</div><div class="cs">Before the queue against you breaks.</div></div>
+<div class="big" data-cue="1" style="left:120px;top:460px;width:1700px"><span class="c-amber">Queue position</span> is an asset:<br>worth most when ticks are large.</div>
+</div>

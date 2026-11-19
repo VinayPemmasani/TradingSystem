@@ -1,0 +1,12 @@
+.chip{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;font:800 32px var(--mono);color:#06141a}
+.card{border-radius:16px;border:2px solid var(--line);background:var(--panel);padding:20px 26px}
+.card .ct{font:700 32px var(--body)} .card .cs{font:500 24px var(--mono);color:#e6eef2;margin-top:10px;line-height:1.35} .card .cd{font:500 22px var(--mono);color:var(--muted);margin-top:8px;line-height:1.35}
+.olbl{font:600 18px var(--mono);color:var(--muted);text-align:center}
+.hex{font:600 26px var(--mono);letter-spacing:.02em}
+.big{font:800 54px var(--mono)}
+.take{font:700 40px/1.3 var(--body);color:#eef4f7}
+.lvl{height:46px;border-radius:8px;display:flex;align-items:center;padding:0 16px;font:600 22px var(--mono);color:#06141a}
+.node{border-radius:16px;border:3px solid;background:var(--panel);display:grid;place-items:center;text-align:center;font:700 30px var(--body);padding:10px}
+.node small{display:block;font:500 21px var(--mono);color:var(--muted);margin-top:4px}
+.bytes > div{font-size:18px}
+.note{font:500 24px/1.45 var(--body);color:#cfdde6}

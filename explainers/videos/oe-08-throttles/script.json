@@ -1,0 +1,33 @@
+[
+{
+"id": "title",
+"title": "Throttles",
+"text": "Exchanges cap how fast you may send messages. Go over, and they reject you, or cut you off. So a trading system needs its own throttle, set tighter than the exchange's."
+},
+{
+"id": "why",
+"title": "Why venues throttle",
+"text": "Every message you send costs the exchange gateway and matching engine time. One runaway session could slow everyone else down. So limits are set per session, and the penalties grow in steps: first rejects, then a terminated session."
+},
+{
+"id": "cme",
+"title": "CME Globex, for example",
+"text": "CME Globex counts each iLink session's messages over a three second interval. For new orders, replaces and similar messages, the reject threshold is 1,500 messages, an average of 500 a second. Beyond it, messages are rejected with a business reject, until the interval ends. At 2,250 messages, the session is terminated. Cancels get a higher allowance: rejects at 3,000, termination at 4,500. So a session that sends 1,600 new orders in one second gets 100 rejects, and waits for the interval to end. The interval is fixed, and starts with the session's first message."
+},
+{
+"id": "bucket",
+"title": "A token bucket",
+"text": "Inside the firm, the usual tool is a token bucket. Tokens drip in at a steady rate, up to a cap. Each order spends one token; with none left, the order is blocked. The cap lets a short burst through, and the rate limits the average. Here, the rate is 2,000 a second and the cap 100. A burst of 150 orders: 100 go out, 50 are blocked, and after 25 milliseconds, the bucket holds 50 again. Unlike a fixed window, a bucket has no boundary to game: the allowance refills smoothly. With a fixed window, a firm could send 1,500 at the very end of one window, and 1,500 more at the start of the next."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "In the lab, the token bucket is the last of the pre-trade risk checks, in firm slash risk. It refills from the CPU's timestamp counter, so it needs no system call or timer thread. New orders and replaces spend tokens. Cancels never do, because cancelling must always be possible. Blocked orders are counted by reason, and printed at the end of the run. A blocked order is simply not sent, and the strategy tries again when the market next changes. The rate becomes tokens per tick once, at startup, so each refill is a multiply, an add, and a cap."
+},
+{
+"id": "take",
+"title": "What pros do",
+"text": "Set your limit below the venue's, so the venue never has to enforce it. Watch bursts, not just averages, because a whole window's allowance can go out in one burst. Leave room for cancels. And when the throttle blocks, fix the strategy that is chattering: the throttle is a seat belt, not a steering wheel. And log every throttle reject from the venue: each one means your own limit is set too high.",
+"hold": 1.0
+}
+]

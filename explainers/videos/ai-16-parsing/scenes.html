@@ -1,0 +1,85 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:160px">PATTERN 16 / 16</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:215px">Parsing a<br>text feed</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:520px;width:1600px">stringstream, stod and regex vs a digit loop straight into int64 ticks</div>
+<div class="cell" data-cue="1" data-d="0.00" style="left:140px;top:700px;width:56px;background:var(--blue);font-size:28px">E</div>
+<div class="cell" data-cue="1" data-d="0.06" style="left:202px;top:700px;width:56px;background:var(--blue);font-size:28px">S</div>
+<div class="cell" data-cue="1" data-d="0.12" style="left:264px;top:700px;width:56px;background:var(--blue);font-size:28px">Z</div>
+<div class="cell" data-cue="1" data-d="0.18" style="left:326px;top:700px;width:56px;background:var(--blue);font-size:28px">6</div>
+<div class="cell" data-cue="1" data-d="0.24" style="left:388px;top:700px;width:56px;background:#3a4f5c;font-size:28px">,</div>
+<div class="cell" data-cue="1" data-d="0.30" style="left:450px;top:700px;width:56px;background:var(--amber);font-size:28px">5</div>
+<div class="cell" data-cue="1" data-d="0.36" style="left:512px;top:700px;width:56px;background:var(--amber);font-size:28px">0</div>
+<div class="cell" data-cue="1" data-d="0.42" style="left:574px;top:700px;width:56px;background:var(--amber);font-size:28px">1</div>
+<div class="cell" data-cue="1" data-d="0.48" style="left:636px;top:700px;width:56px;background:var(--amber);font-size:28px">2</div>
+<div class="cell" data-cue="1" data-d="0.54" style="left:698px;top:700px;width:56px;background:var(--amber);font-size:28px">.</div>
+<div class="cell" data-cue="1" data-d="0.60" style="left:760px;top:700px;width:56px;background:var(--amber);font-size:28px">2</div>
+<div class="cell" data-cue="1" data-d="0.66" style="left:822px;top:700px;width:56px;background:var(--amber);font-size:28px">5</div>
+<div class="cell" data-cue="1" data-d="0.72" style="left:884px;top:700px;width:56px;background:#3a4f5c;font-size:28px">,</div>
+<div class="cell" data-cue="1" data-d="0.78" style="left:946px;top:700px;width:56px;background:var(--violet);font-size:28px">1</div>
+<div class="cell" data-cue="1" data-d="0.84" style="left:1008px;top:700px;width:56px;background:var(--violet);font-size:28px">7</div>
+<div class="lbl" data-cue="1" data-d="1.0" style="left:140px;top:786px"><span class="c-blue">symbol</span> · <span class="c-amber">price</span> · <span class="c-violet">quantity</span> · one message, 15 bytes</div>
+<div class="chip teal" data-cue="2" data-d="0.4" style="left:1180px;top:705px">→ {"ESZ6", 501225, 17}</div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:70px;top:110px">Text line in, Quote out</div>
+<div class="mono chip" data-cue="0" data-d="0.4" style="left:1040px;top:210px;font-size:30px">"ESZ6,5012.25,17"</div>
+<div class="side c-red" data-cue="1" style="left:70px;top:200px">GENERAL-PURPOSE</div>
+<div class="code sm left" data-cue="1" style="left:70px;top:240px;width:880px"><span class="line"><span class="k">struct</span> Quote {</span><span class="line">  std::<span class="v">string</span> sym; <span class="k">double</span> px; <span class="k">int</span> qty; };</span><span class="line"><span class="c">// "ESZ6,5012.25,17" -&gt; {"ESZ6", 5012.25, 17}</span></span><span class="line">Quote parse(<span class="k">const</span> std::<span class="v">string</span>&amp; line) {</span><span class="line" data-hl="1" data-hlend="2">  std::stringstream ss(line);</span><span class="line">  std::<span class="v">string</span> sym, px, qty;</span><span class="line" data-hl="1" data-hlend="2">  std::getline(ss, sym, <span class="g">','</span>);</span><span class="line" data-hl="1" data-hlend="2">  std::getline(ss, px, <span class="g">','</span>);</span><span class="line" data-hl="1" data-hlend="2">  std::getline(ss, qty, <span class="g">','</span>);</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">return</span> {sym, std::stod(px), std::stoi(qty)};</span><span class="line">}</span></div>
+<div class="chip red" data-cue="2" style="left:70px;top:640px">bad input: std::invalid_argument</div>
+<div class="side c-red" data-cue="3" style="left:1040px;top:330px">OR: std::regex</div>
+<div class="code sm left" data-cue="3" style="left:1040px;top:370px;width:820px;font-size:19px"><span class="line"><span class="k">static</span> <span class="k">const</span> std::<span class="v">regex</span> re(</span><span class="line">    R<span class="g">"(([A-Z0-9]+),(\d+(?:\.\d{1,2})?),(-?\d+))"</span>);</span><span class="line">std::<span class="v">smatch</span> m;</span><span class="line"><span class="k">if</span> (!std::regex_match(line, m, re)) <span class="k">throw</span> ...;</span><span class="line"><span class="k">return</span> {m[<span class="r">1</span>].str(), std::stod(m[<span class="r">2</span>].str()),</span><span class="line">        std::stoi(m[<span class="r">3</span>].str())};</span></div>
+</div>
+<div class="scene" id="s-cost">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Per line, before a single digit is read</div>
+<div class="card2" data-cue="1" style="left:120px;top:230px;width:400px;height:170px;border-color:var(--amber)"><div class="ct" style="font-size:27px">stringstream ss(line)</div><div class="cs" style="font-size:21px">stream buffer + locale copy</div></div>
+<div class="card2" data-cue="2" style="left:550px;top:230px;width:400px;height:170px;border-color:var(--amber)"><div class="ct" style="font-size:27px">copy of the line</div><div class="cs" style="font-size:21px">≥ 16 chars: heap (0.8 allocs/line)</div></div>
+<div class="card2" data-cue="3" style="left:980px;top:230px;width:400px;height:170px;border-color:var(--amber)"><div class="ct" style="font-size:27px">getline x 3</div><div class="cs" style="font-size:21px">a std::string per field</div></div>
+<div class="card2" data-cue="3.5" style="left:1410px;top:230px;width:400px;height:170px;border-color:var(--amber)"><div class="ct" style="font-size:27px">stod → strtod</div><div class="cs" style="font-size:21px">C locale · exponents · hex · inf</div></div>
+<svg class="full"><path class="draw" data-cue="2" d="M522 315 L546 315" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="3" d="M952 315 L976 315" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="3.5" d="M1382 315 L1406 315" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="card2" data-cue="4" style="left:120px;top:460px;width:830px;height:170px;border-color:var(--red)"><div class="ct">std::regex_match</div><div class="cs">3 allocations per line (counted) · backtracking executor</div></div>
+<div class="card2" data-cue="5" style="left:980px;top:460px;width:820px;height:170px;border-color:var(--red)"><div class="ct">result: double px</div><div class="cs">5012.25 → nearest double · pattern 15 starts here</div></div>
+<div class="note" data-cue="1" data-d="1.0" style="left:120px;top:680px;width:1600px">allocations counted with a replaced global operator new · libstdc++ (g++ 13)</div>
+</div>
+<div class="scene" id="s-hot">
+<div class="h2" data-cue="0" style="left:60px;top:110px">Bytes straight into ticks</div>
+<div class="side c-red" data-cue="0" style="left:60px;top:200px">GENERAL</div>
+<div class="side c-teal" data-cue="0" data-d="0.3" style="left:980px;top:200px">HOT PATH</div>
+<div class="code sm left" data-cue="0" style="left:60px;top:240px;width:880px" data-dim="1"><span class="line"><span class="k">struct</span> Quote {</span><span class="line">  std::<span class="v">string</span> sym; <span class="k">double</span> px; <span class="k">int</span> qty; };</span><span class="line"><span class="c">// "ESZ6,5012.25,17" -&gt; {"ESZ6", 5012.25, 17}</span></span><span class="line">Quote parse(<span class="k">const</span> std::<span class="v">string</span>&amp; line) {</span><span class="line">  std::stringstream ss(line);</span><span class="line">  std::<span class="v">string</span> sym, px, qty;</span><span class="line">  std::getline(ss, sym, <span class="g">','</span>);</span><span class="line">  std::getline(ss, px, <span class="g">','</span>);</span><span class="line">  std::getline(ss, qty, <span class="g">','</span>);</span><span class="line">  <span class="k">return</span> {sym, std::stod(px), std::stoi(qty)};</span><span class="line">}</span></div>
+<div class="code sm right" data-cue="0" style="left:980px;top:240px;width:880px" data-d="0.3"><span class="line" data-hl="0" data-hlend="1"><span class="k">bool</span> parse(std::<span class="v">string_view</span> s, Quote&amp; q) {</span><span class="line">  <span class="k">const</span> <span class="k">char</span> *p = s.data(), *e = p + s.size();</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">const</span> <span class="k">char</span>* c = std::find(p, e, <span class="g">','</span>);</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">const</span> <span class="k">char</span>* f = std::find(c + (c &lt; e), e, <span class="g">','</span>);</span><span class="line" data-hl="4" data-hlend="5">  <span class="k">if</span> (f == e || f-c &lt; <span class="r">2</span> || f-c &gt; <span class="r">17</span>) <span class="k">return</span> <span class="k">false</span>;</span><span class="line" data-hl="1" data-hlend="2">  q.sym = std::<span class="v">string_view</span>(p, c - p);</span><span class="line" data-hl="2" data-hlend="3">  <span class="v">int64_t</span> t = <span class="r">0</span>; <span class="k">int</span> nf = -<span class="r">1</span>;   <span class="c">// nf: decimals</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="k">for</span> (++c; c &lt; f; ++c) {</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">if</span> (*c == <span class="g">'.'</span> &amp;&amp; nf &lt; <span class="r">0</span>) { nf = <span class="r">0</span>; <span class="k">continue</span>; }</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">const</span> <span class="k">unsigned</span> d = <span class="k">unsigned</span>(*c - <span class="g">'0'</span>);</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">if</span> (d &gt; <span class="r">9</span> || nf == <span class="r">2</span>) <span class="k">return</span> <span class="k">false</span>;</span><span class="line" data-hl="2" data-hlend="3">    t = t * <span class="r">10</span> + d; nf += nf &gt;= <span class="r">0</span>;</span><span class="line">  }</span><span class="line" data-hl="2" data-hlend="3">  q.px = t * (nf &lt;= <span class="r">0</span> ? <span class="r">100</span> : nf == <span class="r">1</span> ? <span class="r">10</span> : <span class="r">1</span>);</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">auto</span> [r, ec] = std::from_chars(f + <span class="r">1</span>, e, q.qty);</span><span class="line" data-hl="0" data-hlend="1">  <span class="k">return</span> ec == std::<span class="v">errc</span>{} &amp;&amp; r == e; }</span></div>
+<div class="note" data-cue="1" data-d="0.5" style="left:60px;top:640px;width:880px">Quote { string_view sym; int64_t px; /* ticks */ int64_t qty; }</div>
+<div class="chip red" data-cue="4" style="left:60px;top:720px">rejects: "5.0e3" · " 5012.25" · "5012.255"</div>
+<div class="chip teal" data-cue="5" style="left:60px;top:800px">200,000 random lines: same result as general</div>
+</div>
+<div class="scene" id="s-numbers">
+<div class="h2" data-cue="0" style="left:120px;top:110px">ns per line (3 fields), p50</div>
+<div class="note" data-cue="0" data-d="0.3" style="left:120px;top:190px;width:1700px">measured on a shared 4-vCPU cloud VM · g++ 13 -O2 · 4,096 lines · pinned · median of 3 runs x 31 passes · allocations counted per line</div>
+<div class="blab" data-cue="1" data-d="0.0" style="left:110px;top:270px;width:480px">stringstream + getline + stod</div>
+<div class="bar grow" data-cue="1" data-d="0.0" data-w="180" data-anim="fade" style="left:620px;top:268px;background:var(--red)"></div>
+<div class="bv" data-cue="1" data-d="0.7" style="left:816px;top:267px;color:var(--red)">300 · 0.8 allocs</div>
+<div class="bar grow" data-cue="2" data-d="0.0" data-w="438" data-anim="fade" style="left:620px;top:318px;background:#c95a50"></div>
+<div class="bar grow hatch" data-cue="2" data-d="1.0" data-w="594" data-anim="fade" style="left:1058px;top:318px"></div>
+<div class="blab" data-cue="2" style="left:110px;top:320px;width:480px">std::regex + stod / stoi</div>
+<div class="bv" data-cue="2" data-d="1.6" style="left:620px;top:356px;color:#ff9d93">best 730 · p50 up to 1,720 · 3 allocs</div>
+<div class="blab" data-cue="3" data-d="0.0" style="left:110px;top:420px;width:480px">from_chars, double price</div>
+<div class="bar grow" data-cue="3" data-d="0.0" data-w="16" data-anim="fade" style="left:620px;top:418px;background:var(--violet)"></div>
+<div class="bv" data-cue="3" data-d="0.7" style="left:652px;top:417px;color:var(--violet)">27 · 0 allocs</div>
+<div class="blab" data-cue="4" data-d="0.0" style="left:110px;top:470px;width:480px">hot: digit loop + from_chars</div>
+<div class="bar grow" data-cue="4" data-d="0.0" data-w="11" data-anim="fade" style="left:620px;top:468px;background:var(--teal)"></div>
+<div class="bv" data-cue="4" data-d="0.7" style="left:647px;top:467px;color:var(--teal)">19 · 0 allocs · 6.4 ns/field</div>
+<div class="chip amber" data-cue="4" data-d="1.2" style="left:1100px;top:458px">≈ 15x vs stream</div>
+<div class="gl" data-cue="5" style="left:120px;top:580px">at 1,000,000 messages per second</div>
+<div class="cpu" data-cue="5" data-d="0.3" style="left:120px;top:640px;width:1600px"></div>
+<div class="grow" data-cue="5" data-d="0.5" data-w="480" style="position:absolute;left:120px;top:640px;height:60px;background:var(--red);border-radius:10px 0 0 10px"></div>
+<div class="bv c-red" data-cue="5" data-d="1.2" style="left:140px;top:715px">stream: 30% of a core</div>
+<div class="grow" data-cue="5" data-d="1.4" data-w="32" style="position:absolute;left:120px;top:760px;height:60px;background:var(--teal);border-radius:10px 0 0 10px"></div>
+<div class="cpu" data-cue="5" data-d="1.4" style="left:120px;top:760px;width:1600px"></div>
+<div class="bv c-teal" data-cue="5" data-d="1.8" style="left:180px;top:772px">hot: 2%</div>
+</div>
+<div class="scene" id="s-close">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Parse what you were promised</div>
+<div class="card2" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:810px;height:160px;border-color:var(--muted)"><div class="ct">General parsers: right for</div><div class="cs">config · command lines · CSV reports · tests</div></div>
+<div class="card2" data-cue="1" data-d="0.3" style="left:970px;top:220px;width:810px;height:160px;border-color:var(--teal)"><div class="ct">Feed handler: fixed format</div><div class="cs">the venue spec defines every byte</div></div>
+<div class="card2" data-cue="2" data-d="0.3" style="left:120px;top:410px;width:810px;height:160px;border-color:var(--amber)"><div class="ct">State the constraints</div><div class="cs">no allocation · integer ticks · reject off-spec</div></div>
+<div class="card2" data-cue="2.5" data-d="0.3" style="left:970px;top:410px;width:810px;height:160px;border-color:var(--amber)"><div class="ct">Errors as values</div><div class="cs">return false / an error code, not a throw</div></div>
+<div class="rule" data-cue="3" style="left:120px;top:640px;width:1660px">Parse the bytes you were promised, <span class="c-amber">straight into the type you will use.</span></div>
+</div>

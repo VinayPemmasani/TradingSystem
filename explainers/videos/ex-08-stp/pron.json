@@ -1,0 +1,114 @@
+[
+ [
+  "\\bOUCH\\b",
+  "ouch"
+ ],
+ [
+  "\\bITCH\\b",
+  "itch"
+ ],
+ [
+  "\\bsimex\\b",
+  "sim ex"
+ ],
+ [
+  "\\bSEC\\b",
+  "S E C"
+ ],
+ [
+  "\\bNYSE\\b",
+  "N Y S E"
+ ],
+ [
+  "\\bCME\\b",
+  "C M E"
+ ],
+ [
+  "\\bIOC\\b",
+  "I O C"
+ ],
+ [
+  "\\bFOK\\b",
+  "F O K"
+ ],
+ [
+  "\\bLULD\\b",
+  "L U L D"
+ ],
+ [
+  "\\bFIX\\b",
+  "fix"
+ ],
+ [
+  "\\bIEX\\b",
+  "I E X"
+ ],
+ [
+  "\\bFIFO\\b",
+  "fife-oh"
+ ],
+ [
+  "\\bAPI\\b",
+  "A P I"
+ ],
+ [
+  "\\bID\\b",
+  "I D"
+ ],
+ [
+  "\\bNBBO\\b",
+  "N B B O"
+ ],
+ [
+  "\\bS&P\\b",
+  "S and P"
+ ],
+ [
+  "\\bReg NMS\\b",
+  "Reg N M S"
+ ],
+ [
+  "\\bNMS\\b",
+  "N M S"
+ ],
+ [
+  "\\bMWCB\\b",
+  "M W C B"
+ ],
+ [
+  "\\bET\\b",
+  "Eastern"
+ ],
+ [
+  "\\bBX\\b",
+  "B X"
+ ],
+ [
+  "\\b2362\\b",
+  "twenty three sixty two"
+ ],
+ [
+  "\\b8000\\b",
+  "eight thousand"
+ ],
+ [
+  "\\b103\\b",
+  "one oh three"
+ ],
+ [
+  "\\b107\\b",
+  "one oh seven"
+ ],
+ [
+  "\\bsimex\\b",
+  "sim ex"
+ ],
+ [
+  "\\bRule 534\\b",
+  "Rule five thirty four"
+ ],
+ [
+  "\\bQ, for\\b",
+  "Q, for"
+ ]
+]

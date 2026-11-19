@@ -1,0 +1,96 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 03 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">The order state machine</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Two copies of every order, and messages in between.</div>
+<div class="node" data-cue="0" data-d="0.8" style="left:140px;top:580px;width:340px;height:150px;border-color:var(--teal)">our OMS<small>a belief</small></div>
+<div class="node" data-cue="0" data-d="1.0" style="left:1440px;top:580px;width:340px;height:150px;border-color:var(--blue)">exchange book<small>the truth</small></div>
+<svg class="full"><path id="s3-a" class="draw" data-cue="1" d="M 490 630 L 1430 630" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="s3-b" class="draw" data-cue="1" data-d="0.3" d="M 1430 690 L 490 690" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="s3-a" data-cue="1" data-d="0.5" data-dur="1.8" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="s3-a" data-cue="1" data-d="0.5" data-dur="1.8" data-loop="1" data-phase="0.5" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="s3-b" data-cue="1" data-d="0.8" data-dur="1.8" data-loop="1" data-phase="0.25" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="lbl" data-cue="2" style="left:720px;top:730px">messages always in flight</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two copies, one truth</div>
+<div class="lbl c-teal" data-cue="0" style="left:300px;top:230px">our OMS</div>
+<div class="lbl c-blue" data-cue="0" style="left:1480px;top:230px">exchange</div>
+<svg class="full"><path class="draw" data-cue="0" d="M 360 270 L 360 900" stroke="var(--teal)" stroke-width="3" fill="none"/><path class="draw" data-cue="0" d="M 1540 270 L 1540 900" stroke="var(--blue)" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="2" d="M 365 330 L 1530 430" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="3" d="M 365 560 L 1530 660" stroke="var(--red)" stroke-width="3" fill="none" marker-end="url(#ah-red)"/>
+<path class="draw" data-cue="3" data-d="0.6" d="M 1535 600 L 370 700" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="msg" data-cue="1" style="left:120px;top:780px;border-color:var(--teal);color:var(--teal)">belief = what we sent + what came back</div>
+<div class="msg c-amber" data-cue="2" data-d="0.3" style="left:760px;top:300px;border-color:var(--amber)">new order</div>
+<div class="tag" data-cue="2" data-d="0.8" style="left:130px;top:360px;border-color:var(--amber);color:var(--amber)">exists? not yet known</div>
+<div class="msg c-red" data-cue="3" data-d="0.3" style="left:600px;top:540px;border-color:var(--red)">cancel</div>
+<div class="msg c-green" data-cue="3" data-d="0.9" style="left:1080px;top:580px;border-color:var(--green)">fill!</div>
+<div class="tag c-green" data-cue="4" style="left:1580px;top:420px;border-color:var(--green)">order live</div>
+<div class="tag c-amber" data-cue="5" style="left:1000px;top:780px;border-color:var(--amber)">always ≥ one round trip behind</div>
+<div class="tag c-teal" data-cue="6" style="left:120px;top:870px;border-color:var(--teal)">every change ← a message, never a guess</div>
+</div>
+
+<div class="scene" id="s-fix">
+<div class="h2" data-cue="0" style="left:120px;top:110px">OrdStatus <span class="c-muted">· tag 39</span></div>
+<div class="node st" data-cue="1" style="left:120px;top:470px;width:300px;height:100px;border-color:var(--amber)">Pending New<small>A</small></div>
+<div class="node st" data-cue="1" data-d="0.8" style="left:120px;top:730px;width:300px;height:100px;border-color:var(--red)" data-hl="5">Rejected<small>8</small></div>
+<div class="node st" data-cue="2" style="left:560px;top:470px;width:300px;height:100px;border-color:var(--green)">New<small>0</small></div>
+<div class="node st" data-cue="3" style="left:1000px;top:470px;width:300px;height:100px;border-color:var(--green)">Partially Filled<small>1</small></div>
+<div class="node st" data-cue="3" data-d="0.6" style="left:1440px;top:470px;width:300px;height:100px;border-color:#9fb6c4" data-hl="5">Filled<small>2</small></div>
+<div class="node st" data-cue="4" style="left:560px;top:730px;width:300px;height:100px;border-color:var(--amber)">Pending Cancel<small>6</small></div>
+<div class="node st" data-cue="4" data-d="0.4" style="left:1000px;top:730px;width:300px;height:100px;border-color:#9fb6c4" data-hl="5">Canceled<small>4</small></div>
+<div class="node st" data-cue="4" data-d="1.2" style="left:560px;top:230px;width:300px;height:100px;border-color:var(--amber)">Pending Replace<small>E</small></div>
+<svg class="full">
+<path class="draw" data-cue="2" d="M 425 520 L 555 520" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="1" data-d="0.6" d="M 270 575 L 270 725" stroke="var(--red)" stroke-width="3" fill="none" marker-end="url(#ah-red)"/>
+<path class="draw" data-cue="3" d="M 865 520 L 995 520" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="3" data-d="0.4" d="M 1305 520 L 1435 520" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="4" d="M 710 575 L 710 725" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="4" data-d="0.3" d="M 865 780 L 995 780" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="4" data-d="0.9" d="M 660 465 L 660 335" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="4" data-d="1.4" d="M 760 335 L 760 465" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="flag" data-cue="2" data-d="0.2" style="left:430px;top:480px">ack</div>
+<div class="flag" data-cue="1" data-d="0.7" style="left:285px;top:630px">reject</div>
+<div class="flag" data-cue="3" data-d="0.2" style="left:900px;top:480px">fill</div>
+<div class="flag" data-cue="3" data-d="0.5" style="left:1340px;top:480px">fill</div>
+<div class="flag" data-cue="4" data-d="0.2" style="left:725px;top:630px">F sent</div>
+<div class="flag" data-cue="4" data-d="0.4" style="left:880px;top:740px">confirmed</div>
+<div class="flag" data-cue="4" data-d="1.0" style="left:520px;top:380px">G sent</div>
+<div class="flag" data-cue="4" data-d="1.5" style="left:775px;top:380px">replaced</div>
+<div class="tag" data-cue="5" style="left:1440px;top:250px;border-color:#9fb6c4">terminal: nothing after</div>
+<div class="tag c-red" data-cue="6" style="left:1000px;top:880px;border-color:var(--red)">35=9 reject → order unchanged · 39 = its status now</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Buy 300: what the OMS believes</div>
+<div class="card" data-cue="0" style="left:120px;top:230px;width:540px;height:200px;border-color:var(--amber)"><div class="ct">state</div><div class="big" id="e3-st" style="font-size:44px">·</div></div>
+<div class="card" data-cue="0" style="left:690px;top:230px;width:540px;height:200px;border-color:var(--teal)"><div class="ct">position</div><div class="big c-teal" id="e3-pos">0</div></div>
+<div class="card" data-cue="0" data-hl="6" style="left:1260px;top:230px;width:540px;height:200px;border-color:var(--violet)"><div class="ct">exposure (could still trade)</div><div class="big c-violet" id="e3-exp">0</div></div>
+<div class="lbl c-teal" data-cue="0" style="left:120px;top:500px">OMS</div>
+<div class="lbl c-blue" data-cue="0" style="left:1690px;top:500px">exchange</div>
+<svg class="full"><path class="draw" data-cue="0" d="M 120 545 L 1800 545" stroke="#3c5463" stroke-width="2" fill="none"/></svg>
+<div class="msg c-amber" data-cue="1" style="left:120px;top:590px;border-color:var(--amber)">→ O enter 300</div>
+<div class="msg c-green" data-cue="2" style="left:430px;top:660px;border-color:var(--green)">← A accepted</div>
+<div class="msg c-green" data-cue="3" style="left:740px;top:730px;border-color:var(--green)">← E executed 100</div>
+<div class="msg c-amber" data-cue="4" style="left:1120px;top:590px;border-color:var(--amber)">→ X cancel, size 0</div>
+<div class="msg c-green" data-cue="5" style="left:1400px;top:800px;border-color:var(--green)">← C canceled 200</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: firm/oms</div>
+<div class="code" data-cue="0" data-d="0.2" style="left:120px;top:220px;width:900px;font-size:24px"><span class="line c">// lab/oms/oms.hpp</span><span class="line"><span class="k">enum class</span> <span class="v">State</span> {</span><span class="line" data-hl="0" data-hlend="1">  kFree,         <span class="c">// slot unused</span></span><span class="line" data-hl="0" data-hlend="2">  kPendingNew,   <span class="c">// sent, not accepted</span></span><span class="line" data-hl="0" data-hlend="2">  kLive,         <span class="c">// on the exchange</span></span><span class="line" data-hl="0" data-hlend="2">  kPendingSwap,  <span class="c">// replacement in flight</span></span><span class="line" data-hl="0" data-hlend="1">  kDone,         <span class="c">// filled, canceled, rejected</span></span><span class="line">};</span></div>
+<div class="tag c-violet" data-cue="1" style="left:120px;top:640px;border-color:var(--violet)">exposure = shares in PendingNew + Live + PendingSwap</div>
+<div class="card" data-cue="2" style="left:1080px;top:220px;width:720px;border-color:var(--amber)"><div class="ct c-amber">one request in flight per order</div><div class="cd">state ≠ Live, or a replace or cancel pending → wait</div></div>
+<div class="card" data-cue="3" style="left:1080px;top:440px;width:720px;border-color:var(--red)"><div class="ct c-red">doesn't fit? never forced</div><div class="cd">++stats.inconsistent · printed at the end of the run</div></div>
+<div class="lbl" data-cue="3" data-d="0.5" style="left:1080px;top:640px">e.g. Accepted for an order not PendingNew</div>
+<div class="card" data-cue="4" style="left:1080px;top:720px;width:720px;border-color:var(--green)"><div class="ct c-green">Rejected</div><div class="cd">PendingNew → Done</div><div class="cd" data-cue="5">replacement rejected → original stays Live</div></div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two expensive mistakes</div>
+<div class="card" data-cue="1" style="left:120px;top:220px;width:820px;height:210px;border-color:var(--red)"><div class="ct c-red">cancel sent ≠ canceled</div><div class="cs">the order can still fill</div><div class="cd">until Order Canceled arrives</div></div>
+<div class="card" data-cue="2" style="left:980px;top:220px;width:820px;height:210px;border-color:var(--red)"><div class="ct c-red">timeout ≠ rejected</div><div class="cs">the order may be live</div><div class="cd">count it as exposure</div></div>
+<div class="take" data-cue="3" style="left:120px;top:470px;width:1680px">Assume the worst case until the exchange says otherwise.</div>
+<div class="take" data-cue="4" style="left:120px;top:550px;width:1680px">Be pessimistic. <span class="c-blue">The exchange always wins.</span></div>
+<div class="tag c-teal" data-cue="5" style="left:120px;top:640px;border-color:var(--teal);font-size:26px">log every transition + the message that caused it</div>
+<div class="card" data-cue="6" style="left:120px;top:730px;width:1680px;border-color:var(--blue)"><div class="ct c-blue">after a disconnect: SoupBinTCP replay</div><div class="cd">Login Request · Requested Sequence Number = the next one you expect → missed messages sent again</div><div class="cd c-muted" data-cue="7">lab trader: requests 0 = new messages only</div></div>
+</div>

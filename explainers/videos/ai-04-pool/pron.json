@@ -1,0 +1,11 @@
+[
+["std::make_unique", "standard make unique"],
+["make_unique", "make unique"],
+["\\bmalloc\\b", "malloc"],
+["\\bglibc's\\b", "G lib C's"],
+["\\bVM\\b", "V M"],
+["\\bp99\\.9\\b", "P ninety nine point nine"],
+["\\bp99\\b", "P ninety nine"],
+["\\b3,708\\b", "three thousand seven hundred and eight"],
+["\\b4\\.6\\b", "four point six"]
+]

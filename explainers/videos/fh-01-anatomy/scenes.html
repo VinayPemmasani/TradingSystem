@@ -1,0 +1,125 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">FEED HANDLERS · 01 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Anatomy of a<br>feed handler</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">From multicast packets to order books, in two threads.</div>
+<svg class="full">
+<path id="t01a" class="draw" data-cue="0" data-d="0.8" d="M380 760 L1520 760" stroke="#2c4351" stroke-width="6" fill="none"/>
+</svg>
+<div class="node blue" data-cue="0" data-d="0.7" style="left:140px;top:700px;width:240px"><div class="t">Exchange</div></div>
+<div class="node green" data-cue="1" style="left:1520px;top:700px;width:260px"><div class="t">Order books</div></div>
+<div class="node violet" data-cue="0" data-d="1.0" style="left:830px;top:700px;width:250px"><div class="t">Handler</div></div>
+<div class="pkt" data-path="t01a" data-cue="0" data-d="1.2" data-dur="2.2" data-loop="1" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="pkt" data-path="t01a" data-cue="0" data-d="1.2" data-dur="2.2" data-loop="1" data-phase="0.33" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="pkt" data-path="t01a" data-cue="0" data-d="1.2" data-dur="2.2" data-loop="1" data-phase="0.66" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="lbl c-amber" data-cue="1" data-d="0.8" style="left:1520px;top:820px">→ strategies</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Events, not prices</div>
+<div class="lbl" data-cue="1" style="left:120px;top:240px">ITCH event stream, in sequence order</div>
+<div class="msg" data-cue="1" data-d="0.2" style="left:120px;top:290px;width:250px;background:var(--green)">A  buy 100</div>
+<div class="msg" data-cue="1" data-d="0.6" style="left:395px;top:290px;width:250px;background:var(--red)">A  sell 200</div>
+<div class="msg" data-cue="1" data-d="1.0" style="left:670px;top:290px;width:250px;background:var(--amber)">E  exec 50</div>
+<div class="msg" id="w-x" data-cue="1" data-d="1.4" style="left:945px;top:290px;width:250px;background:var(--violet)">X  cancel 20</div>
+<div class="msg lost" data-cue="3" style="left:945px;top:290px;width:250px;background:#0b1319!important">lost</div>
+<div class="msg" data-cue="1" data-d="1.8" style="left:1220px;top:290px;width:250px;background:var(--blue)">D  delete</div>
+<div class="msg" data-cue="1" data-d="2.2" style="left:1495px;top:290px;width:250px;background:var(--green)">A  buy 300</div>
+<div class="seq c-muted" data-cue="1" data-d="0.2" style="left:205px;top:365px">1001</div>
+<div class="seq c-muted" data-cue="1" data-d="0.6" style="left:480px;top:365px">1002</div>
+<div class="seq c-muted" data-cue="1" data-d="1.0" style="left:755px;top:365px">1003</div>
+<div class="seq c-muted" data-cue="1" data-d="1.4" style="left:1030px;top:365px">1004</div>
+<div class="seq c-muted" data-cue="1" data-d="1.8" style="left:1305px;top:365px">1005</div>
+<div class="seq c-muted" data-cue="1" data-d="2.2" style="left:1580px;top:365px">1006</div>
+<svg class="full"><path class="draw" data-cue="2" d="M120 430 L1745 430" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:120px;top:450px">each one changes the book built from all the ones before</div>
+<div class="body c-red" data-cue="3" data-d="0.5" style="left:945px;top:450px;width:800px;font-weight:600">→ that order keeps 20 shares too many, all day</div>
+<div class="node teal" data-cue="5" style="left:120px;top:600px;width:500px;height:200px"><div class="t">1  Receive</div><div class="s">every packet, on time</div></div>
+<div class="node violet" data-cue="6" style="left:690px;top:600px;width:500px;height:200px"><div class="t">2  Sequence</div><div class="s">exactly once, in order<br>gaps found and filled</div></div>
+<div class="node green" data-cue="7" style="left:1260px;top:600px;width:500px;height:200px"><div class="t">3  Apply</div><div class="s">to the books, fast</div></div>
+<div class="lbl" data-cue="4" style="left:120px;top:555px">the handler's three jobs</div>
+</div>
+
+<div class="scene" id="s-pipeline">
+<div class="h2" data-cue="0" style="left:120px;top:110px">itch-fh: two threads, two cores</div>
+<svg class="full">
+<path id="p01a" class="draw" data-cue="1" d="M330 470 L420 470" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/>
+<path id="p01b" class="draw" data-cue="3" d="M720 470 L790 470" stroke="#3fd0dc" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+<path id="p01c" class="draw" data-cue="5" d="M1230 470 L1300 470" stroke="#3fd0dc" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+<path id="p01d" class="draw" data-cue="5" data-d="1.5" d="M1600 440 L1650 360" stroke="#4fd18b" stroke-width="4" fill="none" marker-end="url(#ah-green)"/>
+<path id="p01e" class="draw" data-cue="5" data-d="1.5" d="M1600 500 L1650 590" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/>
+<path id="p01f" class="draw" data-cue="6" d="M1450 560 C1450 740 570 740 570 575" stroke="#ff8fc8" stroke-width="4" fill="none" stroke-dasharray="1 1" marker-end="url(#ah)"/>
+<path id="p01g" class="draw" data-cue="6" data-d="1.2" d="M420 520 L330 520" stroke="#ff8fc8" stroke-width="4" fill="none" marker-end="url(#ah)"/>
+</svg>
+<div class="node blue" data-cue="0" style="left:80px;top:400px;width:250px"><div class="t">Exchange</div><div class="s">MoldUDP64<br>multicast</div></div>
+<div class="node teal" data-cue="1" style="left:420px;top:380px;width:300px;height:190px"><div class="t c-teal">rx thread</div><div class="s">cpu 2<br>recvmmsg ×32<br>rdtsc stamp</div></div>
+<div class="slot" id="r1-0" data-cue="3" data-d="0.0" style="left:800px;top:447px"></div>
+<div class="slot" id="r1-1" data-cue="3" data-d="0.05" style="left:852px;top:447px"></div>
+<div class="slot" id="r1-2" data-cue="3" data-d="0.1" style="left:904px;top:447px"></div>
+<div class="slot" id="r1-3" data-cue="3" data-d="0.15" style="left:956px;top:447px"></div>
+<div class="slot" id="r1-4" data-cue="3" data-d="0.2" style="left:1008px;top:447px"></div>
+<div class="slot" id="r1-5" data-cue="3" data-d="0.25" style="left:1060px;top:447px"></div>
+<div class="slot" id="r1-6" data-cue="3" data-d="0.3" style="left:1112px;top:447px"></div>
+<div class="slot" id="r1-7" data-cue="3" data-d="0.35" style="left:1164px;top:447px"></div>
+<div class="lbl" data-cue="3" data-d="0.3" style="left:800px;top:390px">lock-free SPSC ring</div>
+<div class="lbl c-muted" data-cue="3" data-d="0.5" style="left:800px;top:510px;font-size:19px">4096 slots × 1536 B</div>
+<div class="node violet" data-cue="4" style="left:1300px;top:380px;width:300px;height:190px"><div class="t c-violet">book thread</div><div class="s">cpu 3<br>sequence · decode<br>books</div></div>
+<div class="node green" data-cue="5" data-d="1.6" style="left:1655px;top:290px;width:210px"><div class="t" style="font-size:28px">books</div></div>
+<div class="node amber" data-cue="5" data-d="1.6" style="left:1655px;top:575px;width:210px"><div class="t" style="font-size:28px">consumers</div></div>
+<div class="tag c-red" data-cue="5" data-d="0.4" style="left:1340px;top:250px">no syscalls · locks · allocation</div>
+<div class="tag c-pink" data-cue="6" data-d="0.6" style="left:840px;top:745px">retransmission request</div>
+<div class="tag c-teal" data-cue="2" data-d="0.3" style="left:420px;top:300px">all syscalls here</div>
+<div class="pkt" data-path="p01a" data-cue="2" data-dur="0.8" data-loop="1" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="pkt" data-path="p01b" data-cue="3" data-d="0.5" data-dur="0.8" data-loop="1" data-phase="0.4"></div>
+<div class="pkt" data-path="p01c" data-cue="5" data-d="0.5" data-dur="0.8" data-loop="1" data-phase="0.2"></div>
+<div class="pkt" data-path="p01f" data-cue="6" data-d="1.0" data-dur="2" data-loop="1" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+<div class="note" data-cue="0" data-d="0.5" style="left:120px;top:830px">docs/core-plan.md · tools/itch-fh/main.cpp · libs/feed/src/receiver.cpp</div>
+</div>
+
+<div class="scene" id="s-code">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The book thread, in full</div>
+<div class="code" data-cue="0" data-d="0.2" style="left:120px;top:210px;width:1180px;font-size:24px"><span class="line"><span class="c">// tools/itch-fh/main.cpp, book_loop() (pinning omitted)</span></span><span class="line" data-hl="2" data-hlend="3"><span class="k">auto</span> deliver = [&amp;](std::uint64_t, std::span&lt;<span class="k">const</span> std::byte&gt; msg,</span><span class="line" data-hl="2" data-hlend="3">                   std::uint64_t rx_tsc) {</span><span class="line" data-hl="2" data-hlend="3">  books.apply(msg);</span><span class="line" data-hl="2" data-hlend="3">  t.rx_to_book.record(lab::rdtscp() - rx_tsc);</span><span class="line">  <span class="k">if</span> (t.aeron != <span class="k">nullptr</span> &amp;&amp; !t.aeron_closed) publish(t, msg, rx_tsc);</span><span class="line">};</span><span class="line" data-hl="3" data-hlend="4"><span class="k">while</span> (!t.stop.load(std::memory_order_relaxed)) {</span><span class="line" data-hl="1" data-hlend="2">  rx.poll(deliver);</span><span class="line">  <span class="k">if</span> (rx.finished()) {</span><span class="line">    t.finished.store(<span class="k">true</span>, std::memory_order_release);</span><span class="line">    <span class="k">return</span>;</span><span class="line">  }</span><span class="line" data-hl="3" data-hlend="4">}</span></div>
+<div class="node teal" data-cue="1" style="left:1380px;top:230px;width:420px"><div class="t" style="font-size:27px">packets.front()</div><div class="s">one RxPacket off the ring</div></div>
+<div class="node violet" data-cue="1" data-d="0.5" style="left:1380px;top:390px;width:420px"><div class="t" style="font-size:27px">Sequencer::on_packet</div><div class="s">in order, exactly once</div></div>
+<div class="node green" data-cue="2" style="left:1380px;top:550px;width:420px"><div class="t" style="font-size:27px">BookBuilder::apply</div><div class="s">+ rx-to-book histogram</div></div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.4" d="M1590 330 L1590 385" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="2" d="M1590 490 L1590 545" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tag c-amber" data-cue="4" style="left:120px;top:830px">main(): "Everything is allocated and faulted in here, before the threads start."</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One packet, end to end</div>
+<div class="lbl" data-cue="1" style="left:120px;top:205px">MoldUDP64 packet · 20-byte header, then 3 length-prefixed messages</div>
+<div class="bytes" data-cue="1" data-d="0.2" style="left:120px;top:240px">
+<div style="width:300px;background:var(--blue)">session<br>LAB0000001</div>
+<div style="width:240px;background:#8fc0ff" data-hl="1" data-hlend="2">sequence<br>1000</div>
+<div style="width:110px;background:#b9d6ff" data-hl="1" data-hlend="2">count<br>3</div>
+<div style="width:400px;background:var(--green)" data-hl="2" data-hlend="3">len 36 · A  Add Order</div>
+<div style="width:250px;background:#9fe3bf">len 23 · X</div>
+<div style="width:200px;background:#c8f0da">len 19 · D</div>
+</div>
+<div class="code" data-cue="2" data-d="0.3" style="left:120px;top:370px;width:820px;font-size:23px"><span class="line"><span class="c">// Add Order (A), 36 bytes</span></span><span class="line">stock locate      <span class="r">13</span></span><span class="line">timestamp         <span class="r">34200000012345</span> <span class="c">ns</span></span><span class="line">order reference   <span class="r">7001234</span></span><span class="line">side              <span class="g">'B'</span></span><span class="line">shares            <span class="r">100</span></span><span class="line">stock             <span class="g">"AAPL    "</span></span><span class="line">price             <span class="r">1825000</span>  <span class="c">// Price(4): 182.5000</span></span></div>
+<div class="tag c-green" data-cue="3" style="left:120px;top:800px">expected = 1000 → deliver 1000, 1001, 1002 · expected = 1003</div>
+<div class="lbl" data-cue="4" style="left:1030px;top:370px">OrderMap · reference → order</div>
+<div class="tag" data-cue="4" data-d="0.2" style="left:1030px;top:410px">7001234 → {1825000, 100, locate 13, buy}</div>
+<div class="lbl" data-cue="4" data-d="0.4" style="left:1030px;top:480px">locate 13 · bids</div>
+<div class="lvl" data-cue="4" data-d="0.5" style="left:1030px;top:520px;width:560px;background:var(--green)" data-hl="4" data-d2="0">182.50 · <span class="count" data-cue="4" data-d="1.2" data-from="300" data-to="400" style="margin-left:10px">300</span>&nbsp;sh</div>
+<div class="lvl" data-cue="4" data-d="0.6" style="left:1030px;top:580px;width:430px;background:#2f8a5b">182.49 · 1,200 sh</div>
+<div class="lvl" data-cue="4" data-d="0.7" style="left:1030px;top:640px;width:330px;background:#25694a">182.48 · 900 sh</div>
+<div class="node amber" data-cue="5" style="left:1030px;top:730px;width:560px;padding:12px 20px"><div class="t" style="font-size:26px">TopOfBook · 64 bytes → trading thread</div></div>
+<div class="note" data-cue="2" data-d="0.6" style="left:1030px;top:325px;font-size:19px">illustrative values · layout: docs/specs/itch50-layout.md</div>
+</div>
+
+<div class="scene" id="s-pitfalls">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What breaks a feed handler</div>
+<div class="card" data-cue="1" style="left:120px;top:240px;width:540px;height:340px;border-color:var(--violet)"><div class="ct c-violet">Slow work on the book thread</div><div class="cs">A log write, a page fault, a lock. Packets queue behind it and every book goes stale together.</div></div>
+<div class="card" data-cue="2" style="left:690px;top:240px;width:540px;height:340px;border-color:var(--teal)"><div class="ct c-teal">A consumer that falls behind</div><div class="cs">Packet ring full: the rx thread drops the packet and counts it. Recovered like any other loss.</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:240px;width:540px;height:340px;border-color:var(--red)"><div class="ct c-red">Trusting a book after a gap</div><div class="cs">One missing delete leaves a phantom order on the book until the day ends.</div></div>
+<div class="code" data-cue="4" style="left:120px;top:640px;width:1680px;font-size:23px"><span class="line"><span class="c">// tools/itch-fh/main.cpp: exit status</span></span><span class="line"><span class="k">const bool</span> clean = rx-&gt;sequencer().stats().lost == <span class="r">0</span> &amp;&amp; b.checks().error_count() == <span class="r">0</span>;</span></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:120px;top:150px"><span class="c-teal">Receive.</span> <span class="c-violet">Sequence.</span> <span class="c-green">Apply.</span></div>
+<div class="sub" data-cue="1" style="left:120px;top:290px;width:1600px">Each on its own core. No syscalls on the thread that owns the books.</div>
+<div class="lbl" data-cue="2" style="left:120px;top:420px">this series</div>
+<div class="body" data-cue="2" data-d="0.1" style="left:120px;top:460px;width:800px;line-height:1.55">02 · A/B arbitration<br>03 · Gaps and stale books<br>04 · Order-by-order book<br>05 · Normalising venues<br>06 · Symbol directories</div>
+<div class="body" data-cue="2" data-d="0.3" style="left:900px;top:460px;width:800px;line-height:1.55">07 · Bursts at the open<br>08 · Fan-out over rings<br>09 · Timestamps and latency<br>10 · Replay testing</div>
+</div>

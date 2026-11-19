@@ -1,0 +1,104 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:160px">PATTERN 15 / 16</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:215px">Prices as<br>integer ticks</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:520px;width:1600px">double + epsilon + std::round vs int64 ticks (fixed point)</div>
+<div class="big mono c-red" data-cue="1" style="left:140px;top:650px">0.1 + 0.2 = <span class="type" data-cue="1" data-d="0.3" data-dur="1.6">0.30000000000000004</span></div>
+<div class="big mono c-teal" data-cue="2" style="left:140px;top:760px">10 + 20 = 30 <span class="c-muted" style="font-size:30px">ticks of 0.01</span></div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:70px;top:110px">Apply an update at a price</div>
+<div class="side c-red" data-cue="1" style="left:70px;top:200px">GENERAL-PURPOSE</div>
+<div class="code sm left" data-cue="1" style="left:70px;top:240px;width:880px"><span class="line"><span class="k">struct</span> Levels {</span><span class="line">  <span class="k">double</span> base;               <span class="c">// price of level 0</span></span><span class="line">  std::<span class="v">vector</span>&lt;<span class="k">double</span>&gt; qty;   <span class="c">// one slot per tick</span></span><span class="line">  <span class="k">double</span> notional = <span class="r">0</span>;</span><span class="line">};</span><span class="line"><span class="k">constexpr</span> <span class="k">double</span> kTick = <span class="r">0.01</span>, kEps = <span class="r">1e-9</span>;</span><span class="line"><span class="k">void</span> apply(Levels&amp; L, <span class="k">double</span> px, <span class="k">double</span> qty) {</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">const</span> <span class="k">double</span> t = px / kTick;</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">if</span> (std::fabs(t - std::round(t)) &gt; kEps)</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">throw</span> std::invalid_argument(<span class="g">"off tick"</span>);</span><span class="line" data-hl="2.5" data-hlend="3">  <span class="k">const</span> <span class="k">auto</span> i = <span class="k">static_cast</span>&lt;std::<span class="v">size_t</span>&gt;(</span><span class="line" data-hl="2.5" data-hlend="3">      std::round((px - L.base) / kTick));</span><span class="line">  L.qty[i] += qty;</span><span class="line" data-hl="3" data-hlend="4">  L.notional += px * qty;</span><span class="line">}</span></div>
+<div class="lbl" data-cue="2" style="left:1040px;top:250px">THE TICK GRID (0.01) · zoomed in</div>
+<svg class="full"><path class="draw" data-cue="2" d="M1060 400 L1820 400" stroke="#8ea3b1" stroke-width="3" fill="none"/><path class="draw" data-cue="2" data-d="0.0" d="M1120 380 L1120 420" stroke="#8ea3b1" stroke-width="3" fill="none"/><path class="draw" data-cue="2" data-d="0.15" d="M1420 380 L1420 420" stroke="#8ea3b1" stroke-width="3" fill="none"/><path class="draw" data-cue="2" data-d="0.3" d="M1720 380 L1720 420" stroke="#8ea3b1" stroke-width="3" fill="none"/></svg>
+<div class="lbl" data-cue="2" data-d="0.0" style="left:1070px;top:432px;font-size:24px">5012.09</div>
+<div class="lbl" data-cue="2" data-d="0.15" style="left:1370px;top:432px;font-size:24px">5012.10</div>
+<div class="lbl" data-cue="2" data-d="0.3" style="left:1670px;top:432px;font-size:24px">5012.11</div>
+<div class="dot" data-cue="2.4" data-anim="fade" style="left:1438px;top:388px"></div>
+<div class="note" data-cue="2.4" data-d="0.3" style="left:1040px;top:500px;width:780px">the double nearest 5012.10 is<br><span class="c-amber">5012.100000000000363797880709…</span><br>so "on the grid" needs a tolerance</div>
+<div class="chip amber" data-cue="2.7" style="left:1040px;top:660px">|t - round(t)| &lt;= 1e-9 ?</div>
+<div class="chip red" data-cue="3" style="left:1040px;top:740px">notional += px * qty, in double</div>
+</div>
+<div class="scene" id="s-wrong">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What double prices do (g++ 13, this box)</div>
+<div class="th" data-cue="0" data-d="0.3" style="left:120px;top:200px;width:620px">expression</div>
+<div class="th c-red" data-cue="0" data-d="0.3" style="left:760px;top:200px">double</div>
+<div class="th c-teal" data-cue="0" data-d="0.3" style="left:1340px;top:200px">int64 ticks</div>
+<div class="row15" data-cue="1" style="left:120px;top:250px;width:1680px"></div>
+<div class="mono rt" data-cue="1" style="left:140px;top:272px;width:600px">0.1 + 0.2 == 0.3</div>
+<div class="mono rt c-red" data-cue="1" data-d="0.4" style="left:760px;top:272px">false · 0.30000000000000004</div>
+<div class="mono rt c-teal" data-cue="1" data-d="0.8" style="left:1340px;top:272px">10 + 20 == 30</div>
+<div class="row15" data-cue="1.5" style="left:120px;top:360px;width:1680px"></div>
+<div class="mono rt" data-cue="1.5" style="left:140px;top:382px;width:600px">map: +100 @ 0.3, +50 @ 0.1+0.2</div>
+<div class="mono rt c-red" data-cue="1.5" data-d="0.4" style="left:760px;top:382px">2 levels</div>
+<div class="mono rt c-teal" data-cue="1.5" data-d="0.8" style="left:1340px;top:382px">1 level, qty 150</div>
+<div class="row15" data-cue="2" style="left:120px;top:470px;width:1680px"></div>
+<div class="mono rt" data-cue="2" style="left:140px;top:492px;width:600px">100.00 + ten 0.01 steps == 100.10</div>
+<div class="mono rt c-red" data-cue="2" data-d="0.4" style="left:760px;top:492px">false · 100.10000000000005</div>
+<div class="mono rt c-teal" data-cue="2" data-d="0.8" style="left:1340px;top:492px">10000 + 10 == 10010</div>
+<div class="row15" data-cue="3" style="left:120px;top:580px;width:1680px"></div>
+<div class="mono rt" data-cue="3" style="left:140px;top:602px;width:600px">int64_t(0.29 / 0.01)</div>
+<div class="mono rt c-red" data-cue="3" data-d="0.4" style="left:760px;top:602px">28 · (28.999999999999996)</div>
+<div class="mono rt c-teal" data-cue="3" data-d="0.8" style="left:1340px;top:602px">29</div>
+<div class="row15" data-cue="4" style="left:120px;top:690px;width:1680px"></div>
+<div class="mono rt" data-cue="4" style="left:140px;top:712px;width:600px">1,000,000 fills of 3 @ 0.01</div>
+<div class="mono rt c-red" data-cue="4" data-d="0.4" style="left:760px;top:712px">29999.9999996277</div>
+<div class="mono rt c-teal" data-cue="4" data-d="0.8" style="left:1340px;top:712px">3000000 = 30000.00</div>
+<div class="chip amber" data-cue="5" style="left:120px;top:820px">every epsilon and round() is a patch for this</div>
+</div>
+<div class="scene" id="s-cost">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Per update, in the compiled loop</div>
+<div class="side c-red" data-cue="1" style="left:120px;top:220px">DOUBLE (objdump, -O2)</div>
+<div class="op amber" data-cue="1" data-d="0.00" style="left:120px;top:270px;width:300px">divsd</div>
+<div class="op red" data-cue="2" data-d="0.15" style="left:432px;top:270px;width:210px">call round</div>
+<div class="op mute" data-cue="2" data-d="0.30" style="left:654px;top:270px;width:200px">spill/reload</div>
+<div class="op mute" data-cue="2" data-d="0.45" style="left:866px;top:270px;width:290px">sub · andpd · comisd</div>
+<div class="op amber" data-cue="1" data-d="0.60" style="left:1168px;top:270px;width:300px">divsd</div>
+<div class="op red" data-cue="2" data-d="0.75" style="left:1480px;top:270px;width:210px">call round</div>
+<div class="op mute" data-cue="3" data-d="0.90" style="left:120px;top:360px;width:560px">cvttsd2si · addsd · mulsd · addsd</div>
+<div class="note" data-cue="1" data-d="1.0" style="left:120px;top:460px">divsd: typically 13-15 cycles latency on current x86</div>
+<div class="chip red" data-cue="3" style="left:120px;top:520px">≈ 35 instructions per update · 2 calls</div>
+<div class="side c-teal" data-cue="4" style="left:120px;top:640px">INT64 TICKS</div>
+<div class="op teal" data-cue="4" data-d="0.00" style="left:120px;top:690px;width:220px">sub</div>
+<div class="op teal" data-cue="4" data-d="0.20" style="left:352px;top:690px;width:220px">add [qty+i]</div>
+<div class="op teal" data-cue="4" data-d="0.40" style="left:584px;top:690px;width:220px">imul</div>
+<div class="op teal" data-cue="4" data-d="0.60" style="left:816px;top:690px;width:220px">add [notional]</div>
+<div class="chip teal" data-cue="4" data-d="1.0" style="left:120px;top:790px">10 instructions per update · 0 calls</div>
+</div>
+<div class="scene" id="s-hot">
+<div class="h2" data-cue="0" style="left:60px;top:110px">Integer ticks, converted once</div>
+<div class="side c-red" data-cue="0" style="left:60px;top:200px">GENERAL</div>
+<div class="side c-teal" data-cue="0" data-d="0.3" style="left:980px;top:200px">HOT PATH</div>
+<div class="code sm left" data-cue="0" style="left:60px;top:240px;width:880px" data-dim="1"><span class="line"><span class="k">struct</span> Levels {</span><span class="line">  <span class="k">double</span> base;               <span class="c">// price of level 0</span></span><span class="line">  std::<span class="v">vector</span>&lt;<span class="k">double</span>&gt; qty;   <span class="c">// one slot per tick</span></span><span class="line">  <span class="k">double</span> notional = <span class="r">0</span>;</span><span class="line">};</span><span class="line"><span class="k">constexpr</span> <span class="k">double</span> kTick = <span class="r">0.01</span>, kEps = <span class="r">1e-9</span>;</span><span class="line"><span class="k">void</span> apply(Levels&amp; L, <span class="k">double</span> px, <span class="k">double</span> qty) {</span><span class="line">  <span class="k">const</span> <span class="k">double</span> t = px / kTick;</span><span class="line">  <span class="k">if</span> (std::fabs(t - std::round(t)) &gt; kEps)</span><span class="line">    <span class="k">throw</span> std::invalid_argument(<span class="g">"off tick"</span>);</span><span class="line">  <span class="k">const</span> <span class="k">auto</span> i = <span class="k">static_cast</span>&lt;std::<span class="v">size_t</span>&gt;(</span><span class="line">      std::round((px - L.base) / kTick));</span><span class="line">  L.qty[i] += qty;</span><span class="line">  L.notional += px * qty;</span><span class="line">}</span></div>
+<div class="code sm right" data-cue="0" style="left:980px;top:240px;width:880px" data-d="0.3"><span class="line" data-hl="1" data-hlend="2"><span class="c">// price in ticks of 0.01: 5012.25 -&gt; 501225</span></span><span class="line" data-hl="0" data-hlend="1"><span class="k">using</span> <span class="v">Ticks</span> = <span class="v">int64_t</span>;</span><span class="line"><span class="k">struct</span> Levels {</span><span class="line">  <span class="v">Ticks</span> base;                <span class="c">// price of level 0</span></span><span class="line">  std::<span class="v">vector</span>&lt;<span class="v">int64_t</span>&gt; qty;  <span class="c">// one slot per tick</span></span><span class="line" data-hl="3" data-hlend="4">  <span class="v">int64_t</span> notional = <span class="r">0</span>;      <span class="c">// ticks x qty, exact</span></span><span class="line">};</span><span class="line" data-hl="1" data-hlend="2"><span class="c">// px: validated and converted once, at the edge</span></span><span class="line" data-hl="2" data-hlend="3"><span class="k">void</span> apply(Levels&amp; L, <span class="v">Ticks</span> px, <span class="v">int64_t</span> qty) {</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">const</span> <span class="k">auto</span> i = std::<span class="v">size_t</span>(px - L.base);</span><span class="line">  L.qty[i] += qty;</span><span class="line" data-hl="3" data-hlend="4">  L.notional += px * qty;</span><span class="line">}</span></div>
+<div class="chip teal" data-cue="4" style="left:980px;top:740px">== is exact: safe as map / hash key</div>
+<div class="chip amber" data-cue="4" data-d="1.5" style="left:980px;top:810px">int64 max ≈ 9.2e18 · check ticks x qty worst case</div>
+<div class="chip teal" data-cue="1" data-d="0.8" style="left:60px;top:740px">"5012.25" → 501225 at the feed parser (pattern 16)</div>
+</div>
+<div class="scene" id="s-numbers">
+<div class="h2" data-cue="0" style="left:120px;top:110px">ns per update, p50 (lower is better)</div>
+<div class="note" data-cue="0" data-d="0.3" style="left:120px;top:190px;width:1700px">measured on a shared 4-vCPU cloud VM · g++ 13 -O2 · 8,192 updates · 2,000-level book · pinned · median of 3 runs x 41 passes</div>
+<div class="blab" data-cue="1" data-d="0.0" style="left:110px;top:270px">double + eps + round</div>
+<div class="bar grow" data-cue="1" data-d="0.0" data-w="1056" data-anim="fade" style="left:560px;top:268px;background:var(--red)"></div>
+<div class="bv" data-cue="1" data-d="0.7" style="left:1632px;top:267px;color:var(--red)">13.2</div>
+<div class="blab" data-cue="2" data-d="0.0" style="left:110px;top:320px">int64 ticks</div>
+<div class="bar grow" data-cue="2" data-d="0.0" data-w="200" data-anim="fade" style="left:560px;top:318px;background:var(--teal)"></div>
+<div class="bv" data-cue="2" data-d="0.7" style="left:776px;top:317px;color:var(--teal)">2.5</div>
+<div class="chip amber" data-cue="2" data-d="0.8" style="left:900px;top:308px">≈ 5x</div>
+<div class="blab" data-cue="3" data-d="0.0" style="left:110px;top:370px">double, no eps check</div>
+<div class="bar grow" data-cue="3" data-d="0.0" data-w="360" data-anim="fade" style="left:560px;top:368px;background:var(--violet)"></div>
+<div class="bv" data-cue="3" data-d="0.7" style="left:936px;top:367px;color:var(--violet)">4.5</div>
+<div class="gl" data-cue="4" style="left:120px;top:470px">after 335,872 updates, notional</div>
+<div class="mono big2 c-red" data-cue="4" data-d="0.3" style="left:120px;top:520px">double  84,539,714,399.649658</div>
+<div class="mono big2 c-teal" data-cue="4" data-d="0.6" style="left:120px;top:580px">ticks   84,539,714,399.65 (exact)</div>
+<div class="chip red" data-cue="4" data-d="1.0" style="left:1240px;top:545px">off by $0.00034</div>
+<div class="rule" data-cue="5" style="left:120px;top:690px;width:1660px;font-size:32px">Speed: modest per update. <span class="c-amber">Correctness: the reason to switch.</span></div>
+</div>
+<div class="scene" id="s-close">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Where each belongs</div>
+<div class="card2" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:810px;height:160px;border-color:var(--muted)"><div class="ct">double is fine</div><div class="cs">analytics · risk · signals · ~1e-16 relative error</div></div>
+<div class="card2" data-cue="1" data-d="0.3" style="left:970px;top:220px;width:810px;height:160px;border-color:var(--red)"><div class="ct">double is not fine</div><div class="cs">compare · match · sum money · map / hash keys</div></div>
+<div class="card2" data-cue="2" data-d="0.3" style="left:120px;top:410px;width:810px;height:160px;border-color:var(--teal)"><div class="ct">Convert at the edge</div><div class="cs">tick size from reference data</div></div>
+<div class="card2" data-cue="2.5" data-d="0.3" style="left:970px;top:410px;width:810px;height:160px;border-color:var(--amber)"><div class="ct">Tick varies by price band?</div><div class="cs">use the smallest increment as the unit</div></div>
+<div class="rule" data-cue="3" style="left:120px;top:640px;width:1660px">Integer ticks inside. <span class="c-amber">Decimal text only at the edges.</span></div>
+</div>

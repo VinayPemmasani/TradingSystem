@@ -1,0 +1,114 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">PATTERN 12 / 16 · AI CODE VS HOT PATH</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:205px">False sharing</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:380px;width:1500px">Packed in one cache line, or one writer per line?</div>
+<div class="box blue" data-cue="1" style="left:140px;top:600px;width:330px;height:130px;text-align:center"><div class="t">Core 1</div><div class="s">thread A · ++n[0]</div></div>
+<div class="box violet" data-cue="1" data-d="0.3" style="left:1450px;top:600px;width:330px;height:130px;text-align:center"><div class="t">Core 2</div><div class="s">thread B · ++n[1]</div></div>
+<div class="bytes" data-cue="1" data-d="0.5"  style="left:640px;top:630px"><div style="width:80px;background:#6aa8ff">n[0]</div><div style="width:80px;background:#a98bff">n[1]</div><div style="width:480px;background:#1a2a35"></div></div>
+<div class="lbl" data-cue="1" data-d="0.5" style="left:640px;top:715px;width:640px;text-align:center">one 64-byte line</div>
+<svg class="full"><path id="ti-pp" d="M 470 665 L 1450 665" stroke="none" fill="none"/></svg>
+<div class="pkt" data-cue="2" data-path="ti-pp" data-dur="0.9" data-loop="1" style="background:var(--amber);box-shadow:0 0 16px var(--amber)"></div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The general version</div>
+<div class="tag c-red" data-cue="0" style="left:120px;top:200px;border-color:var(--red)">GENERAL · ai.hpp</div>
+<div class="code left" data-cue="0" data-d="0.2"  style="left:120px;top:250px;width:820px;font-size:23px;"><span class="line"><span class="k">struct</span> CountersPacked {</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">std</span>::array&lt;<span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">uint64_t</span>&gt;, <span class="r">2</span>&gt; n{};</span><span class="line">};</span><span class="line"> </span><span class="line"><span class="k">template</span> &lt;<span class="k">class</span> T, <span class="v">size_t</span> N&gt;</span><span class="line"><span class="k">struct</span> RingPacked {</span><span class="line" data-hl="2" data-hlend="3">  <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; head{<span class="r">0</span>};   <span class="c">// producer</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="v">size_t</span> cached_tail = <span class="r">0</span>;        <span class="c">// producer</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; tail{<span class="r">0</span>};   <span class="c">// consumer</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="v">size_t</span> cached_head = <span class="r">0</span>;        <span class="c">// consumer</span></span><span class="line">  T buf[N];</span><span class="line">};</span></div>
+<div class="lbl" data-cue="3" style="left:1010px;top:255px">COUNTERS · bytes 0–63 of one line</div>
+<div class="bytes" data-cue="3" data-d="0.2"  style="left:1010px;top:295px"><div style="width:100.0px;background:#6aa8ff">n[0]</div><div style="width:100.0px;background:#a98bff">n[1]</div><div style="width:600.0px;background:#1a2a35"></div></div>
+<div class="lbl" data-cue="3" data-d="0.6" style="left:1010px;top:430px">RING HEADER + FIRST SLOTS · one line</div>
+<div class="bytes" data-cue="3" data-d="0.8"  style="left:1010px;top:470px"><div style="width:100.0px;background:#6aa8ff">head</div><div style="width:100.0px;background:#6aa8ff">c_tail</div><div style="width:100.0px;background:#a98bff">tail</div><div style="width:100.0px;background:#a98bff">c_head</div><div style="width:400.0px;background:#2c4351">buf[0..3]</div></div>
+<div class="lbl" data-cue="4" style="left:1010px;top:590px;width:800px;line-height:1.6;font-size:24px"><span style="color:#6aa8ff">■</span> written by thread A / producer<br><span style="color:#a98bff">■</span> written by thread B / consumer</div>
+<div class="lbl c-green" data-cue="5" style="left:1010px;top:710px;font-size:26px">✓ compact  ✓ correct  ✓ natural</div>
+</div>
+<div class="scene" id="s-pingpong">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One line, two owners</div>
+<div class="box blue" data-cue="0" data-d="0.0" style="left:120px;top:230px;width:580px;height:300px"><div class="t">Core 1 · thread A</div><div class="s">L1 cache</div></div>
+<div class="badge" id="pp-b0" data-cue="0" data-d="0.4" style="left:590px;top:252px">S</div>
+<div class="bytes" id="pp-l0" data-cue="0" data-d="0.5"  style="left:150px;top:380px"><div style="width:64px;background:#6aa8ff">n[0]</div><div style="width:64px;background:#a98bff">n[1]</div><div style="width:384px;background:#1a2a35"></div></div>
+<div class="cnt mono" id="pp-c0" data-cue="1" style="left:150px;top:470px">n[0] = 0</div>
+<div class="box violet" data-cue="0" data-d="0.3" style="left:1220px;top:230px;width:580px;height:300px"><div class="t">Core 2 · thread B</div><div class="s">L1 cache</div></div>
+<div class="badge" id="pp-b1" data-cue="0" data-d="0.7" style="left:1690px;top:252px">S</div>
+<div class="bytes" id="pp-l1" data-cue="0" data-d="0.8"  style="left:1250px;top:380px"><div style="width:64px;background:#6aa8ff">n[0]</div><div style="width:64px;background:#a98bff">n[1]</div><div style="width:384px;background:#1a2a35"></div></div>
+<div class="cnt mono" id="pp-c1" data-cue="1" style="left:1250px;top:470px">n[1] = 0</div>
+<div class="tok" id="pp-tok" data-cue="1" data-anim="fade" style="left:960px;top:335px">line</div>
+<div class="lbl" data-cue="0" data-d="0.8" style="left:120px;top:560px;width:1680px;font-size:24px">M = owned, may write · S = shared, read-only copy · I = invalid</div>
+<div class="lbl" data-cue="3" style="left:120px;top:620px">LINE OWNER, WRITE BY WRITE</div>
+<div class="tb" id="pp-t0" style="left:120px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t1" style="left:184px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t2" style="left:248px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t3" style="left:312px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t4" style="left:376px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t5" style="left:440px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t6" style="left:504px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t7" style="left:568px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t8" style="left:632px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t9" style="left:696px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t10" style="left:760px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t11" style="left:824px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t12" style="left:888px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t13" style="left:952px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t14" style="left:1016px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t15" style="left:1080px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t16" style="left:1144px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t17" style="left:1208px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t18" style="left:1272px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t19" style="left:1336px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t20" style="left:1400px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t21" style="left:1464px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t22" style="left:1528px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t23" style="left:1592px;top:660px;background:#a98bff"></div>
+<div class="tb" id="pp-t24" style="left:1656px;top:660px;background:#6aa8ff"></div>
+<div class="tb" id="pp-t25" style="left:1720px;top:660px;background:#a98bff"></div>
+<div class="lbl c-amber" data-cue="3" data-d="0.5" style="left:120px;top:730px;width:1680px;font-size:26px">no data shared, only a line · every write is a cross-core transfer</div>
+<div class="stat red" data-cue="4" style="left:120px;top:800px;width:1680px;font-size:26px">ring: each head store also invalidates the consumer's copy of tail and cached_head</div>
+</div>
+<div class="scene" id="s-fast">
+<div class="h2" data-cue="0" style="left:100px;top:110px">One writer per line</div>
+<div class="tag c-red" data-cue="0" style="left:100px;top:200px;border-color:var(--red)">GENERAL</div>
+<div class="tag c-teal" data-cue="0" data-d="0.3" style="left:900px;top:200px;border-color:var(--teal)">HOT PATH · fast.hpp</div>
+<div class="code left" data-cue="0" data-d="0" data-dim="1" style="left:100px;top:250px;width:760px;font-size:21px;"><span class="line"><span class="k">struct</span> CountersPacked {</span><span class="line">  <span class="v">std</span>::array&lt;<span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">uint64_t</span>&gt;, <span class="r">2</span>&gt; n{};</span><span class="line">};</span><span class="line"> </span><span class="line"><span class="k">template</span> &lt;<span class="k">class</span> T, <span class="v">size_t</span> N&gt;</span><span class="line"><span class="k">struct</span> RingPacked {</span><span class="line">  <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; head{<span class="r">0</span>};   <span class="c">// producer</span></span><span class="line">  <span class="v">size_t</span> cached_tail = <span class="r">0</span>;        <span class="c">// producer</span></span><span class="line">  <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; tail{<span class="r">0</span>};   <span class="c">// consumer</span></span><span class="line">  <span class="v">size_t</span> cached_head = <span class="r">0</span>;        <span class="c">// consumer</span></span><span class="line">  T buf[N];</span><span class="line">};</span></div>
+<div class="code right" data-cue="0" data-d="0.3"  style="left:900px;top:250px;width:920px;font-size:21px;"><span class="line" data-hl="1" data-hlend="2"><span class="k">inline</span> <span class="k">constexpr</span> <span class="v">size_t</span> kLine = <span class="r">64</span>;</span><span class="line" data-hl="1" data-hlend="2"><span class="k">struct</span> <span class="k">alignas</span>(kLine) PaddedCounter {</span><span class="line">  <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">uint64_t</span>&gt; n{<span class="r">0</span>};</span><span class="line">};</span><span class="line"><span class="k">struct</span> CountersPadded {</span><span class="line">  <span class="v">std</span>::array&lt;PaddedCounter, <span class="r">2</span>&gt; c;</span><span class="line">};</span><span class="line" data-hl="2" data-hlend="3"><span class="k">static_assert</span>(<span class="k">sizeof</span>(CountersPadded) == <span class="r">2</span> * kLine);</span><span class="line"><span class="k">template</span> &lt;<span class="k">class</span> T, <span class="v">size_t</span> N&gt;</span><span class="line"><span class="k">struct</span> RingPadded {</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">alignas</span>(kLine) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; head{<span class="r">0</span>};</span><span class="line" data-hl="3" data-hlend="4">  <span class="v">size_t</span> cached_tail = <span class="r">0</span>;</span><span class="line" data-hl="4" data-hlend="5">  <span class="k">alignas</span>(kLine) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; tail{<span class="r">0</span>};</span><span class="line" data-hl="4" data-hlend="5">  <span class="v">size_t</span> cached_head = <span class="r">0</span>;</span><span class="line" data-hl="4" data-hlend="5">  <span class="k">alignas</span>(kLine) T buf[N];</span><span class="line">};</span></div>
+<div class="lbl" data-cue="5" style="left:100px;top:780px">PADDED RING HEADER · 3 lines (bytes 0–191)</div>
+<div class="bytes" data-cue="5" data-d="0.2"  style="left:100px;top:820px"><div style="width:72px;background:#6aa8ff;font-size:15px">head</div><div style="width:72px;background:#6aa8ff;font-size:15px">c_tail</div><div style="width:432px;background:#1a2a35;font-size:15px"></div></div>
+<div class="bytes" data-cue="5" data-d="0.5"  style="left:690px;top:820px"><div style="width:72px;background:#a98bff;font-size:15px">tail</div><div style="width:72px;background:#a98bff;font-size:15px">c_head</div><div style="width:432px;background:#1a2a35;font-size:15px"></div></div>
+<div class="bytes" data-cue="5" data-d="0.8"  style="left:1280px;top:820px"><div style="width:576px;background:#2c4351">buf[0..7]</div></div>
+</div>
+<div class="scene" id="s-hdi">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why not the standard constant?</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:1680px;font-size:26px"><span class="line"><span class="k">#include</span> <span class="g">&lt;new&gt;</span></span><span class="line"><span class="k">struct alignas</span>(std::hardware_destructive_interference_size) P { ... };</span></div>
+<div class="fact" data-cue="1" style="left:120px;top:400px">g++ 13.3, x86-64: <span class="c-teal">64</span></div>
+<div class="warn" data-cue="1" data-d="0.8" style="left:120px;top:490px;width:1680px">warning: use of 'std::hardware_destructive_interference_size' [-Winterference-size]
+note: its value can vary between compiler versions or with different '-mtune' or '-mcpu' flags</div>
+<div class="box teal" data-cue="3" style="left:120px;top:660px;width:820px;height:150px"><div class="t c-teal">Lab: kCacheLine = 64</div><div class="s">libs/core compiler.hpp · fixed, layout never changes</div></div>
+<div class="box amber" data-cue="4" style="left:980px;top:660px;width:820px;height:150px"><div class="t c-amber">Some code pads to 128</div><div class="s">Intel spatial prefetcher: pairs of lines</div></div>
+</div>
+<div class="scene" id="s-measured">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measured</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:195px;width:1680px">shared 4-vCPU cloud VM · g++ -O2 · 2 threads pinned (CPU 1, 0) · chrt -f 10 · median of 5 runs (min–max)</div>
+<div class="lbl" data-cue="1" style="left:120px;top:260px">COUNTERS · 100M relaxed fetch_add per thread · ns per increment</div>
+<div class="rl" data-cue="1" data-d="0.0" style="left:120px;top:305px;color:var(--red)">packed</div>
+<div class="bar grow" data-cue="1" data-d="0.2" data-w="800" style="left:340px;top:305px;background:var(--red)"></div>
+<div class="bv" data-cue="1" data-d="1.0" style="left:1156px;top:309px">31.8 ns <span class="c-muted" style="font-size:22px">(28.5–36.1)</span></div>
+<div class="rl" data-cue="1" data-d="0.6" style="left:120px;top:377px;color:var(--teal)">padded</div>
+<div class="bar grow" data-cue="1" data-d="0.8" data-w="179" style="left:340px;top:377px;background:var(--teal)"></div>
+<div class="bv" data-cue="1" data-d="1.6" style="left:535px;top:381px">7.1 ns <span class="c-muted" style="font-size:22px">(6.7–8.0)</span></div>
+<div class="big c-teal" data-cue="2" style="left:1620px;top:300px">4.5×</div>
+<div class="lbl" data-cue="3" style="left:120px;top:480px">SPSC RING · 20M 8-byte messages · ns per message</div>
+<div class="rl" data-cue="3" data-d="0.0" style="left:120px;top:525px;color:var(--red)">packed</div>
+<div class="bar grow" data-cue="3" data-d="0.2" data-w="800" style="left:340px;top:525px;background:var(--red)"></div>
+<div class="bv" data-cue="3" data-d="1.0" style="left:1156px;top:529px">98 ns <span class="c-muted" style="font-size:22px">(69–112)</span></div>
+<div class="rl" data-cue="3" data-d="0.6" style="left:120px;top:597px;color:var(--teal)">padded</div>
+<div class="bar grow" data-cue="3" data-d="0.8" data-w="490" style="left:340px;top:597px;background:var(--teal)"></div>
+<div class="bv" data-cue="3" data-d="1.6" style="left:846px;top:601px">60 ns <span class="c-muted" style="font-size:22px">(43–76)</span></div>
+<div class="big c-teal" data-cue="4" style="left:1620px;top:520px">1.6×</div>
+<div class="lbl c-amber" data-cue="4" data-d="0.5" style="left:120px;top:700px;width:1680px;font-size:25px">the ring gains less: head and tail are truly shared, each side must read the other's</div>
+<div class="stat" data-cue="5" style="left:120px;top:770px;width:1680px;border-color:var(--line);font-size:26px">price in memory: counters 16 → 128 bytes · ring header 32 → 128 bytes before buf</div>
+</div>
+<div class="scene" id="s-nuance">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Not wrong. Missing who-writes-what.</div>
+<div class="box green" data-cue="1" style="left:120px;top:230px;width:820px;height:230px"><div class="t c-green">Dense is better for</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:10px">data written by one thread<br>read-only data (more fits in cache)<br>big arrays of anything</div></div>
+<div class="box amber" data-cue="2" style="left:980px;top:230px;width:820px;height:230px"><div class="t c-amber">Pad only</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:10px">fields written by different threads,<br>at high rates, on different cores</div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:510px;width:1680px;font-size:28px">The prompt never said which thread writes which field.</div>
+<div class="lbl c-muted" data-cue="4" style="left:120px;top:570px;width:1680px;font-size:26px">A layout change is cheap to try: measure it.</div>
+<div class="rule" data-cue="5" style="left:120px;top:660px;width:1680px">One <span class="c-teal">writer</span> per <span class="c-teal">cache line</span>.</div>
+</div>

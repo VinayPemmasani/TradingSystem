@@ -1,0 +1,123 @@
+[
+ {
+  "id": "title",
+  "title": "Live optimization",
+  "text": "An interviewer hands you a market data handler and says: make it fast. Let's do it live, one step at a time. Every change is measured on this box, and every version must print the same output."
+ },
+ {
+  "id": "snippet",
+  "title": "The snippet",
+  "text": "Here is the snippet. Each message is a quote or a trade for one stock. It finds the symbol's state in a std::map keyed by string. Trades are appended to a history vector. Then it computes a VWAP over the last 32 trades, and returns buy, sell or hold."
+ },
+ {
+  "id": "measure",
+  "title": "How we measure",
+  "text": "First, the measurement. We replay two million synthetic messages and time every call with rdtsc. We keep the median and the 99th percentile per message, never averages. The timer itself costs about 27 nanoseconds, and that is inside every number. A test checks that every version returns exactly the same signals."
+ },
+ {
+  "id": "baseline",
+  "title": "Baseline",
+  "text": "This is a shared four vCPU cloud VM, so the thread is pinned and runs under a real time scheduler. The naive handler takes 229 nanoseconds at the median, and 480 at p99. Five suspects are already visible. A string keyed map, a string copy, a growing vector, a 32 step loop, and two divides."
+ },
+ {
+  "id": "ds-map",
+  "title": "Data structures",
+  "text": "Start with the map. A std::map is a red black tree, so a lookup chases a pointer at every level, around nine levels for 500 symbols. Each level compares strings, and each hop can miss the cache. But the feed already gives us an integer. Every ITCH message carries a two byte stock locate code, so index a flat array with it."
+ },
+ {
+  "id": "ds-layout",
+  "title": "Hot fields",
+  "text": "Then lay the state out for the cache. Everything we touch per message fits in one 64 byte line, aligned so it never straddles two. The symbol name is cold, so it moves to its own array. The median drops from 229 to 102 nanoseconds. No locate code on your feed? An open addressing table on the eight symbol bytes measured 108."
+ },
+ {
+  "id": "pipeline",
+  "title": "CPU pipelining",
+  "text": "Next, the pipeline. Every instruction is fetched, decoded, executed, and retired in program order. An out of order core keeps many instructions in flight, and executes any whose inputs are ready. So independent work overlaps. But an instruction that needs the previous result has to wait for it. A dependency chain runs at the speed of its latency."
+ },
+ {
+  "id": "chain",
+  "title": "Dependency chains",
+  "text": "Our VWAP loop is one chain: every add waits for the add before it. The textbook fix is four accumulators, four short chains running side by side. The values are whole numbers stored in doubles, so the sum stays exact. In isolation it helps a little: 23.5 nanoseconds becomes 19.3. Inside the handler, the median barely moved: 102 to 99. So the add chain was not the limit; each element also needs two converts and a load from a 48 byte record."
+ },
+ {
+  "id": "divide",
+  "title": "Delete the chain",
+  "text": "The real fix is to delete the chain. Keep running sums: add the new trade, and subtract the one that falls out of the window. Now the divides. The compiled code is divide, subtract, divide, each one waiting on the last. A double divide takes about 13 to 15 cycles of latency on recent Intel cores. So cross multiply instead, in integers: in isolation, 16.3 nanoseconds becomes 4.6. The handler drops to 53."
+ },
+ {
+  "id": "predict",
+  "title": "Branch prediction",
+  "text": "Now branches. The core guesses every branch direction and keeps fetching down the guessed path. A wrong guess throws that work away, typically 15 to 20 cycles on current x86 cores. Validation fails about one percent of the time, so it predicts well. But bid or ask is a coin flip, and the signal itself is close to random."
+ },
+ {
+  "id": "branchless",
+  "title": "Branchless",
+  "text": "So turn those branches into data. Bid and ask become a two element array, indexed by the side. The signal becomes two comparisons subtracted: plus one, zero, or minus one. Then check with g++ -S. Before, the side and the buy signal were conditional jumps. After, they are sete and setg instructions, and an indexed store. The median drops from 53 to 44 nanoseconds."
+ },
+ {
+  "id": "hidden",
+  "title": "Hidden allocations",
+  "text": "Now memory. Replace operator new with a counter, and count every allocation in a run. The naive version allocates 6,500 times: 500 map nodes, and 6,000 vector buffers as the histories grow. Each time a vector fills, it allocates a buffer twice as big, moves every trade across, and frees the old one. You never see it at the median. You see it in the tail. The eight character symbols fit the string's small buffer, so those copies never call malloc."
+ },
+ {
+  "id": "prealloc",
+  "title": "Preallocate",
+  "text": "The fix is a fixed window: 32 slots inside each symbol's state, overwriting the oldest. No vector, no strings, no malloc. All 512 states are allocated once, at startup. Allocations per run drop to zero. The median stays at 44, but p99 falls from 170 to 72 nanoseconds. And p99.9 falls from 1.7 microseconds to 135 nanoseconds."
+ },
+ {
+  "id": "part1",
+  "title": "Single thread",
+  "text": "That is part one. Same program, same output: 229 down to 44 nanoseconds at the median, and 480 down to 72 at p99. Take away the 27 nanosecond timer, and the work itself is about 17 nanoseconds per message."
+ },
+ {
+  "id": "split",
+  "title": "Two threads",
+  "text": "Now the interviewer adds: decoding runs on its own thread. So split the program. A feed thread stamps each message with rdtsc and hands it over. A strategy thread runs the handler from part one. Latency now runs from the stamp to the signal. One message arrives every microsecond, and each thread is pinned to its own core."
+ },
+ {
+  "id": "mutex",
+  "title": "Mutex queue",
+  "text": "The obvious handoff is a mutex, a queue, and a condition variable. The strategy thread sleeps until it is notified. Waking a sleeping thread goes through the kernel. On this busy box the median is now 14 microseconds, and p99 is 131 microseconds. Our 17 nanoseconds of work disappear inside it."
+ },
+ {
+  "id": "flag",
+  "title": "A plain bool",
+  "text": "So someone suggests a plain bool flag. Write the message, then set ready to true. That is a data race, which is undefined behaviour. Here is what g++ -O2 really emits. In publish, the flag store moved above the message stores. In consume, the spin loop is gone."
+ },
+ {
+  "id": "reorder",
+  "title": "Weak ordering",
+  "text": "Two layers may reorder memory. The compiler may move any access that a single thread could not notice. The CPU parks stores in a store buffer and lets later loads run ahead. x86 uses total store order: only a later load may pass an earlier store. ARM is weakly ordered: almost any two accesses to different addresses may be reordered."
+ },
+ {
+  "id": "acqrel",
+  "title": "Acquire and release",
+  "text": "The fix is a release store on the flag, and an acquire load on the other side. When the acquire load reads the value that was released, the store happens before the load. So every write before the release is visible after the acquire. On x86 both are plain mov instructions, and the loop stays. On ARM, clang emits stlrb and ldarb."
+ },
+ {
+  "id": "ring",
+  "title": "Lock-free ring",
+  "text": "Generalize the flag into a single producer, single consumer ring. The producer writes a slot, then stores head with release. The consumer loads head with acquire, then reads the slot. No locks, and no kernel. The median falls to 415 nanoseconds. Most of that is cache lines crossing cores: about 140 to 170 nanoseconds each way on this VM."
+ },
+ {
+  "id": "mesi",
+  "title": "Cache lines",
+  "text": "Caches move whole 64 byte lines, and to write a line, a core must own it. Each copy is Modified, Exclusive, Shared, or Invalid. Our ring packs head, tail, and both stats counters into one line. So every write by one thread invalidates the other core's copy. Two threads bumping counters in one line: 34 nanoseconds per increment. On separate lines: 6.5."
+ },
+ {
+  "id": "padfix",
+  "title": "alignas(64)",
+  "text": "So give each index and each counter its own line, with alignas 64. The median drops from 415 to 351 nanoseconds. Last, cached indices. The producer keeps a private copy of tail, and reads the real one only when the ring looks full. That is the lab's SpscRing, and it measured 350. At one message a microsecond the ring is almost never full, so here the cache barely matters."
+ },
+ {
+  "id": "results",
+  "title": "Results",
+  "text": "Here is every step, measured on this box. On one thread, 229 down to 44 nanoseconds at the median. Across threads, the handoff costs far more than all the work. That is why low latency systems keep the hot path on one pinned thread. The two thread p99 is noisy here, because a shared VM steals time."
+ },
+ {
+  "id": "checklist",
+  "title": "Talking points",
+  "text": "To recap for the interview. Measure first, per message, with percentiles. Replace node maps and strings with integer ids and flat arrays. Shorten dependency chains, and avoid divides. Make random branches into data, and read the assembly. Allocate at startup. Publish with release and acquire. And give each thread's hot data its own cache line.",
+  "hold": 1.5
+ }
+]

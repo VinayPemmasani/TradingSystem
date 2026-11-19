@@ -1,0 +1,19 @@
+/* NETWORK topic house kit: amber = exchange/sender, violet = switch, blue = router/querier/clock master,
+   teal = trading servers/receivers, green = lab, red = loss/bad */
+.node{position:absolute;border-radius:14px;background:var(--panel);border:3px solid var(--line);display:grid;place-items:center;text-align:center;font:700 26px var(--body);line-height:1.15}
+.node small{display:block;font:500 19px var(--mono);color:var(--muted);margin-top:2px}
+.node.ex{border-color:var(--amber)} .node.sw{border-color:var(--violet)} .node.rt{border-color:var(--blue)}
+.node.sv{border-color:var(--teal)} .node.lab{border-color:var(--green)} .node.off{border-color:#3a5260;color:#7d93a1}
+.node.bad{border-color:var(--red)}
+.cap{font:600 24px var(--mono);color:var(--muted);letter-spacing:.03em;white-space:nowrap}
+.panel{border-radius:18px;background:rgba(19,33,43,.6);border:2px solid var(--line)}
+.bit{position:absolute;width:36px;height:52px;border:1px solid rgba(0,0,0,.4);display:grid;place-items:center;font:700 22px var(--mono);color:#06141a;border-radius:4px}
+.kv{font:500 27px/1.55 var(--mono);color:#dce8ee;white-space:nowrap}
+.kv b{color:var(--amber);font-weight:700}
+.warn{position:absolute;border-radius:18px;background:rgba(19,33,43,.85);border:2px solid var(--red);padding:22px 26px}
+.warn .wt{font:700 34px var(--body);color:#fff} .warn .ws{font:500 24px/1.4 var(--mono);color:#c3d2db;margin-top:10px}
+.take{font:800 58px/1.1 var(--display);font-stretch:80%;color:#fff}
+.tick{position:absolute;width:2px;background:var(--muted)}
+.tl{font:600 22px var(--mono);color:var(--muted);position:absolute;white-space:nowrap}
+.stat{font:800 92px/1 var(--display);font-stretch:75%}
+.src{font:500 20px var(--mono);color:var(--muted)}

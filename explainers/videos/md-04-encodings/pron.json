@@ -1,0 +1,17 @@
+[
+["tag=value","tag equals value"],
+["\\bSOH\\b","S O H"],
+["\\bFAST\\b","fast"],
+["FIX Adapted for STreaming","FIX adapted for streaming"],
+["942,755","nine hundred forty two thousand, seven hundred fifty five"],
+["39 45 A3","three nine, four five, A three"],
+["\\bSBE\\b","S B E"],
+["\\bMDP 3\\.0\\b","M D P three point oh"],
+["\\bCME\\b","C M E"],
+["4123\\.25","four thousand one hundred twenty three point two five"],
+["\\bOUCH\\b","ouch"],
+["\\bITCH\\b","itch"],
+["fixed-offset","fixed offset"],
+["\\bID\\b","I D"],
+["hex 01","hex zero one"]
+]

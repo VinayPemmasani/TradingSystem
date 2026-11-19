@@ -1,0 +1,138 @@
+[
+[
+"\\bRTS 6\\b",
+"R T S six"
+],
+[
+"\\bCME\\b",
+"C M E"
+],
+[
+"SoupBinTCP",
+"Soup Bin T C P"
+],
+[
+"\\bTCP\\b",
+"T C P"
+],
+[
+"\\bOUCH\\b",
+"ouch"
+],
+[
+"\\bITCH\\b",
+"itch"
+],
+[
+"UserRefNums?",
+"user ref num"
+],
+[
+"OrigClOrdID",
+"original client order I D"
+],
+[
+"ClOrdIDs?",
+"client order I D"
+],
+[
+"\\bsimex\\b",
+"sim ex"
+],
+[
+"\\bfixgw\\b",
+"fix gateway"
+],
+[
+"big-endian",
+"big endian"
+],
+[
+"left-justified",
+"left justified"
+],
+[
+"compile-time",
+"compile time"
+],
+[
+"214,748\\.3647",
+"two hundred fourteen thousand seven hundred forty eight point three six four seven"
+],
+[
+"\\bOMS\\b",
+"O M S"
+],
+[
+"\\bFIX\\b",
+"fix"
+],
+[
+"\\bIOC\\b",
+"I O C"
+],
+[
+"\\bSEC\\b",
+"S E C"
+],
+[
+"\\bAPI\\b",
+"A P I"
+],
+[
+"NewOrderSingle",
+"new order single"
+],
+[
+"ExecutionReport",
+"execution report"
+],
+[
+"ExecType",
+"exec type"
+],
+[
+"OrdStatus",
+"order status"
+],
+[
+"LeavesQty",
+"leaves quantity"
+],
+[
+"OrderQty",
+"order quantity"
+],
+[
+"CumQty",
+"cum quantity"
+],
+[
+"AvgPx",
+"average price"
+],
+[
+"\\bSOH\\b",
+"S O H"
+],
+[
+"BeginString",
+"begin string"
+],
+[
+"BodyLength",
+"body length"
+],
+[
+"OrdType",
+"order type"
+],
+[
+"TimeInForce",
+"time in force"
+],
+[
+"hex 01",
+"hex zero one"
+]
+]

@@ -1,0 +1,66 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 09 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Kill switches</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Stop the flow, then clean up.</div>
+<div class="kill" data-cue="1" data-anim="scale" style="left:800px;top:560px">KILL</div>
+<div class="tag c-red" data-cue="1" data-d="0.5" style="left:140px;top:620px;border-color:var(--red);font-size:26px">no new orders</div>
+<div class="tag c-amber" data-cue="1" data-d="0.8" style="left:1360px;top:620px;border-color:var(--amber);font-size:26px">working orders cancelled</div>
+</div>
+
+<div class="scene" id="s-rule">
+<div class="h2" data-cue="0" style="left:120px;top:110px">EU RTS 6 · Article 12 · "kill functionality"</div>
+<div class="quote" data-cue="1" style="left:120px;top:260px;width:1680px">"An investment firm shall be able to cancel <span class="c-red">immediately</span>, as an emergency measure, <span class="c-amber">any or all</span> of its unexecuted orders submitted to <span class="c-amber">any or all</span> trading venues to which the investment firm is connected"</div>
+<div class="lbl" data-cue="1" data-d="0.5" style="left:120px;top:540px">Commission Delegated Regulation (EU) 2017/589, Art. 12(1)</div>
+<div class="card" data-cue="2" style="left:120px;top:640px;width:1680px;border-color:var(--violet)"><div class="ct c-violet">Art. 12(3): know who sent each order</div><div class="cs">which trading algorithm · which trader, desk or client</div></div>
+</div>
+
+<div class="scene" id="s-two">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two halves</div>
+<div class="card" data-cue="1" style="left:120px;top:250px;width:820px;height:300px;border-color:var(--red)"><div class="ct c-red">1 · stop the flow</div><div class="cs">block every new order<br>and replace, at once</div><div class="cd">checked before anything else</div></div>
+<div class="card" data-cue="2" style="left:980px;top:250px;width:820px;height:300px;border-color:var(--amber)"><div class="ct c-amber">2 · clean up</div><div class="cs">cancel everything<br>still resting</div></div>
+<div class="tag c-green" data-cue="3" style="left:980px;top:590px;border-color:var(--green);font-size:26px">cancels are never blocked</div>
+<div class="card" data-cue="4" style="left:120px;top:700px;width:1680px;border-color:var(--teal)"><div class="ct c-teal">3 · a human decides about the position</div><div class="cd">hedge, unwind, or hold</div></div>
+<div class="tag c-red" data-cue="5" style="left:120px;top:600px;border-color:var(--red)">cancel first, block later → new orders refill the book</div>
+</div>
+
+<div class="scene" id="s-venue">
+<div class="h2" data-cue="0" style="left:120px;top:110px">At the exchange: CME Globex</div>
+<div class="node" data-cue="1" style="left:120px;top:250px;width:460px;height:110px;border-color:var(--red)">clearing firm</div>
+<div class="node" data-cue="1" data-d="0.3" style="left:200px;top:390px;width:460px;height:110px;border-color:var(--red)">executing firm</div>
+<div class="node" data-cue="1" data-d="0.6" style="left:280px;top:530px;width:460px;height:110px;border-color:var(--red)">one session</div>
+<div class="card" data-cue="2" style="left:860px;top:250px;width:940px;border-color:var(--red)"><div class="ct c-red">kill switch</div><div class="cs">only session messages accepted<br>day and good-till orders cancelled</div><div class="cd">mass quotes are not cancelled</div></div>
+<div class="card" data-cue="3" style="left:860px;top:520px;width:940px;border-color:var(--amber)"><div class="ct c-amber">cancel on disconnect · on by default</div><div class="cs">session drops, or misses heartbeats<br>→ resting orders cancelled</div><div class="cd">GTC and GTD excluded</div></div>
+<div class="tag" data-cue="4" style="left:860px;top:800px;border-color:var(--line);font-size:26px">clean logout → not triggered</div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:200px">CME Globex docs, read Nov 2026</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A runaway strategy</div>
+<div class="lbl" data-cue="0" style="left:120px;top:230px">position (shares)</div>
+<div id="k9-pos" class="grow bar" data-cue="0" data-d="0.2" data-w="900" data-dur="4" style="left:120px;top:270px;background:var(--amber)"></div>
+<svg class="full"><path class="draw" data-cue="1" d="M 1020 250 L 1020 340" stroke="var(--red)" stroke-width="4" fill="none"/></svg>
+<div class="lbl c-red" data-cue="1" style="left:1040px;top:276px">limit · t = 0: kill flag set</div>
+<div class="msg c-red" data-cue="2" style="left:120px;top:420px;border-color:var(--red)">next order → Verdict::kKill · never sent</div>
+<div class="lbl" data-cue="3" style="left:120px;top:520px">120 working orders</div>
+<div id="k9-grid" data-cue="3" data-anim="fade" style="left:120px;top:560px;width:1680px;height:200px"></div>
+<div class="card" data-cue="4" style="left:120px;top:800px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">process crashed instead? cancel on disconnect cleans up</div></div>
+<div class="tag c-amber" data-cue="5" style="left:760px;top:420px;border-color:var(--amber)">until the last C arrives, resting orders can still fill</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab</div>
+<div class="code" data-cue="0" data-d="0.2" style="left:120px;top:220px;width:1000px;font-size:24px"><span class="line c">// firm/risk · Risk</span><span class="line" data-hl="1" data-hlend="2"><span class="k">void</span> kill() { killed_.store(<span class="k">true</span>, relaxed); }</span><span class="line"></span><span class="line c">// first line of check():</span><span class="line" data-hl="0" data-hlend="2"><span class="k">if</span> (killed()) <span class="k">return</span> Verdict::kKill;</span></div>
+<div class="tag c-red" data-cue="1" data-d="0.4" style="left:120px;top:500px;border-color:var(--red)">std::atomic&lt;bool&gt; · any thread can set it</div>
+<div class="code" data-cue="2" style="left:120px;top:600px;width:1000px;font-size:24px"><span class="line c">// exchange/simex/gateway.cpp · close()</span><span class="line" data-hl="2" data-hlend="3"><span class="k">if</span> (cancel_on_disconnect &amp;&amp; open_ &amp;&amp; !drop_copy)</span><span class="line" data-hl="2" data-hlend="3">  push(Command::kCancelOwner);</span></div>
+<div class="card" data-cue="3" style="left:1180px;top:600px;width:620px;border-color:var(--amber)"><div class="ct c-amber">on by default</div><div class="cd">simex --no-cancel-on-disconnect turns it off for tests</div></div>
+<div class="tag c-blue" data-cue="4" style="left:1180px;top:240px;border-color:var(--blue)">End of Session → trading thread stops</div>
+<div class="tag c-red" data-cue="5" style="left:1180px;top:820px;border-color:var(--red)">no reset call · only a restart resumes</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What pros do</div>
+<div class="card" data-cue="0" style="left:120px;top:240px;width:540px;height:240px;border-color:var(--red)"><div class="ct c-red">test it</div><div class="cs">regularly</div></div>
+<div class="card" data-cue="1" style="left:690px;top:240px;width:540px;height:240px;border-color:var(--teal)"><div class="ct c-teal">reachable</div><div class="cs">outside the<br>trading team</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:240px;width:540px;height:240px;border-color:var(--blue)"><div class="ct c-blue">second layer</div><div class="cs">the exchange's<br>own switch</div></div>
+<div class="take" data-cue="3" style="left:120px;top:620px;width:1680px">Simple, tested, <span class="c-red">one click away.</span></div>
+</div>

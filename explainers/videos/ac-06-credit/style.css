@@ -1,0 +1,25 @@
+/* asset-class series colours (ac-01..10): teal = venue / exchange, green = buy side / investors,
+   amber = dealers and market makers / the distinctive mechanism, violet = clearing and settlement,
+   blue = data feeds and the lab, pink = pitfalls and risk, red = sells */
+.fcard{background:rgba(19,33,43,.86);border:2px solid var(--line);border-radius:16px;padding:18px 26px}
+.fcard .lbl{display:block;margin-bottom:6px}
+.fcard.amber{border-color:var(--amber)} .fcard.violet{border-color:var(--violet)} .fcard.teal{border-color:var(--teal)} .fcard.pink{border-color:var(--pink)} .fcard.blue{border-color:var(--blue)} .fcard.green{border-color:var(--green)} .fcard.red{border-color:var(--red)}
+.node{border-radius:18px;background:var(--panel);border:3px solid var(--line);padding:16px 20px;text-align:center}
+.node .t{font:700 30px var(--body)} .node .s{font:500 20px/1.35 var(--mono);color:var(--muted);margin-top:6px}
+.node.blue{border-color:var(--blue)} .node.teal{border-color:var(--teal)} .node.violet{border-color:var(--violet)} .node.green{border-color:var(--green)} .node.amber{border-color:var(--amber)} .node.pink{border-color:var(--pink)} .node.red{border-color:var(--red)}
+.tile{border-radius:18px;background:var(--panel);border:2px solid var(--line);padding:18px 24px;height:250px;box-sizing:border-box}
+.tile .k{font:600 21px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.tile .v{font:700 34px/1.15 var(--body);margin-top:10px}
+.tile .d{font:400 23px/1.4 var(--body);color:#b7c7d2;margin-top:10px}
+.tile.teal{border-color:var(--teal)} .tile.green{border-color:var(--green)} .tile.amber{border-color:var(--amber)} .tile.violet{border-color:var(--violet)} .tile.blue{border-color:var(--blue)} .tile.pink{border-color:var(--pink)}
+.big{font:800 84px/1.05 var(--display);font-stretch:80%}
+.stat{font:800 64px var(--display);font-stretch:85%}
+.note{font:500 22px/1.45 var(--mono);color:var(--muted)}
+.src{font:500 19px var(--mono);color:#6f8796}
+.chip{display:inline-block;padding:6px 12px;border-radius:8px;font:700 22px var(--mono);color:#06141a}
+.lvl{position:absolute;height:52px;display:flex;align-items:center;font:600 25px var(--mono);border-radius:8px;padding:0 16px;box-sizing:border-box}
+.lvl.bid{background:rgba(79,209,139,.18);border:2px solid var(--green);color:#bff3d6}
+.lvl.ask{background:rgba(255,107,94,.18);border:2px solid var(--red);color:#ffd3ce}
+.strip{display:flex;gap:10px}
+.strip .chip{color:#06141a}
+.hlrow td{background:rgba(255,179,71,.12)}

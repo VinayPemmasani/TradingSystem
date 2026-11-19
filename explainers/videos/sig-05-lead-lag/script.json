@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Lead-lag",
+  "text": "When two prices share one source of value, one of them usually moves first. For stock indexes, that is the futures. This video shows how to measure a lead, and how to use it. Then it lets the leader's move set the follower's fair value."
+ },
+ {
+  "id": "why",
+  "title": "Why futures lead",
+  "text": "Price discovery is where new information first enters a price. Index news trades first where it is cheapest to trade: one futures contract, with leverage, instead of five hundred stocks. Stoll and Whaley, in 1990, found S&P 500 futures returns led the stock index by about five minutes on average, with a mild effect the other way. Hasbrouck, in 2003, found that most price discovery for the S&P 500 and the Nasdaq-100 happened in the E-mini."
+ },
+ {
+  "id": "today",
+  "title": "Now it is a race",
+  "text": "Today the lag is a race. Budish, Cramton and Shim compared E-mini futures with the SPY ETF in 2011. One-minute returns had a correlation of 0.98, but ten-millisecond returns only 0.09. At that horizon, the two barely move together yet. And the median life of an arbitrage between the two fell from 97 milliseconds in 2005 to 7 milliseconds in 2011."
+ },
+ {
+  "id": "measure",
+  "title": "Measuring a lead",
+  "text": "To measure a lead, correlate the leader's return now with the follower's return k steps later, for a range of k. Use returns, not prices: two trending prices correlate at every lag. In my simulation, cash follows futures with weight 0.1 at once, 0.3 one step later, and 0.6 two steps later, plus noise. The correlation peaks at lag two, at 0.71, and is near zero at negative lags, so cash does not lead."
+ },
+ {
+  "id": "predict",
+  "title": "Using it",
+  "text": "Regressing cash on the last two futures returns recovers 0.30 and 0.60. So if the futures just rose two points after a flat step, expect cash up about 0.6 of a point next step: two times 0.3. A market maker in the follower does not wait for that. It moves its fair value and skews its quotes as soon as the leader ticks."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's agents can stage this. A strip, added with the strip option, is traded like a symbol, and its value is the sum of two legs. Makers quote it around that value, alongside the legs. Record a run with itch-dump, and the lagged correlation of leg returns against strip returns shows whether, and by how much, the strip trails. The same recipe fits any two prices tied by one value, such as an ETF and its basket."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pitfalls: a rarely traded price looks like it lags even when it does not, so Stoll and Whaley purged that effect first. Across venues, compare timestamps only from synchronized clocks. And a known lead shrinks as others trade it. Measure the lead with lagged correlations, and move fair value the moment the leader moves."
+ }
+]

@@ -1,0 +1,70 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">HFT &amp; HEDGE FUND STRATEGIES · 07 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Options market making</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Quote the whole chain. Hedge the direction. Keep the volatility edge.</div>
+<div id="ti-g" data-cue="0" data-d="0.8" data-anim="fade" style="left:140px;top:510px;width:900px;height:330px"></div>
+<div class="lbl" data-cue="0" data-d="0.8" style="left:140px;top:850px">strikes × expiries, quoted both sides</div>
+<div class="node green" data-cue="1" style="left:1240px;top:520px;width:520px"><div class="t">stock hedge</div><div class="s">cancels direction</div></div>
+<div class="node amber" data-cue="1" data-d="0.5" style="left:1240px;top:690px;width:520px"><div class="t">what's left</div><div class="s">volatility + spread</div></div>
+</div>
+
+<div class="scene" id="s-delta">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Delta, gamma, and the hedge</div>
+<div id="de-c" data-cue="0" data-anim="fade" style="left:120px;top:210px;width:1000px;height:560px"></div>
+<div class="tag c-amber" data-cue="0" data-d="0.5" style="left:200px;top:220px">slope = delta (Δ)</div>
+<div class="tag c-violet" data-cue="4" style="left:200px;top:280px">slope changes: gamma (Γ)</div>
+<div class="fcard red" data-cue="2" style="left:1200px;top:220px;width:600px"><span class="lbl">sell 100 calls · Δ 0.51 · 100 shares each</span><div class="h3">option delta: <span class="c-red">−5,100</span></div></div>
+<div class="fcard green" data-cue="2" data-d="0.6" style="left:1200px;top:370px;width:600px"><span class="lbl">hedge</span><div class="h3">buy <span class="c-green">5,100</span> shares</div></div>
+<div class="fcard" data-cue="3" style="left:1200px;top:520px;width:600px"><span class="lbl">net delta</span><div class="stat c-teal">0</div></div>
+<div class="tag c-amber" data-cue="5" style="left:1200px;top:700px">stock moves → Δ moves → re-hedge, again and again</div>
+<div class="src" data-cue="0" style="left:1200px;top:780px">Black &amp; Scholes, J. Political Economy 81(3), 1973</div>
+</div>
+
+<div class="scene" id="s-pnl">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Hedged P&amp;L is a volatility bet</div>
+<div class="fcard amber" data-cue="0" data-d="0.4" style="left:120px;top:220px;width:1680px"><div class="math" style="font-size:50px">dΠ<span class="eq">≈</span>½ · Γ · <i>S</i>² · ( σ²<sub>realized</sub> − σ²<sub>implied</sub> ) · d<i>t</i></div><div class="src" style="margin-top:6px">gamma term of the delta-hedged P&amp;L; e.g. Ma, Sengoku &amp; Nakata, eq. 2.8 (arXiv 2504.15626)</div></div>
+<div id="pn-a" data-cue="1" data-anim="fade" style="left:120px;top:440px;width:800px;height:260px"></div>
+<div class="lbl c-green" data-cue="1" style="left:120px;top:410px">REALIZED &gt; IMPLIED → LONG OPTIONS WIN</div>
+<div id="pn-b" data-cue="2" data-anim="fade" style="left:1000px;top:440px;width:800px;height:260px"></div>
+<div class="lbl c-red" data-cue="2" style="left:1000px;top:410px">REALIZED &lt; IMPLIED → SHORT OPTIONS WIN</div>
+<div class="card amber" data-cue="3" style="left:120px;top:740px;width:1680px;padding:14px 26px"><div class="cs" style="margin:0">the maker's edge: buy a little below fair value, sell a little above, keep vol exposure small</div></div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example</div>
+<table class="t" data-cue="0" data-d="0.4" style="left:120px;top:220px;width:640px">
+<tr><th>input</th><th>value</th></tr>
+<tr><td>stock S = strike K</td><td>100</td></tr><tr><td>days to expiry</td><td>30</td></tr><tr><td>implied σ</td><td>20%</td></tr><tr><td>rates</td><td>0</td></tr>
+<tr data-cue="1"><td class="c-amber">call price</td><td class="c-amber">2.29</td></tr><tr data-cue="1" data-d="0.3"><td class="c-amber">delta</td><td class="c-amber">0.51</td></tr><tr data-cue="1" data-d="0.6"><td class="c-amber">gamma</td><td class="c-amber">0.07</td></tr>
+</table>
+<div id="ex-c" data-cue="2" data-anim="fade" style="left:860px;top:220px;width:940px;height:540px"></div>
+<div class="tag" data-cue="2" style="left:880px;top:780px">hedged long call, P&amp;L per share for one day vs size of the stock's move</div>
+<div class="src" data-cue="0" style="left:120px;top:780px">Black-Scholes, computed; breakeven = S·σ·√(1/252)</div>
+</div>
+
+<div class="scene" id="s-lose">
+<div class="h2" data-cue="0" style="left:120px;top:110px">How it loses</div>
+<div id="lo-c" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:820px;height:420px"></div>
+<div class="tag c-pink" data-cue="0" data-d="1.8" style="left:540px;top:300px">gap: no chance to re-hedge</div>
+<div class="card pink" data-cue="2" style="left:1020px;top:220px;width:780px"><div class="ct c-pink">picked off</div><div class="cs">stock moves first, thousands of quotes go stale</div></div>
+<div class="card pink" data-cue="3" style="left:1020px;top:420px;width:780px"><div class="ct c-pink">implied vol shifts</div><div class="cs">vega hits every option at once</div></div>
+<div class="card pink" data-cue="4" style="left:1020px;top:620px;width:780px"><div class="ct c-pink">hedging costs</div><div class="cs">each rebalance crosses a stock spread</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">From the lab's maker to an options maker</div>
+<div class="card blue" data-cue="0" data-d="1.0" style="left:120px;top:220px;width:800px"><div class="ct">stock maker (lab)</div><div class="cs">lean quotes by inventory in shares</div></div>
+<div class="card amber" data-cue="2" style="left:1000px;top:220px;width:800px"><div class="ct">options maker</div><div class="cs">lean quotes by net delta and vega</div></div>
+<div class="code" data-cue="3" style="left:120px;top:420px;width:1680px;font-size:25px"><span class="line c">// sketch: the hedge as a target position</span><span class="line" data-hl="3" data-hlend="4">target = -book_delta_shares;</span><span class="line" data-hl="4" data-hlend="5">Child c = work_toward(target, position, open_buy, open_sell, max_child, <span class="r">100</span>);</span></div>
+<div class="lbl" data-cue="5" style="left:120px;top:640px">MESSAGES PER DAY</div>
+<div class="lbl" data-cue="6" style="left:120px;top:690px;width:460px">OPRA proj. Oct 2025, 1 stream</div><div class="grow bar" data-cue="6" data-w="1100" data-dur="1.4" style="left:600px;top:682px;background:var(--amber)"></div><div class="tag" data-cue="6" data-d="1.2" style="left:1560px;top:686px">12.3 billion</div>
+<div class="lbl" data-cue="7" style="left:120px;top:750px;width:460px">Nasdaq ITCH, lab day 2019-01-30</div><div class="grow bar" data-cue="7" data-w="33" style="left:600px;top:742px;background:var(--blue)"></div><div class="tag" data-cue="7" data-d="0.5" style="left:650px;top:746px">368 million</div>
+<div class="src" data-cue="6" style="left:120px;top:810px">OPRA Capacity Projections Update, Sept 2025 · quant-real script.log</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:250px;width:1640px">Harvest the spread on volatility.<br><span class="c-pink">Lose on jumps, stale quotes, vol shifts.</span></div>
+<div class="chip" data-cue="1" style="left:140px;top:640px;background:var(--violet)">fast models</div>
+<div class="chip" data-cue="1" data-d="0.3" style="left:350px;top:640px;background:var(--amber)">full options feed</div>
+<div class="chip" data-cue="1" data-d="0.6" style="left:640px;top:640px;background:var(--green)">constant hedging</div>
+</div>

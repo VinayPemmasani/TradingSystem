@@ -1,0 +1,87 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 06 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Cancel/replace races</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Changing an order that may already be trading.</div>
+<div class="node" data-cue="1" style="left:140px;top:580px;width:300px;height:130px;border-color:var(--teal)">Firm</div>
+<div class="node" data-cue="1" style="left:1480px;top:580px;width:300px;height:130px;border-color:var(--blue)">Exchange</div>
+<svg class="full"><path id="c6-a" class="draw" data-cue="1" data-d="0.3" d="M 450 620 L 1470 620" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="c6-b" class="draw" data-cue="2" d="M 1470 670 L 450 670" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="c6-a" data-cue="2" data-dur="2.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="c6-b" data-cue="2" data-dur="2.2" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="lbl c-amber" data-cue="1" data-d="0.5" style="left:800px;top:570px">X cancel · U replace</div>
+<div class="lbl c-green" data-cue="2" data-d="0.3" style="left:820px;top:690px">E executed</div>
+</div>
+
+<div class="scene" id="s-msgs">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The messages</div>
+<div class="lbl" data-cue="0" style="left:120px;top:230px">OUCH Cancel Order · 11 bytes</div>
+<div class="bytes" style="left:120px;top:270px"><div data-cue="0" data-d="0.2" style="width:40px;background:var(--amber)">X</div><div data-cue="0" data-d="0.4" style="width:160px;background:var(--teal)">UserRefNum</div><div data-cue="0" data-d="0.6" style="width:160px;background:var(--green)" data-hl="0.5" data-hlend="1">Quantity</div><div data-cue="0" data-d="0.8" style="width:80px;background:#55697a;color:#eef4f7">App</div></div>
+<div class="tag c-green" data-cue="0" data-d="1.2" style="left:600px;top:285px;border-color:var(--green)">the size you now want · 0 = cancel all</div>
+<div class="lbl" data-cue="1" style="left:120px;top:400px">OUCH Replace Order · 40 bytes</div>
+<div class="bytes" style="left:120px;top:440px"><div data-cue="1" style="width:40px;background:var(--amber)">U</div><div data-cue="1" data-d="0.2" style="width:160px;background:#9fb6c4">OrigRef</div><div data-cue="1" data-d="0.4" style="width:160px;background:var(--teal)">new Ref</div><div data-cue="1" data-d="0.6" style="width:160px;background:var(--green)">Quantity</div><div data-cue="1" data-d="0.8" style="width:320px;background:var(--amber)">Price</div><div data-cue="1" data-d="1" style="width:120px;background:#9fb6c4">T D I</div><div data-cue="1" data-d="1.1" style="width:560px;background:var(--blue)">ClOrdID</div><div data-cue="1" data-d="1.2" style="width:80px;background:#55697a;color:#eef4f7">App</div></div>
+<div class="card" data-cue="2" style="left:120px;top:600px;width:820px;border-color:var(--teal)"><div class="ct c-teal">FIX 35=F · cancel</div><div class="cs">41 OrigClOrdID=ORD-7<br>11 ClOrdID=ORD-8</div></div>
+<div class="card" data-cue="2" data-d="0.4" style="left:980px;top:600px;width:820px;border-color:var(--teal)"><div class="ct c-teal">FIX 35=G · cancel/replace</div><div class="cs">41 OrigClOrdID=ORD-7<br>11 ClOrdID=ORD-8 · 38 · 44</div></div>
+<div class="tag c-teal" data-cue="3" style="left:120px;top:790px;border-color:var(--teal)">both name the order by OUR id: UserRefNum · OrigClOrdID</div>
+<div class="tag c-green" data-cue="4" style="left:120px;top:870px;border-color:var(--green)">answers: C Order Canceled (+ reason) · U Order Replaced (old + new ref)</div>
+<div class="lbl c-amber" data-cue="5" style="left:1100px;top:400px">no Side, no Symbol → cancel + new order</div>
+</div>
+
+<div class="scene" id="s-race1">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Race 1: cancel vs fill</div>
+<div class="lbl c-teal" data-cue="0" style="left:300px;top:210px">firm</div>
+<div class="lbl c-blue" data-cue="0" style="left:1240px;top:210px">exchange</div>
+<div class="lbl c-violet" data-cue="1" style="left:1640px;top:210px">seller</div>
+<svg class="full"><path class="draw" data-cue="0" d="M 330 250 L 330 900" stroke="var(--teal)" stroke-width="3" fill="none"/><path class="draw" data-cue="0" d="M 1290 250 L 1290 900" stroke="var(--blue)" stroke-width="3" fill="none"/><path class="draw" data-cue="1" d="M 1690 250 L 1690 900" stroke="var(--violet)" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="0" data-d="0.4" d="M 335 300 L 1280 470" stroke="var(--red)" stroke-width="3" fill="none" marker-end="url(#ah-red)"/>
+<path class="draw" data-cue="1" data-d="0.2" d="M 1685 330 L 1300 380" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path class="draw" data-cue="2" d="M 1285 400 L 340 580" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="3" d="M 1285 490 L 340 680" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="msg c-red" data-cue="0" data-d="0.7" style="left:520px;top:300px;border-color:var(--red)">35=F cancel ORD-7</div>
+<div class="msg c-violet" data-cue="1" data-d="0.4" style="left:1330px;top:290px;border-color:var(--violet)">sell 100</div>
+<div class="tag c-green" data-cue="2" style="left:1320px;top:380px;border-color:var(--green)">match: ORD-7 filled</div>
+<div class="tag" data-cue="2" data-d="0.5" style="left:1320px;top:470px;border-color:var(--red);color:var(--red)">cancel arrives: nothing left</div>
+<div class="msg c-green" data-cue="2" data-d="0.4" style="left:440px;top:500px;border-color:var(--green)">35=8 150=F 39=2 filled</div>
+<div class="msg c-amber" data-cue="3" data-d="0.4" style="left:440px;top:640px;border-color:var(--amber)">35=9 434=1 102=0 too late to cancel</div>
+<div class="card" data-cue="4" style="left:120px;top:770px;width:1080px;border-color:var(--green)"><div class="ct c-green">the fill is real: position +100</div><div class="cd">handle both messages, in this order</div></div>
+<div class="tag" data-cue="6" style="left:1320px;top:860px;border-color:var(--line)">OUCH: simex drops the cancel</div>
+<div class="tag c-red" data-cue="7" style="left:1320px;top:780px;border-color:var(--red)">102=0: don't retry · it's gone</div>
+</div>
+
+<div class="scene" id="s-race2">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Race 2: replace vs fill</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:240px;width:460px;height:130px;border-color:var(--teal)">ref 7 · 100 @ 187.25</div>
+<svg class="full"><path class="draw" data-cue="0" data-d="0.5" d="M 585 305 L 785 305" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="node" data-cue="0" data-d="0.7" style="left:800px;top:240px;width:460px;height:130px;border-color:var(--amber)">ref 8 · qty 100 @ 187.30</div>
+<div class="tag c-green" data-cue="0" data-d="1.2" style="left:1300px;top:290px;border-color:var(--green)">meanwhile: 40 execute on ref 7</div>
+<div class="lbl" data-cue="1" style="left:120px;top:440px">if 100 meant "100 more"</div>
+<div class="grow bar" data-cue="1" data-d="0.2" data-w="400" style="left:120px;top:480px;background:var(--green)"></div>
+<div class="grow bar" data-cue="1" data-d="0.8" data-w="1000" style="left:520px;top:480px;background:var(--red)"></div>
+<div class="lbl c-red" data-cue="1" data-d="1.2" style="left:1540px;top:486px">140 bought ✕</div>
+<div class="lbl" data-cue="2" style="left:120px;top:590px">OUCH: quantity counts the whole chain</div>
+<div class="grow bar" data-cue="3" data-d="0.0" data-w="400" style="left:120px;top:630px;background:var(--green)"></div>
+<div class="grow bar" data-cue="3" data-d="0.6" data-w="600" style="left:520px;top:630px;background:var(--amber)"></div>
+<div class="lbl" data-cue="3" data-d="0.3" style="left:140px;top:640px;color:#06141a">40 filled</div>
+<div class="lbl" data-cue="3" data-d="0.9" style="left:540px;top:640px;color:#06141a">60 rest @ 187.30</div>
+<svg class="full"><path class="draw" data-cue="4" d="M 1120 600 L 1120 720" stroke="var(--teal)" stroke-width="4" fill="none"/></svg>
+<div class="lbl c-teal" data-cue="4" data-d="0.3" style="left:1140px;top:640px">never more than 100</div>
+<div class="tag" data-cue="6" data-d="0.6" style="left:120px;top:780px;border-color:var(--line)">lab risk: only growth beyond the old open size adds to worst case</div>
+<div class="tag c-amber" data-cue="5" style="left:120px;top:850px;border-color:var(--amber)">OUCH cancel: quantity = size you want LEFT · 0 = all</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: firm/oms</div>
+<div class="code" data-cue="0" data-d="0.2" style="left:120px;top:220px;width:1000px;font-size:23px"><span class="line c">// firm/trader/trading.cpp</span><span class="line c">// One request in flight per order:</span><span class="line c">// wait for the exchange to answer.</span><span class="line" data-hl="0" data-hlend="3"><span class="k">if</span> (o-&gt;state != Live || o-&gt;replacement != <span class="r">0</span> ||</span><span class="line" data-hl="0" data-hlend="3">    o-&gt;cancel_pending) <span class="k">return</span>;</span><span class="line"></span><span class="line" data-hl="4" data-hlend="5"><span class="k">if</span> (!should_move(old_px, px)) <span class="k">return</span>;</span><span class="line c">// close enough: keep priority</span></div>
+<div class="card" data-cue="1" style="left:1160px;top:220px;width:640px;border-color:var(--violet)"><div class="ct c-violet">replace in flight</div><div class="cs">exposure = old open + new open</div><div class="cd">PendingSwap until U or J arrives</div></div>
+<div class="card" data-cue="2" style="left:1160px;top:450px;width:640px;border-color:var(--amber)"><div class="ct c-amber">cancel waits</div><div class="cd">Oms::cancel() refuses while a replace is pending</div></div>
+<div class="card" data-cue="3" style="left:120px;top:640px;width:1000px;border-color:var(--red)"><div class="ct c-red">replace to ≤ executed shares</div><div class="cd">the exchange answers Order Canceled for the rest</div></div>
+<div class="card" data-cue="4" style="left:1160px;top:640px;width:640px;border-color:var(--blue)"><div class="ct c-blue">simex: replaced → back of queue</div></div>
+<div class="tag c-teal" data-cue="5" style="left:120px;top:795px;border-color:var(--teal)">U Order Replaced → old: Done · fills carry over · new: Live</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What pros do</div>
+<div class="card" data-cue="0" style="left:120px;top:240px;width:540px;height:260px;border-color:var(--red)"><div class="ct c-red">cancel sent</div><div class="cs">≠ canceled</div><div class="cd">wait for C, or a fill</div></div>
+<div class="card" data-cue="1" style="left:690px;top:240px;width:540px;height:260px;border-color:var(--violet)"><div class="ct c-violet">worst case</div><div class="cs">old + new<br>both live</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:240px;width:540px;height:260px;border-color:var(--amber)"><div class="ct c-amber">queue position</div><div class="cs">a replace can cost it</div><div class="cd">move only when worth it</div></div>
+<div class="tag c-amber" data-cue="3" style="left:120px;top:560px;border-color:var(--amber)">count cancel rejects: each is a race you lost</div>
+<div class="take" data-cue="4" style="left:120px;top:660px;width:1680px">The race is always there: <span class="c-amber">your state machine must expect it.</span></div>
+</div>

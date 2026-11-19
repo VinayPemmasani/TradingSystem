@@ -1,0 +1,96 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">PATTERN 11 / 16 · AI CODE VS HOT PATH</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:205px">Memory order</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:380px;width:1500px">Default seq_cst everywhere, or only what the protocol needs?</div>
+<div class="box blue" data-cue="1" style="left:140px;top:560px;width:400px;height:130px;text-align:center"><div class="t">Producer</div><div class="s">writes head_</div></div>
+<div class="box violet" data-cue="1" data-d="0.3" style="left:1380px;top:560px;width:400px;height:130px;text-align:center"><div class="t">Consumer</div><div class="s">writes tail_</div></div>
+<div class="slot" data-cue="1" data-d="0.4" style="left:700px;top:596px"></div>
+<div class="slot" data-cue="1" data-d="0.45" style="left:766px;top:596px"></div>
+<div class="slot" data-cue="1" data-d="0.5" style="left:832px;top:596px"></div>
+<div class="slot" data-cue="1" data-d="0.55" style="left:898px;top:596px"></div>
+<div class="slot" data-cue="1" data-d="0.6000000000000001" style="left:964px;top:596px"></div>
+<div class="slot" data-cue="1" data-d="0.65" style="left:1030px;top:596px"></div>
+<div class="slot" data-cue="1" data-d="0.7000000000000001" style="left:1096px;top:596px"></div>
+<div class="slot" data-cue="1" data-d="0.75" style="left:1162px;top:596px"></div>
+<div class="code" data-cue="2" style="left:520px;top:760px;width:880px;font-size:30px;text-align:center"><span class="line">head_.store(h + 1);  <span class="c">→</span> <span class="x">xchg</span> <span class="c">· full barrier</span></span></div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The general version</div>
+<div class="tag c-red" data-cue="0" style="left:120px;top:200px;border-color:var(--red)">GENERAL · ai.hpp · RingSeq&lt;T, N&gt;</div>
+<div class="code left" data-cue="0" data-d="0.2"  style="left:120px;top:250px;width:860px;font-size:23px;"><span class="line"><span class="k">bool</span> try_push(<span class="k">const</span> T&amp; v) {</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">size_t</span> h = head_.load();</span><span class="line">  <span class="k">if</span> (h - cached_tail_ == N) {</span><span class="line" data-hl="1" data-hlend="2">    cached_tail_ = tail_.load();</span><span class="line">    <span class="k">if</span> (h - cached_tail_ == N) <span class="k">return</span> <span class="k">false</span>;</span><span class="line">  }</span><span class="line">  buf_[h &amp; (N - <span class="r">1</span>)] = v;</span><span class="line" data-hl="1" data-hlend="2">  head_.store(h + <span class="r">1</span>);      <span class="c">// seq_cst</span></span><span class="line">  <span class="k">return</span> <span class="k">true</span>;</span><span class="line">}</span><span class="line"><span class="c">// try_pop: same shape, tail_.store(t + 1)</span></span></div>
+<div class="code" data-cue="1" style="left:1040px;top:250px;width:780px;font-size:23px"><span class="line">x.load()</span><span class="line"><span class="c">  == x.load(memory_order_seq_cst)</span></span><span class="line"> </span><span class="line">x.store(v)</span><span class="line"><span class="c">  == x.store(v, memory_order_seq_cst)</span></span></div>
+<div class="lbl c-green" data-cue="2" style="left:1040px;top:500px;font-size:26px">✓ correct   ✓ easiest to reason about</div>
+<div class="box amber" data-cue="3" style="left:1040px;top:580px;width:780px;height:180px"><div class="t c-amber" style="font-size:30px">What the protocol needs</div><div class="s" style="font-size:24px;line-height:1.6;margin-top:10px">head_: one writer (producer)<br>tail_: one writer (consumer) · message passing</div></div>
+</div>
+<div class="scene" id="s-tso">
+<div class="h2" data-cue="0" style="left:120px;top:110px">x86-TSO: one reordering</div>
+<div class="box blue" data-cue="0" style="left:120px;top:230px;width:440px;height:330px"><div class="t">Core</div><div class="s">executes in order of retirement</div></div>
+<div class="lbl" data-cue="2" style="left:660px;top:230px">STORE BUFFER · per core, FIFO</div>
+<div class="sbuf" data-cue="2" style="left:660px;top:270px;width:560px"></div>
+<div class="sb" data-cue="2" data-d="0.3" data-out="5" data-od="1.0" style="left:690px;top:290px">st A</div>
+<div class="sb" data-cue="2" data-d="0.6" data-out="5" data-od="1.5" style="left:860px;top:290px">st B</div>
+<div class="sb" data-cue="2" data-d="0.8999999999999999" data-out="5" data-od="2.0" style="left:1030px;top:290px">st C</div>
+<div class="box" data-cue="0" data-d="0.3" style="left:1320px;top:230px;width:480px;height:330px"><div class="t">L1 cache</div><div class="s">visible to other cores</div></div>
+<svg class="full"><path class="draw" data-cue="2" d="M 564 330 L 650 330" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="2" data-d="0.5" d="M 1224 330 L 1312 330" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="2.5" d="M 1310 470 L 570 470" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="lbl c-teal" data-cue="2.5" data-d="0.3" style="left:640px;top:420px;width:680px">later load reads L1, passing buffered stores</div>
+<div class="rule-row" data-cue="1" style="left:120px;top:600px"><span class="mono">load → load</span> <span class="c-green">kept</span></div>
+<div class="rule-row" data-cue="1.3" style="left:545px;top:600px"><span class="mono">store → store</span> <span class="c-green">kept</span></div>
+<div class="rule-row" data-cue="1.6" style="left:970px;top:600px"><span class="mono">load → store</span> <span class="c-green">kept</span></div>
+<div class="rule-row" data-cue="3" style="left:1395px;top:600px"><span class="mono">store → load</span> <span class="c-red">may reorder</span></div>
+<div class="stat teal" data-cue="4" style="left:120px;top:710px;width:820px">seq_cst load → <b>mov</b> (free)</div>
+<div class="stat red" data-cue="5" style="left:980px;top:710px;width:820px">seq_cst store → <b class="c-red">xchg</b>: drain buffer</div>
+<div class="lbl c-amber" data-cue="5" data-d="2.4" style="left:980px;top:810px;width:820px">core waits until st A, B, C reach L1</div>
+</div>
+<div class="scene" id="s-fast">
+<div class="h2" data-cue="0" style="left:100px;top:110px">Only the orderings it needs</div>
+<div class="tag c-red" data-cue="0" style="left:100px;top:200px;border-color:var(--red)">GENERAL · RingSeq</div>
+<div class="tag c-teal" data-cue="0" data-d="0.3" style="left:980px;top:200px;border-color:var(--teal)">HOT PATH · fast.hpp · RingAR</div>
+<div class="code left" data-cue="0" data-d="0" data-dim="1" style="left:100px;top:250px;width:840px;font-size:22px;"><span class="line"><span class="k">bool</span> try_push(<span class="k">const</span> T&amp; v) {</span><span class="line">  <span class="v">size_t</span> h = head_.load();</span><span class="line">  <span class="k">if</span> (h - cached_tail_ == N) {</span><span class="line">    cached_tail_ = tail_.load();</span><span class="line">    <span class="k">if</span> (h - cached_tail_ == N) <span class="k">return</span> <span class="k">false</span>;</span><span class="line">  }</span><span class="line">  buf_[h &amp; (N - <span class="r">1</span>)] = v;</span><span class="line">  head_.store(h + <span class="r">1</span>);      <span class="c">// seq_cst</span></span><span class="line">  <span class="k">return</span> <span class="k">true</span>;</span><span class="line">}</span><span class="line"><span class="c">// try_pop: same shape, tail_.store(t + 1)</span></span></div>
+<div class="code right" data-cue="0" data-d="0.3"  style="left:980px;top:250px;width:840px;font-size:22px;"><span class="line"><span class="k">bool</span> try_push(<span class="k">const</span> T&amp; v) {</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">size_t</span> h = head_.load(relaxed);   <span class="c">// own index</span></span><span class="line">  <span class="k">if</span> (h - cached_tail_ == N) {</span><span class="line" data-hl="2" data-hlend="3">    cached_tail_ = tail_.load(acquire);</span><span class="line">    <span class="k">if</span> (h - cached_tail_ == N) <span class="k">return</span> <span class="k">false</span>;</span><span class="line">  }</span><span class="line" data-hl="4" data-hlend="5">  buf_[h &amp; (N - <span class="r">1</span>)] = v;</span><span class="line" data-hl="3" data-hlend="4">  head_.store(h + <span class="r">1</span>, release);      <span class="c">// publish</span></span><span class="line">  <span class="k">return</span> <span class="k">true</span>;</span><span class="line">}</span><span class="line"><span class="c">// try_pop: tail_ relaxed, head_ acquire,</span></span><span class="line"><span class="c">//          tail_.store(t + 1, release)</span></span></div>
+<div class="stat teal" data-cue="4" style="left:100px;top:760px;width:1720px;font-size:26px">release store of head_ ⟶ synchronizes-with ⟶ acquire load of head_ · slot write happens-before slot read</div>
+</div>
+<div class="scene" id="s-asm">
+<div class="h2" data-cue="0" style="left:100px;top:110px">g++ -O2 -S: one instruction apart</div>
+<div class="tag c-red" data-cue="0" style="left:100px;top:195px;border-color:var(--red)">RingSeq::try_push</div>
+<div class="tag c-teal" data-cue="0" data-d="0.3" style="left:980px;top:195px;border-color:var(--teal)">RingAR::try_push</div>
+<div class="code left" data-cue="0" data-d="0" style="left:100px;top:240px;width:840px;font-size:20px"><span class="line"><span class="v">try_push:                 </span><span class="c"># all seq_cst</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="k">movq</span>   (%rdi), %rax       <span class="c"># h = head_</span></span><span class="line">  <span class="k">movq</span>   %rax, %rdx</span><span class="line">  <span class="k">subq</span>   8(%rdi), %rdx      <span class="c"># h - cached_tail_</span></span><span class="line">  <span class="k">cmpq</span>   <span class="r">$1024</span>, %rdx</span><span class="line">  <span class="k">je</span>     .L2                <span class="c"># full? reload tail_</span></span><span class="line"><span class="v">.L4:</span></span><span class="line">  <span class="k">movq</span>   %rax, %rdx</span><span class="line">  <span class="k">movdqu</span> (%rsi), %xmm0      <span class="c"># v</span></span><span class="line">  <span class="k">addq</span>   <span class="r">$1</span>, %rax</span><span class="line">  <span class="k">andl</span>   <span class="r">$1023</span>, %edx</span><span class="line">  <span class="k">salq</span>   <span class="r">$4</span>, %rdx</span><span class="line">  <span class="k">movaps</span> %xmm0, 128(%rdx,%rdi)  <span class="c"># slot = v</span></span><span class="line" data-hl="1">  <span class="k">xchgq</span>  (%rdi), %rax       <span class="c"># head_ = h + 1</span></span><span class="line">  <span class="k">movl</span>   <span class="r">$1</span>, %eax</span><span class="line">  <span class="k">ret</span></span></div>
+<div class="code " data-cue="0" data-d="0.3" style="left:980px;top:240px;width:840px;font-size:20px"><span class="line"><span class="v">try_push:                 </span><span class="c"># acquire/release</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="k">movq</span>   (%rdi), %rax       <span class="c"># h = head_</span></span><span class="line">  <span class="k">movq</span>   %rax, %rdx</span><span class="line">  <span class="k">subq</span>   8(%rdi), %rdx      <span class="c"># h - cached_tail_</span></span><span class="line">  <span class="k">cmpq</span>   <span class="r">$1024</span>, %rdx</span><span class="line">  <span class="k">je</span>     .L2                <span class="c"># full? reload tail_</span></span><span class="line"><span class="v">.L4:</span></span><span class="line">  <span class="k">movq</span>   %rax, %rdx</span><span class="line">  <span class="k">movdqu</span> (%rsi), %xmm0      <span class="c"># v</span></span><span class="line">  <span class="k">addq</span>   <span class="r">$1</span>, %rax</span><span class="line">  <span class="k">andl</span>   <span class="r">$1023</span>, %edx</span><span class="line">  <span class="k">salq</span>   <span class="r">$4</span>, %rdx</span><span class="line">  <span class="k">movaps</span> %xmm0, 128(%rdx,%rdi)  <span class="c"># slot = v</span></span><span class="line" data-hl="1">  <span class="k">movq</span>   %rax, (%rdi)       <span class="c"># head_ = h + 1</span></span><span class="line">  <span class="k">movl</span>   <span class="r">$1</span>, %eax</span><span class="line">  <span class="k">ret</span></span></div>
+<div class="lbl c-muted" data-cue="3" style="left:100px;top:860px;width:1720px">try_pop: seq_cst ends in xchgq (%rcx), %rax · acquire/release in movq %rax, 64(%rdi)</div>
+</div>
+<div class="scene" id="s-compiler">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Free on x86. Not free everywhere.</div>
+<div class="box teal" data-cue="1" style="left:120px;top:230px;width:820px;height:200px"><div class="t c-teal">x86 instructions</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:10px">release store: mov · acquire load: mov<br>same as relaxed</div></div>
+<div class="box amber" data-cue="2" style="left:980px;top:230px;width:820px;height:200px"><div class="t c-amber">The compiler is bound</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:10px">writes above a release stay above it<br>reads below an acquire stay below it</div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:480px">AARCH64 VS X86-64 · clang 18 -O2 (arm.c)</div>
+<table class="t" data-cue="3" data-d="0.2" style="left:120px;top:520px;width:1680px"><tr><th>order</th><th>x86-64 store</th><th>x86-64 load</th><th>AArch64 store</th><th>AArch64 load</th></tr><tr><td>relaxed</td><td>mov</td><td>mov</td><td>str</td><td>ldr</td></tr><tr><td>acquire / release</td><td>mov</td><td>mov</td><td class="c-amber">stlr</td><td class="c-amber">ldar*</td></tr><tr><td>seq_cst</td><td class="c-red">xchg</td><td>mov</td><td class="c-amber">stlr</td><td class="c-amber">ldar</td></tr></table>
+<div class="lbl c-muted" data-cue="4" style="left:120px;top:800px;width:1680px">* ldapr with -march=armv8.3-a · on ARM the seq_cst store costs the same as release; the xchg gap is x86</div>
+</div>
+<div class="scene" id="s-measured">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measured</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:195px;width:1680px">shared 4-vCPU cloud VM · g++ -O2 · pinned, chrt -f 10 · median of 5 runs (min–max)</div>
+<div class="lbl" data-cue="1" style="left:120px;top:260px">ONE-THREAD PUBLISH LOOP · ns per publish (100M)</div>
+<div class="rl" data-cue="1" data-d="0.0" style="left:120px;top:310px;color:var(--red)">seq_cst</div>
+<div class="bar grow" data-cue="1" data-d="0.2" data-w="800" style="left:380px;top:310px;background:var(--red)"></div>
+<div class="bv" data-cue="1" data-d="1.0" style="left:1196px;top:314px">11.6 ns <span class="c-muted" style="font-size:22px">(11.6–11.8)</span></div>
+<div class="rl" data-cue="1" data-d="0.6" style="left:120px;top:385px;color:var(--teal)">release</div>
+<div class="bar grow" data-cue="1" data-d="0.8" data-w="174" style="left:380px;top:385px;background:var(--teal)"></div>
+<div class="bv" data-cue="1" data-d="1.6" style="left:570px;top:389px">2.53 ns <span class="c-muted" style="font-size:22px">(2.5–3.1)</span></div>
+<div class="big c-teal" data-cue="2" style="left:1600px;top:330px">4.6×</div>
+<div class="lbl" data-cue="3" style="left:120px;top:490px">TWO THREADS THROUGH THE RING · ns per message (20M)</div>
+<div class="rl" data-cue="3" data-d="0.0" style="left:120px;top:540px;color:var(--red)">seq_cst</div>
+<div class="bar grow" data-cue="3" data-d="0.2" data-w="800" style="left:380px;top:540px;background:var(--red)"></div>
+<div class="bv" data-cue="3" data-d="1.0" style="left:1196px;top:544px">164 ns <span class="c-muted" style="font-size:22px">(45.6–168)</span></div>
+<div class="rl" data-cue="3" data-d="0.6" style="left:120px;top:615px;color:var(--teal)">acq / rel</div>
+<div class="bar grow" data-cue="3" data-d="0.8" data-w="235" style="left:380px;top:615px;background:var(--teal)"></div>
+<div class="bv" data-cue="3" data-d="1.6" style="left:631px;top:619px">48.1 ns <span class="c-muted" style="font-size:22px">(45.3–51.2)</span></div>
+<div class="big c-teal" data-cue="3" data-d="1.8" style="left:1600px;top:560px">3.4×</div>
+<div class="lbl c-amber" data-cue="4" style="left:120px;top:720px;width:1680px;font-size:25px">seq_cst runs: 161, 164, 164, 168 … and one at 45.6 · bimodal, timing-dependent</div>
+<div class="lbl" data-cue="5" style="left:120px;top:780px;width:1680px;font-size:25px">xchg waits for the slot store; that store misses when the line sits in the other core's cache</div>
+</div>
+<div class="scene" id="s-nuance">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Not wrong. Stronger than needed.</div>
+<div class="box green" data-cue="0" data-d="0.5" style="left:120px;top:230px;width:820px;height:230px"><div class="t c-green">seq_cst is right when</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:10px">you are unsure · cold paths<br>you need one total order (Dekker-style flags:<br>store mine, then load yours)</div></div>
+<div class="box amber" data-cue="1" style="left:980px;top:230px;width:820px;height:230px"><div class="t c-amber">The missing statement</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:10px">one writer per index<br>message passing only<br>→ acquire/release is enough</div></div>
+<div class="rule" data-cue="3" style="left:120px;top:540px;width:1680px">On x86, a seq_cst store is a <span class="c-red">full barrier</span>.</div>
+<div class="rule" data-cue="4" style="left:120px;top:650px;width:1680px">Publish with <span class="c-teal">release</span>, read with <span class="c-teal">acquire</span>.</div>
+</div>

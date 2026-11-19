@@ -1,0 +1,100 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 09 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Latency races</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:410px;width:1500px">and frequent batch auctions</div>
+<svg class="full">
+<path id="ti-r1" d="M140 600 L1300 700" fill="none" stroke="#2c4351" stroke-width="2"/>
+<path id="ti-r2" d="M140 700 L1300 700" fill="none" stroke="#2c4351" stroke-width="2"/>
+<path id="ti-r3" d="M140 800 L1300 700" fill="none" stroke="#2c4351" stroke-width="2"/>
+</svg>
+<div class="pkt" data-path="ti-r1" data-cue="1" data-dur="1.6" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="ti-r2" data-cue="1" data-dur="1.7" data-loop="1" style="background:var(--teal)"></div>
+<div class="pkt" data-path="ti-r3" data-cue="1" data-dur="1.5" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="node" data-cue="1" style="left:1310px;top:650px;width:300px"><div class="t">exchange</div><div class="s">first come, first served</div></div>
+</div>
+
+<div class="scene" id="s-race">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Anatomy of a race</div>
+<div class="node teal" data-cue="1" style="left:120px;top:250px;width:380px"><div class="t">maker</div><div class="s">offer 100 @ 30.01</div></div>
+<div class="node amber" data-cue="2" style="left:120px;top:440px;width:380px"><div class="t c-amber">futures jump</div><div class="s">stock now worth 30.05</div></div>
+<div class="node violet" data-cue="3" style="left:120px;top:620px;width:380px;padding:10px"><div class="t c-violet" style="font-size:28px">sniper 1</div></div>
+<div class="node violet" data-cue="3" data-d="0.2" style="left:120px;top:730px;width:380px;padding:10px"><div class="t c-violet" style="font-size:28px">sniper 2</div></div>
+<div class="node" data-cue="0" data-d="0.3" style="left:1380px;top:420px;width:420px"><div class="t">exchange</div><div class="s">strict arrival order</div></div>
+<svg class="full">
+<path id="rc-m" d="M510 300 C 900 300 1100 440 1370 470" fill="none" stroke="#3fd0dc" stroke-width="3" class="draw" data-cue="3"/>
+<path id="rc-s1" d="M510 660 C 900 660 1100 520 1370 490" fill="none" stroke="#a98bff" stroke-width="3" class="draw" data-cue="3"/>
+<path id="rc-s2" d="M510 770 C 900 770 1100 540 1370 505" fill="none" stroke="#a98bff" stroke-width="3" class="draw" data-cue="3" data-d="0.2"/>
+</svg>
+<div class="pkt" data-path="rc-m" data-cue="3" data-d="0.8" data-dur="2.4" style="background:var(--teal)"></div>
+<div class="pkt" data-path="rc-s1" data-cue="3" data-d="0.8" data-dur="2.0" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="rc-s2" data-cue="3" data-d="0.8" data-dur="2.2" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="tag" data-cue="3" data-d="0.4" style="left:820px;top:330px">cancel</div>
+<div class="tag c-violet" data-cue="3" data-d="0.4" style="left:820px;top:640px">buy 100 @ 30.01</div>
+<div class="tag c-violet" data-cue="4" data-d="0.4" style="left:1380px;top:580px">1st: sniper 1 → filled</div>
+<div class="tag" data-cue="4" data-d="0.9" style="left:1380px;top:640px">2nd: sniper 2 → nothing left</div>
+<div class="tag" data-cue="4" data-d="1.4" style="left:1380px;top:700px">3rd: cancel → too late</div>
+<div class="fcard red" data-cue="5" style="left:1380px;top:780px;width:420px"><div class="math" style="font-size:30px">(30.05 − 30.01) × 100 = <span class="val c-red">$4</span></div></div>
+</div>
+
+<div class="scene" id="s-mech">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Budish, Cramton &amp; Shim: races are mechanical</div>
+<div class="chip" data-cue="1" style="left:120px;top:210px;background:var(--blue)">ES futures vs SPY · 2011 · median return correlation</div>
+<div id="mc-c" data-cue="1" data-anim="fade" style="left:120px;top:280px;width:880px;height:500px"></div>
+<div class="lbl" data-cue="2" style="left:1100px;top:280px">median arbitrage duration</div>
+<div class="lbl" data-cue="2" data-d="0.2" style="left:1100px;top:350px">2005</div>
+<div class="grow bar" data-cue="2" data-d="0.3" data-w="582" style="left:1200px;top:342px;background:var(--amber)"></div>
+<div class="lbl" data-cue="2" data-d="0.8" style="left:1600px;top:400px">97 ms</div>
+<div class="lbl" data-cue="2" data-d="1.0" style="left:1100px;top:470px">2011</div>
+<div class="grow bar" data-cue="2" data-d="1.1" data-w="42" style="left:1200px;top:462px;background:var(--amber)"></div>
+<div class="lbl" data-cue="2" data-d="1.4" style="left:1260px;top:470px">7 ms</div>
+<div class="card" data-cue="3" style="left:1100px;top:580px;width:720px;border-color:var(--pink)"><div class="ct c-pink">Shorter, not fewer</div><div class="cs">Speed shrank the window; the race stayed.</div></div>
+<div class="src" data-cue="1" data-d="0.4" style="left:120px;top:800px">Budish, Cramton &amp; Shim, QJE 130(4), 2015 · figures from the 2013 working paper</div>
+</div>
+
+<div class="scene" id="s-size">
+<div class="h2" data-cue="0" style="left:120px;top:110px">How big: FTSE 100 races</div>
+<div class="src" data-cue="0" data-d="0.3" style="left:120px;top:190px">Aquilina, Budish &amp; O'Neill, QJE 137(1), 2022</div>
+<div class="card" data-cue="1" style="left:120px;top:260px;width:820px;border-color:var(--violet)"><div class="cs">frequency</div><div class="stat c-violet">≈ 1 / minute / stock</div></div>
+<div class="card" data-cue="1" data-d="1.2" style="left:1000px;top:260px;width:820px;border-color:var(--violet)"><div class="cs">modal race length</div><div class="stat c-violet">5–10 µs</div></div>
+<div class="card" data-cue="2" style="left:120px;top:530px;width:820px;border-color:var(--amber)"><div class="cs">share of trading volume</div><div class="stat c-amber">≈ 20%</div></div>
+<div class="card" data-cue="3" style="left:1000px;top:530px;width:820px;border-color:var(--amber)"><div class="cs">"tax" on trading · global equities</div><div class="stat c-amber">≈ 0.5 bp · ~$5B / yr</div></div>
+</div>
+
+<div class="scene" id="s-fba">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Frequent batch auctions</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:250px">continuous: each message, in arrival order</div>
+<div id="fb-c" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:290px;width:1700px;height:140px"></div>
+<div class="lbl" data-cue="1" style="left:120px;top:500px">batch: collect for 100 ms, clear at one price</div>
+<div id="fb-b" data-cue="1" data-anim="fade" style="left:120px;top:540px;width:1700px;height:200px"></div>
+<div class="tag c-teal" data-cue="3" style="left:120px;top:780px">snipe and cancel in the same batch: the cancel still counts</div>
+<div class="tag c-pink" data-cue="4" style="left:1100px;top:780px">speed only matters at the batch edge</div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One batch, worked</div>
+<div id="wk-ch" data-cue="1" data-anim="fade" style="left:120px;top:220px;width:1040px;height:600px"></div>
+<table class="t" data-cue="1" style="left:1240px;top:240px"><tr><th>buy</th><th></th><th>sell</th></tr>
+<tr><td class="c-green">300 @ 30.04</td><td></td><td class="c-red">200 @ 30.00</td></tr>
+<tr><td class="c-green">200 @ 30.03</td><td></td><td class="c-red">300 @ 30.02</td></tr>
+<tr><td class="c-green">400 @ 30.01</td><td></td><td class="c-red">300 @ 30.03</td></tr></table>
+<div class="fcard amber" data-cue="3" style="left:1240px;top:530px;width:580px"><div class="math" style="font-size:32px">at 30.02: wanted 500 · offered 500</div></div>
+<div class="fcard amber" data-cue="4" style="left:1240px;top:680px;width:580px"><div class="math" style="font-size:32px">clear <span class="val c-amber">500 @ 30.02</span> · imbalance 0</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: simex already uncrosses</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:1700px;font-size:22px"><span class="c">// libs/match/include/lab/match/engine.hpp</span>
+<span class="c">// In an auction (pre-open, closing auction, halt or pause quotation period)</span>
+<span class="c">// orders are accepted and rest without matching, so the book may cross;</span>
+<span class="line" data-hl="2" data-hlend="3"><span class="c">// indicative() computes the clearing price and imbalance, and uncross()</span></span><span class="line" data-hl="2" data-hlend="3"><span class="c">// executes the cross at one price.</span></span></div>
+<div class="card" data-cue="3" style="left:120px;top:560px;width:1100px;border-color:var(--amber)"><div class="ct c-amber">Price rule (docs/scenarios.md)</div><div class="cs">most paired shares → least imbalance → nearest reference → lower price</div></div>
+<div class="node blue" data-cue="4" style="left:1300px;top:560px;width:520px"><div class="t">uncross() every 100 ms</div><div class="s">= a frequent batch market</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="2" style="left:120px;top:150px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Batch auctions</div><div class="cs">Make time coarse.</div></div>
+<div class="card" data-cue="2" data-d="0.8" style="left:690px;top:150px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Speed bumps</div><div class="cs">Delay the takers (ex-10).</div></div>
+<div class="card" data-cue="2" data-d="1.6" style="left:1260px;top:150px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Faster cancels</div><div class="cs">Join the race yourself.</div></div>
+<div class="big" data-cue="0" style="left:120px;top:460px;width:1700px">Continuous markets pay the fastest<br>trader for every <span class="c-violet">stale quote</span>.</div>
+<div class="tag c-amber" data-cue="1" style="left:120px;top:720px">makers charge for it in the spread (ms-01, ms-02)</div>
+</div>

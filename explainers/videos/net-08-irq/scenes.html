@@ -1,0 +1,102 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">NETWORK · 08 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Interrupts<br>and polling</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1100px">Coalescing, busy polling and IRQ affinity.</div>
+<div class="node bad" data-cue="1" style="left:1250px;top:300px;width:520px;height:110px;font-size:30px">⚡ interrupt a core</div>
+<div class="node lab" data-cue="1" data-d="1.2" style="left:1250px;top:470px;width:520px;height:110px;font-size:30px">⟳ a core already watching</div>
+</div>
+<div class="scene" id="s-irq">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The interrupt path</div>
+<div class="node" data-cue="0" data-d="0" style="left:120px;top:260px;width:320px;height:120px;border-color:var(--amber);font-size:30px">NIC<small>DMA to memory</small></div>
+<div class="node" data-cue="1" data-d="0" style="left:480px;top:260px;width:320px;height:120px;border-color:var(--red);font-size:30px">IRQ ⚡<small>core stops its work</small></div>
+<div class="node" data-cue="1" data-d="0.5" style="left:840px;top:260px;width:320px;height:120px;border-color:var(--red);font-size:30px">NAPI<small>kernel processes packet</small></div>
+<div class="node" data-cue="1" data-d="1.0" style="left:1200px;top:260px;width:320px;height:120px;border-color:var(--red);font-size:30px">wake<small>thread scheduled</small></div>
+<div class="node" data-cue="1" data-d="1.5" style="left:1560px;top:260px;width:320px;height:120px;border-color:var(--teal);font-size:30px">app<small>finally runs</small></div>
+<svg class="full"><path id="iq-p" d="M120 320 L1880 320" stroke="none" fill="none"/></svg>
+<div class="pkt" data-path="iq-p" data-cue="1" data-d="1.8" data-dur="3" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="fcard" data-cue="2" style="left:120px;top:470px;width:820px;background:rgba(19,33,43,.9);border:2px solid var(--red);border-radius:16px;padding:22px 28px"><div class="lbl">INTERRUPT + THREAD SWITCH</div><div class="h3" style="margin-top:8px">on the order of a microsecond</div></div>
+<div class="fcard" data-cue="3" style="left:1000px;top:470px;width:800px;background:rgba(19,33,43,.9);border:2px solid var(--green);border-radius:16px;padding:22px 28px"><div class="lbl">CORE ALREADY SPINNING</div><div class="h3" style="margin-top:8px">a matter of nanoseconds</div></div>
+<div class="src" data-cue="2" data-d="0.5" style="left:120px;top:660px">AMD Onload User Guide (UG1586), “Polling vs. Interrupts” · Linux docs: networking/napi</div>
+</div>
+<div class="scene" id="s-coalesce">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Interrupt coalescing</div>
+<div class="bar" data-cue="0" data-anim="fade" style="left:140px;top:400px;width:1640px;height:4px;background:var(--line)"></div>
+<div class="tl" data-cue="0" style="left:1700px;top:420px">time →</div>
+<div class="bar" data-cue="1" data-d="0.0" data-anim="fade" style="left:300px;top:330px;width:240px;height:70px;background:rgba(255,179,71,.18);border:1px dashed var(--amber)"></div>
+<div class="node bad" data-cue="1" data-d="0.4" data-anim="scale" style="left:514px;top:240px;width:52px;height:60px;font-size:28px;color:var(--red)">⚡</div>
+<div class="bar" data-cue="1" data-d="0.3" data-anim="fade" style="left:900px;top:330px;width:240px;height:70px;background:rgba(255,179,71,.18);border:1px dashed var(--amber)"></div>
+<div class="node bad" data-cue="1" data-d="0.7" data-anim="scale" style="left:1114px;top:240px;width:52px;height:60px;font-size:28px;color:var(--red)">⚡</div>
+<div class="bar" data-cue="1" data-d="0.6" data-anim="fade" style="left:1350px;top:330px;width:240px;height:70px;background:rgba(255,179,71,.18);border:1px dashed var(--amber)"></div>
+<div class="node bad" data-cue="1" data-d="1.0" data-anim="scale" style="left:1564px;top:240px;width:52px;height:60px;font-size:28px;color:var(--red)">⚡</div>
+<div class="node ex" data-cue="0" data-d="0.0" data-anim="scale" style="left:290px;top:385px;width:20px;height:34px;border-radius:4px;background:var(--amber)"></div>
+<div class="node ex" data-cue="0" data-d="0.1" data-anim="scale" style="left:340px;top:385px;width:20px;height:34px;border-radius:4px;background:var(--amber)"></div>
+<div class="node ex" data-cue="0" data-d="0.2" data-anim="scale" style="left:410px;top:385px;width:20px;height:34px;border-radius:4px;background:var(--amber)"></div>
+<div class="node ex" data-cue="0" data-d="0.30000000000000004" data-anim="scale" style="left:460px;top:385px;width:20px;height:34px;border-radius:4px;background:var(--amber)"></div>
+<div class="node ex" data-cue="0" data-d="0.4" data-anim="scale" style="left:890px;top:385px;width:20px;height:34px;border-radius:4px;background:var(--amber)"></div>
+<div class="node ex" data-cue="0" data-d="0.5" data-anim="scale" style="left:920px;top:385px;width:20px;height:34px;border-radius:4px;background:var(--amber)"></div>
+<div class="node ex" data-cue="0" data-d="0.6000000000000001" data-anim="scale" style="left:1340px;top:385px;width:20px;height:34px;border-radius:4px;background:var(--amber)"></div>
+<div class="tl" data-cue="1" data-d="1" style="left:300px;top:440px;color:var(--amber)">rx-usecs window</div>
+<div class="code" data-cue="1" style="left:140px;top:540px;font-size:25px">$ ethtool -C eth0 rx-usecs <span class="r">N</span> rx-frames <span class="r">N</span> adaptive-rx <span class="r">on|off</span></div>
+<div class="tag" data-cue="2" style="left:140px;top:660px;color:var(--amber)">adaptive: the driver tunes the window itself</div>
+<div class="bar" data-cue="3" data-anim="fade" style="left:900px;top:300px;width:240px;height:6px;background:var(--red)"></div>
+<div class="tag" data-cue="3" style="left:880px;top:200px;color:var(--red)">first packet of the burst waits the whole window</div>
+<div class="tag" data-cue="3" data-d="0.5" style="left:140px;top:730px;color:var(--green)">fewer interrupts: good for throughput</div>
+</div>
+<div class="scene" id="s-busy">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Busy polling</div>
+<div class="code" data-cue="1" style="left:140px;top:230px;font-size:25px">setsockopt(fd, SOL_SOCKET, <span class="r">SO_BUSY_POLL</span>, &amp;usecs, <span class="k">sizeof</span> usecs);
+$ sysctl net.core.busy_poll=<span class="r">N</span> net.core.busy_read=<span class="r">N</span>   <span class="c"># µs</span></div>
+<div class="code" data-cue="2" style="left:140px;top:430px;font-size:25px">$ export <span class="r">EF_POLL_USEC</span>=100000   <span class="c"># Onload: spin, then block</span></div>
+<div class="lbl" data-cue="3" style="left:140px;top:600px">CPU USED BY A SPINNING THREAD</div>
+<div class="bar" data-cue="3" data-anim="fade" style="left:140px;top:640px;width:1300px;height:70px;background:#1d3442;border:2px solid var(--line)"></div>
+<div class="grow bar" data-cue="3" data-d="0.2" data-w="1300" style="left:140px;top:640px;height:70px;background:var(--red)"></div>
+<div class="stat c-red" data-cue="3" data-d="1" style="left:1480px;top:630px;font-size:80px">100%</div>
+<div class="src" data-cue="1" data-d="0.6" style="left:140px;top:380px">Linux docs: networking/napi, busy polling</div>
+</div>
+<div class="scene" id="s-affinity">
+<div class="h2" data-cue="0" style="left:120px;top:110px">IRQ affinity</div>
+<div class="node ex" data-cue="1" style="left:120px;top:300px;width:260px;height:420px">NIC<small>RSS hash</small></div>
+<div class="node" data-cue="1" data-d="0.0" style="left:430px;top:300px;width:200px;height:84px;border-color:var(--amber);font-size:24px">queue 0<small>IRQ 0</small></div>
+<div class="node" data-cue="1" data-d="0.15" style="left:430px;top:410px;width:200px;height:84px;border-color:var(--amber);font-size:24px">queue 1<small>IRQ 1</small></div>
+<div class="node" data-cue="1" data-d="0.3" style="left:430px;top:520px;width:200px;height:84px;border-color:var(--amber);font-size:24px">queue 2<small>IRQ 2</small></div>
+<div class="node" data-cue="1" data-d="0.44999999999999996" style="left:430px;top:630px;width:200px;height:84px;border-color:var(--amber);font-size:24px">queue 3<small>IRQ 3</small></div>
+<div class="node" data-cue="0" data-d="0.0" style="left:1180px;top:210px;width:520px;height:90px;border-color:var(--blue);font-size:24px">CPU 0<small>housekeeping</small></div>
+<div class="node" data-cue="0" data-d="0.08" style="left:1180px;top:325px;width:520px;height:90px;border-color:var(--blue);font-size:24px">CPU 1<small>housekeeping</small></div>
+<div class="node" data-cue="0" data-d="0.16" style="left:1180px;top:440px;width:520px;height:90px;border-color:var(--green);font-size:24px">CPU 2<small>feed rx</small></div>
+<div class="node" data-cue="0" data-d="0.24" style="left:1180px;top:555px;width:520px;height:90px;border-color:var(--green);font-size:24px">CPU 3<small>book</small></div>
+<div class="node" data-cue="0" data-d="0.32" style="left:1180px;top:670px;width:520px;height:90px;border-color:var(--green);font-size:24px">CPU 4<small>trading</small></div>
+<div class="node" data-cue="0" data-d="0.4" style="left:1180px;top:785px;width:520px;height:90px;border-color:var(--green);font-size:24px">CPU 5<small>order entry</small></div>
+<svg class="full">
+<path class="draw" data-cue="2" data-d="0.0" d="M630 342 C900 342 900 255 1180 255" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="2" data-d="0.15" d="M630 452 C900 452 900 370 1180 370" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="2" data-d="0.3" d="M630 562 C900 562 900 255 1180 255" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="2" data-d="0.44999999999999996" d="M630 672 C900 672 900 370 1180 370" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+</svg>
+<div class="code" data-cue="2" data-d="0.6" style="left:120px;top:800px;font-size:24px">$ echo <span class="r">1</span> &gt; /proc/irq/<span class="r">N</span>/smp_affinity   <span class="c"># mask: CPU 0</span></div>
+<div class="bar" data-cue="3" data-anim="fade" style="left:1160px;top:440px;width:560px;height:470px;border:3px dashed var(--green);background:transparent"></div>
+<div class="tag" data-cue="3" data-d="2" style="left:700px;top:880px;color:var(--red)">irqbalance can override this</div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: docs/core-plan.md</div>
+<div class="node" data-cue="0" data-d="0.0" style="left:120px;top:210px;width:820px;height:76px;border-color:var(--blue);font-size:24px;display:flex;justify-content:flex-start;padding-left:24px;gap:20px">CPU 0-1 <span class="mono" style="font-size:22px;color:#c8d6de">Linux, tools, logger</span></div>
+<div class="node" data-cue="1" data-d="0.15" style="left:120px;top:302px;width:820px;height:76px;border-color:var(--green);font-size:24px;display:flex;justify-content:flex-start;padding-left:24px;gap:20px">CPU 2 <span class="mono" style="font-size:22px;color:#c8d6de">feed rx: recvmmsg</span></div>
+<div class="node" data-cue="1" data-d="0.3" style="left:120px;top:394px;width:820px;height:76px;border-color:var(--green);font-size:24px;display:flex;justify-content:flex-start;padding-left:24px;gap:20px">CPU 3 <span class="mono" style="font-size:22px;color:#c8d6de">feed book: decode, books</span></div>
+<div class="node" data-cue="1" data-d="0.44999999999999996" style="left:120px;top:486px;width:820px;height:76px;border-color:var(--green);font-size:24px;display:flex;justify-content:flex-start;padding-left:24px;gap:20px">CPU 4 <span class="mono" style="font-size:22px;color:#c8d6de">trading: strategy, risk, OMS</span></div>
+<div class="node" data-cue="1" data-d="0.6" style="left:120px;top:578px;width:820px;height:76px;border-color:var(--green);font-size:24px;display:flex;justify-content:flex-start;padding-left:24px;gap:20px">CPU 5 <span class="mono" style="font-size:22px;color:#c8d6de">order entry: OUCH socket</span></div>
+<div class="node" data-cue="1" data-d="0.75" style="left:120px;top:670px;width:820px;height:76px;border-color:var(--amber);font-size:24px;display:flex;justify-content:flex-start;padding-left:24px;gap:20px">CPU 6 <span class="mono" style="font-size:22px;color:#c8d6de">simex matching</span></div>
+<div class="node" data-cue="1" data-d="0.8999999999999999" style="left:120px;top:762px;width:820px;height:76px;border-color:var(--amber);font-size:24px;display:flex;justify-content:flex-start;padding-left:24px;gap:20px">CPU 7 <span class="mono" style="font-size:22px;color:#c8d6de">simex market data</span></div>
+<div class="stat c-green" data-cue="2" style="left:1020px;top:220px;font-size:80px">⟳ spin</div>
+<div class="code" data-cue="3" style="left:1020px;top:330px;font-size:22px"><span class="c">// libs/feed/src/receiver.cpp, rx thread</span>
+<span class="k">while</span> (!stop) {
+  n = batch.receive(feed_);  <span class="c">// recvmmsg, non-blocking</span>
+  ...
+  <span class="k">if</span> (idle &amp;&amp; cfg_.idle_sleep_us != <span class="r">0</span>) sleep_for(...);
+}</div>
+<div class="stat c-green" data-cue="4" style="left:1020px;top:640px;font-size:80px">0.72–0.81 µs</div>
+<div class="body" data-cue="4" data-d="0.4" style="left:1020px;top:740px;width:820px">Aeron IPC round trip, 64 bytes, p50, both sides busy-polling (docs/aeron.md, shared 4-vCPU box)</div>
+</div>
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Takeaway</div>
+<div class="take" data-cue="0" style="left:140px;top:300px;width:1640px">Interrupts trade latency for CPU time.</div>
+<div class="take" data-cue="1" style="left:140px;top:460px;width:1640px"><span class="c-green">On the hot path, spin on a dedicated core</span><br>and send the interrupts elsewhere.</div>
+</div>

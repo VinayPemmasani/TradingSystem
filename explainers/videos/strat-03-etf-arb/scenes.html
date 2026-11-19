@@ -1,0 +1,102 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">HFT &amp; HEDGE FUND STRATEGIES · 03 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Index &amp; ETF arbitrage</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">One basket, two prices. Trade the gap until it closes.</div>
+<div class="node teal" data-cue="0" data-d="0.9" style="left:140px;top:560px;width:380px"><div class="t">ETF share</div><div class="s">trades on exchange</div></div>
+<div class="stat c-amber" data-cue="1" style="left:600px;top:575px">=?</div>
+<div id="ti-bk" data-cue="1" data-anim="fade" style="left:760px;top:540px;width:520px;height:200px"></div>
+<div class="tag c-violet" data-cue="1" data-d="0.4" style="left:760px;top:760px">the basket inside</div>
+<div class="card amber" data-cue="2" style="left:1360px;top:560px;width:420px"><div class="ct c-amber">the arbitrage</div><div class="cs">is what pulls them together</div></div>
+</div>
+
+<div class="scene" id="s-nav">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Creation and redemption</div>
+<div class="node teal" data-cue="1" style="left:120px;top:250px;width:360px"><div class="t">exchange</div><div class="s">ETF market price</div></div>
+<div class="node amber" data-cue="2" style="left:780px;top:250px;width:360px"><div class="t">authorized participant</div><div class="s">can create / redeem</div></div>
+<div class="node violet" data-cue="0" style="left:1440px;top:250px;width:360px"><div class="t">fund</div><div class="s">holds the basket · NAV</div></div>
+<svg class="full">
+<path id="nv-a" d="M1140 330 L1440 330" stroke="#2c4351" stroke-width="3" fill="none" class="draw" data-cue="2"/>
+<path id="nv-b" d="M1440 380 L1140 380" stroke="#2c4351" stroke-width="3" fill="none" class="draw" data-cue="2"/>
+<path id="nv-c" d="M780 330 L480 330" stroke="#2c4351" stroke-width="3" fill="none" class="draw" data-cue="2"/>
+<path id="nv-d" d="M480 380 L780 380" stroke="#2c4351" stroke-width="3" fill="none" class="draw" data-cue="2"/>
+</svg>
+<div class="pkt" data-path="nv-a" data-cue="3" data-out="4" data-dur="1.2" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="nv-b" data-cue="3" data-out="4" data-d="0.4" data-dur="1.2" data-loop="1"></div>
+<div class="pkt" data-path="nv-c" data-cue="3" data-out="4" data-d="0.8" data-dur="1.2" data-loop="1"></div>
+<div class="pkt" data-path="nv-d" data-cue="4" data-dur="1.2" data-loop="1"></div>
+<div class="pkt" data-path="nv-a" data-cue="4" data-d="0.4" data-dur="1.2" data-loop="1"></div>
+<div class="pkt" data-path="nv-b" data-cue="4" data-d="0.8" data-dur="1.2" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="fcard green" data-cue="3" data-out="4" style="left:120px;top:440px;width:1680px;padding:12px 26px"><span class="body"><b class="c-green">premium</b> (ETF &gt; NAV): buy basket → <span class="c-violet">basket in</span> → <span class="c-teal">new shares out</span> → sell ETF</span></div>
+<div class="fcard red" data-cue="4" style="left:120px;top:440px;width:1680px;padding:12px 26px"><span class="body"><b class="c-red">discount</b> (ETF &lt; NAV): buy ETF → <span class="c-teal">shares in</span> → <span class="c-violet">basket out</span> → sell basket</span></div>
+<div id="nv-c1" data-cue="0" data-anim="fade" style="left:120px;top:560px;width:1680px;height:250px"></div>
+<div class="tag c-teal" data-cue="1" style="left:1650px;top:560px">ETF price</div>
+<div class="tag c-violet" data-cue="0" style="left:1650px;top:610px">NAV</div>
+<div class="src" data-cue="5" style="left:120px;top:830px">SEC Release 33-10695, rule 6c-11 (effective Dec 23, 2019) · illustrative price path</div>
+</div>
+
+<div class="scene" id="s-fast">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The fast version: live fair value</div>
+<div class="fcard" data-cue="1" style="left:120px;top:220px;width:1680px;padding:12px 26px"><span class="body">≈ <b class="c-teal">90%</b> of daily ETF activity is on the secondary market <span class="src">(SEC 33-10695, citing ICI 2019 Fact Book)</span></span></div>
+<div id="fa-g" data-cue="0" data-anim="fade" style="left:120px;top:360px;width:520px;height:400px"></div>
+<div class="lbl c-violet" data-cue="0" style="left:120px;top:770px">every constituent's book</div>
+<div class="node amber" data-cue="2" data-d="0.6" style="left:780px;top:470px;width:400px"><div class="t">fair value</div><div class="s">Σ wᵢ · midᵢ</div></div>
+<div class="node teal" data-cue="2" data-d="1.0" style="left:1360px;top:360px;width:440px"><div class="t">ETF book</div><div class="s">quote / trade vs fair</div></div>
+<div class="node blue" data-cue="2" data-d="1.2" style="left:1360px;top:580px;width:440px"><div class="t">index futures</div><div class="s">hedge the same exposure</div></div>
+<svg class="full">
+<path id="fa-1" d="M640 560 L780 560" stroke="#a98bff" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="0.6" marker-end="url(#ah-violet)"/>
+<path id="fa-2" d="M1180 530 C 1260 530 1280 420 1360 420" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="1.0" marker-end="url(#ah-amber)"/>
+<path id="fa-3" d="M1180 590 C 1260 590 1280 640 1360 640" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="1.2" marker-end="url(#ah-amber)"/>
+</svg>
+<div class="pkt" data-path="fa-1" data-cue="2" data-d="1.2" data-dur="0.8" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="fa-2" data-cue="2" data-d="1.6" data-dur="0.8" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="tag c-amber" data-cue="3" style="left:780px;top:700px">create / redeem = the slow valve for inventory</div>
+</div>
+
+<div class="scene" id="s-futures">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Index arbitrage: futures vs cash</div>
+<div class="fcard amber" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1000px"><span class="lbl">CME fair value</span><div class="math">FV<span class="eq">=</span>Cash · [1 + <i>r</i> · (<i>x</i> / 360)] − Dividends</div></div>
+<table class="t" data-cue="2" style="left:120px;top:400px;width:1000px">
+<tr><th>input</th><th>value</th></tr>
+<tr><td>S&amp;P 500 cash index</td><td class="c-teal">1146.00</td></tr>
+<tr><td>interest rate r</td><td>5.7%</td></tr>
+<tr><td>days to expiry x</td><td>78</td></tr>
+<tr><td>dividends to expiry</td><td>3.47 pts</td></tr>
+</table>
+<div class="fcard" data-cue="3" style="left:1200px;top:220px;width:600px"><span class="lbl">fair value</span><div class="stat c-amber">1156.68</div></div>
+<div class="fcard" data-cue="4" style="left:1200px;top:400px;width:600px"><span class="lbl">futures price</span><div class="stat c-blue">1157.00</div><div class="h3 c-pink" style="margin-top:6px">0.32 pts rich</div></div>
+<div id="fu-c" data-cue="5" data-anim="fade" style="left:1200px;top:640px;width:600px;height:200px"></div>
+<div class="tag c-blue" data-cue="5" style="left:1200px;top:600px">sell futures · buy stocks → meet at expiry</div>
+<div class="src" data-cue="1" style="left:120px;top:830px">cmegroup.com, "Calculating Fair Value" worked example</div>
+</div>
+
+<div class="scene" id="s-lose">
+<div class="h2" data-cue="0" style="left:120px;top:110px">How it loses</div>
+<div id="lo-g" data-cue="0" data-anim="fade" style="left:120px;top:230px;width:760px;height:420px"></div>
+<div class="tag c-pink" data-cue="1" data-d="1.5" style="left:120px;top:770px">half-filled basket = open position</div>
+<div class="card pink" data-cue="1" style="left:980px;top:230px;width:820px"><div class="ct c-pink">legging risk</div></div>
+<div class="card pink" data-cue="2" style="left:980px;top:360px;width:820px"><div class="ct c-pink">stale fair value</div></div>
+<div class="card pink" data-cue="3" style="left:980px;top:490px;width:820px"><div class="ct c-pink">borrow, fees, dividend estimates</div></div>
+<div class="card pink" data-cue="4" style="left:980px;top:620px;width:820px"><div class="ct c-pink">same number, many firms: speed wins</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Building it from lab parts</div>
+<div class="node blue" data-cue="0" style="left:120px;top:230px;width:330px"><div class="t">ITCH feed</div><div class="s">every stock</div></div>
+<div class="node blue" data-cue="1" data-d="0.3" style="left:560px;top:230px;width:330px"><div class="t">BookBuilder</div><div class="s">libs/book · Price(4)</div></div>
+<div class="node amber" data-cue="2" style="left:1000px;top:230px;width:330px"><div class="t">fair value</div><div class="s">Σ wᵢ · midᵢ</div></div>
+<div class="node teal" data-cue="2" data-d="0.3" style="left:1440px;top:230px;width:360px"><div class="t">ETF mid</div><div class="s">compare, act</div></div>
+<svg class="full">
+<path id="lb-1" d="M450 290 L560 290" stroke="#6aa8ff" stroke-width="3" fill="none" class="draw" data-cue="1" marker-end="url(#ah)"/>
+<path id="lb-2" d="M890 290 L1000 290" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="2" marker-end="url(#ah-amber)"/>
+<path id="lb-3" d="M1330 290 L1440 290" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="2" marker-end="url(#ah-amber)"/>
+</svg>
+<div class="pkt" data-path="lb-1" data-cue="1" data-dur="0.7" data-loop="1" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="code" data-cue="3" style="left:120px;top:440px;width:1680px;font-size:25px"><span class="line"><span class="c">// sketch, not in the repo: on a book update for constituent i</span></span><span class="line" data-hl="3" data-hlend="4"><span class="v">int64_t</span> m = (t.bid_px[<span class="r">0</span>] + t.ask_px[<span class="r">0</span>]) / <span class="r">2</span>;      <span class="c">// Price(4)</span></span><span class="line" data-hl="3" data-hlend="4">fair += w[i] * (m - mid[i]);  mid[i] = m;      <span class="c">// one term, not the whole basket</span></span><span class="line" data-hl="4">edge = etf_mid - fair / kWeightScale;          <span class="c">// O(1) per update</span></span></div>
+<div class="tag c-amber" data-cue="4" style="left:120px;top:760px">constant time per update, 10 stocks or 500</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:250px;width:1640px">Harvest basket-versus-parts gaps.<br><span class="c-pink">Lose on legging, stale data and costs.</span></div>
+<div class="chip" data-cue="1" style="left:140px;top:640px;background:var(--violet)">see the whole basket</div>
+<div class="chip" data-cue="1" data-d="0.3" style="left:470px;top:640px;background:var(--green)">fill it cleanly</div>
+</div>

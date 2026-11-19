@@ -1,0 +1,35 @@
+[
+ {
+  "id": "title",
+  "title": "Auctions",
+  "text": "At the open and the close, exchanges stop matching order by order. They gather orders for a few minutes, then trade them all at once, at one price."
+ },
+ {
+  "id": "why",
+  "title": "Why auctions",
+  "text": "Overnight, news builds up while nothing trades. If the open were continuous, the first price would depend on whoever arrived first. An auction pools all that interest, and finds the one price where the most shares can change hands. Everyone in the cross gets that same price, whether they arrived first or last. At Nasdaq, the opening cross sets the official opening price, and the closing cross sets the official closing price."
+ },
+ {
+  "id": "price",
+  "title": "Finding the price",
+  "text": "Here is a book that crosses: some buyers will pay more than some sellers ask. For each price, count the shares buyers would take, and the shares sellers would give. The shares that can trade are the smaller of the two. That peaks at 500 shares, at both $10.02 and $10.03. Nasdaq breaks ties in order: most shares, then the smallest imbalance, then the price nearest a reference. Here the reference is $10.02, so all 500 shares trade at $10.02. Buyers who bid $10.05 pay only $10.02, and sellers who asked $10.00 receive $10.02.",
+  "hold": 0.6
+ },
+ {
+  "id": "noii",
+  "title": "Imbalance messages",
+  "text": "Before the cross, the exchange publishes what would happen right now. Nasdaq's imbalance message starts at 3:50 for the close, every 10 seconds. From 3:55 it comes every second. Market on close orders must arrive before 3:55, and limit on close orders before 3:58. Each message carries the paired shares, the imbalance and its side, and indicative prices. A large buy imbalance invites sellers to step in and pair it off. The open works the same way: imbalance messages from 9:25, and market on open orders before 9:28."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's engine runs auctions with two calls. In an auction phase, orders rest without matching, so the book may cross. indicative finds the price, with the same tie breaks, then the lower price. simex publishes it as an ITCH imbalance message. At the cross, uncross fills every crossing order at that one price. simex prints the volume once, as a Cross Trade message. Its scenarios can add opening and closing auctions to a simulated day, with an imbalance message every second by default.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "In an auction, queue position matters less, and the imbalance matters more. Watch the imbalance messages, and respect the cutoffs. On-open and on-close orders that do not execute are cancelled after the cross. And the cross uses only the exchange's own book; it does not reach other venues. One book, one price, the most shares.",
+  "hold": 1.0
+ }
+]

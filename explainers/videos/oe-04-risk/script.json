@@ -1,0 +1,33 @@
+[
+{
+"id": "title",
+"title": "Pre-trade risk",
+"text": "An algorithm can send thousands of orders before a human notices anything. So every order passes a set of risk checks before it leaves the firm. In the United States, a rule says so."
+},
+{
+"id": "rule",
+"title": "The market access rule",
+"text": "SEC Rule 15c3-5, the market access rule, took effect in 2011. A broker-dealer with market access must have controls that reject orders exceeding pre-set credit or capital thresholds. Controls must also reject erroneous orders: prices or sizes out of bounds, order by order or over a short time, and duplicates. The controls must be under the broker-dealer's direct and exclusive control, which ended unfiltered, or naked, sponsored access. And the chief executive certifies them every year. There are regulatory controls too: block orders in securities a client is restricted from trading, and let only pre-approved people and accounts reach the market."
+},
+{
+"id": "checks",
+"title": "A chain of checks",
+"text": "In code, pre-trade risk is a chain of cheap comparisons, run in order. Is the kill switch set? Is the size too big, or the notional value? Is the price too far from the market? Would the position, if everything working filled, break its limit? Too many open orders? Too many orders per second? The first failure blocks the order, and it never reaches the wire."
+},
+{
+"id": "example",
+"title": "A worked example",
+"text": "Say the mid is 187.25, and the price collar is five percent: 177.89 to 196.61. A buy of 400 at 187.30 is about 75,000 dollars: it passes. A buy of 600 at the same price is over 112,000 dollars, above a 100,000 dollar notional limit: blocked. And a careless 500 at 197 dollars is inside the notional limit, but outside the collar: blocked too. The order of the checks decides which reason is counted: the 600 share order never reaches the collar check."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab's checks live in firm slash risk, run inline on the trading thread, and allocate nothing. The defaults are 1,000 shares and 100,000 dollars per order, a five percent collar, 2,000 shares of position either way, 200 open orders, and 2,000 orders a second. Position counts every working share on that side, as if it all filled. And cancels are never checked, because they only reduce risk. A replace counts only the shares it adds, because OUCH counts a replace across the whole chain."
+},
+{
+"id": "take",
+"title": "What pros do",
+"text": "Real firms layer these checks: in the strategy, in the gateway, and at the broker and exchange. Each layer counts what it blocked, so a silent strategy is noticed. In 2013, the SEC charged Knight Capital under this rule, after a router sent over four million orders in 45 minutes. Pre-trade risk is the cheapest insurance in trading.",
+"hold": 1.0
+}
+]

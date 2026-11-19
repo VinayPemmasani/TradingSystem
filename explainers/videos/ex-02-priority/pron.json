@@ -1,0 +1,110 @@
+[
+ [
+  "\\bOUCH\\b",
+  "ouch"
+ ],
+ [
+  "\\bITCH\\b",
+  "itch"
+ ],
+ [
+  "\\bsimex\\b",
+  "sim ex"
+ ],
+ [
+  "\\bSEC\\b",
+  "S E C"
+ ],
+ [
+  "\\bNYSE\\b",
+  "N Y S E"
+ ],
+ [
+  "\\bCME\\b",
+  "C M E"
+ ],
+ [
+  "\\bIOC\\b",
+  "I O C"
+ ],
+ [
+  "\\bFOK\\b",
+  "F O K"
+ ],
+ [
+  "\\bLULD\\b",
+  "L U L D"
+ ],
+ [
+  "\\bFIX\\b",
+  "fix"
+ ],
+ [
+  "\\bIEX\\b",
+  "I E X"
+ ],
+ [
+  "\\bFIFO\\b",
+  "fife-oh"
+ ],
+ [
+  "\\bAPI\\b",
+  "A P I"
+ ],
+ [
+  "\\bID\\b",
+  "I D"
+ ],
+ [
+  "\\bNBBO\\b",
+  "N B B O"
+ ],
+ [
+  "\\bS&P\\b",
+  "S and P"
+ ],
+ [
+  "\\bReg NMS\\b",
+  "Reg N M S"
+ ],
+ [
+  "\\bNMS\\b",
+  "N M S"
+ ],
+ [
+  "\\bMWCB\\b",
+  "M W C B"
+ ],
+ [
+  "\\bET\\b",
+  "Eastern"
+ ],
+ [
+  "\\$10\\.00",
+  "ten dollars"
+ ],
+ [
+  "\\bQ1\\b",
+  "Q one"
+ ],
+ [
+  "\\bQ2\\b",
+  "Q two"
+ ],
+ [
+  "\\bQ3\\b",
+  "Q three"
+ ],
+ [
+  "\\b37\\.2\\b",
+  "thirty seven point two"
+ ],
+ [
+  "\\bSOFR\\b",
+  "sofer"
+ ],
+ [
+  "\\b403\\b",
+  "four hundred and three"
+ ]
+]

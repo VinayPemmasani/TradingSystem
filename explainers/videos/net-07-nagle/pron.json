@@ -1,0 +1,4 @@
+[
+["TCP_NODELAY","T C P no delay"],["TCP_QUICKACK","T C P quick ack"],["\\bACKs\\b","acks"],["\\bACK\\b","ack"],["\\bRFC 1122\\b","R F C eleven twenty two"],["\\bTCP\\b","T C P"],
+["\\b41 byte\\b","forty one byte"],["\\b1984\\b","nineteen eighty four"],["TcpStream","T C P stream"],["\\bLinux\\b","Linux"]
+]

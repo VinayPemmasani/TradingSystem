@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Pairs trading",
+  "text": "Pairs trading bets on a relationship, not a direction. Buy the cheap twin, sell the rich one, and wait for the gap to close. It is the classic form of statistical arbitrage."
+ },
+ {
+  "id": "form",
+  "title": "Finding pairs",
+  "text": "First, find two stocks that move together, like two share classes of one company, or two firms in one industry. Two share classes are the cleanest case, because they are claims on the same company. Gatev, Goetzmann and Rouwenhorst wrote down the textbook rule, in the Review of Financial Studies in 2006. Normalise each total-return price history over a twelve-month formation period. Then pair each stock with the partner whose path is closest, by the sum of squared differences."
+ },
+ {
+  "id": "trade",
+  "title": "Trading the gap",
+  "text": "Then trade the pairs for the next six months. When the normalised prices drift more than two historical standard deviations apart, sell the one that rose and buy the one that fell. The standard deviation comes from the formation period, so the threshold is fixed before trading starts. Close when the two prices cross again, or when the six months are up. Equal dollars on each side mean a move in the whole market mostly cancels out."
+ },
+ {
+  "id": "lose",
+  "title": "Edge and risk",
+  "text": "The edge is mean reversion in the gap. A large seller in one name can push related prices apart for a while, and the pair trader is paid to take the other side. It loses when the gap is not temporary: a takeover, a profit warning, or a new line of business. Then the spread keeps widening, and the trade that looked cheapest becomes the biggest loss. Crowding is the other risk, when funds holding similar pairs all unwind at once."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's PairsTrader works on the log price ratio. It keeps a rolling window, turns the latest ratio into a z-score, and enters beyond two. It exits back inside 0.3, or if the z-score crosses zero. Beyond four, it assumes the relationship broke, closes, and waits for calm. On real Nasdaq data, Alphabet's two share classes on January 30, 2019, it made ten round trips, won three, and lost about 1,600 dollars."
+ },
+ {
+  "id": "infra",
+  "title": "What it needs",
+  "text": "The infrastructure is lighter than market making, but not trivial. You need clean history, adjusted for splits and dividends, or a corporate action shows up as a fake gap. You need a borrow, because one leg is a short sale, and a lender can recall the stock. Both legs must trade together, or one side sits unhedged. And at short horizons, paying the spread on two legs, twice, can eat the whole reversion."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pairs trading harvests temporary gaps between related prices. It loses when a gap turns permanent, so pair selection and the stop rule matter more than the entry signal."
+ }
+]

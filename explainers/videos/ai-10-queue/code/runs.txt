@@ -1,0 +1,6 @@
+msgs=100000 gap=2000 ns feed cpu 1 strat cpu 0
+run 0  mutex+cv: p50    6830 p99  1421244 p99.9  3295848 ok ctxsw/msg 0.16 | spsc: p50   214 p99    344 p99.9  35061 ok ctxsw/msg 0.0000
+run 1  mutex+cv: p50    5333 p99    32289 p99.9    62926 ok ctxsw/msg 0.23 | spsc: p50   216 p99   4036 p99.9  36959 ok ctxsw/msg 0.0000
+run 2  mutex+cv: p50    5455 p99  2200220 p99.9  3914237 ok ctxsw/msg 0.21 | spsc: p50   208 p99    900 p99.9  24737 ok ctxsw/msg 0.0000
+run 3  mutex+cv: p50    5314 p99    33428 p99.9   121159 ok ctxsw/msg 0.22 | spsc: p50   235 p99    457 p99.9  22323 ok ctxsw/msg 0.0000
+run 4  mutex+cv: p50    5607 p99  1161949 p99.9  2087820 ok ctxsw/msg 0.19 | spsc: p50   230 p99  12848 p99.9 342761 ok ctxsw/msg 0.0000

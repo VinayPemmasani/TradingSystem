@@ -1,0 +1,21 @@
+[
+["224\\.0\\.0\\.0","two twenty four dot zero dot zero dot zero"],
+["239\\.255\\.255\\.255","two thirty nine dot two fifty five dot two fifty five dot two fifty five"],
+["224\\.0\\.0\\.22","two twenty four dot zero dot zero dot twenty two"],
+["224\\.0\\.0\\.1\\b","two twenty four dot zero dot zero dot one"],
+["239\\.1\\.1\\.1","two thirty nine dot one dot one dot one"],
+["01:00:5E:01:01:01","zero one, zero zero, five E, zero one, zero one, zero one"],
+["01:00:5E","zero one, zero zero, five E"],
+["239 slash 8","two thirty nine slash eight"],
+["\\b239\\b","two thirty nine"],
+["\\bIGMP\\b","I G M P"],
+["\\bMAC\\b","mac"],
+["\\bNIC\\b","nick"],
+["\\bTTL\\b","T T L"],
+["\\bUDP\\b","U D P"],
+["\\b23 bits\\b","twenty three bits"],
+["\\b28\\b","twenty eight"],
+["\\b125\\b","a hundred and twenty five"],
+["\\b260\\b","two hundred and sixty"],
+["\\b16 megabyte\\b","sixteen megabyte"]
+]

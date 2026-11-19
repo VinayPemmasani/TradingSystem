@@ -1,0 +1,81 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 08 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Throttles</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Message rate limits, the exchange's and your own.</div>
+<div class="node" data-cue="0" data-d="0.8" style="left:140px;top:580px;width:300px;height:130px;border-color:var(--teal)">Firm</div>
+<div class="node" data-cue="0" data-d="1.0" style="left:1480px;top:580px;width:300px;height:130px;border-color:var(--blue)">Exchange</div>
+<svg class="full"><path id="t8-a" class="draw" data-cue="0" data-d="1.0" d="M 450 645 L 1470 645" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="pkt" data-path="t8-a" data-cue="0" data-d="1.2" data-dur="1" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="t8-a" data-cue="0" data-d="1.2" data-dur="1" data-loop="1" data-phase="0.33" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="t8-a" data-cue="0" data-d="1.2" data-dur="1" data-loop="1" data-phase="0.66" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="node" data-cue="2" style="left:640px;top:575px;width:240px;height:140px;border-color:var(--violet)">our throttle</div>
+<div class="tag c-red" data-cue="1" style="left:1320px;top:760px;border-color:var(--red)">over the limit → reject, or cut off</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why venues throttle</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:1240px;top:330px;width:560px;height:300px;border-color:var(--blue)">gateway → matching engine<small>shared by every member</small></div>
+<div class="node" data-cue="0" data-d="0.4" style="left:120px;top:260px;width:360px;height:100px;border-color:var(--teal)">session A</div>
+<div class="node" data-cue="1" style="left:120px;top:430px;width:360px;height:100px;border-color:var(--red)">session B · runaway</div>
+<div class="node" data-cue="0" data-d="0.6" style="left:120px;top:600px;width:360px;height:100px;border-color:var(--teal)">session C</div>
+<svg class="full"><path id="t8-1" class="draw" data-cue="0" data-d="0.5" d="M 485 310 L 1235 420" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path id="t8-2" class="draw" data-cue="1" d="M 485 480 L 1235 480" stroke="var(--red)" stroke-width="5" fill="none" marker-end="url(#ah-red)"/><path id="t8-3" class="draw" data-cue="0" data-d="0.7" d="M 485 650 L 1235 540" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="pkt" data-path="t8-1" data-cue="0" data-d="0.8" data-dur="1.6" data-loop="1" style="background:var(--teal)"></div>
+<div class="pkt" data-path="t8-3" data-cue="0" data-d="1.0" data-dur="1.6" data-loop="1" style="background:var(--teal)"></div>
+<div class="pkt" data-path="t8-2" data-cue="1" data-d="0.2" data-dur="0.5" data-loop="1" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="pkt" data-path="t8-2" data-cue="1" data-d="0.2" data-dur="0.5" data-loop="1" data-phase="0.33" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="pkt" data-path="t8-2" data-cue="1" data-d="0.2" data-dur="0.5" data-loop="1" data-phase="0.66" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="tag c-amber" data-cue="2" style="left:120px;top:780px;border-color:var(--amber);font-size:26px">limit per session · step 1: rejects</div>
+<div class="tag c-red" data-cue="2" data-d="0.5" style="left:720px;top:780px;border-color:var(--red);font-size:26px">step 2: session terminated</div>
+</div>
+
+<div class="scene" id="s-cme">
+<div class="h2" data-cue="0" style="left:120px;top:110px">CME Globex · per iLink session</div>
+<div class="tag" data-cue="0" data-d="0.3" style="left:120px;top:200px;border-color:var(--line)">production values · CME client systems wiki, read Nov 2026</div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:290px">messages in this 3-second interval (new orders, replaces, ...)</div>
+<div style="left:120px;top:330px;width:1680px;height:70px;border-radius:10px;background:var(--panel);border:2px solid var(--line)" data-cue="0" data-d="0.4"></div>
+<div id="t8-fill" style="left:122px;top:332px;height:66px;width:0;border-radius:8px;background:var(--teal)"></div>
+<svg class="full"><path class="draw" data-cue="1" d="M 1128 310 L 1128 420" stroke="var(--amber)" stroke-width="4" fill="none"/><path class="draw" data-cue="3" d="M 1630 310 L 1630 420" stroke="var(--red)" stroke-width="4" fill="none"/></svg>
+<div class="lbl c-amber" data-cue="1" style="left:960px;top:430px">reject at 1,500 (avg 500/s)</div>
+<div class="lbl c-red" data-cue="3" style="left:1530px;top:430px">terminate at 2,250</div>
+<div class="big" id="t8-n" data-cue="0" data-d="0.4" style="left:120px;top:480px;font-size:48px">0</div>
+<div class="card" data-cue="2" style="left:120px;top:590px;width:820px;border-color:var(--amber)"><div class="ct c-amber">past 1,500: Business Reject</div><div class="cd">35=j 380=8 · until the interval ends</div></div>
+<div class="card" data-cue="3" style="left:980px;top:590px;width:820px;border-color:var(--red)"><div class="ct c-red">at 2,250: session terminated</div><div class="cd">Terminate · ErrorCodes 9</div></div>
+<div class="card" data-cue="4" style="left:120px;top:780px;width:820px;border-color:var(--green)"><div class="ct c-green">cancels: reject 3,000 · terminate 4,500</div></div>
+<div class="card" data-cue="5" style="left:980px;top:780px;width:820px;border-color:var(--amber)"><div class="ct">1,600 in 1 s → <span class="c-amber">100 rejected</span></div></div>
+<div class="tag" data-cue="6" style="left:120px;top:870px;border-color:var(--line)">fixed 3-second interval · starts with the session's first message</div>
+</div>
+
+<div class="scene" id="s-bucket">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A token bucket</div>
+<div style="left:220px;top:300px;width:300px;height:500px;border:4px solid var(--violet);border-top:none;border-radius:0 0 24px 24px" data-cue="1"></div>
+<div id="t8-lvl" style="left:224px;top:796px;width:292px;height:0;background:rgba(169,139,255,.45);border-radius:0 0 20px 20px"></div>
+<div class="big c-violet" id="t8-tok" data-cue="1" style="left:600px;top:500px">0</div>
+<div class="lbl" data-cue="1" style="left:600px;top:580px">tokens</div>
+<div class="lbl c-violet" data-cue="1" data-d="0.3" style="left:220px;top:240px">↓ refill at a steady rate</div>
+<div class="card" data-cue="2" style="left:900px;top:260px;width:900px;border-color:var(--amber)"><div class="ct c-amber">order → spend 1 token</div><div class="cd">none left → blocked</div></div>
+<div class="card" data-cue="3" style="left:900px;top:430px;width:900px;border-color:var(--violet)"><div class="ct c-violet">cap = burst · rate = average</div></div>
+<div class="card" data-cue="4" style="left:900px;top:580px;width:900px;border-color:var(--teal)"><div class="ct c-teal">rate 2,000/s · cap 100</div><div class="cd">= 2 tokens per millisecond</div></div>
+<div class="card" data-cue="5" style="left:900px;top:730px;width:900px;border-color:var(--red)"><div class="ct">150 at once: <span class="c-green">100 sent</span> · <span class="c-red">50 blocked</span></div><div class="cd">25 ms later: 50 tokens again</div></div>
+<div class="tag c-violet" data-cue="6" style="left:220px;top:840px;border-color:var(--violet)">no window edge to game · refills smoothly</div>
+<div class="tag c-red" data-cue="7" style="left:900px;top:865px;border-color:var(--red)">fixed window: 1,500 at its end + 1,500 at the next start</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: the last risk check</div>
+<div class="code" data-cue="0" data-d="0.2" style="left:120px;top:220px;width:1100px;font-size:24px"><span class="line c">// lab/risk/risk.hpp</span><span class="line" data-hl="1" data-hlend="2"><span class="k">void</span> refill(uint64_t now_tsc) {</span><span class="line" data-hl="1" data-hlend="2">  tokens_ += (now_tsc - last_tsc_) * tokens_per_tick_;</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">if</span> (tokens_ &gt; burst) tokens_ = burst;</span><span class="line">}</span><span class="line c">// ... in check():</span><span class="line" data-hl="2" data-hlend="3"><span class="k">if</span> (tokens_ &lt; <span class="r">1.0</span>) <span class="k">return</span> Verdict::kRate;</span><span class="line" data-hl="2" data-hlend="3">tokens_ -= <span class="r">1.0</span>;</span></div>
+<div class="tag c-violet" data-cue="1" data-d="0.5" style="left:1260px;top:230px;border-color:var(--violet)">rdtsc ticks · no syscall, no timer</div>
+<div class="card" data-cue="2" style="left:1260px;top:320px;width:540px;border-color:var(--amber)"><div class="ct c-amber">spend tokens</div><div class="cd">new orders · replaces</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:500px;width:540px;border-color:var(--green)"><div class="ct c-green">never throttled</div><div class="cd">cancels</div></div>
+<div class="tag c-teal" data-cue="5" style="left:1260px;top:640px;border-color:var(--teal)">blocked → not sent · retry on next update</div>
+<div class="code" data-cue="4" style="left:120px;top:720px;width:1680px;font-size:24px">Risk blocks  kill switch 0, order quantity 0, ..., order rate <span class="r">50</span>,</div>
+<div class="tag c-teal" data-cue="6" style="left:120px;top:820px;border-color:var(--teal)">tokens per tick computed once · refill = multiply, add, cap at burst</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What pros do</div>
+<div class="card" data-cue="0" style="left:120px;top:240px;width:540px;height:240px;border-color:var(--violet)"><div class="ct c-violet">below the venue</div><div class="cs">your limit trips first</div></div>
+<div class="card" data-cue="1" style="left:690px;top:240px;width:540px;height:240px;border-color:var(--amber)"><div class="ct c-amber">bursts</div><div class="cs">not just averages</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:240px;width:540px;height:240px;border-color:var(--green)"><div class="ct c-green">cancels</div><div class="cs">always leave room</div></div>
+<div class="take" data-cue="3" style="left:120px;top:620px;width:1680px">The throttle is a seat belt, <span class="c-violet">not a steering wheel.</span></div>
+<div class="tag c-amber" data-cue="4" style="left:120px;top:740px;border-color:var(--amber)">a venue throttle reject = your own limit is too high</div>
+</div>

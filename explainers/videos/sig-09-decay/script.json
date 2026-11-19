@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Signal decay",
+  "text": "Every signal predicts over some horizon, and fades after it. Get the horizon wrong, and a good signal looks useless. This video measures the horizon, and what latency and adverse selection take out of it. It builds on the half-lives from video four."
+ },
+ {
+  "id": "ic",
+  "title": "IC by horizon",
+  "text": "Score a signal by its information coefficient: the correlation between the signal now and the return over the next h steps. Then plot it for many values of h. A signal with no edge stays near zero at every h. Two forces shape the curve. The predicted move builds up and then stops, while noise keeps growing with the square root of time."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Take a signal whose memory fades by a tenth each step, so its half-life is six and a half steps. Each step's return is 0.1 times the signal, plus unit noise. Computed exactly, the IC is 0.10 one step ahead. It peaks at 0.20 around eleven steps, and falls to 0.13 by fifty. By ten steps, 65 percent of the predicted move is done. So the peak comes well after the half-life: the move keeps arriving after the signal has faded."
+ },
+ {
+  "id": "latency",
+  "title": "Latency",
+  "text": "Latency eats the front of the curve. Act two steps late, and the move still ahead of you is 0.9 squared: 81 percent. For a fast signal, that lost fifth can be most of the profit. So a backtest must start the clock at decision time plus latency, as the signals video warned."
+ },
+ {
+  "id": "markout",
+  "title": "Markouts",
+  "text": "For fills, the same curve is called a markout. The lab's TCA marks every fill against the mid at 1, 10, 100 and 1,000 milliseconds. Say you buy at 50.00 with the mid at 50.005: half a cent captured. If the mid is 50.003 after 10 milliseconds, and 49.995 after a second, the markout has fallen to minus half a cent. That drop is adverse selection, and its timing shows the horizon of whoever traded with you. A maker hopes for a flat curve, where the price stays near where it filled."
+ },
+ {
+  "id": "match",
+  "title": "Match the horizon",
+  "text": "Match the horizon to the strategy. The lab's market maker requotes whenever a book changes, so it wants signals that peak within milliseconds to seconds. The pairs trader samples every five minutes, and the trend follower once a day. Cont, Cucuringu and Zhang found that lagged order flow from related stocks helps forecasts, but mainly at short horizons, and it decays rapidly. A signal earns its place only where its IC peaks inside the time you hold the position."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pitfalls: overlapping horizons share data, so the curve looks smoother and surer than it is. Fit on one period, and test on another. Decay changes with the market, so measure it again. Find the peak, subtract your latency, and trade inside the half-life."
+ }
+]

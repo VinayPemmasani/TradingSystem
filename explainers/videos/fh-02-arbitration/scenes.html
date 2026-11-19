@@ -1,0 +1,108 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">FEED HANDLERS · 02 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Arbitrating<br>A and B</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">Two copies of every packet in, one clean stream out.</div>
+<svg class="full">
+<path id="t02a" class="draw" data-cue="0" data-d="0.6" d="M380 700 C700 700 760 780 900 780" stroke="#6aa8ff" stroke-width="5" fill="none"/>
+<path id="t02b" class="draw" data-cue="0" data-d="0.8" d="M380 860 C700 860 760 780 900 780" stroke="#9cc6ff" stroke-width="5" fill="none" stroke-dasharray="14 8"/>
+<path id="t02c" class="draw" data-cue="1" d="M1140 780 L1600 780" stroke="#4fd18b" stroke-width="5" fill="none" marker-end="url(#ah-green)"/>
+</svg>
+<div class="tag c-blue" data-cue="0" data-d="0.6" style="left:150px;top:680px">line A</div>
+<div class="tag" data-cue="0" data-d="0.8" style="left:150px;top:840px;color:#9cc6ff">line B</div>
+<div class="node violet" data-cue="0" data-d="1.0" style="left:900px;top:735px;width:240px;padding:14px"><div class="t" style="font-size:28px">arbiter</div></div>
+<div class="tag c-green" data-cue="1" data-d="0.4" style="left:1620px;top:760px">one stream</div>
+<div class="pkt" data-path="t02a" data-cue="0" data-d="1.2" data-dur="1.6" data-loop="1" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="pkt" data-path="t02b" data-cue="0" data-d="1.5" data-dur="1.6" data-loop="1" style="background:#9cc6ff;box-shadow:0 0 14px #9cc6ff"></div>
+<div class="pkt" data-path="t02c" data-cue="1" data-d="0.3" data-dur="1.2" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Every packet, twice</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1680px;border-color:var(--line)"><div class="cs" style="font-size:32px;margin:0">“All packets are sent through both UDP Feed A and UDP Feed B … UDP Feed A and UDP Feed B should be used for arbitration.”</div><div class="note" style="margin-top:14px">CME Group, MDP 3.0 – Dissemination (client systems wiki)</div></div>
+<div class="tag c-blue" data-cue="2" style="left:120px;top:540px">line A</div>
+<div class="tag" data-cue="2" style="left:120px;top:660px;color:#9cc6ff">line B</div>
+<div class="msg" data-cue="2" data-d="0.1" style="left:300px;top:525px;width:200px;background:var(--blue)">#41</div>
+<div class="msg lost" data-cue="2" data-d="0.4" style="left:540px;top:525px;width:200px">#42 lost</div>
+<div class="msg" data-cue="2" data-d="0.7" style="left:780px;top:525px;width:200px;background:var(--blue)">#43</div>
+<div class="msg" data-cue="2" data-d="0.25" style="left:360px;top:645px;width:200px;background:#9cc6ff">#41</div>
+<div class="msg" data-cue="2" data-d="0.55" style="left:600px;top:645px;width:200px;background:#9cc6ff" data-hl="2.5" data-hlend="3">#42</div>
+<div class="msg" data-cue="2" data-d="0.85" style="left:840px;top:645px;width:200px;background:#9cc6ff">#43</div>
+<svg class="full"><path class="draw" data-cue="3" d="M1080 610 L1260 610" stroke="#4fd18b" stroke-width="4" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="msg" data-cue="3" data-d="0.3" style="left:1290px;top:580px;width:150px;background:var(--green)">#41</div>
+<div class="msg" data-cue="3" data-d="0.4" style="left:1450px;top:580px;width:150px;background:var(--green)">#42</div>
+<div class="msg" data-cue="3" data-d="0.5" style="left:1610px;top:580px;width:150px;background:var(--green)">#43</div>
+<div class="lbl c-green" data-cue="3" data-d="0.6" style="left:1290px;top:660px">first copy of each wins</div>
+</div>
+
+<div class="scene" id="s-rule">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One counter for both lines</div>
+<div class="node violet" data-cue="1" style="left:120px;top:330px;width:440px;height:200px"><div class="lbl" style="text-align:center">expected</div><div class="stat c-violet" id="rl-exp">1003</div></div>
+<div class="msg" id="rl-in" data-cue="2" style="left:640px;top:395px;width:210px;background:var(--blue)">1003</div>
+<svg class="full">
+<path class="draw" data-cue="2" data-d="0.3" d="M870 425 C960 425 960 300 1060 300" stroke="#4fd18b" stroke-width="4" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="3" d="M870 425 L1060 425" stroke="#8ea3b1" stroke-width="4" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="4" d="M870 425 C960 425 960 550 1060 550" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/>
+</svg>
+<div class="card" data-cue="2" data-d="0.4" style="left:1070px;top:250px;width:730px;padding:14px 22px;border-color:var(--green)"><div class="ct c-green" style="font-size:30px">seq == expected → deliver, ++expected</div></div>
+<div class="card" data-cue="3" data-d="0.2" style="left:1070px;top:385px;width:730px;padding:14px 22px;border-color:var(--line)"><div class="ct c-muted" style="font-size:30px">seq &lt; expected → duplicate, drop</div></div>
+<div class="card" data-cue="4" data-d="0.2" style="left:1070px;top:510px;width:730px;padding:14px 22px;border-color:var(--amber)"><div class="ct c-amber" style="font-size:30px">seq &gt; expected → hold; gap logic</div></div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:250px">same sequence numbers on A and B</div>
+<div class="body" data-cue="3" data-d="0.4" style="left:120px;top:640px;width:1000px">No per-line state. A message from either line is judged only against the one counter.</div>
+<div class="tag c-violet" data-cue="5" style="left:120px;top:770px">one compare per message · the gap logic sees one stream</div>
+</div>
+
+<div class="scene" id="s-code">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The rule, already in the lab</div>
+<div class="code" data-cue="1" style="left:120px;top:210px;width:1220px;font-size:21px"><span class="line"><span class="c">// libs/mold/include/lab/mold/sequencer.hpp</span></span><span class="line"><span class="k">void</span> accept(std::uint64_t seq, std::span&lt;<span class="k">const</span> std::byte&gt; msg,</span><span class="line">            Deliver&amp; deliver) {</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">if</span> (LAB_LIKELY(seq == expected_)) {</span><span class="line" data-hl="2" data-hlend="3">    deliver(seq, msg);</span><span class="line" data-hl="2" data-hlend="3">    ++stats_.delivered;</span><span class="line" data-hl="2" data-hlend="3">    ++expected_;</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">if</span> (LAB_UNLIKELY(held_count_ != <span class="r">0</span>)) drain(deliver);</span><span class="line">    <span class="k">return</span>;</span><span class="line">  }</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">if</span> (seq &lt; expected_) {</span><span class="line" data-hl="3" data-hlend="4">    ++stats_.duplicates;</span><span class="line" data-hl="3" data-hlend="4">    <span class="k">return</span>;</span><span class="line">  }</span><span class="line" data-hl="4" data-hlend="5">  hold(seq, msg);</span><span class="line">}</span></div>
+<div class="node blue" data-cue="5" style="left:1420px;top:300px;width:180px"><div class="t" style="font-size:28px">line A</div></div>
+<div class="node" data-cue="5" style="left:1620px;top:300px;width:180px;border-color:#9cc6ff"><div class="t" style="font-size:28px">line B</div></div>
+<div class="node violet" data-cue="5" data-d="0.4" style="left:1420px;top:560px;width:380px"><div class="t" style="font-size:28px">one Sequencer</div><div class="s">same session check</div></div>
+<svg class="full"><path class="draw" data-cue="5" data-d="0.3" d="M1510 390 L1510 555" stroke="#6aa8ff" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="5" data-d="0.3" d="M1710 390 L1710 555" stroke="#9cc6ff" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="code" data-cue="6" style="left:120px;top:770px;width:1680px;font-size:22px"><span class="line"><span class="c">// libs/mold/include/lab/mold/fault_injector.hpp</span>   <span class="k">double</span> duplicate = <span class="r">0</span>;  <span class="c">// probability a packet is sent twice</span></span></div>
+<div class="tag c-green" data-cue="7" style="left:120px;top:845px">live-feed run: 5,240 duplicates dropped · 0 duplicate order references</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:300px;top:215px">time →  (10 µs per step, illustrative)</div>
+<div class="tag c-blue" data-cue="1" style="left:120px;top:305px">line A</div>
+<div class="tag" data-cue="2" style="left:120px;top:435px;color:#9cc6ff">line B</div>
+<div class="tag c-green" data-cue="3" style="left:120px;top:625px">output</div>
+<!-- A: t=0..50 at x=300+14*t -->
+<div class="msg" data-cue="1" data-d="0.0" style="left:300px;top:290px;width:110px;background:var(--blue)">1001</div>
+<div class="msg" data-cue="1" data-d="0.1" style="left:440px;top:290px;width:110px;background:var(--blue)">1002</div>
+<div class="msg lost" data-cue="1" data-d="0.2" style="left:580px;top:290px;width:110px">1003</div>
+<div class="msg" data-cue="1" data-d="0.3" style="left:720px;top:290px;width:110px;background:var(--blue)" data-hl="5" data-hlend="6">1004</div>
+<div class="msg lost" data-cue="1" data-d="0.4" style="left:860px;top:290px;width:110px">1005</div>
+<div class="msg" data-cue="1" data-d="0.5" style="left:1000px;top:290px;width:110px;background:var(--blue)" data-hl="6" data-hlend="7">1006</div>
+<!-- B: +40 us -->
+<div class="msg" data-cue="2" data-d="0.0" data-dim="3" style="left:860px;top:420px;width:110px;background:#9cc6ff">1001</div>
+<div class="msg lost" data-cue="2" data-d="0.1" style="left:1000px;top:420px;width:110px">1002</div>
+<div class="msg" data-cue="2" data-d="0.2" style="left:1140px;top:420px;width:110px;background:#9cc6ff" data-hl="4" data-hlend="5">1003</div>
+<div class="msg" data-cue="2" data-d="0.3" data-dim="5" style="left:1280px;top:420px;width:110px;background:#9cc6ff">1004</div>
+<div class="msg" data-cue="2" data-d="0.4" style="left:1420px;top:420px;width:110px;background:#9cc6ff" data-hl="6" data-hlend="7">1005</div>
+<div class="msg" data-cue="2" data-d="0.5" data-dim="6" style="left:1560px;top:420px;width:110px;background:#9cc6ff">1006</div>
+<div class="lbl c-amber" data-cue="2" data-d="0.6" style="left:860px;top:500px">B runs 40 µs behind</div>
+<!-- output -->
+<div class="msg" data-cue="3" style="left:300px;top:610px;width:110px;background:var(--green)">1001</div>
+<div class="msg" data-cue="3" data-d="0.3" style="left:440px;top:610px;width:110px;background:var(--green)">1002</div>
+<div class="msg" data-cue="4" data-d="0.4" style="left:1140px;top:610px;width:110px;background:var(--green)">1003</div>
+<div class="msg" data-cue="5" data-d="0.4" style="left:1260px;top:610px;width:110px;background:var(--green)">1004</div>
+<div class="msg" data-cue="6" data-d="0.2" style="left:1420px;top:610px;width:110px;background:var(--green)">1005</div>
+<div class="msg" data-cue="6" data-d="0.5" style="left:1540px;top:610px;width:110px;background:var(--green)">1006</div>
+<div class="tag c-amber" data-cue="5" style="left:720px;top:700px">1004 held 30 µs</div>
+<div class="tag c-amber" data-cue="6" data-d="0.5" style="left:1000px;top:760px">1006 held 30 µs</div>
+<div class="node green" data-cue="7" style="left:1400px;top:720px;width:400px;padding:12px"><div class="t" style="font-size:28px">6 / 6 delivered</div><div class="s">0 retransmission requests</div></div>
+</div>
+
+<div class="scene" id="s-pros">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What to watch</div>
+<div class="card" data-cue="1" style="left:120px;top:240px;width:540px;height:430px;border-color:var(--amber)"><div class="ct c-amber">Line skew</div><div class="cs">Every hole on the fast line costs the slow line's delay. Measure A-to-B arrival difference per sequence number.</div><div class="cs c-amber" data-cue="2" style="margin-top:24px">Count wins per line: a line that never wins is slow.</div></div>
+<div class="card" data-cue="3" style="left:690px;top:240px;width:540px;height:430px;border-color:var(--blue)"><div class="ct c-blue">A dead line</div><div class="cs">Output still looks perfect while one line is down. Alert on per-line silence, not only on gaps.</div></div>
+<div class="card" data-cue="4" style="left:1260px;top:240px;width:540px;height:430px;border-color:var(--red)"><div class="ct c-red">Lost on both</div><div class="cs">Then it is a real gap: hold what follows, and recover it.</div><div class="cs c-pink" style="margin-top:30px">→ 03 · gaps and retransmission</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:120px;top:180px">Two lines, <span class="c-violet">one counter.</span></div>
+<div class="sub" data-cue="1" style="left:120px;top:330px;width:1600px">First copy wins. Second copy is dropped.<br>Ask for a retransmission only when both lines missed it.</div>
+</div>

@@ -1,0 +1,90 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 07 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Sequence numbers</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Resends and gap fills: nothing lost, nothing twice.</div>
+<div class="chip" data-cue="0" data-d="0.8" style="left:140px;top:600px;width:110px;background:var(--green)">38</div>
+<div class="chip" data-cue="0" data-d="1.0" style="left:270px;top:600px;width:110px;background:var(--green)">39</div>
+<div class="chip" data-cue="0" data-d="1.2" style="left:400px;top:600px;width:110px;background:var(--green)">40</div>
+<div class="chip" data-cue="1" style="left:530px;top:600px;width:110px;background:#33434e;color:var(--red)">?</div>
+<div class="chip" data-cue="2" style="left:660px;top:600px;width:110px;background:#33434e;color:var(--red)">?</div>
+<div class="chip" data-cue="3" style="left:790px;top:600px;width:110px;background:var(--amber)">41</div>
+<div class="chip" data-cue="3" data-d="0.3" style="left:920px;top:600px;width:110px;background:var(--amber)">42</div>
+<div class="chip" data-cue="3" data-d="0.6" style="left:1050px;top:600px;width:110px;background:var(--green)">43</div>
+<div class="tag c-red" data-cue="0" data-d="1.4" style="left:540px;top:700px;border-color:var(--red)">connection drops</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">TCP is not enough</div>
+<div class="lbl" data-cue="0" style="left:120px;top:250px">connection 1</div>
+<div class="grow bar" data-cue="0" data-d="0.2" data-w="700" style="left:120px;top:290px;background:var(--teal)"></div>
+<div class="tag c-red" data-cue="1" style="left:840px;top:285px;border-color:var(--red);font-size:26px">✕ broken · bytes in flight lost</div>
+<div class="lbl" data-cue="1" data-d="0.6" style="left:1000px;top:380px">connection 2</div>
+<div class="grow bar" data-cue="1" data-d="0.8" data-w="800" style="left:1000px;top:420px;background:var(--teal)"></div>
+<div class="chip" data-cue="2" style="left:180px;top:560px;width:110px;background:var(--green)">38</div>
+<div class="chip" data-cue="2" data-d="0.2" style="left:310px;top:560px;width:110px;background:var(--green)">39</div>
+<div class="chip" data-cue="2" data-d="0.4" style="left:440px;top:560px;width:110px;background:var(--green)">40</div>
+<div class="chip" data-cue="2" data-d="0.6" style="left:1060px;top:560px;width:110px;background:var(--green)">41</div>
+<div class="chip" data-cue="2" data-d="0.8" style="left:1190px;top:560px;width:110px;background:var(--green)">42</div>
+<div class="lbl" data-cue="2" data-d="1.0" style="left:560px;top:670px">numbers carry on across reconnects, all day · each direction separately</div>
+<div class="card" data-cue="3" style="left:120px;top:760px;width:1680px;border-color:var(--amber)"><div class="ct">next expected from them: <span class="c-amber">43</span> · next we send: <span class="c-teal">118</span></div></div>
+<div class="tag" data-cue="4" style="left:120px;top:870px;border-color:var(--line)">quiet line: Heartbeat (35=0) · no answer? TestRequest (35=1)</div>
+</div>
+
+<div class="scene" id="s-rules">
+<div class="h2" data-cue="0" style="left:120px;top:110px">MsgSeqNum (34): three cases</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:420px;width:340px;height:170px;border-color:var(--amber)">expected<small>41</small></div>
+<svg class="full"><path class="draw" data-cue="1" d="M 465 470 C 600 300, 700 290, 790 290" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/><path class="draw" data-cue="2" d="M 465 505 L 790 505" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="3" d="M 465 540 C 600 700, 700 715, 790 715" stroke="#9fb6c4" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="4" d="M 465 560 C 560 860, 700 880, 790 880" stroke="var(--red)" stroke-width="3" fill="none" marker-end="url(#ah-red)"/></svg>
+<div class="card" data-cue="1" style="left:800px;top:240px;width:1000px;border-color:var(--green)"><div class="ct c-green">34 = 41 → process</div></div>
+<div class="card" data-cue="2" style="left:800px;top:430px;width:1000px;border-color:var(--amber)"><div class="ct c-amber">34 = 44 → gap: ResendRequest 7=41 16=0</div><div class="cd">process nothing past the gap until it is filled</div></div>
+<div class="card" data-cue="3" style="left:800px;top:660px;width:1000px;border-color:#9fb6c4"><div class="ct">34 = 39 with 43=Y → duplicate: ignore</div></div>
+<div class="card" data-cue="4" style="left:800px;top:830px;width:1000px;border-color:var(--red);padding:12px 26px"><div class="ct c-red">34 = 39, no 43=Y → Logout, disconnect</div></div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Filling the gap 41–43</div>
+<div class="lbl c-teal" data-cue="0" style="left:290px;top:200px">us · expect 41</div>
+<div class="lbl c-blue" data-cue="0" style="left:1560px;top:200px">venue</div>
+<svg class="full"><path class="draw" data-cue="0" d="M 330 240 L 330 920" stroke="var(--teal)" stroke-width="3" fill="none"/><path class="draw" data-cue="0" d="M 1600 240 L 1600 920" stroke="var(--blue)" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="0" data-d="0.3" d="M 1595 260 L 340 300" stroke="#9fb6c4" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="1" d="M 335 345 L 1590 385" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="3" d="M 1595 470 L 340 510" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path class="draw" data-cue="4" d="M 1595 570 L 340 610" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="5" d="M 1595 670 L 340 710" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path class="draw" data-cue="6" d="M 1595 770 L 340 810" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="msg" data-cue="0" data-d="0.5" style="left:700px;top:240px;border-color:#9fb6c4;color:#9fb6c4">34=44 → not processed</div>
+<div class="msg c-amber" data-cue="1" data-d="0.3" style="left:700px;top:325px;border-color:var(--amber)">35=2 ResendRequest 7=41 16=0</div>
+<div class="tag" data-cue="2" style="left:1625px;top:410px;border-color:var(--line);color:var(--muted)">41 was a Heartbeat</div>
+<div class="msg c-violet" data-cue="3" data-d="0.3" style="left:600px;top:450px;border-color:var(--violet)">35=4 34=41 123=Y 36=42 · GapFill</div>
+<div class="msg c-green" data-cue="4" data-d="0.3" style="left:600px;top:550px;border-color:var(--green)">35=8 34=42 43=Y 122=orig time</div>
+<div class="msg c-violet" data-cue="5" data-d="0.3" style="left:600px;top:650px;border-color:var(--violet)">35=4 34=43 123=Y 36=44 · GapFill</div>
+<div class="msg c-green" data-cue="6" data-d="0.3" style="left:600px;top:750px;border-color:var(--green)">34=44 43=Y → in sequence ✓</div>
+<div class="tag c-teal" data-cue="6" data-d="0.8" style="left:120px;top:850px;border-color:var(--teal)">next expected: 45</div>
+</div>
+
+<div class="scene" id="s-soup">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The Soup way</div>
+<div class="card" data-cue="0" data-d="0.2" style="left:120px;top:240px;width:820px;height:300px;border-color:var(--teal)"><div class="ct c-teal">FIX</div><div class="cs">34=MsgSeqNum on every message<br>ResendRequest · GapFill · PossDup</div><div class="cd">both directions, numbered</div></div>
+<div class="card" data-cue="1" style="left:980px;top:240px;width:820px;height:300px;border-color:var(--violet)"><div class="ct c-violet">SoupBinTCP</div><div class="cs">S packets carry no number<br>both sides count</div><div class="cd" data-cue="2">re-login: requested seq = count + 1 → replay</div><div class="cd" data-cue="3">Login Accepted: the next sequence number → how much you missed</div></div>
+<div class="card" data-cue="4" style="left:120px;top:600px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">inbound OUCH: UserRefNum</div><div class="cs">an old number = a retransmission → ignored · resending can't double an order</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: libs/fix</div>
+<div class="code" data-cue="0" data-d="0.2" style="left:120px;top:220px;width:1100px;font-size:24px"><span class="line c">// lab/fix/session.hpp · SessionConfig</span><span class="line" data-hl="0" data-hlend="1">store_bytes    = <span class="r">32u &lt;&lt; 20</span>;  <span class="c">// 32 MB kept for resend</span></span><span class="line" data-hl="0" data-hlend="2">store_messages = <span class="r">1u &lt;&lt; 20</span>;   <span class="c">// beyond either: gap fill</span></span></div>
+<div class="card" data-cue="2" style="left:1280px;top:220px;width:520px;border-color:var(--red)"><div class="ct c-red">141 ResetSeqNumFlag=Y</div><div class="cd">on Logon: both sides restart at 1</div></div>
+<div class="node" data-cue="3" style="left:120px;top:520px;width:380px;height:130px;border-color:var(--teal)">fix-client<small>--reconnect-at N</small></div>
+<div class="node" data-cue="3" data-d="0.2" style="left:1420px;top:520px;width:380px;height:130px;border-color:var(--violet)">fixgw</div>
+<svg class="full"><path class="draw" data-cue="3" data-d="0.4" d="M 505 560 L 900 560" stroke="var(--teal)" stroke-width="3" fill="none"/><path class="draw" data-cue="3" data-d="1.0" d="M 1000 560 L 1415 560" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path class="draw" data-cue="3" data-d="1.6" d="M 1415 620 L 505 620" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="tag c-red" data-cue="3" data-d="0.8" style="left:880px;top:540px;border-color:var(--red)">✕ drop, no Logout</div>
+<div class="lbl" data-cue="3" data-d="1.8" style="left:640px;top:650px">log in, no reset → every missed report arrives by resend</div>
+<div class="tag c-amber" data-cue="4" style="left:120px;top:770px;border-color:var(--amber)">108 HeartBtInt = 30 s by default · unanswered TestRequest → disconnect</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What pros do</div>
+<div class="card" data-cue="0" style="left:120px;top:240px;width:540px;height:260px;border-color:var(--teal)"><div class="ct c-teal">persist</div><div class="cs">sequence numbers<br>survive a restart</div></div>
+<div class="card" data-cue="1" style="left:690px;top:240px;width:540px;height:260px;border-color:var(--red)"><div class="ct c-red">don't reset</div><div class="cs">a reset throws<br>recovery away</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:240px;width:540px;height:260px;border-color:var(--violet)"><div class="ct c-violet">stale orders</div><div class="cs">a sender may gap fill<br>instead of resending</div></div>
+<div class="take" data-cue="3" style="left:120px;top:640px;width:1680px">Recovery is part of the protocol: <span class="c-amber">test it like a feature.</span></div>
+<div class="tag c-teal" data-cue="4" style="left:120px;top:790px;border-color:var(--teal);font-size:26px">break the connection on purpose · count what comes back</div>
+</div>

@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "SIP vs direct",
+  "text": "For US stocks there are two views of the market. The SIP's consolidated tape, and each exchange's own direct feed. At any instant they can disagree about the best price. Neither is broken. Here is why."
+ },
+ {
+  "id": "sip",
+  "title": "What the SIP does",
+  "text": "Every exchange sends its best quotes and its trades to a securities information processor. The SIP consolidates them, works out the national best bid and offer, and publishes it with the last sale. For Nasdaq-listed stocks, that is Tape C, under the UTP plan. The SEC describes this exclusive SIP model as dating to the late 1970s.",
+  "hold": 0.8
+ },
+ {
+  "id": "path",
+  "title": "Two paths",
+  "text": "Now follow one quote. On the direct path, the exchange publishes it, and it travels straight to your server. On the SIP path, it travels to the processor first, is consolidated, then travels to you. That is an extra hop, extra distance, and processing. The UTP plan's own statistics put its median quote latency at 12.8 microseconds, in the second quarter of 2024. Distance to and from the processor comes on top.",
+  "hold": 0.8
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "An illustrative case. The national best bid is 10.00. Exchange X raises its bid to 10.01. Your direct feed from X shows it first, and your own consolidated book says 10.01. For a short window, the SIP still says 10.00. Then the SIP catches up, and both agree. Each view was right about a different moment.",
+  "hold": 0.8
+ },
+ {
+  "id": "rule",
+  "title": "The fairness rule",
+  "text": "The rules do constrain the exchanges. Under Regulation NMS, an exchange may not release data on its own feeds sooner than it sends it to the SIP's network processor. In 2012, the SEC found that NYSE had done just that, starting in 2008, with gaps from milliseconds to seconds. NYSE paid a five million dollar penalty.",
+  "hold": 0.8
+ },
+ {
+  "id": "content",
+  "title": "Content, not just speed",
+  "text": "The views also differ in content. Direct feeds can carry the full book, order by order, as in video eight. The SIP carries top of book and last sale. In December 2020, the SEC adopted rules to add odd lots, five levels of depth and auction data to core data, and to replace the exclusive SIPs with competing consolidators. In the lab, the vendor ticker plant builds its own level one records from direct ITCH books, much like a self-built consolidated view.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So professional traders build their own consolidated book from direct feeds, and know exactly when it can differ from the SIP. Compare the two with timestamps, not by eye. When they disagree, ask which one is newer before you act on either. Disagreement is not an error; it is latency, made visible.",
+  "hold": 1.0
+ }
+]

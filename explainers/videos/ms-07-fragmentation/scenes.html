@@ -1,0 +1,83 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 07 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Fragmentation</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:410px;width:1500px">One stock, many books.</div>
+<div id="ti-net" data-cue="1" data-anim="fade" style="left:140px;top:500px;width:1640px;height:400px"></div>
+</div>
+
+<div class="scene" id="s-count">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Where the volume goes</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:1360px;top:220px;width:460px;border-color:#a7b8c4"><div class="ct"><span class="stat" style="font-size:72px">17</span> exchanges</div><div class="cs">trading NMS stocks · SEC, June 2026</div></div>
+<div class="card" data-cue="1" style="left:1360px;top:450px;width:460px;border-color:#3a5566"><div class="ct"><span class="stat" style="font-size:72px">8</span> in 2005</div><div class="cs">+ Nasdaq, an exchange from 2006</div></div>
+<div class="chip" data-cue="2" style="left:120px;top:220px;background:var(--blue)">Cboe US equities market share · 5 days to Nov 18, 2026</div>
+<div id="ct-ch" data-cue="2" data-anim="fade" style="left:120px;top:300px;width:1160px;height:560px"></div>
+</div>
+
+<div class="scene" id="s-glue">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What holds it together</div>
+<div class="node" data-cue="1" style="left:120px;top:230px;width:260px;padding:10px"><div class="t" style="font-size:26px">exchange A</div></div>
+<div class="node" data-cue="1" data-d="0.1" style="left:120px;top:340px;width:260px;padding:10px"><div class="t" style="font-size:26px">exchange B</div></div>
+<div class="node" data-cue="1" data-d="0.2" style="left:120px;top:450px;width:260px;padding:10px"><div class="t" style="font-size:26px">exchange C</div></div>
+<div class="node" data-cue="1" data-d="0.3" style="left:120px;top:560px;width:260px;padding:10px"><div class="t" style="font-size:26px">exchange D</div></div>
+<div class="node teal" data-cue="1" data-d="0.6" style="left:640px;top:360px;width:340px"><div class="t">SIP</div><div class="s">→ NBBO</div></div>
+<svg class="full">
+<path id="gl-a" class="draw" data-cue="1" data-d="0.4" d="M390 260 C 520 260 520 400 630 410" stroke="#3fd0dc" stroke-width="2" fill="none"/>
+<path id="gl-b" class="draw" data-cue="1" data-d="0.4" d="M390 370 C 520 370 520 410 630 420" stroke="#3fd0dc" stroke-width="2" fill="none"/>
+<path id="gl-c" class="draw" data-cue="1" data-d="0.4" d="M390 480 C 520 480 520 430 630 430" stroke="#3fd0dc" stroke-width="2" fill="none"/>
+<path id="gl-d" class="draw" data-cue="1" data-d="0.4" d="M390 590 C 520 590 520 440 630 440" stroke="#3fd0dc" stroke-width="2" fill="none"/>
+</svg>
+<div class="pkt" data-path="gl-a" data-cue="1" data-d="0.8" data-dur="1.2" data-loop="1"></div>
+<div class="pkt" data-path="gl-c" data-cue="1" data-d="0.8" data-dur="1.2" data-loop="1" data-phase="0.5"></div>
+<div class="card" data-cue="2" style="left:1080px;top:230px;width:740px;border-color:var(--amber)"><div class="ct c-amber">Rule 611</div><div class="cs">no trading through a better protected quote elsewhere</div></div>
+<div class="card" data-cue="3" style="left:1080px;top:470px;width:740px;border-color:var(--green)"><div class="ct c-green">Smart order router</div><div class="cs">split by price · size · fees · fill odds</div></div>
+<div class="tag" data-cue="3" data-d="0.5" style="left:120px;top:700px">every venue: its own book, fee schedule and latency</div>
+</div>
+
+<div class="scene" id="s-sweep">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A worked sweep: buy 3,000</div>
+<div id="sw-v" data-cue="2" data-anim="fade" style="left:120px;top:250px;width:1100px;height:420px"></div>
+<div class="node green" data-cue="1" style="left:1300px;top:250px;width:520px"><div class="t">router: buy 3,000</div><div class="s">4 child orders, sent at once</div></div>
+<div class="fcard" data-cue="4" style="left:1300px;top:420px;width:520px"><div class="math" style="font-size:30px">2,300 @ 30.02 + 700 @ 30.03</div></div>
+<div class="fcard amber" data-cue="5" style="left:1300px;top:550px;width:520px"><div class="math" style="font-size:32px">avg = <span class="frac"><span>90,067</span><span>3,000</span></span> = <span class="val c-amber">30.0223</span></div></div>
+<div class="fcard" data-cue="6" style="left:120px;top:720px;width:1100px"><span class="lbl">Rule 610 access fee cap today: $0.003 / share</span><div class="math" style="font-size:32px">3,000 × $0.003 = <span class="val c-red">$9.00</span> to take</div></div>
+</div>
+
+<div class="scene" id="s-fade">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Fading liquidity</div>
+<div id="fd-ch" data-cue="1" data-anim="fade" style="left:120px;top:220px;width:1300px;height:560px"></div>
+<div class="tag" data-cue="1" data-d="0.4" style="left:1460px;top:240px">arrival times: illustrative</div>
+<div class="node violet" data-cue="2" style="left:1460px;top:330px;width:360px"><div class="t c-violet">fast trader</div><div class="s">sees A print → cancels at D</div></div>
+<div class="tag c-pink" data-cue="3" style="left:1460px;top:500px">D's 1,200 gone before you land</div>
+<div class="tag c-green" data-cue="4" style="left:1460px;top:580px">fix: children land together</div>
+<div class="tag c-blue" data-cue="4" data-d="0.6" style="left:1460px;top:650px">→ ms-09 latency races</div>
+</div>
+
+<div class="scene" id="s-rules">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Rules in motion</div>
+<svg class="full"><path class="draw" data-cue="0" data-d="0.3" d="M160 420 L1760 420" stroke="#2c4351" stroke-width="6" fill="none"/></svg>
+<div class="node amber" data-cue="1" style="left:120px;top:230px;width:480px;padding:12px"><div class="t" style="font-size:26px">Sep 18, 2024</div><div class="s">fee cap → $0.001 · half-cent ticks when tightly quoted</div></div>
+<div class="node pink" data-cue="3" style="left:720px;top:470px;width:480px;padding:12px"><div class="t" style="font-size:26px">Jun 2026</div><div class="s">proposed: rescind Rule 611 (and 610(e))</div></div>
+<div class="node green" data-cue="2" style="left:1320px;top:230px;width:480px;padding:12px"><div class="t" style="font-size:26px">Nov 2027</div><div class="s">compliance date for fee cap and ticks</div></div>
+<div class="lbl" data-cue="4" style="left:120px;top:660px">median share of exchange volume against non-displayed orders (SEC, 2026)</div>
+<div class="lbl" data-cue="4" data-d="0.2" style="left:120px;top:720px">Q1 2015</div>
+<div class="grow bar" data-cue="4" data-d="0.3" data-w="400" style="left:280px;top:712px;background:#3a5566"></div>
+<div class="lbl" data-cue="4" data-d="0.6" style="left:700px;top:720px">16.0%</div>
+<div class="lbl" data-cue="4" data-d="0.5" style="left:120px;top:790px">Q2 2025</div>
+<div class="grow bar" data-cue="4" data-d="0.6" data-w="768" style="left:280px;top:782px;background:var(--violet)"></div>
+<div class="lbl" data-cue="4" data-d="1.0" style="left:1070px;top:790px">30.7%</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: one venue, one book</div>
+<div class="node blue" data-cue="0" data-d="0.3" style="left:120px;top:260px;width:300px"><div class="t">simex</div><div class="s">the only venue</div></div>
+<div class="node blue" data-cue="1" style="left:560px;top:260px;width:340px"><div class="t">BookBuilder</div><div class="s">ITCH → book</div></div>
+<svg class="full"><path class="draw" data-cue="1" d="M430 310 L550 310" stroke="#6aa8ff" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tag" data-cue="1" data-d="0.5" style="left:960px;top:290px">= the whole market</div>
+<div id="lb-m" data-cue="2" data-anim="fade" style="left:120px;top:470px;width:1700px;height:360px"></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:820px;height:220px;border-color:var(--green)"><div class="ct c-green">Buys</div><div class="cs">Competition on fees, speed and order types.</div></div>
+<div class="card" data-cue="0" data-d="1.8" style="left:980px;top:150px;width:820px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Costs</div><div class="cs">Many books, many feeds, racing child orders.</div></div>
+<div class="big" data-cue="1" style="left:120px;top:480px;width:1700px">Every router builds<br>its own <span class="c-teal">best price</span>.</div>
+</div>

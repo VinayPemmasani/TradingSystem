@@ -1,0 +1,14 @@
+
+.code.left .line.hl{background:rgba(255,107,94,.16);box-shadow:inset 4px 0 0 var(--red)}
+.band{height:150px;border-radius:14px;background:rgba(19,33,43,.55);border:1px solid var(--line)}
+.stat{font:600 30px var(--mono);padding:18px 26px;border-radius:14px;border:2px solid;background:var(--panel)}
+.stat.red{border-color:var(--red)} .stat.teal{border-color:var(--teal);color:var(--teal)} .stat.green{border-color:var(--green);color:var(--green)}
+.stat b{color:var(--amber)}
+.slot{width:54px;height:54px;border-radius:10px;border:2px solid var(--line);background:#0f1b23}
+.slot.on{background:var(--teal);border-color:var(--teal);box-shadow:0 0 12px rgba(63,208,220,.45)}
+.ptr{font:700 22px var(--mono);white-space:nowrap}
+.bytes > div{height:76px;font-size:20px}
+.bar{height:44px}
+.bv{font:700 28px var(--mono);white-space:nowrap}
+.big{font:800 78px var(--display);font-stretch:80%}
+.rule{font:800 72px var(--display);font-stretch:80%}

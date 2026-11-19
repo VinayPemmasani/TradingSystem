@@ -1,0 +1,15 @@
+
+.code.left .line.hl{background:rgba(255,107,94,.16);box-shadow:inset 4px 0 0 var(--red)}
+.stat{font:600 30px var(--mono);padding:18px 26px;border-radius:14px;border:2px solid;background:var(--panel)}
+.stat.red{border-color:var(--red)} .stat.teal{border-color:var(--teal);color:var(--teal)}
+.stat b{color:var(--teal)} .stat.red b{color:var(--red)}
+.slot{width:54px;height:54px;border-radius:10px;border:2px solid var(--line);background:#0f1b23}
+.sbuf{height:110px;border-radius:12px;border:2px dashed var(--amber);background:rgba(255,179,71,.06)}
+.sb{width:150px;height:70px;border-radius:10px;background:var(--amber);color:#06141a;font:700 26px var(--mono);display:grid;place-items:center}
+.rule-row{width:400px;padding:14px 16px;border-radius:12px;background:var(--panel);border:2px solid var(--line);font:600 23px var(--mono);white-space:nowrap}
+.rl{font:700 30px var(--mono);width:240px}
+.bar{height:56px}
+.bv{font:700 28px var(--mono);white-space:nowrap}
+.big{font:800 96px var(--display);font-stretch:80%}
+.rule{font:800 72px/1.1 var(--display);font-stretch:80%}
+table.t td.c-amber{color:var(--amber)} table.t td.c-red{color:var(--red)}

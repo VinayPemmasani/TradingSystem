@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Symbols",
+"text": "Every exchange message has to say which instrument it is about. Sending the symbol every time wastes bytes, so feeds use small numeric ids, and the handler has to learn what each number means."
+},
+{
+"id": "locate",
+"title": "Stock locate",
+"text": "In Nasdaq ITCH, that id is the stock locate: two bytes, at offset 1 of every message. The spec says locate codes are assigned dynamically each day, starting with 1. An instrument's code will not change intraday. But there is no expectation that it will be the same tomorrow. Messages that are not about a stock carry locate zero."
+},
+{
+"id": "directory",
+"title": "Stock Directory",
+"text": "The mapping arrives on the feed itself. At the start of each trading day, Nasdaq sends a Stock Directory message for every active symbol. It is 39 bytes: the locate in the header, then the eight character symbol, and reference data such as round lot size, market category and LULD tier. The lab's synthetic day does the same: right after the start of messages event, one directory message per symbol, with locates counting up from 1."
+},
+{
+"id": "index",
+"title": "Locate as index",
+"text": "The lab turns the locate into an array index. The book builder holds 65,536 instruments, one per possible locate, so finding a book is one indexed load, with no hashing. The trader keeps a second array, from locate to its own instrument number. It fills an entry when a Stock Directory names a symbol it trades. Looking a symbol up by name is a linear scan, and the code says it is not for hot paths. The whole array is allocated once, at startup, before the feed starts."
+},
+{
+"id": "checks",
+"title": "Checks",
+"text": "The book builder checks the mapping as it goes. A book message for a locate that never had a directory entry is counted as an error. So is an Add Order whose symbol field disagrees with the directory. Both counters should be zero on a clean day, and the feed handler's exit status fails the run if they are not."
+},
+{
+"id": "late",
+"title": "Joining late",
+"text": "The classic bug is joining late. The directory comes once, at the start of the day. A subscriber that misses it sees orders for numbers it cannot name. The lab hit exactly this. A trader that subscribes to the feed handler's Aeron stream late starts at the live position, and misses the stock directory. So itch-fh waits for its first subscriber before it takes the feed, and the docs say to start traders first. In production, keep a directory snapshot you can load mid-day, and never carry locates over to the next day. The same trap catches any process restarted mid-day: a crash at noon means rebuilding the directory before a single book makes sense."
+},
+{
+"id": "takeaway",
+"title": "Takeaway",
+"text": "Ids belong to one feed and one day. Learn them from the feed, index books by them, and treat a message for an unknown id as an error, never as a new instrument.",
+"hold": 1.0
+}
+]

@@ -1,0 +1,5 @@
+200000 msgs, one every 1000 ns (0 = flat out), 9 runs, median [min-max]
+mutex+cv     gap  1000  p50   5216.2 ns [ 4600.0- 9968.6]  p99   72096.2 ns [ 36887.6-4240632.1]  p99.9  143474.3   wall 1001.9 ns/msg
+ring packed  gap  1000  p50    481.0 ns [  450.5-  496.2]  p99    6866.7 ns [  1042.9-1934244.1]  p99.9   99433.3   wall 1001.8 ns/msg
+ring padded  gap  1000  p50    398.1 ns [  364.8-  441.0]  p99    3377.1 ns [  1118.1- 11508.6]  p99.9   48283.8   wall 1001.8 ns/msg
+lab SpscRing gap  1000  p50    394.3 ns [  382.9-  433.3]  p99    5197.1 ns [  2815.2-3057591.0]  p99.9  103234.3   wall 1001.8 ns/msg

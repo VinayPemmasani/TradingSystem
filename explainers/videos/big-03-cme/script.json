@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "CME Group",
+  "text": "CME Group grew out of Chicago's trading pits into the largest derivatives exchange group in the United States. Its moat is a clearing house and a set of benchmark contracts."
+ },
+ {
+  "id": "history",
+  "title": "History in seven beats",
+  "text": "The roots go back to 1848, when the world's first futures exchange opened in Chicago. By 1865, futures clearing had begun, with margin deposits guaranteeing each trade. In 1972 came the first financial futures, on seven currencies. In 1992 the Globex electronic platform launched, and in 1997 the E-mini S&P 500, a small, fully electronic contract. Then came the mergers: the Chicago Board of Trade in 2007, and NYMEX, the New York energy exchange, in 2008."
+ },
+ {
+  "id": "trades",
+  "title": "What it trades",
+  "text": "What does it trade? Futures and options on interest rates, stock indexes, energy, farm products, metals, currencies and crypto. In 2025, average daily volume was a record 28.1 million contracts. Interest rates were about half of that, 14.2 million a day, led by Treasury and SOFR contracts. Equity indexes added 7.4 million, energy 2.7 million and farm products 1.9 million. By FIA's count, that was about 7 billion contracts for the year, the most of any US exchange group."
+ },
+ {
+  "id": "tech",
+  "title": "Globex and CME Clearing",
+  "text": "All of it trades on Globex. Orders enter over iLink, and market data leaves on MDP 3.0, binary messages over multicast, covered in the market data series. Each product has its own matching rule: first in, first out, or a pro rata split by order size. Then every trade goes to CME Clearing, which becomes buyer to every seller and seller to every buyer."
+ },
+ {
+  "id": "money",
+  "title": "How it makes money",
+  "text": "How does it make money? Revenue in 2025 was a record 6.5 billion dollars. Clearing and transaction fees were 5.3 billion, about four fifths of the total. CME reports them as one line, because every trade on its exchanges is cleared in house. Market data added about 800 million dollars."
+ },
+ {
+  "id": "why",
+  "title": "Why it is big",
+  "text": "Why is it big? Three locks. First, benchmark contracts: Treasury, SOFR and E-mini futures are where many traders discover the price, so liquidity stays. Second, the clearing house: a futures position opened at CME can only be closed at CME, so open positions never migrate to a rival. Third, options on those futures: in 2025 CME had about 61 percent of global interest rate options volume, by the World Federation of Exchanges' count."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 0.3,
+  "text": "CME is benchmark contracts plus its own clearing house, on one electronic platform. Positions that can only close where they opened keep it big."
+ }
+]

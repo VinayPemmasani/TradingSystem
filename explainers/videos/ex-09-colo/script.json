@@ -1,0 +1,36 @@
+[
+ {
+  "id": "title",
+  "title": "Co-location",
+  "text": "Speed in trading starts with distance. Firms rent space next to the matching engine, and exchanges make the wires fair."
+ },
+ {
+  "id": "why",
+  "title": "Why distance matters",
+  "text": "Light in fibre covers a metre in about 4.9 nanoseconds. So a firm 100 kilometres away loses about half a millisecond, each way, before its order even arrives. And since queues are first in, first out, arriving first can mean trading first. Exchanges therefore rent space in their own data centres: racks, power and short links. In the US these services are exchange rules, filed with the SEC, like NYSE's 2010 filing for its Mahwah data centre."
+ },
+ {
+  "id": "mech",
+  "title": "Equal cables",
+  "text": "Inside the building, distance still matters. A cabinet near the engine would get a shorter cable, and a head start. So exchanges can equalise: every client's link to the engine is the same length, wherever the cabinet sits. The farthest cabinet sets the length, so the near ones get extra fibre. Then the only way to be faster is better hardware and better code. Links from outside carriers are a separate question, as the next example shows.",
+  "hold": 0.6
+ },
+ {
+  "id": "example",
+  "title": "Nasdaq BX filing",
+  "text": "A 2024 Nasdaq BX filing gives real numbers for its Carteret data centre. Telco connections into its NY11 hall ran from 160 feet to 680 feet. That 520 foot gap is worth about 0.78 microseconds of light travel. So a firm on the shortest link had a head start of about three quarters of a microsecond. In the new NY11-4 hall, every telco connection is 590 feet. The filing says client connections to the matching engine are equal. Equalising the rest was planned to take 18 to 24 months.",
+  "hold": 0.6
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab runs on one machine, so its cables are cores and memory. simex can pin its matcher, gateway and market data threads to chosen cores. On the lab's shared container, a round trip between two pinned processes took 0.72 to 0.98 microseconds at the median. That is about the same as the 520 foot cable gap, one way. When both processes landed on one physical core, it fell to 76 nanoseconds. Placement matters, even inside one box. The lab cannot model cable lengths, but it shows what a core choice costs.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They timestamp each hop, and never assume. They know what is equalised, and what is not. They check where their carrier and market data links really land. They weigh a better spot against what the same money buys in faster code. And they treat cabinet placement and core placement as one problem. Equal wires leave only your code in the race.",
+  "hold": 1.0
+ }
+]

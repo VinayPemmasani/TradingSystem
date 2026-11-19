@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "OPRA",
+"text": "Every quote and trade from every US options exchange is merged into one feed: OPRA. For October 2025, OPRA projected capacity for over twelve billion messages a day, on one stream. Here is how a feed that big is built."
+},
+{
+"id": "why",
+"title": "Why so many messages",
+"text": "Options multiply. One underlying has many expiries, each expiry many strikes, and each strike a put and a call. Each of those series is quoted on many exchanges, and quotes move whenever the underlying moves. OPRA's participants are twenty exchanges, and SIAC runs the processor. In OPRA's own words, quote traffic is the vast majority of options messages."
+},
+{
+"id": "lines",
+"title": "96 lines, two streams",
+"text": "So OPRA spreads symbols across 96 lines in the regular session, rebalanced nightly. Each message goes out on two redundant multicast streams, with separate retransmission streams. OPRA says the bandwidth projections are for one stream: take both, and you double it, then add ten percent for retransmissions. The same notice puts OPRA's median latency under eighteen microseconds."
+},
+{
+"id": "block",
+"title": "The block header",
+"text": "Messages travel in blocks of at most a thousand bytes. Each block has a twenty one byte header: a version, the block size, the feed and retransmission indicators, a session, a four byte block sequence number, the message count, an eight byte timestamp in seconds and nanoseconds, and a checksum. Integers here are big-endian, like ITCH."
+},
+{
+"id": "quote",
+"title": "Long and short quotes",
+"text": "Quotes come in two sizes. A long quote is 43 bytes: a twelve byte header, a five letter root symbol, expiration, strike, then bid price, bid size, offer price and offer size, as four byte integers. A short quote is 29 bytes: a four letter symbol and two byte strike, prices and sizes, with denominators implied. Here is an illustrative series quoted 2.15 bid, 2.20 offered, forty by twenty five. Values that fit in two bytes can travel in the short form, which saves fourteen bytes per quote."
+},
+{
+"id": "lab",
+"title": "Who needs every quote?",
+"text": "Most consumers do not need every one of those quotes. A screen or a risk system wants the latest value, not each step. The lab's vendor server shows the idea: it conflates per subscription, merging changes that arrive within an interval into one update. A market maker's handler cannot do that. It must keep up with every line, at full rate."
+},
+{
+"id": "take",
+"title": "Takeaway",
+"text": "So plan OPRA as a capacity problem. Size links for both streams plus retransmissions. Spread the 96 lines across cores, and measure each line's peak, not its average. Watch line integrity messages, sent at least every ten seconds. OPRA is many small feeds, and every one of them must keep up.",
+"hold": 1.0
+}
+]

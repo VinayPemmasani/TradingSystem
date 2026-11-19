@@ -1,0 +1,8 @@
+tsc 2.1000 ticks/ns, 2000000 msgs, 5 runs, median [min-max] over runs
+timer      p50   26.7 ns [ 26.7- 26.7]  p99    33.3 ns [  28.6-  35.2]  p99.9     38.1  max    228731  allocs/run        0  (sink 0)
+v0 naive   p50  229.5 ns [228.6-232.4]  p99   415.2 ns [ 395.2- 438.1]  p99.9   6377.1  max  44707183  allocs/run     6500  (sink 0)
+v1 ds      p50  101.0 ns [ 97.1-101.9]  p99   198.1 ns [ 196.2- 204.8]  p99.9   3255.2  max    170975  allocs/run     6000  (sink 0)
+v2a ilp    p50  100.0 ns [ 98.1-119.0]  p99   217.1 ns [ 202.9- 263.8]  p99.9   2256.2  max    210826  allocs/run     6000  (sink 0)
+v2 pipe    p50   53.3 ns [ 53.3- 58.1]  p99   202.9 ns [ 187.6- 247.6]  p99.9   1921.9  max   1004833  allocs/run     6000  (sink 0)
+v3 branch  p50   44.8 ns [ 44.8- 44.8]  p99   163.8 ns [ 157.1- 174.3]  p99.9   1865.7  max    117362  allocs/run     6000  (sink 0)
+v4 alloc   p50   43.8 ns [ 43.8- 50.5]  p99    70.5 ns [  67.6-  84.8]  p99.9    141.0  max    198089  allocs/run        0  (sink 0)

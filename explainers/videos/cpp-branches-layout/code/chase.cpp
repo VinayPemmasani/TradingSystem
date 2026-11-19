@@ -64,7 +64,7 @@ int main() {
   std::list<int> l2;
   { std::vector<std::list<int>::iterator> v; for (auto it = lst.begin(); it != lst.end(); ++it) v.push_back(it);
     std::shuffle(v.begin(), v.end(), rng); for (auto it : v) l2.splice(l2.end(), lst, it); }
-  long a, b, c, d;
+  long a, b, c;
   double tv = ns_per([&] { long s = 0; for (int x : vec) s += x; return s; }, n, a);
   double tl = ns_per([&] { long s = 0; for (int x : l2) s += x; return s; }, n, b);
   double tm = ns_per([&] { long s = 0; for (auto& [k, v] : mp) s += v; return s; }, n, c);

@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "LSEG",
+  "text": "London Stock Exchange Group still runs a stock exchange, but most of its money now comes from data. It shows how far an exchange group can drift from trading."
+ },
+ {
+  "id": "history",
+  "title": "History in six beats",
+  "text": "Six beats of history. In 1698, at Jonathan's Coffee House, John Castaing began publishing a list of stock and commodity prices, so market data came first. In 1801, London's first regulated exchange was born. The 1986 Big Bang deregulated the UK market. In 2007 the exchange merged with Borsa Italiana, forming LSEG. In 2013 it bought a majority of the clearing house LCH. And in 2021 it completed the purchase of Refinitiv, a large data business."
+ },
+ {
+  "id": "trades",
+  "title": "What it lists, trades and clears",
+  "text": "What does it run today? The London Stock Exchange lists and trades company shares. Tradeweb runs electronic marketplaces for rates, credit, equities and money markets. FTSE Russell builds indexes, from the FTSE 100 to the Russell indexes. And LCH clears. Its flagship service, SwapClear, is responsible for over 90 percent of the interest rate swap notional cleared globally, by LSEG's own count."
+ },
+ {
+  "id": "tech",
+  "title": "Millennium Exchange and LCH",
+  "text": "London's main order book, SETS, runs on Millennium Exchange, the platform that came with MillenniumIT, bought in 2009. Members send orders over a FIX gateway or a native gateway, and market data comes from the Group Ticker Plant. A SETS day runs an opening auction, continuous trading, then a closing auction. In clearing, LCH stands between the two sides of each swap, just as CME Clearing does for futures."
+ },
+ {
+  "id": "money",
+  "title": "How it makes money",
+  "text": "How does it make money? Total income in 2025 was about 9 billion pounds. Data and Analytics, including the Workspace terminal, brought in 4.0 billion, 44 percent. FTSE Russell brought in 1.0 billion, and Risk Intelligence 0.6 billion. Markets, meaning trading and clearing together, brought in 3.5 billion, 39 percent. And 73 percent of the group's income is recurring."
+ },
+ {
+  "id": "why",
+  "title": "Why it is big",
+  "text": "Why is it big? SwapClear is a network. A dealer clears where its counterparties clear, because offsetting trades only net inside one clearing house. So the biggest pool nets the most margin, and keeps growing. Data compounds the same way: trading and clearing create data, and data customers build their workflows around it. One caution: the 90 percent is LSEG's own count, and rivals clear swaps too. Eurex Clearing, for one, held about 20 trillion euros of swap notional at the end of 2025."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 0.3,
+  "text": "LSEG is a data company with an exchange and the main swap clearing house attached. Its lock is netting in SwapClear."
+ }
+]

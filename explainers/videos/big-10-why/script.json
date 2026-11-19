@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Why liquidity concentrates",
+  "text": "Across this series, one pattern keeps coming back: trading piles into a few places. This last episode asks why liquidity concentrates, and when it does not."
+ },
+ {
+  "id": "loop",
+  "title": "The loop",
+  "text": "Start with the loop. A trader goes where the most other traders already are, because that is where orders fill fastest and at the tightest prices. Each new arrival makes the pool deeper, which draws the next one. The economist Marco Pagano modelled this in 1989: when traders choose where to trade, trading tends to concentrate in one market. His model also allows more than one stable outcome, so history and timing matter."
+ },
+ {
+  "id": "concentrated",
+  "title": "Where it concentrates",
+  "text": "The numbers show it. FIA counted 119 billion futures and options contracts traded in 2025, and more than half were on just three exchanges, two in India and one in Brazil. India's National Stock Exchange alone handled about 89 percent of the world's stock index options, by the World Federation of Exchanges' count. CME had about 61 percent of interest rate options. And LSEG says SwapClear clears over 90 percent of the interest rate swap notional cleared globally."
+ },
+ {
+  "id": "fragmented",
+  "title": "Where it spreads",
+  "text": "US stocks look different. A share of Apple is the same share on every venue, and US rules protect the best displayed price wherever it shows. So no single venue can lock the flow in. In 2025, Nasdaq matched about 14 percent of US equity volume, and in the fourth quarter Cboe matched about 9 percent. Yet the same Nasdaq matched 72 percent in its Nordic markets, where it is the home exchange."
+ },
+ {
+  "id": "locks",
+  "title": "What locks it in",
+  "text": "So what locks liquidity in? A futures position can only be closed where it was opened, so open interest stays put, like Brent on ICE. A licence can be exclusive: Cboe holds the S&P 500 index options rights through 2032. And a clearing house nets everything you hold there, so moving any one piece costs margin. Then the exchange sells the data that all this trading produces."
+ },
+ {
+  "id": "time",
+  "title": "It concentrates in time too",
+  "text": "Liquidity concentrates in time as well. Anat Admati and Paul Pfleiderer showed in 1988 that traders who can choose when to trade crowd into the same moments. The closing auction is that idea in practice: in 2025, the NYSE ran a record close of over 205 billion dollars."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 0.4,
+  "text": "Liquidity piles up where contracts cannot move: futures, licensed indexes, cleared swaps. It spreads out where the product is the same everywhere. That difference is the moat behind every exchange in this series."
+ }
+]

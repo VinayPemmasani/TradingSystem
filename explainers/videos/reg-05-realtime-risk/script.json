@@ -1,0 +1,41 @@
+[
+ {
+  "id": "title",
+  "title": "Real-time risk",
+  "text": "A trading firm must know, at every moment, what it owns, what it could own if its orders fill, and what it is all worth. That is real-time position and PnL risk."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "A pre-trade check looks at one order. Real-time risk looks at the whole book: positions, working orders, and profit and loss, updated on every fill and every price move. Regulators expect it. MiFID II's RTS 6 wants real-time alerts within five seconds, and the SEC's market access rule wants controls on credit and capital exposure."
+ },
+ {
+  "id": "model",
+  "title": "The position record",
+  "text": "Keep one record per instrument. Shares, with long positive and short negative. Cash, where sells add and buys subtract. And exposure: the shares in working buy orders and working sell orders that could still trade. Profit and loss, marked to market, is cash plus shares times the current price. The worst-case position adds every working order on one side, as if it all filled at once.",
+  "hold": 0.4
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Say you buy 300 shares at $50.00, then sell 100 at $50.10. You hold 200 shares, and your cash is minus $9,990. With the mid at $50.05, your PnL is plus $20: $10 locked in on the round trip, and $10 still open on the position. Now you have a working bid for 1,000 more, and your limit is 2,000 shares. A new bid for 900 would take the worst case to 2,100, so it is blocked, even though nothing has filled.",
+  "hold": 0.5
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, the OMS holds exactly this record. Shares, cash in four-decimal fixed point, open buy and open sell, all in integers. Its PnL is cash plus shares times the price, and the trader marks at the mid. Pre-trade risk checks shares plus open buys plus the new order against the limit. A replace only counts the shares it adds. Nothing allocates, so the check costs a few compares on the trading thread.",
+  "hold": 0.6
+ },
+ {
+  "id": "recon",
+  "title": "Independent check",
+  "text": "The firm's own record can be wrong, so check it against someone else's. After the day, the lab's research tools rebuild positions and PnL from the exchange's drop copy. They join each fill on match number and the firm's order number, and report anything only one side has, or any field that differs. The post-trade report fails on any break. The lab reports PnL, but it does not yet stop trading on a loss limit.",
+  "hold": 0.6
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They count working orders, not just fills. They mark positions at a fair price, such as the mid, not just the last trade. They reconcile against an independent record, as close to real time as they can. And they set loss limits that act on their own, by pulling quotes and stopping the strategy. Know what you own, and what you could own. This is education, not legal advice."
+ }
+]

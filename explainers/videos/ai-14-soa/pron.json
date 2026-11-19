@@ -1,0 +1,14 @@
+[
+["\\b4 vCPU\\b", "four V C P U"],
+["\\bvCPU\\b", "V C P U"],
+["\\bVM\\b", "V M"],
+["\\bL2\\b", "L two"],
+["\\b112\\b", "a hundred and twelve"],
+["\\b0\\.77\\b", "zero point seven seven"],
+["\\b2\\.8\\b", "two point eight"],
+["\\b1\\.1\\b", "one point one"],
+["64-byte", "sixty four byte"],
+["24-byte", "twenty four byte"],
+["\\b2 megabyte", "two megabyte"],
+["\\b8 million", "eight million"]
+]

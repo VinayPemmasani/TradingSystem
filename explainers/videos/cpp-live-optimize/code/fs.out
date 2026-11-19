@@ -1,0 +1,8 @@
+ns per increment: same line 33.7   own lines 6.4
+ns per increment: same line 29.1   own lines 6.9
+ns per increment: same line 26.2   own lines 6.5
+ns per increment: same line 34.1   own lines 6.4
+ns per increment: same line 35.6   own lines 7.1
+ns per increment: same line 35.3   own lines 6.2
+ns per increment: same line 33.4   own lines 6.3
+one-way median: cpu2->cpu1 138 ns   cpu1->cpu2 138 ns  (equal => TSCs in step)

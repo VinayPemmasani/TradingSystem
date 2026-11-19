@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+/* microstructure series colours: green = buyers / bids, red = sellers / asks, teal = value and mid,
+   amber = the cost being explained (spread, impact), violet = informed traders and models, blue = lab code, pink = pitfalls */
+.math{font-family:"STIX Two Text","Times New Roman",serif;font-size:42px;line-height:1.25;color:#eef4f7;white-space:nowrap}
+.math i{font-style:italic}
+.math sub,.math sup{font-size:.62em;line-height:0}
+.math .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .12em}
+.math .frac>span{padding:0 .25em;line-height:1.2}
+.math .frac>span:first-child{border-bottom:2px solid currentColor}
+.math .eq{margin:0 .3em}
+.math .val{font-family:var(--mono);font-size:.78em;font-weight:600}
+.fcard{background:rgba(19,33,43,.86);border:2px solid var(--line);border-radius:16px;padding:18px 26px}
+.fcard .lbl{display:block;margin-bottom:6px}
+.fcard.amber{border-color:var(--amber)} .fcard.violet{border-color:var(--violet)} .fcard.teal{border-color:var(--teal)} .fcard.pink{border-color:var(--pink)} .fcard.blue{border-color:var(--blue)} .fcard.green{border-color:var(--green)} .fcard.red{border-color:var(--red)}
+.node{border-radius:18px;background:var(--panel);border:3px solid var(--line);padding:18px 22px;text-align:center}
+.node .t{font:700 32px var(--body)} .node .s{font:500 21px var(--mono);color:var(--muted);margin-top:6px;line-height:1.35}
+.node.blue{border-color:var(--blue)} .node.teal{border-color:var(--teal)} .node.violet{border-color:var(--violet)} .node.green{border-color:var(--green)} .node.amber{border-color:var(--amber)} .node.pink{border-color:var(--pink)} .node.red{border-color:var(--red)}
+.card{border-radius:18px;border:3px solid;background:var(--panel);padding:22px 26px}
+.card .ct{font:700 34px var(--body)} .card .cs{font:400 26px/1.4 var(--body);color:#cfdde5;margin-top:12px}
+.big{font:800 84px/1.05 var(--display);font-stretch:80%}
+.stat{font:800 64px var(--display);font-stretch:85%}
+.note{font:500 22px/1.45 var(--mono);color:var(--muted)}
+.src{font:500 19px var(--mono);color:#6f8796}
+/* price ladder: rows built by SIG.ladder */
+.lad .lr{position:absolute;left:0;display:flex;border-bottom:1px solid rgba(142,163,177,.16)}
+.lad .lb,.lad .la{position:relative;height:100%}
+.lad .lp{display:grid;place-items:center;font:600 27px var(--mono);color:#c9d6de;background:rgba(8,18,26,.6)}
+.lad .lbar{position:absolute;top:7px;bottom:7px;border-radius:5px}
+.lad .lb .lbar{right:6px;background:linear-gradient(270deg,rgba(79,209,139,.85),rgba(79,209,139,.35))}
+.lad .la .lbar{left:6px;background:linear-gradient(90deg,rgba(255,107,94,.85),rgba(255,107,94,.35))}
+.lad .lq{position:absolute;top:0;bottom:0;display:flex;align-items:center;font:600 23px var(--mono);color:#eef4f7}
+.lad .lb .lq{right:16px} .lad .la .lq{left:16px}
+.lad .lhead{position:absolute;top:-38px;font:600 20px var(--mono);color:var(--muted);letter-spacing:.06em}
+/* charts drawn by SIG.chart */
+.chart text{font:500 20px var(--mono);fill:#8ea3b1}
+.chart .ax{stroke:#2c4351;stroke-width:2}
+.chart .grid{stroke:#1d303b;stroke-width:1}
+.chip{display:inline-block;padding:6px 12px;border-radius:8px;font:700 22px var(--mono);color:#06141a}
+table.t td.r{text-align:right}
+.pool{border-radius:22px;background:repeating-linear-gradient(135deg,#0a141b 0 14px,#0c1820 14px 28px);border:2px dashed #3a5566}
+.ghost{border-radius:14px;border:2px dashed;padding:14px 20px;font:600 28px var(--mono);background:rgba(8,18,26,.6)}
+.ghost.green{border-color:rgba(79,209,139,.7);color:#8fe3b3} .ghost.red{border-color:rgba(255,107,94,.7);color:#ffaaa2}

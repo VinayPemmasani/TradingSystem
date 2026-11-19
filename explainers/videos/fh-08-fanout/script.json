@@ -1,0 +1,43 @@
+[
+{
+"id": "title",
+"title": "Fan-out",
+"text": "One feed handler, many strategies. The cheapest way to hand them the data is shared memory: a ring buffer that one thread writes and another reads, with no system calls and no locks."
+},
+{
+"id": "spsc",
+"title": "SPSC ring",
+"text": "The lab's core ring has a single producer and a single consumer. Its capacity is a power of two, so a slot index is a mask, not a division. The producer owns the head index and the consumer owns the tail. Each sits on its own 64 byte cache line, so the two cores never fight over one line. The slots are zeroed at construction, which also faults their pages in before trading starts."
+},
+{
+"id": "cached",
+"title": "Cached indices",
+"text": "Each side also keeps a private copy of the other side's index. The producer reloads the real tail only when its copy says the ring is full. So in the common case, a push touches only the slot and the producer's own line. Publishing is a release store of the head. The consumer's acquire load of it then guarantees it sees the slot's contents."
+},
+{
+"id": "shm",
+"title": "Zero copy, shared memory",
+"text": "There is also a zero copy path. try_claim returns the next free slot, you write it in place, and commit publishes it. The feed handler's rx thread copies each datagram straight into a claimed slot. Because the ring holds no pointers, it can be built inside a shared memory region and read by another process. The region can also be locked into memory, and can ask for huge pages."
+},
+{
+"id": "aeron",
+"title": "Many readers",
+"text": "One ring has one reader. For many strategies, the lab republishes over Aeron IPC. itch-fh writes the gap-free ITCH stream once into a shared log buffer, and any number of trader processes read it. Each reader keeps its own position. The writer may run at most half a term ahead of the slowest reader, and beyond that it is back-pressured. Readers get frames in place, straight from the shared pages, so nothing is copied."
+},
+{
+"id": "measured",
+"title": "Measured",
+"text": "The lab measured both on a shared 4 vCPU container: 500,000 round trips of 64 bytes between two processes. Aeron IPC had a median of 0.72 to 0.81 microseconds, and a 99th percentile of 1.4 to 2.2. The lab's ring in shared memory had a median of 0.76 to 0.98, and a 99th percentile of 0.93 to 1.3. Placement mattered more than transport: on one physical core, the ring reached 76 nanoseconds."
+},
+{
+"id": "pitfalls",
+"title": "Pitfalls",
+"text": "The traps: a slow reader. A ring fills, and you must choose to drop or to spin; Aeron slows the writer down instead. Indices sharing a cache line. Pointers in shared memory, which mean nothing in another process. And late joiners, who start at the live position."
+},
+{
+"id": "takeaway",
+"title": "Takeaway",
+"text": "Fixed-size messages, one writer per ring, indices on their own cache lines, and a deliberate rule for what happens when a reader falls behind.",
+"hold": 1.0
+}
+]

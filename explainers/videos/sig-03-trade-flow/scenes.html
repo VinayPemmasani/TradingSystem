@@ -1,0 +1,74 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 03 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Trade flow</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Who crossed the spread, how much, and what it did to the price.</div>
+<div id="ti-tape" data-cue="1" data-anim="fade" style="left:140px;top:560px;width:1640px;height:90px;overflow:hidden"></div>
+<div class="lbl" data-cue="2" style="left:140px;top:700px">signed volume</div>
+<div class="stat c-amber" id="ti-sv" data-cue="2" style="left:140px;top:740px">0</div>
+</div>
+
+<div class="scene" id="s-aggressor">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Passive and aggressor</div>
+<div class="node red" data-cue="0" data-d="0.4" style="left:160px;top:250px;width:420px"><div class="t" style="font-size:28px">resting sell · ref 8813</div><div class="s">ask 50.02 · 300 shares · passive</div></div>
+<div class="node green" data-cue="0" data-d="0.9" style="left:1200px;top:250px;width:420px"><div class="t" style="font-size:28px">incoming buy</div><div class="s">crosses the spread · aggressor</div></div>
+<svg class="full"><path id="ag-p" d="M1195 300 L590 300" fill="none" stroke="none"/></svg>
+<div class="pkt" data-path="ag-p" data-cue="0" data-d="1.2" data-dur="1.4" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="lbl" data-cue="2" style="left:160px;top:440px">ITCH Order Executed (E) · 31 bytes</div>
+<div class="bytes" data-cue="2" data-d="0.2" style="left:160px;top:480px">
+<div style="width:90px;background:var(--blue)">E</div>
+<div style="width:300px;background:#9cc4ff">header (10)</div>
+<div style="width:300px;background:var(--amber)">order ref (8)<br>8813</div>
+<div style="width:200px;background:#ffd08a">shares (4)<br>300</div>
+<div style="width:300px;background:#ffe2b5">match number (8)</div>
+</div>
+<div class="node violet" data-cue="2" data-d="0.8" style="left:1300px;top:575px;width:500px"><div class="t" style="font-size:26px">book: ref 8813 → side S</div><div class="s">so the aggressor bought</div></div>
+<div class="node" data-cue="3" style="left:160px;top:660px;width:820px;text-align:left;border-color:var(--pink)"><div class="t" style="font-size:28px">Cross Trade (Q) · auction</div><div class="s">volume prints once · no aggressor · leave it out of flow<br>(its C executions are marked non-printable)</div></div>
+</div>
+
+<div class="scene" id="s-leeready">
+<div class="h2" data-cue="0" style="left:120px;top:110px">No order data? Lee and Ready (1991)</div>
+<div id="lr-axis" data-cue="1" data-anim="fade" style="left:160px;top:250px;width:900px;height:420px"></div>
+<div class="fcard green" data-cue="2" style="left:1150px;top:240px;width:660px"><span class="lbl">quote rule</span><div class="body">price &gt; prevailing mid → <span class="c-green">buy</span><br>price &lt; prevailing mid → <span class="c-red">sell</span></div></div>
+<div class="fcard amber" data-cue="3" style="left:1150px;top:430px;width:660px"><span class="lbl">at the mid: tick test</span><div class="body">vs the last <i>different</i> price<br>up → <span class="c-green">buy</span> · down → <span class="c-red">sell</span></div></div>
+<div class="tag c-violet" data-cue="4" style="left:160px;top:720px">1988 data: compare with quotes from 5 s before the trade</div>
+<div class="stat c-amber" data-cue="5" style="left:1150px;top:640px">≈72% right</div>
+<div class="src" data-cue="5" data-d="0.3" style="left:1150px;top:730px">Rosenthal, "Modeling Trade Direction" · ArcaTrade, 3–31 Dec 2004</div>
+</div>
+
+<div class="scene" id="s-classify">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:640px"><div class="body">bid <span class="c-green">50.00</span> · ask <span class="c-red">50.02</span><br>mid <span class="c-teal">50.01</span></div></div>
+<table class="t" data-cue="1" style="left:860px;top:230px;width:960px"><tr><th>print</th><th>vs mid</th><th>last different</th><th>call</th></tr>
+<tr data-cue="1"><td>50.02</td><td>above</td><td></td><td class="c-green">buy</td></tr>
+<tr data-cue="1" data-d="0.8"><td>50.00</td><td>below</td><td></td><td class="c-red">sell</td></tr>
+<tr data-cue="2" data-hl="3" data-hlend="4"><td>50.01</td><td>at mid</td><td><span data-cue="3">50.00 · up</span></td><td><span data-cue="3" class="c-green">buy</span></td></tr>
+<tr data-cue="4"><td>50.01</td><td>at mid</td><td>50.00 · zero tick</td><td class="c-green">buy</td></tr></table>
+<div id="cl-ch" data-cue="0" data-anim="fade" style="left:120px;top:420px;width:640px;height:420px"></div>
+</div>
+
+<div class="scene" id="s-lambda">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Signed flow and Kyle's lambda</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:640px"><span class="lbl">signed volume in a window</span><div class="math"><i>V</i> = Σ <i>s</i><sub><i>i</i></sub> <i>q</i><sub><i>i</i></sub>   <span style="font-size:.6em" class="c-muted">s = +1 buy, −1 sell</span></div></div>
+<div class="fcard violet" data-cue="2" style="left:120px;top:400px;width:640px"><span class="lbl">trade flow imbalance</span><div class="math">TFI = <span class="frac"><span><i>V</i></span><span>Σ <i>q</i><sub><i>i</i></sub></span></span></div></div>
+<div class="fcard amber" data-cue="3" style="left:120px;top:600px;width:640px"><span class="lbl">Kyle (1985)</span><div class="math">Δ<i>p</i> = <i>λ V</i></div></div>
+<div id="lm-ch" data-cue="4" data-anim="fade" style="left:860px;top:220px;width:960px;height:560px"></div>
+<div class="fcard amber" data-cue="5" style="left:860px;top:800px;width:960px;padding:10px 22px"><div class="math" style="font-size:32px"><i>λ</i> = Σ<i>VΔp</i> / Σ<i>V</i>² = 2,900 / 1,800,000 = <span class="val c-amber">1.6¢ per 1,000 sh</span></div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Persistent flow, and the lab</div>
+<div id="lb-signs" data-cue="1" data-anim="fade" style="left:120px;top:230px;width:1700px;height:60px"></div>
+<div class="src" data-cue="1" data-d="0.4" style="left:120px;top:305px">illustrative signs · Lillo &amp; Farmer: long memory in LSE order signs</div>
+<div class="code" data-cue="2" style="left:120px;top:380px;width:1100px;font-size:24px"><span class="c">$ itch-dump FILE --symbol AAPL --tob-csv aapl.csv</span>
+feed_ns,bid,bid_qty,ask,ask_qty,<span class="c-amber">traded_bid,traded_ask</span></div>
+<div class="node red" data-cue="3" style="left:120px;top:560px;width:520px"><div class="t" style="font-size:26px">traded_bid</div><div class="s">shares sold into the best bid</div></div>
+<div class="node green" data-cue="3" data-d="0.5" style="left:700px;top:560px;width:520px"><div class="t" style="font-size:26px">traded_ask</div><div class="s">shares bought from the best ask</div></div>
+<div class="node teal" data-cue="4" style="left:1300px;top:380px;width:520px;height:300px"><div class="t" style="font-size:28px">market data thread</div><div class="s">BookBuilder knows each order's side<br>E / C → ± shares<br>flow next to the book</div></div>
+<div class="fcard amber" data-cue="5" style="left:120px;top:720px;width:1100px;padding:10px 22px"><div class="math" style="font-size:32px"><i>V</i> = Σ traded_ask − Σ traded_bid <span style="font-size:22px;opacity:.6">over a window</span></div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:820px;height:200px;border-color:var(--pink)"><div class="ct c-pink">One venue</div><div class="cs">A direct feed sees only its own trades.</div></div>
+<div class="card" data-cue="0" data-d="1.2" style="left:990px;top:150px;width:820px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Hidden executions</div><div class="cs">Handle non-displayed fills separately.</div></div>
+<div class="big" data-cue="1" style="left:120px;top:450px;width:1700px"><span class="c-green">Sign</span> exactly where you can,<br><span class="c-violet">infer</span> where you can't, <span class="c-amber">measure λ</span>.</div>
+</div>

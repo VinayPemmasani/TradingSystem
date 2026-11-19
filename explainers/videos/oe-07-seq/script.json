@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Sequence numbers",
+"text": "A connection drops in the middle of the trading day. Did your last fill arrive? Did your cancel? Sequence numbers, resends and gap fills make sure nothing is lost, and nothing happens twice."
+},
+{
+"id": "why",
+"title": "Why TCP is not enough",
+"text": "TCP guarantees order only within one connection. When it breaks, bytes in flight are simply gone. So FIX numbers every message, in each direction, and the numbers carry on across reconnects for the whole day. Each side knows exactly which message it expects next. And when the line goes quiet, heartbeats and test requests tell each side whether the other is still there."
+},
+{
+"id": "rules",
+"title": "Three cases",
+"text": "Every message carries MsgSeqNum, tag 34. If it is the number expected, process it. If it is higher, messages were missed: send a ResendRequest, and process nothing after the gap until it is filled. If it is lower and marked as a possible duplicate, it is a resend: ignore it. Lower without that flag is a serious error: log out and disconnect."
+},
+{
+"id": "example",
+"title": "A worked example",
+"text": "We expect message 41, but 44 arrives. We don't process it; we send a ResendRequest from 41, with an end of zero, meaning everything. Message 41 was a heartbeat, and session messages are never resent. So the venue sends a SequenceReset with GapFill, saying the next number is 42. Then it resends 42, an execution report, with PossDupFlag Y and its original sending time. Message 43 is gap filled too. Last, 44 is resent, and now it is in sequence."
+},
+{
+"id": "soup",
+"title": "The Soup way",
+"text": "SoupBinTCP takes a simpler route. Its data packets carry no numbers at all: both sides count. After a reconnect, you log in asking for your count plus one, and the server replays from there. Login Accepted tells you the server's next sequence number, so you know at once how much you missed. The OUCH side is protected differently: an old UserRefNum is ignored as a retransmission, so resending an order can't double it."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab's FIX session keeps up to 32 megabytes, or about a million application messages, for resending. Beyond that, it gap fills instead. A Logon with ResetSeqNumFlag starts both sides again at one. And the end to end test drops a session in mid-flow, logs back in without a reset, and checks that every report arrives by resend. Heartbeats default to thirty seconds of silence, and a TestRequest that goes unanswered ends the connection."
+},
+{
+"id": "take",
+"title": "What pros do",
+"text": "Persist your sequence numbers, so a restart doesn't lose them. Never reset numbers to get out of trouble, because that throws away recovery. And decide what to do with stale orders: a sender may gap fill over old orders instead of resending them. Recovery is part of the protocol, so test it like a feature. Then break the connection on purpose in a test, and watch every message come back.",
+"hold": 1.0
+}
+]

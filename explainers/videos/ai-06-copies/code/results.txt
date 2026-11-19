@@ -1,0 +1,15 @@
+ai: by value + operator+   p50  162.9 ns  p99  302.9 ns  p99.9   538.1 ns  mean  264.4 ns  allocs/msg 2.29
+const& + operator+         p50  102.9 ns  p99  196.2 ns  p99.9   333.3 ns  mean  149.0 ns  allocs/msg 0.66
+fast: const& + to_chars    p50   64.8 ns  p99  138.1 ns  p99.9   245.7 ns  mean  102.5 ns  allocs/msg 0.00
+ai: by value + operator+   p50  158.1 ns  p99  244.8 ns  p99.9   430.5 ns  mean  199.1 ns  allocs/msg 2.29
+const& + operator+         p50   98.1 ns  p99  168.6 ns  p99.9   273.3 ns  mean  129.5 ns  allocs/msg 0.66
+fast: const& + to_chars    p50   49.5 ns  p99   98.1 ns  p99.9   138.1 ns  mean   88.1 ns  allocs/msg 0.00
+ai: by value + operator+   p50  161.0 ns  p99  247.6 ns  p99.9   429.5 ns  mean  222.3 ns  allocs/msg 2.29
+const& + operator+         p50  101.9 ns  p99  178.1 ns  p99.9   278.1 ns  mean  128.7 ns  allocs/msg 0.66
+fast: const& + to_chars    p50   52.4 ns  p99  100.0 ns  p99.9   138.1 ns  mean   63.0 ns  allocs/msg 0.00
+ai: by value + operator+   p50  161.9 ns  p99  247.6 ns  p99.9   434.3 ns  mean  238.6 ns  allocs/msg 2.29
+const& + operator+         p50  101.0 ns  p99  182.9 ns  p99.9   308.6 ns  mean  221.3 ns  allocs/msg 0.66
+fast: const& + to_chars    p50   64.8 ns  p99  132.4 ns  p99.9   210.5 ns  mean   99.4 ns  allocs/msg 0.00
+ai: by value + operator+   p50  161.9 ns  p99  244.8 ns  p99.9   433.3 ns  mean  171.6 ns  allocs/msg 2.29
+const& + operator+         p50  102.9 ns  p99  182.9 ns  p99.9   302.9 ns  mean  130.7 ns  allocs/msg 0.66
+fast: const& + to_chars    p50   52.4 ns  p99  100.0 ns  p99.9   152.4 ns  mean   68.9 ns  allocs/msg 0.00

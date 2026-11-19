@@ -1,0 +1,5 @@
+[
+["\\bITCH\\b","itch"],["\\brx\\b","R X"],["\\brecvmmsg\\b","recv M message"],
+["\\brdtscp\\b","R D T S C P"],["\\brdtsc\\b","R D T S C"],["\\bCPU's\\b","C P U's"],
+["\\b64 byte\\b","sixty four byte"],["\\bp90\\b","P ninety"],["\\bp99\\.99\\b","P ninety nine point nine nine"],["\\bp99\\.9\\b","P ninety nine point nine"],["\\bp99\\b","P ninety nine"]
+]

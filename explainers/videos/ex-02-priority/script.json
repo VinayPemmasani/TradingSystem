@@ -1,0 +1,40 @@
+[
+ {
+  "id": "title",
+  "title": "Priority",
+  "text": "When many orders rest at the same price, an incoming order cannot fill them all. Exchanges split it in two main ways: by time, or by size."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "The allocation rule decides how firms compete. Under price-time, being early is everything, so firms race to the front of the queue. Under pro-rata, size is what counts, so firms post more than they really want. Same price, same book, but a different winner. And the rule also decides what it costs to cancel or move an order."
+ },
+ {
+  "id": "fifo",
+  "title": "Price-time",
+  "text": "Price-time priority, also called FIFO, fills the best price first, then the oldest order at that price. Nasdaq's rule adds a step: at one price, displayed orders go before hidden ones, each by time. Here, a sell order for 300 shares meets three bids at $10.00. Q1 and Q2 arrived first, so they fill completely. Q3 posted the most shares, and gets nothing. That is why firms estimate their queue position, order by order."
+ },
+ {
+  "id": "prorata",
+  "title": "Pro-rata",
+  "text": "CME publishes a pro-rata example. A sell order for 50 lots meets six resting buys, with 403 lots between them. Each buy gets its share: order six has 300 of the 403 lots, so 37.2 lots, rounded down to 37. The biggest order takes most of the fill, wherever it sits in time. Shares that round below the two-lot minimum get nothing. That allocates 47 lots, and the last 3 go out in time order.",
+  "hold": 0.8
+ },
+ {
+  "id": "hybrid",
+  "title": "Hybrids",
+  "text": "Many futures use a mix. CME's Allocation algorithm first fills a top order: the first order to better the market. That rewards whoever improves the price first. Then it runs pro-rata, with a two-lot minimum, then FIFO for what is left. CME's SOFR futures use a pro-rata algorithm with a top order and a two-contract minimum. CME lists nine algorithms, and each product is assigned one."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's engine is pure price-time. Reducing an order's size keeps its place in the queue. But a replace, even to the same price, loses time priority and goes to the back. So the lab's market maker has a parameter, hold ticks. It leaves a resting order alone while it is within one tick of the quote it wants. Chasing every small price change would throw away the place it has already earned.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "Under FIFO, queue position is an asset, and every cancel and replace can cost it. Under pro-rata, size wins, so plan for fills larger than you meant. On a hybrid, read the product's algorithm before you quote. Price always comes first; what comes second decides the game.",
+  "hold": 1.0
+ }
+]

@@ -1,0 +1,89 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">HFT &amp; HEDGE FUND STRATEGIES · 08 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Merger arbitrage</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Buy the gap to the deal price. Carry the deal risk.</div>
+<div id="ti-c" data-cue="0" data-d="0.8" data-anim="fade" style="left:140px;top:500px;width:1100px;height:340px"></div>
+<div class="tag c-amber" data-cue="1" style="left:1260px;top:540px">offer price</div>
+<div class="tag c-teal" data-cue="1" data-d="0.4" style="left:1260px;top:610px">target trades just below</div>
+<div class="chip" data-cue="2" style="left:1260px;top:700px;background:var(--violet)">event-driven</div>
+</div>
+
+<div class="scene" id="s-mech">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Cash deal vs stock deal</div>
+<div class="lbl" data-cue="0" style="left:120px;top:220px">CASH DEAL</div>
+<div class="node green" data-cue="0" data-d="0.3" style="left:120px;top:270px;width:360px"><div class="t c-green">buy target</div><div class="s">at a discount</div></div>
+<svg class="full"><path id="me-1" d="M480 330 L700 330" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="1" marker-end="url(#ah-amber)"/>
+<path id="me-2" d="M480 640 L700 640" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="4" marker-end="url(#ah-amber)"/></svg>
+<div class="pkt" data-path="me-1" data-cue="1" data-d="0.4" data-dur="1.0" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="node amber" data-cue="1" style="left:700px;top:270px;width:420px"><div class="t">deal closes</div><div class="s">paid the offer in cash</div></div>
+<div class="tag c-amber" data-cue="1" data-d="0.6" style="left:1160px;top:310px">gap = profit</div>
+<div class="lbl" data-cue="2" style="left:120px;top:500px">STOCK DEAL · paid in acquirer shares</div>
+<div class="node green" data-cue="3" style="left:120px;top:550px;width:360px"><div class="t c-green">buy 100 target</div></div>
+<div class="node red" data-cue="3" data-d="0.4" style="left:120px;top:680px;width:360px"><div class="t c-red">short 100 × ratio acquirer</div></div>
+<div class="node amber" data-cue="4" style="left:700px;top:580px;width:420px"><div class="t">spread locked</div><div class="s">acquirer moves cancel</div></div>
+<div class="fcard" data-cue="3" data-d="0.8" style="left:1200px;top:550px;width:600px"><span class="lbl">e.g. ratio 0.5</span><div class="body">1 target share → 0.5 acquirer share<br>short 50 per 100 target held</div></div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: the implied odds</div>
+<div id="ex-c" data-cue="0" data-anim="fade" style="left:120px;top:210px;width:900px;height:560px"></div>
+<div class="fcard green" data-cue="1" style="left:1100px;top:220px;width:700px"><span class="lbl">deal closes</span><div class="h3">+$2 / share ≈ <span class="c-green">+4.2%</span></div></div>
+<div class="fcard pink" data-cue="2" style="left:1100px;top:370px;width:700px"><span class="lbl">deal breaks</span><div class="h3">back to $35 ≈ <span class="c-pink">−$13</span></div></div>
+<div class="fcard violet" data-cue="4" style="left:1100px;top:520px;width:700px"><span class="lbl">solve for p</span><div class="math" style="font-size:36px">48 = <i>p</i>·50 + (1 − <i>p</i>)·35</div><div class="math" style="font-size:36px"><i>p</i> = 13/15 ≈ <span class="val c-violet">0.87</span></div></div>
+<div class="tag c-amber" data-cue="5" style="left:1100px;top:740px">the spread is a price for deal risk</div>
+<div class="src" data-cue="0" style="left:120px;top:790px">illustrative numbers</div>
+</div>
+
+<div class="scene" id="s-risk">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Lopsided payoff</div>
+<div id="ri-c" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:800px;height:330px"></div>
+<div class="tag c-muted" data-cue="0" data-d="0.5" style="left:120px;top:560px">illustrative: many small gains, rare large breaks</div>
+<div class="chip" data-cue="1" style="left:120px;top:620px;background:var(--pink)">antitrust</div>
+<div class="chip" data-cue="1" data-d="0.2" style="left:290px;top:620px;background:var(--pink)">financing</div>
+<div class="chip" data-cue="1" data-d="0.4" style="left:460px;top:620px;background:var(--pink)">shareholder vote</div>
+<div class="chip" data-cue="1" data-d="0.6" style="left:720px;top:620px;background:var(--pink)">no better bid</div>
+<div class="fcard blue" data-cue="2" style="left:120px;top:690px;width:800px"><span class="lbl">US HSR review (FTC)</span><div class="body" style="font-size:26px">wait 30 days · 15 for cash tender · second request extends</div></div>
+<div class="src" data-cue="3" style="left:1000px;top:220px">Mitchell &amp; Pulvino, J. Finance 56(6), 2001 · 4,750 mergers, 1963–1998</div>
+<div id="ri-p" data-cue="3" data-anim="fade" style="left:1000px;top:270px;width:800px;height:430px"></div>
+<div class="tag c-pink" data-cue="4" style="left:1000px;top:720px">like selling an index put</div>
+</div>
+
+<div class="scene" id="s-event">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Event-driven: a dated catalyst</div>
+<div class="node violet" data-cue="1" style="left:120px;top:240px;width:380px"><div class="t">spin-off</div></div>
+<div class="node violet" data-cue="1" data-d="0.2" style="left:540px;top:240px;width:380px"><div class="t">index addition</div></div>
+<div class="node violet" data-cue="1" data-d="0.4" style="left:960px;top:240px;width:380px"><div class="t">bankruptcy</div></div>
+<div class="node violet" data-cue="1" data-d="0.6" style="left:1380px;top:240px;width:420px"><div class="t">earnings</div></div>
+<svg class="full"><path d="M160 520 L1760 520" stroke="#2c4351" stroke-width="4" fill="none" class="draw" data-cue="0"/></svg>
+<div class="tag" data-cue="0" style="left:160px;top:550px">today</div>
+<div style="left:1200px;top:470px;width:6px;height:100px;background:var(--amber)" data-cue="0" data-d="0.8"></div>
+<div class="tag c-amber" data-cue="0" data-d="0.8" style="left:1120px;top:420px">event date</div>
+<div class="card amber" data-cue="2" style="left:120px;top:640px;width:820px"><div class="ct c-amber">edge</div><div class="cs">better odds, patience to hold</div></div>
+<div class="card pink" data-cue="3" style="left:980px;top:640px;width:820px"><div class="ct c-pink">tail</div><div class="cs">the event goes the other way</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: thesis.hpp</div>
+<div class="node violet" data-cue="1" style="left:1600px;top:270px;width:200px"><div class="t">fair value</div><div class="s">analyst input</div></div>
+<div class="lbl" data-cue="0" data-d="0.8" style="left:120px;top:220px">FAIR VALUE: FROM OUTSIDE THE FEED</div>
+<div class="node" data-cue="2" style="left:120px;top:270px;width:300px"><div class="t">research</div><div class="s">10 days</div></div>
+<div class="node green" data-cue="2" data-d="0.3" style="left:500px;top:270px;width:300px"><div class="t">build</div><div class="s">≥ 10% below FV</div></div>
+<div class="node teal" data-cue="2" data-d="0.6" style="left:880px;top:270px;width:300px"><div class="t">hold</div></div>
+<div class="node amber" data-cue="2" data-d="0.9" style="left:1260px;top:270px;width:300px"><div class="t">exit</div><div class="s">within 3% of FV</div></div>
+<svg class="full">
+<path d="M420 330 L500 330" stroke="#8ea3b1" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="0.3" marker-end="url(#ah)"/>
+<path d="M800 330 L880 330" stroke="#8ea3b1" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="0.6" marker-end="url(#ah)"/>
+<path d="M1180 330 L1260 330" stroke="#8ea3b1" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="0.9" marker-end="url(#ah)"/>
+<path d="M1030 390 C 1030 470 1400 470 1410 395" stroke="#ff8fc8" stroke-width="3" fill="none" class="draw" data-cue="4" marker-end="url(#ah)"/>
+</svg>
+<div class="tag c-pink" data-cue="4" style="left:1060px;top:470px">stop: 25% below average cost</div>
+<div class="code" data-cue="3" style="left:120px;top:540px;width:1680px;font-size:24px"><span class="line" data-hl="3" data-hlend="4">entry_bps = <span class="r">1000</span>;  exit_bps = <span class="r">300</span>;  stop_bps = <span class="r">2500</span>;</span><span class="line">research_days = <span class="r">10</span>;  max_hold_days = <span class="r">230</span>;</span><span class="line" data-hl="5"><span class="c">// sketch, not in the lab: merger arb sets fair_value = deal price, stop = break price</span></span></div>
+<div class="src" data-cue="1" style="left:120px;top:730px">firm/strategy/include/lab/strategy/thesis.hpp · ThesisParams defaults</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:250px;width:1640px">Harvest a premium for deal risk.<br><span class="c-pink">Lose big when deals break.</span></div>
+<div class="chip" data-cue="1" style="left:140px;top:640px;background:var(--blue)">legal research</div>
+<div class="chip" data-cue="1" data-d="0.3" style="left:380px;top:640px;background:var(--pink)">position limits</div>
+<div class="chip" data-cue="1" data-d="0.6" style="left:630px;top:640px;background:var(--teal)">many deals</div>
+</div>

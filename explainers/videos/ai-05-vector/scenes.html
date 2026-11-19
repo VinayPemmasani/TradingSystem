@@ -1,0 +1,149 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">PATTERN 05 / 16</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:220px">A fresh vector<br>every tick</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:520px;width:1500px">push_back with no reserve, returned by value, versus a buffer you size once.</div>
+<div class="side c-red" data-cue="2" style="left:140px;top:650px">general version · per call</div>
+<div class="tagx" data-cue="3" data-d="0.5" data-anim="scale" style="left:140px;top:705px;border-color:var(--amber);color:var(--amber)">malloc #1</div>
+<div class="tagx" data-cue="3" data-d="0.85" data-anim="scale" style="left:370px;top:705px;border-color:var(--amber);color:var(--amber)">malloc #2</div>
+<div class="tagx" data-cue="3" data-d="1.2" data-anim="scale" style="left:600px;top:705px;border-color:var(--amber);color:var(--amber)">malloc #3</div>
+<div class="tagx" data-cue="3" data-d="1.5499999999999998" data-anim="scale" style="left:830px;top:705px;border-color:var(--amber);color:var(--amber)">malloc #4</div>
+<div class="tagx" data-cue="3" data-d="1.9" data-anim="scale" style="left:1060px;top:705px;border-color:var(--amber);color:var(--amber)">malloc #5</div>
+<div class="side c-teal" data-cue="3" data-d="2.6" style="left:140px;top:800px">hot path · per call: 0 allocations</div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The general version</div>
+<div class="side c-red" data-cue="0" style="left:120px;top:200px">general-purpose</div>
+<div class="code left" data-cue="0" data-d="0.3" style="left:120px;top:245px;width:900px;font-size:27px;"><span class="line"><span class="c">// Each tick: the levels priced inside [lo, hi]</span></span><span class="line" data-hl="3" data-hlend="4"><span class="v">std::vector</span>&lt;<span class="v">Level</span>&gt; levels_in_band(<span class="k">const</span> <span class="v">Book</span>&amp; b,</span><span class="line">                                  <span class="v">Px</span> lo, <span class="v">Px</span> hi) {</span><span class="line" data-hl="2" data-hlend="3">  <span class="v">std::vector</span>&lt;<span class="v">Level</span>&gt; out;</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; b.depth; ++i) {</span><span class="line" data-hl="1" data-hlend="2">    <span class="k">const</span> <span class="v">Level</span>&amp; l = b.levels[i];</span><span class="line" data-hl="1" data-hlend="2">    <span class="k">if</span> (l.px &gt;= lo &amp;&amp; l.px &lt;= hi)</span><span class="line" data-hl="2" data-hlend="3">      out.push_back(l);</span><span class="line">  }</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">return</span> out;</span><span class="line">}</span></div>
+<div class="lbl" data-cue="1" style="left:1180px;top:200px">book: 32 levels (top 12 shown)</div>
+<div class="mono" data-cue="1" data-d="0.0" style="left:1180px;top:244px;font-size:22px;color:#cfdbe2">100000</div>
+<div class="bar" data-cue="1" data-d="0.0" data-anim="fade" style="left:1320px;top:240px;width:120px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.04" style="left:1180px;top:288px;font-size:22px;color:#cfdbe2">99995</div>
+<div class="bar" data-cue="1" data-d="0.04" data-anim="fade" style="left:1320px;top:284px;width:157px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.08" style="left:1180px;top:332px;font-size:22px;color:#cfdbe2">99990</div>
+<div class="bar" data-cue="1" data-d="0.08" data-anim="fade" style="left:1320px;top:328px;width:194px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.12" style="left:1180px;top:376px;font-size:22px;color:#cfdbe2">99985</div>
+<div class="bar" data-cue="1" data-d="0.12" data-anim="fade" style="left:1320px;top:372px;width:231px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="bar" data-cue="1" data-d="0.8" data-anim="fade" style="left:1320px;top:372px;width:231px;height:34px;background:var(--red);opacity:.85;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.16" style="left:1180px;top:420px;font-size:22px;color:#cfdbe2">99980</div>
+<div class="bar" data-cue="1" data-d="0.16" data-anim="fade" style="left:1320px;top:416px;width:268px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="bar" data-cue="1" data-d="0.9" data-anim="fade" style="left:1320px;top:416px;width:268px;height:34px;background:var(--red);opacity:.85;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.2" style="left:1180px;top:464px;font-size:22px;color:#cfdbe2">99975</div>
+<div class="bar" data-cue="1" data-d="0.2" data-anim="fade" style="left:1320px;top:460px;width:305px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="bar" data-cue="1" data-d="1.0" data-anim="fade" style="left:1320px;top:460px;width:305px;height:34px;background:var(--red);opacity:.85;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.24" style="left:1180px;top:508px;font-size:22px;color:#cfdbe2">99970</div>
+<div class="bar" data-cue="1" data-d="0.24" data-anim="fade" style="left:1320px;top:504px;width:342px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="bar" data-cue="1" data-d="1.1" data-anim="fade" style="left:1320px;top:504px;width:342px;height:34px;background:var(--red);opacity:.85;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.28" style="left:1180px;top:552px;font-size:22px;color:#cfdbe2">99965</div>
+<div class="bar" data-cue="1" data-d="0.28" data-anim="fade" style="left:1320px;top:548px;width:379px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="bar" data-cue="1" data-d="1.2000000000000002" data-anim="fade" style="left:1320px;top:548px;width:379px;height:34px;background:var(--red);opacity:.85;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.32" style="left:1180px;top:596px;font-size:22px;color:#cfdbe2">99960</div>
+<div class="bar" data-cue="1" data-d="0.32" data-anim="fade" style="left:1320px;top:592px;width:156px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="bar" data-cue="1" data-d="1.3" data-anim="fade" style="left:1320px;top:592px;width:156px;height:34px;background:var(--red);opacity:.85;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.36" style="left:1180px;top:640px;font-size:22px;color:#cfdbe2">99955</div>
+<div class="bar" data-cue="1" data-d="0.36" data-anim="fade" style="left:1320px;top:636px;width:193px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.4" style="left:1180px;top:684px;font-size:22px;color:#cfdbe2">99950</div>
+<div class="bar" data-cue="1" data-d="0.4" data-anim="fade" style="left:1320px;top:680px;width:230px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="mono" data-cue="1" data-d="0.44" style="left:1180px;top:728px;font-size:22px;color:#cfdbe2">99945</div>
+<div class="bar" data-cue="1" data-d="0.44" data-anim="fade" style="left:1320px;top:724px;width:267px;height:34px;background:#2a3a45;border-radius:6px"></div>
+<div class="tagx" data-cue="1" data-d="1.5" style="left:1660px;top:410px;border-color:var(--red);color:var(--red)">[lo, hi]</div>
+<div class="tagx" data-cue="2" data-d="0.3" style="left:1180px;top:790px;border-color:var(--red);color:var(--red)">push_back × matches</div>
+<div class="tagx" data-cue="3" data-d="0.3" style="left:1180px;top:850px;border-color:var(--red);color:var(--red)">returned by value → caller frees</div>
+<div class="chk" data-cue="4" style="left:120px;top:800px"><i style="background:var(--green)"></i>correct · idiomatic · safe</div>
+<div class="chk" data-cue="5" style="left:120px;top:860px"><i style="background:var(--amber)"></i>no latency budget in the prompt</div>
+</div>
+<div class="scene" id="s-growth">
+<div class="h2" data-cue="0" style="left:120px;top:110px">push_back without reserve</div>
+<div data-cue="1" data-d="0.0" data-dim="3" style="position:absolute;left:120px;top:220px;width:1300px;height:64px">
+<div class="mono" style="position:absolute;left:0;top:14px;font-size:24px;color:var(--amber);white-space:nowrap">malloc(16 B)</div>
+<div style="position:absolute;left:250px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+</div>
+<div class="tagx" data-cue="2" data-d="0.0" style="left:450px;top:228px;border-color:var(--amber);color:var(--amber)">copy 1 → free</div>
+<div data-cue="1" data-d="0.55" data-dim="3" style="position:absolute;left:120px;top:312px;width:1300px;height:64px">
+<div class="mono" style="position:absolute;left:0;top:14px;font-size:24px;color:var(--amber);white-space:nowrap">malloc(32 B)</div>
+<div style="position:absolute;left:250px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:306px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+</div>
+<div class="tagx" data-cue="2" data-d="0.4" style="left:506px;top:320px;border-color:var(--amber);color:var(--amber)">copy 2 → free</div>
+<div data-cue="1" data-d="1.1" data-dim="3" style="position:absolute;left:120px;top:404px;width:1300px;height:64px">
+<div class="mono" style="position:absolute;left:0;top:14px;font-size:24px;color:var(--amber);white-space:nowrap">malloc(64 B)</div>
+<div style="position:absolute;left:250px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:306px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:362px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:418px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+</div>
+<div class="tagx" data-cue="2" data-d="0.8" style="left:618px;top:412px;border-color:var(--amber);color:var(--amber)">copy 4 → free</div>
+<div data-cue="1" data-d="1.6500000000000001" data-dim="3" style="position:absolute;left:120px;top:496px;width:1300px;height:64px">
+<div class="mono" style="position:absolute;left:0;top:14px;font-size:24px;color:var(--amber);white-space:nowrap">malloc(128 B)</div>
+<div style="position:absolute;left:250px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:306px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:362px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:418px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:474px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:530px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:586px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:642px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+</div>
+<div class="tagx" data-cue="2" data-d="1.2000000000000002" style="left:842px;top:504px;border-color:var(--amber);color:var(--amber)">copy 8 → free</div>
+<div data-cue="1" data-d="2.2" style="position:absolute;left:120px;top:588px;width:1300px;height:64px">
+<div class="mono" style="position:absolute;left:0;top:14px;font-size:24px;color:var(--amber);white-space:nowrap">malloc(256 B)</div>
+<div style="position:absolute;left:250px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:306px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:362px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:418px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:474px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:530px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:586px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:642px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:698px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:754px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:810px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:866px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:922px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:978px;top:6px;width:48px;height:52px;border-radius:8px;background:var(--red);opacity:0.9;border:2px solid var(--red)"></div>
+<div style="position:absolute;left:1034px;top:6px;width:48px;height:52px;border-radius:8px;background:transparent;opacity:1;border:2px dashed #4b6474"></div>
+<div style="position:absolute;left:1090px;top:6px;width:48px;height:52px;border-radius:8px;background:transparent;opacity:1;border:2px dashed #4b6474"></div>
+</div>
+<div class="tagx" data-cue="4" data-d="0.2" style="left:1300px;top:596px;border-color:var(--red);color:var(--red)">caller: free</div>
+<div class="box amber" data-cue="3" style="left:1500px;top:220px;width:320px;height:380px"><div class="lbl">band of 14 levels</div><div class="t" style="margin-top:18px;font-size:40px"><span class="count" data-cue="3" data-d="0.3" data-from="0" data-to="5" data-dur="1.2"></span> malloc</div><div class="t" style="margin-top:12px;font-size:40px"><span class="count" data-cue="3" data-d="0.3" data-from="0" data-to="4" data-dur="1.2"></span> free</div><div class="t" style="margin-top:12px;font-size:40px"><span class="count" data-cue="3" data-d="0.3" data-from="0" data-to="15" data-dur="1.2"></span> copies</div><div class="s" style="margin-top:16px">+1 free in the caller</div></div>
+<div class="chk" data-cue="5" style="left:120px;top:720px"><i style="background:var(--green)"></i>tcache hit: ≈18 ns per growth step ((144 − 53) ÷ 5)</div>
+<div class="chk" data-cue="6" style="left:120px;top:785px"><i style="background:var(--red)"></i>tcache miss → arena lock</div>
+<div class="chk" data-cue="6" data-d="0.8" style="left:120px;top:850px"><i style="background:var(--red)"></i>heap grows → brk / mmap syscalls, page faults</div>
+</div>
+<div class="scene" id="s-hot">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The hot-path version</div>
+<div class="side c-red" data-cue="0" style="left:90px;top:190px">general</div>
+<div class="code left dimc" data-cue="0" data-d="0" style="left:90px;top:230px;width:840px;font-size:23px;"><span class="line"><span class="c">// Each tick: the levels priced inside [lo, hi]</span></span><span class="line"><span class="v">std::vector</span>&lt;<span class="v">Level</span>&gt; levels_in_band(<span class="k">const</span> <span class="v">Book</span>&amp; b,</span><span class="line">                                  <span class="v">Px</span> lo, <span class="v">Px</span> hi) {</span><span class="line">  <span class="v">std::vector</span>&lt;<span class="v">Level</span>&gt; out;</span><span class="line">  <span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; b.depth; ++i) {</span><span class="line">    <span class="k">const</span> <span class="v">Level</span>&amp; l = b.levels[i];</span><span class="line">    <span class="k">if</span> (l.px &gt;= lo &amp;&amp; l.px &lt;= hi)</span><span class="line">      out.push_back(l);</span><span class="line">  }</span><span class="line">  <span class="k">return</span> out;</span><span class="line">}</span></div>
+<div class="side c-teal" data-cue="0" data-d="0.4" style="left:990px;top:190px">hot path</div>
+<div class="code right" data-cue="0" data-d="0.4" style="left:990px;top:230px;width:850px;font-size:23px;"><span class="line" data-hl="2" data-hlend="3"><span class="k">struct</span> <span class="v">Band</span> {                      <span class="c">// caller owns it</span></span><span class="line" data-hl="1" data-hlend="2">  <span class="v">std::array</span>&lt;<span class="v">Level</span>, kMaxDepth&gt; v;  <span class="c">// depth &lt;= 32</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="k">int</span> n = <span class="r">0</span>;</span><span class="line" data-hl="2" data-hlend="3">};</span><span class="line"><span class="k">inline</span> <span class="k">void</span> levels_in_band(<span class="k">const</span> <span class="v">Book</span>&amp; b, <span class="v">Px</span> lo,</span><span class="line" data-hl="2" data-hlend="3">                           <span class="v">Px</span> hi, <span class="v">Band</span>&amp; out) {</span><span class="line">  <span class="k">int</span> n = <span class="r">0</span>;</span><span class="line">  <span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; b.depth; ++i) {</span><span class="line">    <span class="k">const</span> <span class="v">Level</span>&amp; l = b.levels[i];</span><span class="line">    <span class="k">if</span> (l.px &gt;= lo &amp;&amp; l.px &lt;= hi)</span><span class="line" data-hl="3" data-hlend="5">      out.v[n++] = l;   <span class="c">// n &lt;= depth &lt;= 32</span></span><span class="line">  }</span><span class="line" data-hl="3" data-hlend="4">  out.n = n;</span><span class="line">}</span></div>
+<div class="tagx" data-cue="0" data-d="1.2" style="left:90px;top:680px;border-color:var(--teal);color:var(--teal)">constraint: depth ≤ 32 levels</div>
+<div class="chk" data-cue="5" style="left:90px;top:760px"><i style="background:var(--teal)"></i>0 malloc · 0 free · 0 copies</div>
+<div class="chk" data-cue="5" data-d="1.2" style="left:90px;top:825px"><i style="background:var(--teal)"></i>same 512 bytes every tick: hot in L1</div>
+<div class="code right" data-cue="6" data-d="0" style="left:990px;top:760px;width:850px;font-size:23px;"><span class="line"><span class="v">std::vector</span>&lt;<span class="v">Level</span>&gt; buf;</span><span class="line" data-hl="6" data-hlend="7">buf.reserve(kMaxDepth);  <span class="c">// startup</span></span><span class="line" data-hl="7">buf.clear();             <span class="c">// per tick</span></span></div>
+</div>
+<div class="scene" id="s-measured">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measured</div>
+<div class="lbl" data-cue="2" style="left:120px;top:200px">median (p50), ns per call</div>
+<div class="brow" data-cue="2" data-d="0" style="left:120px;top:240px"><div class="nm" style="width:380px">fresh vector</div><div class="b grow" data-cue="2" data-d="0.2" data-w="489" style="background:var(--red)"></div><div class="v" style="color:var(--red)">144 ns</div></div>
+<div class="brow" data-cue="2" data-d="0.4" style="left:120px;top:296px"><div class="nm" style="width:380px">array + size</div><div class="b grow" data-cue="2" data-d="0.6000000000000001" data-w="180" style="background:var(--teal)"></div><div class="v" style="color:var(--teal)">53 ns</div></div>
+<div class="brow" data-cue="4" data-d="0" style="left:120px;top:352px"><div class="nm" style="width:380px">reserved vector</div><div class="b grow" data-cue="4" data-d="0.2" data-w="173" style="background:var(--teal)"></div><div class="v" style="color:var(--teal)">51 ns</div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:430px">p99, ns per call</div>
+<div class="brow" data-cue="3" data-d="0" style="left:120px;top:470px"><div class="nm" style="width:380px">fresh vector</div><div class="b grow" data-cue="3" data-d="0.2" data-w="873" style="background:var(--red)"></div><div class="v" style="color:var(--red)">257 ns</div></div>
+<div class="brow" data-cue="3" data-d="0.4" style="left:120px;top:526px"><div class="nm" style="width:380px">array + size</div><div class="b grow" data-cue="3" data-d="0.6000000000000001" data-w="285" style="background:var(--teal)"></div><div class="v" style="color:var(--teal)">84 ns</div></div>
+<div class="brow" data-cue="4" data-d="0.3" style="left:120px;top:582px"><div class="nm" style="width:380px">reserved vector</div><div class="b grow" data-cue="4" data-d="0.5" data-w="285" style="background:var(--teal)"></div><div class="v" style="color:var(--teal)">84 ns</div></div>
+<div class="stat" data-cue="1" style="left:180px;top:680px;width:560px"><div class="n"><span class="c-red">5.08</span> <span class="c-muted" style="font-size:60px">→</span> <span class="c-teal">0</span></div><div class="l">allocations per call</div></div>
+<div class="stat" data-cue="6" style="left:900px;top:680px;width:620px"><div class="n"><span class="c-red">136</span> <span class="c-muted" style="font-size:60px">→</span> <span class="c-teal">29</span></div><div class="l">instructions in the function (objdump)</div></div>
+<div class="foot" data-cue="0" data-d="0.5" style="left:120px;top:900px">measured on a shared 4-vCPU cloud VM · g++ 13 -O2 · taskset · 400k calls · median of 5 runs · bands of 4–24 levels</div>
+</div>
+<div class="scene" id="s-nuance">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The missing constraint</div>
+<div class="lbl" data-cue="1" style="left:120px;top:220px">state it</div>
+<div class="chk" data-cue="1" data-d="0.4" style="left:120px;top:265px"><i style="background:var(--teal)"></i>results are bounded: ≤ 32 levels</div>
+<div class="chk" data-cue="1" data-d="1.2" style="left:120px;top:330px"><i style="background:var(--teal)"></i>no allocation on the hot thread</div>
+<div class="lbl" data-cue="2" data-d="0.3" style="left:120px;top:470px;width:1600px;font-size:26px;color:#cfdbe2">bounded in practice: book depth · legs per order · fills per message</div>
+<div class="chk" data-cue="3" style="left:120px;top:395px"><i style="background:var(--amber)"></i>then measure p50 and p99</div>
+<div class="lbl" data-cue="4" style="left:1000px;top:220px">a fresh vector is fine</div>
+<div class="chk" data-cue="4" data-d="0.0" style="left:1000px;top:265px"><i style="background:var(--green)"></i>at startup</div>
+<div class="chk" data-cue="4" data-d="0.5" style="left:1000px;top:330px"><i style="background:var(--green)"></i>in tools and tests</div>
+<div class="chk" data-cue="4" data-d="1.0" style="left:1000px;top:395px"><i style="background:var(--green)"></i>on cold paths</div>
+<div class="rule" data-cue="5" style="left:120px;top:600px;width:1680px;text-align:center">Size it once. Reuse it every tick.</div>
+</div>

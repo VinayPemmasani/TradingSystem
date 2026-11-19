@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "UDP vs TCP",
+"text": "Market data rides on UDP, and orders ride on TCP. The reason is what each protocol does when a packet goes missing."
+},
+{
+"id": "headers",
+"title": "Two contracts",
+"text": "UDP adds just 8 bytes: two ports, a length and a checksum. Its RFC says plainly that delivery and duplicate protection are not guaranteed. TCP's header is at least 20 bytes, with sequence and acknowledgement numbers. It promises a reliable, in-order byte stream, after a three-way handshake sets up the connection."
+},
+{
+"id": "loss",
+"title": "When packet 3 is lost",
+"text": "Now drop packet 3 of 6. TCP holds 4, 5 and 6 inside the kernel, because it may only hand bytes over in order. Your application sees nothing until 3 is resent. Duplicate acknowledgements can trigger a fast resend, but that still costs at least a round trip. If the timer fires instead, Linux waits at least 200 milliseconds. UDP hands over 4, 5 and 6 at once, and leaves the gap for you to handle."
+},
+{
+"id": "md",
+"title": "Market data: UDP",
+"text": "For market data, that trade is worth it. Multicast only works with UDP, so one send reaches every subscriber. A slow receiver cannot slow the exchange, because there is no flow control. Instead, the feed carries its own sequence numbers. A MoldUDP64 header is 20 bytes: session, the first sequence number, and a message count. A receiver that spots a gap asks a re-request server, over unicast, for just the missing messages. And when the feed is quiet, a heartbeat about once a second carries the next sequence number, so silence cannot hide a loss."
+},
+{
+"id": "oe",
+"title": "Orders: TCP",
+"text": "Orders are different. Every order and cancel must arrive exactly once, and in order, between two known parties. So order entry runs over TCP. SoupBinTCP frames each message with a two byte length and a type, logs in, and sends heartbeats after a second of silence. If the connection drops, the client logs in again and asks for the next sequence number it expects, so nothing is skipped. A lost segment costs time, but never correctness."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab uses both. Its feed receiver takes datagrams of up to 1472 bytes: a 1500 byte frame, less 20 bytes of IP and 8 of UDP. It waits 100 microseconds for reordering before it asks for a gap, then re-asks every 20 milliseconds, up to 10 times. On the order side, every TCP stream turns on TCP_NODELAY, and queues whatever the kernel cannot take right away."
+},
+{
+"id": "take",
+"title": "Takeaway",
+"text": "So choose by what a loss should cost. UDP gives you the newest data now, and you repair gaps yourself. TCP gives you every byte in order, and you pay for it in waiting.",
+"hold": 1.5
+}
+]

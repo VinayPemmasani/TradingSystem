@@ -1,0 +1,6 @@
+sink=/tmp/claude-0/vx/ai-09-logging/code/out.log calls=100000  timer overhead p50 21.0 ns (included below)
+run 0  endl: p50   617.1 p99   2340.0 p99.9  12842.9 alloc/call 0.00 | '\n': p50  259.0 p99  1264.8 p99.9   6192.4 | ring: p50 116.2 p99  150.5 p99.9 1982.9 alloc/call 0.00 written 100000 dropped 0
+run 1  endl: p50   640.0 p99   2242.9 p99.9   6287.6 alloc/call 0.00 | '\n': p50  267.6 p99  1461.0 p99.9   7655.2 | ring: p50 115.2 p99  137.1 p99.9  231.4 alloc/call 0.00 written 100000 dropped 0
+run 2  endl: p50   641.0 p99   2177.1 p99.9  11068.6 alloc/call 0.00 | '\n': p50  267.6 p99  1233.3 p99.9   6241.0 | ring: p50  91.4 p99  108.6 p99.9  210.5 alloc/call 0.00 written 100000 dropped 0
+run 3  endl: p50   624.8 p99   2163.8 p99.9   7193.3 alloc/call 0.00 | '\n': p50  250.5 p99  1136.2 p99.9   5473.3 | ring: p50 119.0 p99  145.7 p99.9  275.2 alloc/call 0.00 written 100000 dropped 0
+run 4  endl: p50   623.8 p99   2180.0 p99.9  10954.3 alloc/call 0.00 | '\n': p50  261.0 p99  1225.7 p99.9   5682.9 | ring: p50 111.4 p99  133.3 p99.9  226.7 alloc/call 0.00 written 100000 dropped 0

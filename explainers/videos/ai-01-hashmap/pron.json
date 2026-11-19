@@ -1,0 +1,11 @@
+[
+["std::string", "standard string"],
+["\\bITCH\\b", "itch"],
+["\\bL2\\b", "L two"],
+["\\bVM\\b", "V M"],
+["\\bp99\\b", "P ninety nine"],
+["\\b32 byte\\b", "thirty two byte"],
+["\\b9\\.5\\b", "nine point five"],
+["\\bids\\b", "I Ds"],
+["\\bid\\b", "I D"]
+]

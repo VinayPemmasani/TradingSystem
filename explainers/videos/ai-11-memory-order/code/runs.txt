@@ -1,0 +1,5 @@
+run 0  publish loop ns/op: seq_cst 11.58  release 2.49  | 2-thread ring ns/msg: seq_cst 161.10  acq/rel 45.29
+run 1  publish loop ns/op: seq_cst 11.83  release 3.07  | 2-thread ring ns/msg: seq_cst 164.42  acq/rel 47.84
+run 2  publish loop ns/op: seq_cst 11.62  release 2.53  | 2-thread ring ns/msg: seq_cst 168.29  acq/rel 51.18
+run 3  publish loop ns/op: seq_cst 11.77  release 2.62  | 2-thread ring ns/msg: seq_cst 45.60  acq/rel 48.43
+run 4  publish loop ns/op: seq_cst 11.58  release 2.53  | 2-thread ring ns/msg: seq_cst 164.17  acq/rel 48.08

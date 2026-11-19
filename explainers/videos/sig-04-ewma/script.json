@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Online features",
+  "text": "A signal is only as good as the features under it, and every feature must update in constant time, on every message. This video covers three workhorses: the exponential average, its variance, and session VWAP."
+ },
+ {
+  "id": "ewma",
+  "title": "Exponential average",
+  "text": "An exponentially weighted moving average keeps one number. Each update moves it a fraction, alpha, toward the new value. Old values fade geometrically, so the half-life, in updates, is log one half over log of one minus alpha. Pandas names the same knob three ways: alpha, span and half-life. A span of N gives alpha of two over N plus one, the usual match for an N-sample simple average."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab uses both kinds. Its momentum agents smooth trade prices with alpha 0.3 and 0.03: half-lives of about two trades, and about twenty-three. The trend strategy keeps simple 20 and 50-day averages in a fixed ring. Matched by span, those are alphas of about 0.095 and 0.039. The pairs strategy keeps a 156-sample window, with a running sum and sum of squares, so its z-score is constant time too."
+ },
+ {
+  "id": "time",
+  "title": "Decay by time",
+  "text": "Per-update alpha counts messages, not seconds, so a burst can age the average in a microsecond. As the signals video showed, decay by time instead: alpha is one minus e to the minus delta t over tau. In half-life terms, tau is the half-life over log two, so a one-second half-life means tau of 1.44 seconds. Half a second after the last update, alpha is about 0.29: the old mean keeps 71 percent, the square root of one half."
+ },
+ {
+  "id": "zscore",
+  "title": "Variance and z-score",
+  "text": "A mean alone is not a signal: you also need its scale. Finch's recurrence updates an exponential variance with the same alpha, in three lines. Here alpha is a quarter, starting from 50.00. After two prints, the mean is 50.006, with a standard deviation under a cent. Then 50.05 arrives. Scored before the update, it is 5.6 standard deviations out. Scored after, it has stretched its own yardstick, and shows only 1.6."
+ },
+ {
+  "id": "vwap",
+  "title": "Session VWAP",
+  "text": "Session VWAP is the other workhorse: price times quantity, over quantity, summed since the open. Two running sums, one division. Three trades, 300 at 50.00, 100 at 50.04 and 600 at 50.02, give 50.016. A mid at 50.05 then sits 6.8 basis points above VWAP, which is a feature in its own right. The sliding-window version, with exact 128-bit sums, is in the cpp-vwap video."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pitfalls: a fresh average starts at its first value with zero variance, so warm it up before trusting it. Reset at the open and after halts. Use exchange timestamps, so a replay matches live. One number per feature, constant work per message: that is an online feature."
+ }
+]

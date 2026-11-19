@@ -1,0 +1,33 @@
+[
+{
+"id": "title",
+"title": "Order state",
+"text": "Every order lives twice: once in the exchange's book, and once in your order management system. Between the two copies, messages are always in flight. The order state machine is how you keep them in step."
+},
+{
+"id": "why",
+"title": "Two copies, one truth",
+"text": "The exchange's copy is the truth. Yours is a belief, built from what you sent and what came back. When you send an order, you don't know yet whether it exists. When you send a cancel, the order can still trade. So every state you track must allow for messages still on the wire. Your copy is always at least one round trip behind the truth. So every change to your copy should come from a message, never from a guess."
+},
+{
+"id": "fix",
+"title": "The FIX states",
+"text": "FIX names the states in OrdStatus. A new order starts as Pending New, until the venue accepts it, or rejects it. Once accepted, it is New. Fills move it to Partially Filled, then Filled. A cancel request makes it Pending Cancel, and a replace makes it Pending Replace, until the venue answers. Filled, Canceled and Rejected are terminal: nothing comes after them. A rejected cancel or replace leaves the order as it was, and the venue's reject tells you its current status."
+},
+{
+"id": "example",
+"title": "A worked example",
+"text": "Let's follow an order to buy 300 shares. We send it: it is pending new, and all 300 count as exposure, because they might trade. The exchange accepts it: now it is live. 100 shares trade: we hold 100, and 200 are still open. We cancel the rest. The exchange confirms with Order Canceled for 200 shares, and the order is done. At every step, the exposure is what the risk checks use: 300, then 200, then zero."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab's OMS keeps every order in one of five states: free, pending new, live, pending swap for a replacement, and done. Exposure counts every share that could still trade, in any working state. The trading thread keeps one request in flight per order, and waits for the answer before the next. And a response that doesn't fit what was sent is never forced in: it is counted as inconsistent, and reported at the end of the run. A reject finishes an order that was pending new. But when a replacement is rejected, the original order stands, and stays live."
+},
+{
+"id": "take",
+"title": "Pitfalls",
+"text": "Two mistakes cause most trouble. Treating a sent cancel as done, when the order can still fill. And treating a timeout as a reject, when the order may be live. Assume the worst case until the exchange tells you otherwise. Your state machine should be pessimistic, and the exchange should always win. And log every transition with the message that caused it, so any break can be replayed later. After a disconnect, SoupBinTCP lets you catch up: log in with the next sequence number you expect, and the exchange replays everything you missed. The lab's trader asks for new messages only, so it never replays an old session.",
+"hold": 1.0
+}
+]

@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Latency arbitrage",
+  "text": "Latency arbitrage is not a bet on value. It is a race. The same news reaches several markets, and whoever acts first trades against quotes that have not caught up yet."
+ },
+ {
+  "id": "corr",
+  "title": "Correlation breaks down",
+  "text": "Budish, Cramton and Shim studied the S&P 500 E-mini future in Chicago and the SPY ETF in New York, from 2005 to 2011. Over one minute, the two moved almost in lockstep, with a median correlation of 0.98 in 2011. Over ten milliseconds it was 0.09, and over one millisecond, close to zero. In that gap one market has moved and the other has not. That is a mechanical arbitrage, with no forecasting at all."
+ },
+ {
+  "id": "race",
+  "title": "The race",
+  "text": "Here is the race. The future ticks up in Chicago. A market maker in SPY sees it, and sends a cancel for its offer, which is now too cheap. At the same moment, fast traders send orders to buy that offer. The exchange handles messages one at a time, so whichever arrives first wins. In the paper's model, with N snipers, each wins with probability one over N, and the maker usually loses. The expected cost of being sniped is built into the spread that everyone else pays. That is why a maker in one market watches the other market's feed as closely as its own."
+ },
+ {
+  "id": "speed",
+  "title": "Speed of light",
+  "text": "So the race became one about distance. The paper notes that light needs roughly four milliseconds to get between Chicago and New York. A fibre route cut the round trip from 16 to 13 milliseconds, and microwave links took it to 10, then 9, then 8.5. Yet the median life of an arbitrage fell from 97 milliseconds in 2005 to 7 in 2011. Faster links did not remove the opportunities. They raised the speed needed to win them."
+ },
+ {
+  "id": "lose",
+  "title": "How it loses",
+  "text": "Latency arbitrage loses whenever you come second. You still pay fees and cross the spread, and the price has already moved. The hedge leg on the other venue may not fill. A rival's new link can erase your edge overnight. And market design can change the game: the paper proposes frequent batch auctions, for example every tenth of a second, which turn competition on speed into competition on price."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab has no cross-venue sniper, but it measures the clock this strategy lives on. The receive thread stamps each feed packet with the CPU's time stamp counter. Once the resulting order is sent, order entry records tick to wire in a histogram. Everything between is pinned threads, busy polling and lock-free rings, as the tick-to-trade video shows. For a latency arbitrageur, that number, compared with every rival's, is the entire edge."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Latency arbitrage harvests stale quotes in the moments after public news. It needs colocation, the fastest links and lean code, and it loses to anyone a microsecond faster."
+ }
+]

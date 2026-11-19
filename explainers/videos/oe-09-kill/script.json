@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Kill switches",
+"text": "When an algorithm misbehaves, every second costs money. A kill switch stops it: no new orders, and the working ones cancelled. It has to work when everything else is going wrong."
+},
+{
+"id": "rule",
+"title": "Required by rule",
+"text": "In the European Union, the rules for algorithmic trading firms spell it out. Article 12 of RTS 6 requires a kill functionality: the firm must be able to cancel immediately, as an emergency measure, any or all of its unexecuted orders, on any or all venues. And it must know which algorithm and which trader is behind each order."
+},
+{
+"id": "two",
+"title": "Two halves",
+"text": "A kill switch has two halves. First, stop the flow: block every new order and replace, at once, before anything else is checked. Second, clean up: cancel everything still resting. Cancels must never be blocked, because they only reduce risk. Then a human decides what to do with the position. The order matters: cancel first while the strategy keeps sending, and new orders take the place of the ones you just pulled."
+},
+{
+"id": "venue",
+"title": "At the exchange",
+"text": "Exchanges offer their own switches, outside your systems. CME's kill switch can be pulled at the clearing firm, the executing firm, or a single session. Blocked users can send only session messages, and day and good-till orders are cancelled. CME also cancels a session's resting orders, good-till ones aside, when it drops unexpectedly or misses its heartbeats. A clean logout does not trigger it. And the kill switch does not cancel mass quotes, so check what your venue's switch leaves behind."
+},
+{
+"id": "example",
+"title": "A worked example",
+"text": "A strategy starts buying in a loop. At time zero, risk sees the position limit breached and sets the kill flag. The very next order is blocked, inside the trading thread. Cancels go out for 120 working orders, and the exchange confirms each one. If the firm's process had crashed instead, cancel on disconnect would have done the cleanup. Until the last cancel is confirmed, resting orders can still fill, so the position can still grow."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "In the lab, the kill switch is an atomic flag in firm slash risk, checked before every other risk check. Any thread can set it, and from then on, every new order and replace is blocked. On the exchange side, simex cancels all of an account's orders when its connection closes. That is on by default, and a flag turns it off for tests. And when the exchange ends the session, the trading thread simply stops: the exchange cancels what is left. There is no call to clear the flag: once it is set, only a restart resumes trading."
+},
+{
+"id": "take",
+"title": "What pros do",
+"text": "Test the kill switch regularly, because one that has never been pulled may not work. Make it reachable by people outside the trading team. And keep the exchange's switch as a second, independent layer. The best kill switch is simple, tested, and one click away.",
+"hold": 1.0
+}
+]

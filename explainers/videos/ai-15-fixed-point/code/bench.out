@@ -1,0 +1,15 @@
+== run 1 cpu 1 load 24.28
+double + round + eps : p50 13.960 ns/update  min 12.754  max 2966.691
+double, no eps check  : p50  4.623 ns/update  min  4.561  max  7.720
+int64 ticks          : p50  2.552 ns/update  min  2.344  max 841.612
+notional: double 84539714399.649658  vs ticks 8453971439965 (/100 = 84539714399.65)
+== run 2 cpu 1 load 23.61
+double + round + eps : p50 13.120 ns/update  min 12.770  max 506.321
+double, no eps check  : p50  4.522 ns/update  min  4.464  max  7.580
+int64 ticks          : p50  2.542 ns/update  min  2.361  max  3.893
+notional: double 84539714399.649658  vs ticks 8453971439965 (/100 = 84539714399.65)
+== run 3 cpu 1 load 23.61
+double + round + eps : p50 13.244 ns/update  min 12.641  max 1991.545
+double, no eps check  : p50  4.203 ns/update  min  4.172  max  6.904
+int64 ticks          : p50  2.517 ns/update  min  2.293  max 1416.567
+notional: double 84539714399.649658  vs ticks 8453971439965 (/100 = 84539714399.65)

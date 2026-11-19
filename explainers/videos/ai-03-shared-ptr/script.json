@@ -1,0 +1,14 @@
+[
+{"id": "title", "title": "Shared ownership",
+ "text": "Pattern three: shared ownership on the hot path. Each message hands an order to a chain of handlers: on message, risk, route and publish. Who owns the order, and what does that ownership cost per message?"},
+{"id": "general", "title": "The general version",
+ "text": "Ask for safe ownership with no latency budget, and you typically get std::shared_ptr, passed by value into every handler. Any handler could keep the order alive, nothing frees it early, and nothing dangles. It is correct and defensive. But every copy of a shared_ptr changes a reference count."},
+{"id": "cost", "title": "What a copy costs",
+ "text": "The count lives in a control block, next to the order. Copying the pointer increments it; destroying the copy decrements it. Four handlers by value means four copies and four destructions: eight read-modify-writes per message. Once the program has started any thread, and every trading system has, libstdc++ makes them atomic: a lock-prefixed add. On this VM, a chain of those took about 16 nanoseconds each, against under one for a plain add. A locked instruction is also a full barrier, so later loads wait for it. And the handler chain compiled to 237 instructions, versus 29.", "hold": 0.6},
+{"id": "hot", "title": "The hot-path version",
+ "text": "The hot-path version decides ownership once. Orders live in a pool, created at startup, and owned by one object for the whole session. The message carries an index, and each handler borrows a plain reference. No counts, no atomics, no control block. Lifetime becomes a design rule: nothing on the hot path frees an order, and a slot is reused only when its order is done.", "hold": 0.8},
+{"id": "measured", "title": "Measured",
+ "text": "Measured on a shared cloud VM, pinned to one core: two million messages over a thousand orders, all in cache. With a thread started, shared_ptr by value took 72 nanoseconds per message, back to back. The pool with references took 5. One message at a time, the median was 107 versus 28, both including the timer. In a process that never starts a thread, libstdc++ skips the atomics, and by value took 17: still three times the pool. Passing the shared_ptr by const reference took 5.9. Almost all of the cost was the copies.", "hold": 1.0},
+{"id": "nuance", "title": "When shared_ptr is fine",
+ "text": "shared_ptr is the right tool when lifetime really is shared and unpredictable: across threads, in callbacks and caches, and anywhere off the hot path. On the hot path, decide who owns the object, and lend references. Put that in the prompt: one owner, no reference counting per message. Then measure. The rule: own once, borrow everywhere, and never copy a shared_ptr per message.", "hold": 1.0}
+]

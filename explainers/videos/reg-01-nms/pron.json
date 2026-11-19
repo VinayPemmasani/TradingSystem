@@ -1,0 +1,4 @@
+[["\\bReg NMS\\b","Reg N M S"],["\\bNMS\\b","N M S"],["\\bSEC\\b","S E C"],["\\bISO\\b","I S O"],["\\bOUCH\\b","ouch"],["\\bsimex\\b","sim ex"],
+["\\b610\\b","six ten"],["\\b611\\b","six eleven"],["\\b612\\b","six twelve"],
+["\\$10\\.01","ten dollars and one cent"],["\\$10\\.02","ten oh two"],["\\$10\\.03","ten oh three"],
+["\\boffset 29\\b","offset twenty nine"],["\\bUS\\b","U S"]]

@@ -1,0 +1,41 @@
+[
+ {
+  "id": "title",
+  "title": "Circuit breakers",
+  "text": "When prices move too far, too fast, US stock markets slow down on purpose. Single stocks get price bands, and the whole market has circuit breakers."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "In March 2020, the market-wide circuit breaker tripped four times in eight trading days. Each time, trading in all US stocks stopped for 15 minutes. Breakers buy time for traders to react, and for liquidity to return. For a trading system, they are events to handle: quotes freeze, orders are repriced or rejected, and trading restarts with an auction."
+ },
+ {
+  "id": "luld",
+  "title": "Limit up, limit down",
+  "text": "Limit up limit down puts a band around each stock's recent price. The reference is the average price over the last five minutes. For Tier 1 stocks above three dollars, the band is 5 percent each side, and other stocks above three dollars get 10. Cheaper stocks get wider bands, and from 3:35 Tier 1 bands double. Trades cannot happen outside the band. If a quote sits on the band, the stock enters a limit state. If that lasts 15 seconds, trading pauses for five minutes, then reopens with an auction.",
+  "hold": 0.6
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Take a Tier 1 stock with a reference price of $50.00. Its band runs from $47.50 to $52.50. The price slides toward the lower band. The best offer reaches $47.50, and the limit state begins. Fifteen seconds later, sellers still sit at the band, so the stock is paused. Five minutes later, a reopening auction finds a new price, and the bands reset around it.",
+  "hold": 0.6
+ },
+ {
+  "id": "mwcb",
+  "title": "Market-wide breakers",
+  "text": "The whole market has a breaker too, measured on the S&P 500 against the previous close. A 7 percent fall is Level 1, and 13 percent is Level 2. Before 3:25 in the afternoon, either one halts all stocks for 15 minutes. A 20 percent fall is Level 3, and trading stops for the rest of the day. Separately, Rule 201 limits short sales in any stock that falls 10 percent in a day."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "simex can run both kinds of breaker. Each stock gets a 5 percent band, and the engine reprices orders into it. If a quote sits on the band for 15 seconds, simex pauses the stock for five minutes. It reopens with an auction inside a collar, extending up to three times. A scenario can also trip a market-wide breaker, against a notional index of 5,000. One simplification: the lab's reference is the day's first trade, not a moving five-minute average.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They track each stock's bands, and size orders to fit them. They treat a pause as an auction to plan for. They remember that their hedges may be halted too. And after a big drop, they check short-sale restrictions. Breakers buy time, but orders still set the price.",
+  "hold": 1.0
+ }
+]

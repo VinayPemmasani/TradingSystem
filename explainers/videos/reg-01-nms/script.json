@@ -1,0 +1,42 @@
+[
+ {
+  "id": "title",
+  "title": "Reg NMS",
+  "text": "One US stock trades on many venues at once. Regulation NMS is the rulebook that ties them into one national market. Here are three of its core trading rules: 610, 611 and 612."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "The SEC voted three to two for Regulation NMS in April 2005, and published it that June. Its order protection rule says one venue cannot simply ignore a better displayed price on another. Smart order routers, sweep orders and even exchange fee schedules are built around it."
+ },
+ {
+  "id": "protect",
+  "title": "Rule 611",
+  "text": "Rule 611 protects quotations. A protected quote is the best displayed bid or offer of an exchange, and it must be automated, so it can be hit at once. A trade-through is a trade at a worse price than a protected quote on another venue. Each trading center must have written policies reasonably designed to prevent them. So if exchange A offers at $10.01, exchange B should not fill your buy at $10.02. B routes your order to A, waits, or rejects it.",
+  "hold": 0.4
+ },
+ {
+  "id": "sweep",
+  "title": "Worked example",
+  "text": "The escape hatch is the intermarket sweep order. You want 500 shares now, and exchange A offers 100 at $10.01. Exchange B offers 300 at $10.02, and exchange C offers 400 at $10.03. You send an order marked ISO to each venue at once: 100 to A, 300 to B, and 100 to C. The flag says you have already taken out every better protected quote, so each venue can fill you without checking the others. You get all 500 shares in one burst, at an average of exactly $10.02.",
+  "hold": 0.5
+ },
+ {
+  "id": "rules",
+  "title": "Rules 610 and 612",
+  "text": "Rule 610 is about access. Venues must give fair access to their quotes, and may charge at most three tenths of a cent per share to hit one. Rule 612 bans quotes in steps finer than one cent, for stocks priced at a dollar or more. Below a dollar, the step is one hundredth of a cent. In September 2024 the SEC voted to cut the fee cap to a tenth of a cent, and to allow half-cent ticks in tightly quoted stocks. After a court challenge and two extensions, compliance is now due in November 2027.",
+  "hold": 0.5
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, the sweep flag is one byte. In an OUCH Enter Order it sits at offset 29, between Capacity and Cross Type. simex is a single venue with no away quotes to protect, so it carries the flag and nothing more. Prices on the wire have four implied decimals, so one message can express a hundredth of a cent. Rule 612, not the protocol, decides which of those prices are allowed.",
+  "hold": 0.6
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They route against the best prices across all venues, not one venue's book. They use sweep orders when speed matters, and accept the duty that comes with the flag. And they watch the rulebook: in June 2026, the SEC proposed rescinding Rule 611 altogether. This is education, not legal advice.",
+  "hold": 1.0
+ }
+]

@@ -1,0 +1,71 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 09 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">A/B lines</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Line arbitration and snapshot recovery.</div>
+<div class="node" data-cue="0" data-d="0.6" style="left:140px;top:600px;width:260px;height:150px;border-color:var(--blue)">Exchange</div>
+<div class="node" data-cue="1" style="left:1080px;top:600px;width:300px;height:150px;border-color:var(--green)">Arbiter<small>first copy wins</small></div>
+<div class="node" data-cue="1" data-d="0.3" style="left:1500px;top:600px;width:260px;height:150px;border-color:var(--teal)">Book</div>
+<svg class="full"><path id="t9-a" class="draw" data-cue="0" data-d="0.8" d="M 405 640 C 700 560 800 560 1070 640" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path id="t9-b" class="draw" data-cue="0" data-d="0.9" d="M 405 710 C 700 790 800 790 1070 710" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/><path class="draw" data-cue="1" data-d="0.4" d="M 1385 675 L 1490 675" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="t9-a" data-cue="0" data-d="1" data-dur="1.5" data-loop="1"></div>
+<div class="pkt" data-path="t9-b" data-cue="0" data-d="1" data-dur="1.6" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="lbl c-teal" data-cue="0" data-d="1" style="left:700px;top:540px">line A</div>
+<div class="lbl c-violet" data-cue="0" data-d="1" style="left:700px;top:790px">line B</div>
+<div class="tag c-amber" data-cue="2" style="left:1080px;top:800px;border-color:var(--amber)">both lost → snapshot</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why publish everything twice</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:820px;border-color:var(--red)"><div class="ct c-red">one line</div><div class="cd">every loss = a recovery round trip</div></div>
+<div class="card" data-cue="1" style="left:980px;top:230px;width:820px;border-color:var(--green)"><div class="ct c-green">two separate paths</div><div class="cd">a loss on one is usually covered by the other</div></div>
+<div class="card" data-cue="2" style="left:120px;top:470px;width:1680px;border-color:var(--teal)"><div class="ct c-teal">CME MDP 3.0 (video 05)</div><div class="cd">"CME Group strongly recommends that client systems process both the A and B Incremental UDP feeds"</div></div>
+<div class="card" data-cue="3" style="left:120px;top:660px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">OPRA (video 07)</div><div class="cd">every real-time message on two redundant multicast streams</div></div>
+</div>
+
+<div class="scene" id="s-algo">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The arbitration loop</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:1100px;font-size:27px"><span class="line">uint64_t next = <span class="r">1</span>;              <span class="c">// next sequence expected</span></span><span class="line"></span><span class="line" data-hl="2" data-hlend="3"><span class="k">void</span> on_packet(Line line, Pkt p) {</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">if</span> (p.seq &lt; next) <span class="k">return</span>;    <span class="c">// duplicate: drop</span></span><span class="line" data-hl="4" data-hlend="5">  <span class="k">if</span> (p.seq == next) {             <span class="c">// in order</span></span><span class="line" data-hl="4" data-hlend="5">    process(p); next += p.count;</span><span class="line" data-hl="4" data-hlend="5">    drain_held(); <span class="k">return</span>;</span><span class="line" data-hl="4" data-hlend="5">  }</span><span class="line" data-hl="5" data-hlend="6">  hold(p);                         <span class="c">// ahead: a hole</span></span><span class="line" data-hl="5" data-hlend="6">  start_timer_if_new_gap();        <span class="c">// wait briefly for</span></span><span class="line" data-hl="5" data-hlend="6">}                                  <span class="c">// the other line</span></span></div>
+<div class="tag c-green" data-cue="6" style="left:1280px;top:260px;font-size:26px;border-color:var(--green)">common case: one compare</div>
+<div class="tag c-teal" data-cue="7" style="left:1280px;top:440px;font-size:26px;border-color:var(--teal)">first copy wins</div>
+<div class="lbl c-muted" data-cue="8" style="left:1280px;top:510px;width:520px;line-height:1.5">merged latency = the faster line, packet by packet</div>
+<div class="lbl c-muted" data-cue="1" data-d="0.5" style="left:1280px;top:340px;width:520px;line-height:1.5">sketch · seq of the packet's first message; count = messages in it</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Each line has a gap; the merge does not</div>
+<div class="lbl c-teal" data-cue="1" style="left:120px;top:260px">line A</div>
+<div class="lbl c-violet" data-cue="2" style="left:120px;top:400px">line B</div>
+<div class="lbl c-green" data-cue="3" style="left:120px;top:600px">merged</div>
+<div id="ex9" data-cue="1" data-anim="fade" style="left:300px;top:230px;width:1500px;height:520px"></div>
+<div class="take" data-cue="7" style="left:120px;top:780px;width:1680px;font-size:34px">complete, though neither line was</div>
+</div>
+
+<div class="scene" id="s-both">
+<div class="h2" data-cue="0" style="left:120px;top:110px">When both copies are lost</div>
+<div class="node" data-cue="0" data-d="0.3" style="left:120px;top:250px;width:260px;height:130px;border-color:var(--blue)">Exchange</div>
+<div class="node" data-cue="0" data-d="0.5" style="left:520px;top:250px;width:260px;height:130px;border-color:var(--red)" data-hl="0.5" data-hlend="2">upstream<small>before the split</small></div>
+<svg class="full"><path class="draw" data-cue="0" data-d="0.5" d="M 385 315 L 510 315" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="0" data-d="0.7" d="M 785 290 L 1000 250" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path class="draw" data-cue="0" data-d="0.7" d="M 785 340 L 1000 380" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/></svg>
+<div class="tag c-red" data-cue="1" style="left:1020px;top:290px;border-color:var(--red);font-size:26px">#205 missing on A and B</div>
+<div class="card" data-cue="3" style="left:120px;top:480px;width:540px;height:260px;border-color:var(--teal)"><div class="ct c-teal">retransmit</div><div class="cd">ask for the missing range · MoldUDP64 re-request (video 02), Cboe gap request</div></div>
+<div class="card" data-cue="4" style="left:690px;top:480px;width:540px;height:260px;border-color:var(--violet)"><div class="ct c-violet">TCP replay</div><div class="cd">CME TCP recovery: "recover all missed packets"</div></div>
+<div class="card" data-cue="5" style="left:1260px;top:480px;width:540px;height:260px;border-color:var(--amber)"><div class="ct c-amber">snapshot</div><div class="cd">CME market recovery loop (05) · Cboe spin (06): book state + buffered live</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: lab::mold::Sequencer</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:230px;border-color:var(--amber)"><div class="ct c-amber">duplicates</div><div class="cd">already delivered or already held → counted, dropped</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:230px;border-color:var(--teal)"><div class="ct c-teal">held ahead of a gap</div><div class="cd">preallocated window · 2<sup>18</sup> messages in libs/feed</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:230px;width:540px;height:230px;border-color:var(--violet)"><div class="ct c-violet">gap_delay_us = 100</div><div class="cd">"allowance for reordering before the first request"</div></div>
+<div class="node" data-cue="4" style="left:120px;top:560px;width:300px;height:130px;border-color:var(--teal)">line A</div>
+<div class="node" data-cue="4" style="left:120px;top:720px;width:300px;height:130px;border-color:var(--violet)">line B</div>
+<div class="node" data-cue="4" data-d="0.4" style="left:700px;top:620px;width:380px;height:160px;border-color:var(--green)">Sequencer<small>dups are just drops</small></div>
+<svg class="full"><path class="draw" data-cue="4" data-d="0.3" d="M 425 625 L 690 680" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path class="draw" data-cue="4" data-d="0.3" d="M 425 785 L 690 730" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/></svg>
+<div class="lbl c-muted" data-cue="4" data-d="0.8" style="left:1140px;top:680px;width:660px;line-height:1.5">sketch: works when both lines carry identical MoldUDP64 packets</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Three cautions</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:240px;border-color:var(--teal)"><div class="ct c-teal">sequence, not payload</div><div class="cd">Cboe: by unit + sequence; frames can differ between feeds</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:240px;border-color:var(--amber)"><div class="ct c-amber">count the winners</div><div class="cd">a shift in who wins = a path got slower</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:230px;width:540px;height:240px;border-color:var(--red)"><div class="ct c-red">short wait</div><div class="cd">waiting for the other line delays everything behind the hole</div></div>
+<div class="take" data-cue="4" style="left:120px;top:600px;width:1680px">Two lines turn most losses into nothing. <span class="c-amber">A snapshot handles the rest.</span></div>
+</div>

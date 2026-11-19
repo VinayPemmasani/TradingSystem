@@ -1,0 +1,105 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 06 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Cboe PITCH</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Units, sequence numbers and spin.</div>
+<div class="card" data-cue="2" style="left:140px;top:580px;width:480px;border-color:var(--teal)"><div class="ct c-teal">units</div><div class="cd">a sequence per unit</div></div>
+<div class="card" data-cue="2" data-d="0.4" style="left:660px;top:580px;width:480px;border-color:var(--violet)"><div class="ct c-violet">time offsets</div><div class="cd">ns since the last Time</div></div>
+<div class="card" data-cue="2" data-d="0.8" style="left:1180px;top:580px;width:560px;border-color:var(--amber)"><div class="ct c-amber">gap request · spin</div><div class="cd">two ways home</div></div>
+</div>
+
+<div class="scene" id="s-units">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Symbols are split into units</div>
+<div id="u6-sym" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:230px;width:1680px;height:80px"></div>
+<div class="card" data-cue="0" data-d="1" style="left:120px;top:360px;width:520px;border-color:var(--teal)"><div class="ct c-teal">unit 1 · A–F</div><div class="cs" id="u6-s1">seq 1</div></div>
+<div class="card" data-cue="0" data-d="1.2" style="left:700px;top:360px;width:520px;border-color:var(--violet)"><div class="ct c-violet">unit 2 · G–O</div><div class="cs" id="u6-s2">seq 1</div></div>
+<div class="card" data-cue="0" data-d="1.4" style="left:1280px;top:360px;width:520px;border-color:var(--amber)"><div class="ct c-amber">unit 3 · P–Z</div><div class="cs" id="u6-s3">seq 1</div></div>
+<div class="lbl" data-cue="0" data-d="1.6" style="left:120px;top:520px">illustrative split · the real distribution is published by Cboe</div>
+<div class="tag c-teal" data-cue="1" data-d="0.5" style="left:120px;top:590px;border-color:var(--teal)">multicast address X</div>
+<div class="tag c-violet" data-cue="1" data-d="0.7" style="left:700px;top:590px;border-color:var(--violet)">multicast address X</div>
+<div class="tag c-amber" data-cue="1" data-d="0.9" style="left:1280px;top:590px;border-color:var(--amber)">multicast address Y</div>
+<div class="big c-red" data-cue="2" style="left:1000px;top:640px;font-size:40px">✕ gap in unit 2 only</div>
+<div class="card" data-cue="3" style="left:120px;top:740px;width:1680px;border-color:var(--green)"><div class="ct c-green">one sequencer per unit</div><div class="cd">not one per multicast address, not one per feed</div></div>
+</div>
+
+<div class="scene" id="s-header">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Sequenced unit header · 8 bytes</div>
+<div class="bytes" style="left:120px;top:300px">
+<div data-cue="1" style="width:300px;background:var(--pink)">length 2</div>
+<div data-cue="1" data-d="0.3" style="width:150px;background:var(--violet)">count 1</div>
+<div data-cue="1" data-d="0.6" style="width:150px;background:var(--teal)">unit 1</div>
+<div data-cue="1" data-d="0.9" style="width:600px;background:var(--amber)">sequence 4</div>
+<div data-cue="1" data-d="1.2" style="width:400px;background:#55697a">messages …</div>
+</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:120px;top:260px">0</div>
+<div class="olbl" data-cue="1" style="left:420px;top:260px">2</div>
+<div class="olbl" data-cue="1" style="left:570px;top:260px">3</div>
+<div class="olbl" data-cue="1" style="left:720px;top:260px">4</div>
+<div class="olbl" data-cue="1" style="left:1320px;top:260px">8</div>
+<div class="card" data-cue="2" style="left:120px;top:460px;width:820px;border-color:var(--amber)"><div class="ct c-amber">next = sequence + count</div><div class="cd">seq 1001, count 2 → next frame 1003</div></div>
+<div class="card" data-cue="3" style="left:980px;top:460px;width:820px;border-color:var(--violet)"><div class="ct c-violet">count 0 = heartbeat</div><div class="cd">no data for 1 s · carries the next sequence</div></div>
+<div class="tag c-red" data-cue="4" style="left:120px;top:680px;font-size:28px;border-color:var(--red)">little-endian · unlike ITCH and MoldUDP64</div>
+</div>
+
+<div class="scene" id="s-add">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Add Order: long 0x21 and short 0x22</div>
+<div class="lbl" data-cue="1" style="left:120px;top:230px">long · 34 bytes</div>
+<div class="bytes" style="left:120px;top:270px">
+<div data-cue="0" data-d="0.4" style="width:48px;background:var(--pink)">len</div>
+<div data-cue="0" data-d="0.4" style="width:48px;background:var(--pink)">21</div>
+<div data-cue="1" style="width:192px;background:var(--violet)">time off. 4</div>
+<div data-cue="2" style="width:384px;background:var(--blue)">order ID 8</div>
+<div data-cue="2" data-d="0.2" style="width:48px;background:var(--green)">B</div>
+<div data-cue="2" data-d="0.4" style="width:192px;background:var(--amber)">qty 4</div>
+<div data-cue="2" data-d="0.6" style="width:288px;background:var(--teal)">symbol 6</div>
+<div data-cue="2" data-d="0.8" style="width:384px;background:var(--pink)">price 8 · 4 dp</div>
+<div data-cue="2" data-d="1" style="width:48px;background:#55697a">fl</div>
+</div>
+<div class="lbl" data-cue="3" style="left:120px;top:420px">short · 26 bytes</div>
+<div class="bytes" style="left:120px;top:460px">
+<div data-cue="3" style="width:48px;background:var(--pink)">len</div>
+<div data-cue="3" style="width:48px;background:var(--pink)">22</div>
+<div data-cue="3" style="width:192px;background:var(--violet)">time off. 4</div>
+<div data-cue="3" style="width:384px;background:var(--blue)">order ID 8</div>
+<div data-cue="3" style="width:48px;background:var(--green)">B</div>
+<div data-cue="3" data-d="0.3" style="width:96px;background:var(--amber)" data-hl="3.4" data-hlend="5">qty 2</div>
+<div data-cue="3" style="width:288px;background:var(--teal)">symbol 6</div>
+<div data-cue="3" data-d="0.3" style="width:96px;background:var(--pink)" data-hl="3.4" data-hlend="5">px 2</div>
+<div data-cue="3" style="width:48px;background:#55697a">fl</div>
+</div>
+<div class="card" data-cue="4" style="left:120px;top:620px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">short form limits</div><div class="cd">2-byte quantity ≤ 65,535 · 2-byte price, 2 decimals ≤ $655.35</div></div>
+</div>
+
+<div class="scene" id="s-time">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Seconds plus nanosecond offsets</div>
+<div class="card" data-cue="1" style="left:120px;top:220px;width:820px;border-color:var(--violet)"><div class="ct c-violet">Time · 0x20</div><div class="cd">whole seconds since midnight ET</div></div>
+<div class="card" data-cue="2" style="left:980px;top:220px;width:820px;border-color:var(--violet)"><div class="ct c-violet">every other message</div><div class="cd">4-byte ns offset since that Time</div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:420px">illustrative frame · unit 3 · seq 1001 · 2 messages · 48 bytes</div>
+<div class="hex" data-cue="3" data-d="0.3" style="left:120px;top:465px;font-size:25px;white-space:nowrap"><span class="c-pink">30 00</span> <span class="c-violet">02</span> <span class="c-teal">03</span> <span class="c-amber">E9 03 00 00</span>  <span data-hl="4" data-hlend="5" style="border-radius:6px">06 20 <span class="c-violet">98 85 00 00</span></span>  22 21 <span class="c-violet" data-hl="5">E2 04 00 00</span> …</div>
+<div class="hex" data-cue="5" data-d="0.5" style="left:120px;top:520px;font-size:25px;white-space:nowrap">… <span class="c-green">42</span> <span class="c-amber">64 00 00 00</span> <span class="c-teal">41 41 50 4C 20 20</span> <span class="c-pink">94 E0 1C 00 00 00 00 00</span> …</div>
+<div class="card" data-cue="4" style="left:120px;top:620px;width:820px;border-color:var(--violet)"><div class="ct c-violet">0x8598 = 34,200 s</div><div class="cd">= 09:30:00 ET</div></div>
+<div class="card" data-cue="5" style="left:980px;top:620px;width:820px;border-color:var(--pink)"><div class="ct c-pink">+ 0x04E2 = 1,250 ns</div><div class="cd">B · 100 · AAPL · 1,892,500 → $189.25</div></div>
+<div class="lbl" data-cue="3" data-d="0.8" style="left:120px;top:575px">6-byte Time form shown; on BZX/EDGX equities Time is 10 bytes (adds epoch seconds)</div>
+<div class="tag c-green" data-cue="5" data-d="1.2" style="left:120px;top:810px;border-color:var(--green);font-size:26px">event time = 09:30:00.000001250</div>
+</div>
+
+<div class="scene" id="s-recovery">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two ways home</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:820px;height:400px;border-color:var(--teal)"><div class="ct c-teal">Gap Request Proxy · TCP</div><div class="cs" style="margin-top:20px">login → Gap Request<br>  unit 3 · seq 1004 · count 6</div><div class="cd" data-cue="1" style="margin-top:20px">replay arrives on a gap-response multicast address</div><div class="cd c-amber" data-cue="2">limits: per second · per minute · per day</div></div>
+<div class="card" data-cue="3" style="left:980px;top:220px;width:820px;height:400px;border-color:var(--amber)"><div class="ct c-amber">Spin server · TCP, one per unit</div>
+<div class="cs" data-cue="4" style="margin-top:20px">0x80 Spin Image Available · every 1 s</div>
+<div class="cs" data-cue="5">0x81 Spin Request (seq)</div>
+<div class="cs" data-cue="5" data-d="0.6">0x82 Spin Response · A / O / S</div>
+<div class="cs" data-cue="5" data-d="1.2">… every open order …</div>
+<div class="cs" data-cue="5" data-d="1.8">0x83 Spin Finished</div></div>
+<div class="lbl" data-cue="5" data-d="0.4" style="left:980px;top:660px">meanwhile: buffer live multicast</div>
+<div id="r6-buf" data-cue="5" data-d="0.4" data-anim="fade" style="left:980px;top:700px;width:820px;height:80px"></div>
+<div class="lbl c-green" data-cue="5" data-d="2.5" style="left:980px;top:790px">then apply buffered messages after the spin's sequence</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What changes from ITCH + Mold</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Sequence per unit</div><div class="cd">many independent streams</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:200px;border-color:var(--violet)"><div class="ct c-violet">Rebuild timestamps</div><div class="cd">Time seconds + ns offset</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:230px;width:540px;height:200px;border-color:var(--amber)"><div class="ct c-amber">Arbitrate A/B by unit + seq</div><div class="cd">same content, framing may differ</div></div>
+<div class="take" data-cue="4" style="left:120px;top:560px;width:1680px">PITCH: a book feed built for <span class="c-teal">many units at once.</span></div>
+</div>

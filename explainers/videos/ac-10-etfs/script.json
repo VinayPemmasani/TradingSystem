@@ -1,0 +1,40 @@
+[
+ {
+  "id": "title",
+  "title": "ETFs",
+  "text": "An exchange traded fund is a fund whose shares trade on an exchange, like a stock. Its trick is a back door, creation and redemption, that keeps its price close to its holdings' value."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: fund shares that hold a basket, such as an index of stocks, bonds or commodities. Who trades: everyone who trades stocks, plus authorized participants, firms that deal directly with the fund. Where: on stock exchanges and off-exchange venues, like any listed share. The data comes on the same equity feeds, and under Rule 6c-11 each fund publishes its holdings on its website every day. Trading is as fast as the stock market. Trades settle on T+1. ICI counted 16.15 trillion dollars in US ETFs at the end of September 2026."
+ },
+ {
+  "id": "primary",
+  "title": "Creation and redemption",
+  "text": "The distinctive part is the primary market. An authorized participant delivers a basket of the fund's holdings, and receives new ETF shares in a block called a creation unit. Redemption runs the other way: a creation unit in, the basket out, often in kind. Most trading never touches this door. The SEC's 2019 release cites ICI: on average, 90 percent of daily ETF activity is in the secondary market.",
+  "hold": 1.0
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Here is an illustrative case. The fund's net asset value works out to 50.00 a share, but heavy buying lifts the ETF to 50.10. An authorized participant sells ETF shares at 50.10 and buys the basket for 50.00. It delivers the basket for a creation unit of 50,000 new shares, which covers the shares it sold. That locks in 10 cents a share, about 5,000 dollars before costs, and new supply pushes the price toward NAV.",
+  "hold": 1.5
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab's Nasdaq feed, a Nasdaq-listed ETF is simply another symbol, with its own order book. Pricing it fairly means rebuilding the books of everything it holds as well. The ETF arbitrage video in this library builds that fair value step by step."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. A basket can hold assets that trade elsewhere or at other hours, so the ETF can lead its NAV. Bond ETFs can show premiums and discounts in a stress, when the bonds themselves barely trade. A thin ETF can have wide quotes even when its holdings are liquid. And creation has costs and cut-off times, so the arbitrage band is never zero."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.2,
+  "text": "An ETF trades like a stock, but creation and redemption tie it to its basket. That back door keeps the price honest."
+ }
+]

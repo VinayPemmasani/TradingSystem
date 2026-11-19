@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Toxic flow",
+  "text": "A market maker's worst fills arrive in clusters. When flow turns one-sided and informed, makers lose money before they notice. That is toxic flow, and VPIN is the best-known attempt to measure it as it happens."
+ },
+ {
+  "id": "define",
+  "title": "Definition",
+  "text": "Easley, López de Prado and O'Hara, in 2012, call order flow toxic when it adversely selects market makers. Those makers may not even know they are providing liquidity at a loss. PIN, their earlier measure, is the probability of informed trading. It needed days of trades and a fitted model. VPIN is built to update as fast as the market trades."
+ },
+ {
+  "id": "clock",
+  "title": "A volume clock",
+  "text": "First, VPIN changes the clock. Instead of minutes, it counts shares: each bucket holds the same volume, one fiftieth of a typical day. Busy markets fill buckets fast, so the measure speeds up when it matters. Next, it splits each bucket into buys and sells, without signing single trades. Bulk classification gives each one-minute bar a buy share, from the normal curve at its price change over the usual size of a change."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "VPIN is the average gap between buy and sell volume, over the last fifty buckets, as a share of the bucket. Fifty buckets of a fiftieth each make the window about one average day. Here is a small example of mine, with five buckets. A bar that rose one standard deviation counts 84 percent as buys. Buy shares of 55, 48, 62, 90 and 85 percent give gaps of 10, 4, 24, 80 and 70 percent. Their average, the VPIN, is 0.38."
+ },
+ {
+  "id": "crash",
+  "title": "The flash crash test",
+  "text": "The authors applied it to E-mini S&P 500 futures on May 6, 2010, the day of the flash crash. They report VPIN near 0.5 that day, against an average of about 0.23. By their account it was in its top tenth at least two hours before the crash. Andersen and Bondarenko disputed this in 2014. In their work, VPIN peaked after the crash, not before, and its signal came mainly from trading intensity."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, toxicity has a simpler readout: who made money against the makers. In one twenty-second agents run, with the value rate raised to twenty steps a second, the makers made 1,000 dollars. Noise and momentum traders lost 1,160 between them. Value traders, the informed ones, made 160 on just 33 fills. Marked at the final value, gains and losses sum to zero. Profit per fill, by counterparty, is what desks track as markouts."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Use VPIN with care. It moves with bucket size, bar length and the classification step, and a spike may only mean heavy trading. Toxic flow is flow that knows more than you, and the cleanest test is still what the price did after you traded."
+ }
+]

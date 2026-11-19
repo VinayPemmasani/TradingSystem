@@ -1,0 +1,42 @@
+[
+ {
+  "id": "title",
+  "title": "Speed bumps",
+  "text": "Some venues slow orders down on purpose. A speed bump adds a fixed delay, to blunt the edge of the very fastest traders."
+ },
+ {
+  "id": "why",
+  "title": "Why delay orders",
+  "text": "Prices often move on one exchange a moment before the others update. A fast trader who sees the move first can hit the quotes that have not updated yet. Those stale quotes are picked off, and the traders who posted them lose. To protect themselves, market makers may quote wider, which costs every trader. A speed bump delays orders on the way in, so the exchange's own view of the market can catch up."
+ },
+ {
+  "id": "iex",
+  "title": "IEX",
+  "text": "IEX was approved as a national exchange in June 2016, with a 350 microsecond delay. Every incoming order and message passes through a delay at the entrance. Since a 2024 data centre move, that includes a 44 mile coil of fibre. The trick is what is not delayed: IEX's view of prices on other venues. So pegged orders on IEX reprice before a fast order coming through the coil can reach them.",
+  "hold": 0.6
+ },
+ {
+  "id": "race",
+  "title": "The race",
+  "text": "Here is the race on a timeline. The best price moves on another exchange. A fast trader sees it and sends an order to IEX, which enters the coil for 350 microseconds. Meanwhile, IEX's own market data shows the move, and its pegged orders reprice. When the fast order comes out, there is no stale quote left to hit. Without the bump, it would have arrived first, and traded at the old price.",
+  "hold": 0.6
+ },
+ {
+  "id": "friends",
+  "title": "Friends",
+  "text": "There are variations on the idea. IEX also runs a crumbling quote signal: when it predicts a price change, its discretionary pegs turn cautious for two milliseconds. ICE Futures US added a 3 millisecond delay on aggressive orders in its Gold Daily and Silver Daily futures, from May 2019. And Cboe proposed a 4 millisecond delay on liquidity-taking orders on its EDGA exchange, but the SEC disapproved it in February 2020.",
+  "hold": 0.6
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "simex has no speed bump today, but it is easy to see where one would go. Orders arrive at the gateway, cross a ring as commands, and the matcher sequences them in arrival order. A bump would hold each command for 350 microseconds before the matcher sees it, while market data keeps flowing. That delay is more than 350 times the lab's measured median round trip on its rings.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They read each venue's delay rules: who is delayed, and who is not. They do not race a coil; they choose venues and order types that fit. And they watch signals that change how pegged orders behave. A speed bump changes who wins the race, not whether there is one.",
+  "hold": 1.0
+ }
+]

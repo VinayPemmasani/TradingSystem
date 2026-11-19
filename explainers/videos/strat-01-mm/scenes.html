@@ -1,0 +1,107 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">HFT &amp; HEDGE FUND STRATEGIES · 01 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Market making</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Quote both sides. Earn the spread. Survive the risk.</div>
+<div class="lvl ask" data-cue="0" data-d="1.0" style="left:140px;top:560px;width:420px">ASK 100.02 · 100 sh</div>
+<div class="lvl bid" data-cue="0" data-d="1.2" style="left:140px;top:700px;width:420px">BID 100.00 · 100 sh</div>
+<svg class="full"><path class="draw" data-cue="1" d="M590 587 L640 587 L640 727 L590 727" stroke="#ffb347" stroke-width="4" fill="none"/></svg>
+<div class="stat c-amber" data-cue="1" data-d="0.3" style="left:670px;top:615px">the spread = the edge</div>
+<div class="card pink" data-cue="2" style="left:670px;top:760px;width:540px"><div class="ct c-pink">the cost</div><div class="cs">inventory risk<br>adverse selection</div></div>
+</div>
+
+<div class="scene" id="s-trip">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One round trip</div>
+<div class="lbl" data-cue="0" style="left:760px;top:230px">PRICE LADDER</div>
+<div class="lvl ask" data-cue="0" style="left:760px;top:280px;width:400px;opacity:.5">100.04 · 800</div>
+<div class="lvl ask" data-cue="0" style="left:760px;top:345px;width:400px;opacity:.5">100.03 · 500</div>
+<div class="lvl ask" data-cue="0" data-hl="1" data-hlend="3" style="left:760px;top:410px;width:400px">100.02 · 300 <span class="c-amber" style="margin-left:14px">+100 me</span></div>
+<div class="lvl" data-cue="0" style="left:760px;top:475px;width:400px;color:var(--muted);border:2px dashed var(--line)">100.01 · spread</div>
+<div class="lvl bid" data-cue="0" data-hl="1" data-hlend="4" style="left:760px;top:540px;width:400px">100.00 · 400 <span class="c-amber" style="margin-left:14px">+100 me</span></div>
+<div class="lvl bid" data-cue="0" style="left:760px;top:605px;width:400px;opacity:.5">99.99 · 600</div>
+<div class="node green" data-cue="2" style="left:120px;top:380px;width:330px"><div class="t c-green">buyer</div><div class="s">market buy 100</div></div>
+<div class="node red" data-cue="3" style="left:120px;top:540px;width:330px"><div class="t c-red">seller</div><div class="s">market sell 100</div></div>
+<svg class="full">
+<path id="tr-p1" d="M450 430 C 560 430 640 437 760 437" fill="none" stroke="#4fd18b" stroke-width="3" class="draw" data-cue="2" marker-end="url(#ah-green)"/>
+<path id="tr-p2" d="M450 590 C 560 590 640 567 760 567" fill="none" stroke="#ff6b5e" stroke-width="3" class="draw" data-cue="3" marker-end="url(#ah-red)"/>
+</svg>
+<div class="pkt" data-path="tr-p1" data-cue="2" data-dur="1.0" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="pkt" data-path="tr-p2" data-cue="3" data-dur="1.0" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="fcard" data-cue="2" data-d="0.8" style="left:1260px;top:280px;width:540px"><span class="lbl">fill 1</span><div class="h3">sell 100 @ <span class="c-red">100.02</span></div><div class="note">position −100</div></div>
+<div class="fcard" data-cue="3" data-d="0.8" style="left:1260px;top:450px;width:540px"><span class="lbl">fill 2</span><div class="h3">buy 100 @ <span class="c-green">100.00</span></div><div class="note">position 0</div></div>
+<div class="fcard amber" data-cue="4" style="left:1260px;top:620px;width:540px"><span class="lbl">round trip</span><div class="stat c-amber"><span class="count" data-cue="4" data-from="0" data-to="2" data-dec="2" data-pre="+$"></span></div><div class="note">2¢ × 100 shares, before fees</div></div>
+<div class="tag c-muted" data-cue="5" style="left:120px;top:760px">tiny per share → needs huge volume</div>
+</div>
+
+<div class="scene" id="s-lose">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two ways to lose</div>
+<div class="lbl c-pink" data-cue="0" style="left:120px;top:230px">INVENTORY RISK</div>
+<div id="lo-c1" data-cue="1" data-anim="fade" style="left:120px;top:270px;width:800px;height:430px"></div>
+<div class="lbl c-pink" data-cue="0" data-d="0.4" style="left:1000px;top:230px">ADVERSE SELECTION</div>
+<div id="lo-c2" data-cue="2" data-anim="fade" style="left:1000px;top:270px;width:800px;height:430px"></div>
+<div class="tag c-green" data-cue="1" data-d="0.4" style="left:250px;top:310px">bought at the bid</div>
+<div class="tag c-pink" data-cue="1" data-d="1.6" style="left:600px;top:600px">price drifts, no exit</div>
+<div class="tag c-violet" data-cue="3" style="left:1140px;top:310px">informed sellers hit the bid</div>
+<div class="tag c-pink" data-cue="3" data-d="0.8" style="left:1450px;top:620px">then the jump</div>
+<div class="fcard" data-cue="4" style="left:120px;top:770px;width:1680px"><span class="note">Glosten &amp; Milgrom, J. Financial Economics 14(1), 1985: part of the spread pays for trading against better-informed traders</span></div>
+</div>
+
+<div class="scene" id="s-as">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Avellaneda–Stoikov (2008)</div>
+<div class="fcard amber" data-cue="1" style="left:120px;top:210px;width:700px"><span class="lbl">reservation price</span><div class="math"><i>r</i><span class="eq">=</span><i>s</i> − <i>q</i> γ σ² (<i>T</i> − <i>t</i>)</div></div>
+<div class="note" data-cue="2" style="left:140px;top:360px;width:700px">s mid · q inventory · γ risk aversion<br>σ volatility · T − t time left</div>
+<div class="fcard violet" data-cue="4" style="left:880px;top:210px;width:920px"><span class="lbl">total spread around r</span><div class="math" style="font-size:38px">δ<sup>a</sup> + δ<sup>b</sup><span class="eq">=</span>γ σ² (<i>T</i> − <i>t</i>) + <span>(2/γ)</span> ln(1 + γ/<i>k</i>)</div></div>
+<div class="note" data-cue="5" style="left:900px;top:360px;width:900px">risk part  +  fill-rate part: λ(δ) = A e<sup>−kδ</sup></div>
+<div class="tag" data-cue="6" style="left:880px;top:430px">γ = 0.1 · σ = 2 · k = 1.5 · T − t = 1 · q = 2</div>
+<svg class="full"><path d="M210 700 L1710 700" stroke="#2c4351" stroke-width="3" fill="none" class="draw" data-cue="0"/></svg>
+<div id="as-ticks" data-cue="0" data-anim="fade" style="left:0;top:0"></div>
+<div id="as-mid" class="tag c-teal" style="top:590px">mid s = 100</div>
+<div id="as-r" class="tag c-amber" style="top:770px">r</div>
+<div id="as-b" class="tag c-green" style="top:770px">bid</div>
+<div id="as-a" class="tag c-red" style="top:770px">ask</div>
+<div id="as-bar" style="top:686px;height:28px;background:rgba(169,139,255,.25);border:2px solid var(--violet);border-radius:6px"></div>
+<div id="as-rl" style="top:640px;width:4px;height:120px;background:var(--amber)"></div>
+<div id="as-ml" style="left:1145px;top:640px;width:4px;height:60px;background:var(--teal)"></div>
+<div class="tag c-violet" data-cue="6" data-d="0.4" style="left:600px;top:500px">spread ≈ 1.69</div>
+<div class="tag c-amber" data-cue="7" style="left:600px;top:860px">q = +2 → r = 100 − 2·0.1·4·1 = 99.2</div>
+<div class="src" data-cue="0" style="left:1240px;top:870px">Quantitative Finance 8(3), 217–224</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: market_maker.hpp</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:210px;width:1000px;font-size:23px"><span class="line" data-hl="1" data-hlend="2"><span class="k">if</span> (spread_ticks &gt;= <span class="r">3</span>) { bid += tick; ask -= tick; }</span><span class="line" data-hl="2" data-hlend="3">lean = position / <span class="r">100</span> * <span class="r">1</span> * tick;  <span class="c">// 1 tick per 100 sh</span></span><span class="line" data-hl="2" data-hlend="3">bid -= lean;  ask -= lean;</span><span class="line"><span class="k">if</span> (ask &lt;= m.bid) ask = m.bid + tick; <span class="c">// stay passive</span></span><span class="line" data-hl="2" data-hlend="3"><span class="k">if</span> (position + <span class="r">100</span> &lt;= <span class="r">1000</span>)  quote bid;</span><span class="line" data-hl="2" data-hlend="3"><span class="k">if</span> (position - <span class="r">100</span> &gt;= <span class="r">-1000</span>) quote ask;</span><span class="line" data-hl="3" data-hlend="4"><span class="c">// should_move(): replace only if</span></span><span class="line" data-hl="3" data-hlend="4">|working - wanted| &gt; <span class="r">1</span> * tick</span></div>
+<div class="src" data-cue="0" style="left:120px;top:640px">firm/strategy/include/lab/strategy/market_maker.hpp (abridged)</div>
+<div class="fcard blue" data-cue="4" style="left:1170px;top:210px;width:630px"><span class="lbl">quant-real · AAPL · 2019-01-30</span><div id="lb-c" style="position:relative;width:580px;height:300px"></div><div class="note">cumulative P&amp;L by minute</div></div>
+<div class="fcard pink" data-cue="4" data-d="0.8" style="left:1170px;top:640px;width:300px"><span class="lbl">P&amp;L</span><div class="h3 c-pink">−$20,316</div></div>
+<div class="fcard" data-cue="4" data-d="1.0" style="left:1500px;top:640px;width:300px"><span class="lbl">fills · orders</span><div class="h3">33,437</div><div class="note">59,799 orders</div></div>
+<div class="src" data-cue="4" style="left:1170px;top:800px">one sample day, lab replay; not a performance claim</div>
+</div>
+
+<div class="scene" id="s-infra">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What a real maker needs</div>
+<div class="node teal" data-cue="0" style="left:120px;top:330px;width:270px"><div class="t">exchange</div><div class="s">matching engine</div></div>
+<div class="node blue" data-cue="1" data-d="0.3" style="left:520px;top:330px;width:270px"><div class="t">feed</div><div class="s">direct, colocated</div></div>
+<div class="node violet" data-cue="3" style="left:920px;top:330px;width:270px"><div class="t">signal</div><div class="s">microprice, lean</div></div>
+<div class="node amber" data-cue="2" style="left:1320px;top:330px;width:270px"><div class="t">quoter</div><div class="s">place, cancel</div></div>
+<div class="node pink" data-cue="4" style="left:1320px;top:560px;width:270px"><div class="t">risk</div><div class="s">limits, kill switch</div></div>
+<svg class="full">
+<path id="in-f" d="M390 390 L520 390" stroke="#6aa8ff" stroke-width="3" fill="none" class="draw" data-cue="1" marker-end="url(#ah)"/>
+<path id="in-s" d="M790 390 L920 390" stroke="#a98bff" stroke-width="3" fill="none" class="draw" data-cue="3" marker-end="url(#ah-violet)"/>
+<path id="in-q" d="M1190 390 L1320 390" stroke="#a98bff" stroke-width="3" fill="none" class="draw" data-cue="3" marker-end="url(#ah-violet)"/>
+<path id="in-o" d="M1455 470 C 1455 500 1300 520 1100 520 L 260 520 L 255 470" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="2" marker-end="url(#ah-amber)"/>
+<path id="in-r" d="M1455 470 L1455 560" stroke="#ff8fc8" stroke-width="3" fill="none" class="draw" data-cue="4"/>
+</svg>
+<div class="pkt" data-path="in-f" data-cue="1" data-dur="0.8" data-loop="1" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="pkt" data-path="in-o" data-cue="2" data-dur="1.4" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="tag c-blue" data-cue="1" data-d="0.6" style="left:330px;top:260px">react in microseconds</div>
+<div class="tag c-amber" data-cue="2" data-d="0.4" style="left:600px;top:540px">cancel stale quotes first</div>
+<div class="tag c-violet" data-cue="3" data-d="0.4" style="left:900px;top:260px">lean before the move</div>
+<div class="tag c-pink" data-cue="4" data-d="0.4" style="left:1000px;top:680px">cap inventory and daily loss</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:250px;width:1640px">Harvest the spread.<br><span class="c-pink">Pay in inventory risk and adverse selection.</span></div>
+<div class="chip" data-cue="1" style="left:140px;top:640px;background:var(--blue)">speed</div>
+<div class="chip" data-cue="1" data-d="0.3" style="left:290px;top:640px;background:var(--violet)">signals</div>
+<div class="chip" data-cue="1" data-d="0.6" style="left:460px;top:640px;background:var(--pink)">risk limits</div>
+<div class="sub" data-cue="1" data-d="0.9" style="left:680px;top:630px">decide who keeps it</div>
+</div>

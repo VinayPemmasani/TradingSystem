@@ -1,0 +1,16 @@
+[
+ {"id": "title", "title": "Nasdaq",
+  "text": "Nasdaq was born on screens, never on a floor. Today it is an exchange, an index business and a technology vendor at once."},
+ {"id": "history", "title": "History in five beats",
+  "text": "Five beats of history. On February 8, 1971, the dealers' association, NASD, launched an automated quotation system called Nasdaq. Market makers updated their quotes electronically, and it has never had a physical floor. In 2005 it became a public company, and in 2007 fully independent of its regulator parent. In February 2008 it combined with OMX, owner of the Nordic exchanges. In 2023 it bought Adenza, a maker of risk and regulatory software."},
+ {"id": "trades", "title": "What it lists and trades",
+  "text": "What does it list and trade? At the end of 2025, 4,480 companies were listed on the Nasdaq Stock Market, after 281 IPOs that year. Its three US stock exchanges matched about 14 percent of US share volume. Its six options markets matched about 29 percent of US equity options. In the Nordic and Baltic markets, its share was about 72 percent. Its flagship brand is the Nasdaq-100 index, and funds tracking Nasdaq indexes held about 880 billion dollars."},
+ {"id": "tech", "title": "ITCH, OUCH and the lab",
+  "text": "Technology is where Nasdaq stands out. Its stock market publishes TotalView-ITCH, an order by order binary feed, over MoldUDP64 multicast. An Add Order message is just 36 bytes. Orders go in over OUCH. The lab replays one full day of this feed, 368 million messages, and its simulated exchange speaks OUCH. Nasdaq also sells its technology: it powers more than 135 marketplaces, 19 of them its own."},
+ {"id": "money", "title": "How it makes money",
+  "text": "How does it make money? Net revenue in 2025 was 5.25 billion dollars. Trading, in Market Services, brought in 1.2 billion, under a quarter. Capital Access Platforms, meaning data, listings, indexes and investor tools, brought in 2.1 billion. Index licensing alone was over 800 million. The software side, Financial Technology, brought in 1.85 billion. So about three quarters comes from data, indexes and software, not from matching trades."},
+ {"id": "why", "title": "Why it is big",
+  "text": "Why is it big? Listings feed the index, the index feeds the funds, and the funds trade the listed stocks. Every turn of that loop sells more data and more licences. The technology business adds scale: one platform, many exchange customers. One caution: in US stocks, liquidity is split across many venues, so Nasdaq matches only about one share in seven."},
+ {"id": "takeaway", "title": "Takeaway", "hold": 0.3,
+  "text": "Nasdaq is a screen-born exchange that grew into an index and technology company. Matching trades is only a quarter of the story."}
+]

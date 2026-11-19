@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Global macro and carry",
+  "text": "Global macro trades whole economies: interest rates, currencies, stock indices and commodities, on a view of growth, inflation and policy. Carry is its most systematic cousin. It gets paid to hold whatever yields more."
+ },
+ {
+  "id": "macro",
+  "title": "Top-down views",
+  "text": "A macro trader starts from the top. Say they expect a central bank to cut rates faster than the market has priced. They might buy bond futures, or receive the fixed rate in a swap. One view can be expressed through many instruments, so the craft is choosing the one that pays most if right, and costs least if wrong. Positions sit in deep markets, futures, currencies and swaps, so even a large book can turn quickly."
+ },
+ {
+  "id": "carry",
+  "title": "Carry, defined",
+  "text": "Koijen, Moskowitz, Pedersen and Vrugt gave carry one definition for every asset, in the Journal of Financial Economics in 2018. Carry is the futures return if the price stays the same. In symbols, it is spot minus futures, divided by futures. For a currency forward, it is the interest rate spread between the two countries. They found carry predicts returns across many asset classes, including currencies, bonds, commodities and equity indices."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Fund at one percent, and invest in a currency that pays five. With the spot rate at 1.00, covered interest parity puts the one-year forward at 1.01 divided by 1.05, about 0.962. Carry is spot minus forward, over forward: about 3.96 percent a year. You earn it if the exchange rate does not move. If the high-yield currency falls by more than about four percent, the trade loses. So carry is a cushion, not a guarantee: one bad move in the currency can erase a year of interest."
+ },
+ {
+  "id": "lose",
+  "title": "How it loses",
+  "text": "And sometimes it falls all at once. Brunnermeier, Nagel and Pedersen found that carry traders are subject to crash risk: currency returns are negatively skewed. They link the crashes to sudden unwinding, when risk appetite and funding liquidity dry up. The carry paper also finds exposure to global recessions, liquidity and volatility risk. Discretionary macro loses differently: by being right too early, or right about the economy but wrong about what was already priced."
+ },
+ {
+  "id": "lab",
+  "title": "What it needs",
+  "text": "The lab has no macro book. Its strategies size by a fixed dollar notional, while a carry portfolio would size each leg by volatility, as in the trend video. Thesis.hpp shows the other half: an outside view, written down with an entry, an exit and a stop before the trade goes on. Beyond that, you need rate curves and forward points for many countries, margin in many currencies, and scenario tests for the crash."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Carry harvests a premium for holding higher-yielding assets, and macro harvests views on policy and growth. Both lose in sudden unwinds, so the job is sizing for the crash, not for the average day."
+ }
+]

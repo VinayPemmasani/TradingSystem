@@ -1,0 +1,43 @@
+[
+{
+"id": "title",
+"title": "Normalising",
+"text": "A firm that trades on many venues receives many feeds, each with its own messages, prices, timestamps and symbols. Normalising turns them into one format that strategies can read without caring where the data came from."
+},
+{
+"id": "why",
+"title": "Why",
+"text": "Without it, every strategy needs a decoder for every venue. Adding a venue means touching every strategy. With it, venue-specific code lives in one place, and strategies read one common struct."
+},
+{
+"id": "shape",
+"title": "The shape",
+"text": "The usual shape is a hub. Each venue gets its own adapter: session handling, decoding and book building, in that venue's own terms. What comes out is a small, fixed format. Typically an instrument id, bid and ask prices and sizes, the last trade, the trading status, and two timestamps: the exchange's and your own. The adapter is the only code that knows the venue's quirks, so when a venue changes its protocol, one adapter changes and nothing else."
+},
+{
+"id": "top",
+"title": "TopOfBook",
+"text": "The lab has one venue, but it shows the pattern. The firm's trader turns its books into a 64 byte TopOfBook. It holds two levels per side, an instrument index, the stock locate, the trading state, the receive time and the exchange time. It is trivially copyable and its size is checked at compile time. So it crosses rings and shared memory as plain bytes. Two levels per side let the strategy see the market without its own order in it, as the code comment puts it."
+},
+{
+"id": "record",
+"title": "Record and mask",
+"text": "The lab's vendor ticker plant goes further. Its consolidator keeps one Level 1 record per instrument. After every message it builds a bit mask of the fields that changed: bid, ask, last, volume, status, auction and price band. Three distribution protocols then turn the same record and mask into a full image, an update with only those fields, or nothing at all. A consumer that only wants quotes can test the quote bits and skip everything else."
+},
+{
+"id": "example",
+"title": "Worked example",
+"text": "Take an Order Executed message for 100 shares at 182.50. The book builder reduces the resting order. The consolidator sees matched volume rise by 100, so it sets last size, volume and trades, plus last price if that changed. If the execution emptied the best bid level, bid and bid size are set too. One message in, one record, one mask out."
+},
+{
+"id": "pitfalls",
+"title": "What gets lost",
+"text": "Normalising throws things away, so choose carefully. Keep prices as fixed point integers with a known scale. The lab keeps ITCH's four implied decimals, while circuit breaker levels use eight. Keep the exchange timestamp next to your own. Keep venue-specific fields, like the halt reason, rather than flattening them away. And don't shape the format around the slowest consumer: a market maker wants every change, while a screen can take conflated updates."
+},
+{
+"id": "takeaway",
+"title": "Takeaway",
+"text": "One adapter per venue, one small fixed format out, and a change mask, so every consumer sees only what moved.",
+"hold": 1.2
+}
+]

@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "Latency races",
+  "text": "When news moves a price, a stale quote is worth money for a few microseconds. Several firms race to take it, and its owner races to cancel it. Here is how often that happens, what it costs, and the batch auction proposed to end it."
+ },
+ {
+  "id": "race",
+  "title": "Anatomy of a race",
+  "text": "Here is a race with my own numbers. A maker offers 100 shares at 30.01. A related futures contract jumps, and the stock is now worth 30.05. The maker sends a cancel, and two fast traders send buys. The exchange handles messages strictly in arrival order, so whoever lands first wins. If a buy wins, it makes four cents a share, and the maker loses them."
+ },
+ {
+  "id": "mech",
+  "title": "Why races are mechanical",
+  "text": "Budish, Cramton and Shim explained why this keeps happening. In their 2011 data, S&P 500 futures and the SPY fund were 0.98 correlated over a minute, but only 0.09 over ten milliseconds. Arbitrage between the two lasted a median of 97 milliseconds in 2005, and just 7 in 2011. Faster traders did not remove the races. They only made them shorter."
+ },
+ {
+  "id": "size",
+  "title": "How big",
+  "text": "Aquilina, Budish and O'Neill then measured races directly, in exchange message data for FTSE 100 stocks. Races came about once a minute per stock, and the typical race lasted five to ten millionths of a second. Races made up about a fifth of all trading volume. The authors put the cost at roughly half a basis point on trading: about five billion dollars a year in global equities."
+ },
+ {
+  "id": "fba",
+  "title": "Frequent batch auctions",
+  "text": "The proposed fix is the frequent batch auction. Collect orders for a short interval, say a tenth of a second, then clear them all at one price. Orders in the same batch count as simultaneous. A maker's cancel that lands a few microseconds after a snipe still counts. Speed still matters at the edge of a batch, but it no longer decides every race."
+ },
+ {
+  "id": "worked",
+  "title": "A batch, worked",
+  "text": "Here is one batch I made up. Buyers bid for 300 shares at 30.04, 200 at 30.03, and 400 at 30.01. Sellers offer 200 at 30.00, 300 at 30.02, and 300 at 30.03. At 30.02, 500 shares are wanted and 500 offered. So the batch clears at 30.02, with 500 shares, and no imbalance. Every filled order gets the same price, whenever it arrived."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's exchange already holds the core of a batch market. In an auction phase, simex lets orders rest without matching. The engine's indicative function finds the clearing price, and uncross executes everyone at it. The rule is most shares paired, then least imbalance, then nearest the reference price. Uncross every tenth of a second, and simex becomes a batch market."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Latency arbitrage is a property of the design: a continuous market pays the fastest trader for every stale quote. Makers price that risk into their spreads. Batch auctions, speed bumps and faster cancels are the answers, each with its own trade-offs."
+ }
+]

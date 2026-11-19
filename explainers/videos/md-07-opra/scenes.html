@@ -1,0 +1,103 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 07 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">OPRA</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Every US options exchange, one consolidated feed.</div>
+<div class="big c-amber" data-cue="1" style="left:140px;top:560px;font-size:110px"><span class="count" data-cue="1" data-from="0" data-to="12.322" data-dec="3" data-dur="1.6">0</span> billion</div>
+<div class="lbl" data-cue="1" data-d="0.6" style="left:140px;top:700px">messages per day · projected capacity, one stream · OPRA notice, Sept 2025 (for 10/2025)</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Options multiply</div>
+<div class="node" data-cue="1" style="left:120px;top:420px;width:240px;height:130px;border-color:var(--blue)">1 underlying</div>
+<div id="w7-tree" data-cue="1" data-d="0.3" data-anim="fade" style="left:420px;top:220px;width:900px;height:560px"></div>
+<div class="card" data-cue="2" style="left:1380px;top:250px;width:420px;border-color:var(--amber)"><div class="ct c-amber">× exchanges</div><div class="cd">each series quoted on many venues</div></div>
+<div class="card" data-cue="2" data-d="0.6" style="left:1380px;top:420px;width:420px;border-color:var(--red)"><div class="ct c-red">× underlying moves</div><div class="cd">quotes re-price</div></div>
+<div class="card" data-cue="3" style="left:1380px;top:590px;width:420px;border-color:var(--teal)"><div class="ct c-teal">20 exchanges</div><div class="cd">processor: SIAC (OPRA FAQ)</div></div>
+<div class="tag c-muted" data-cue="4" style="left:120px;top:820px;font-size:24px">"Quote message traffic represents the vast majority of the options message traffic" (OPRA)</div>
+</div>
+
+<div class="scene" id="s-lines">
+<div class="h2" data-cue="0" style="left:120px;top:110px">96 lines × 2 streams</div>
+<div id="l7-grid" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:220px;width:900px;height:600px"></div>
+<div class="lbl" data-cue="0" data-d="1" style="left:120px;top:780px">lines 1–96, regular session · symbols rebalanced nightly</div>
+<div class="card" data-cue="1" style="left:1100px;top:220px;width:700px;border-color:var(--teal)"><div class="ct c-teal">stream A + stream B</div><div class="cd">every message, twice · plus retransmission streams</div></div>
+<div class="lbl" data-cue="2" style="left:1100px;top:400px">bandwidth to provision</div>
+<div class="grow bar" data-cue="2" data-d="0.3" data-w="300" style="left:1100px;top:440px;background:var(--teal)"></div>
+<div class="lbl" data-cue="2" data-d="0.3" style="left:1420px;top:448px">one stream</div>
+<div class="grow bar" data-cue="2" data-d="1.2" data-w="600" style="left:1100px;top:500px;background:var(--teal)"></div>
+<div class="lbl" data-cue="2" data-d="1.2" style="left:1100px;top:548px">× 2 streams</div>
+<div class="grow bar" data-cue="2" data-d="2.2" data-w="660" style="left:1100px;top:590px;background:var(--amber)"></div>
+<div class="lbl" data-cue="2" data-d="2.2" style="left:1100px;top:638px">+ 10% retransmissions</div>
+<div class="tag c-green" data-cue="3" style="left:1100px;top:720px;font-size:26px;border-color:var(--green)">median latency &lt; 18 µs (OPRA)</div>
+</div>
+
+<div class="scene" id="s-block">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Block header · 21 bytes</div>
+<div class="bytes" style="left:120px;top:300px">
+<div data-cue="1" style="width:72px;background:#55697a">ver</div>
+<div data-cue="1" data-d="0.2" style="width:144px;background:var(--pink)">size 2</div>
+<div data-cue="1" data-d="0.4" style="width:72px;background:#55697a">'O'</div>
+<div data-cue="1" data-d="0.5" style="width:72px;background:#55697a">rtx</div>
+<div data-cue="1" data-d="0.6" style="width:72px;background:#55697a">ses</div>
+<div data-cue="1" data-d="0.8" style="width:288px;background:var(--amber)">block seq 4</div>
+<div data-cue="1" data-d="1.0" style="width:72px;background:var(--violet)">n</div>
+<div data-cue="1" data-d="1.2" style="width:576px;background:var(--blue)">timestamp 8 · s + ns</div>
+<div data-cue="1" data-d="1.4" style="width:144px;background:var(--green)">sum 2</div>
+</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:230px">≤ 1,000-byte block</div>
+<div class="card" data-cue="1" data-d="1.6" style="left:120px;top:440px;width:820px;border-color:var(--amber)"><div class="ct c-amber">block sequence number</div><div class="cd">per line · messages inside numbered implicitly</div></div>
+<div class="card" data-cue="1" data-d="2" style="left:980px;top:440px;width:820px;border-color:var(--green)"><div class="ct c-green">checksum</div><div class="cd">low 16 bits of the byte sum</div></div>
+<div class="tag c-teal" data-cue="2" style="left:120px;top:660px;font-size:28px;border-color:var(--teal)">big-endian, like ITCH (video 01)</div>
+<div class="lbl" data-cue="0" data-d="0.5" style="left:120px;top:760px">OPRA Binary Data Recipient Interface Specification v6.4c</div>
+</div>
+
+<div class="scene" id="s-quote">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Long quote 'k' · short quote 'q'</div>
+<div class="lbl" data-cue="1" style="left:120px;top:210px">long · 43 bytes</div>
+<div class="bytes" style="left:120px;top:250px">
+<div data-cue="1" style="width:456px;background:#55697a">msg header 12</div>
+<div data-cue="1" data-d="0.2" style="width:190px;background:var(--teal)">root 5</div>
+<div data-cue="1" data-d="0.2" style="width:38px;background:#55697a">·</div>
+<div data-cue="1" data-d="0.3" style="width:114px;background:var(--violet)">exp 3</div>
+<div data-cue="1" data-d="0.4" style="width:38px;background:#55697a">d</div>
+<div data-cue="1" data-d="0.4" style="width:152px;background:var(--violet)">strike 4</div>
+<div data-cue="1" data-d="0.5" style="width:38px;background:#55697a">d</div>
+<div data-cue="1" data-d="0.6" style="width:152px;background:var(--green)">bid 4</div>
+<div data-cue="1" data-d="0.7" style="width:152px;background:var(--green)">size 4</div>
+<div data-cue="1" data-d="0.8" style="width:152px;background:var(--red)">offer 4</div>
+<div data-cue="1" data-d="0.9" style="width:152px;background:var(--red)">size 4</div>
+</div>
+<div class="lbl" data-cue="2" style="left:120px;top:380px">short · 29 bytes</div>
+<div class="bytes" style="left:120px;top:420px">
+<div data-cue="2" style="width:456px;background:#55697a">msg header 12</div>
+<div data-cue="2" data-d="0.2" style="width:152px;background:var(--teal)">sym 4</div>
+<div data-cue="2" data-d="0.3" style="width:114px;background:var(--violet)">exp 3</div>
+<div data-cue="2" data-d="0.4" style="width:76px;background:var(--violet)">K 2</div>
+<div data-cue="2" data-d="0.5" style="width:76px;background:var(--green)">bid</div>
+<div data-cue="2" data-d="0.6" style="width:76px;background:var(--green)">sz</div>
+<div data-cue="2" data-d="0.7" style="width:76px;background:var(--red)">off</div>
+<div data-cue="2" data-d="0.8" style="width:76px;background:var(--red)">sz</div>
+</div>
+<div class="lbl" data-cue="2" data-d="1" style="left:1260px;top:440px">denominators implied</div>
+<div class="card" data-cue="3" style="left:120px;top:560px;width:1000px;border-color:var(--green)"><div class="ct">illustrative series</div><div class="cs"><span class="c-green">2.15 × 40</span>  /  <span class="c-red">2.20 × 25</span></div><div class="cd">prices are integers + a decimal position (denominator code)</div></div>
+<div class="big c-amber" data-cue="4" style="left:1200px;top:580px;font-size:60px">−14 B</div>
+<div class="lbl" data-cue="4" data-d="0.3" style="left:1200px;top:670px">per quote, short vs long</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Conflation: latest value, not every step</div>
+<div class="lbl c-teal" data-cue="0" data-d="0.3" style="left:120px;top:230px">updates in</div>
+<div id="c7-in" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:270px;width:1680px;height:80px"></div>
+<div class="lbl c-amber" data-cue="2" style="left:120px;top:420px">conflated out · one per interval</div>
+<div id="c7-out" data-cue="2" data-anim="fade" style="left:120px;top:460px;width:1680px;height:80px"></div>
+<div class="card" data-cue="2" data-d="0.6" style="left:120px;top:600px;width:820px;border-color:var(--amber)"><div class="ct c-amber">libs/vendor · Server</div><div class="cd">"conflates per subscription" · screens, risk</div></div>
+<div class="card" data-cue="3" style="left:980px;top:600px;width:820px;border-color:var(--red)"><div class="ct c-red">market maker</div><div class="cd">no conflation: every line, full rate</div></div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A capacity problem first</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;border-color:var(--teal)"><div class="ct c-teal">links</div><div class="cd">2 streams + 10% retransmission</div></div>
+<div class="card" data-cue="2" style="left:980px;top:230px;width:820px;border-color:var(--violet)"><div class="ct c-violet">cores</div><div class="cd">spread 96 lines · size for each line's peak</div></div>
+<div class="card" data-cue="3" style="left:120px;top:420px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">line integrity</div><div class="cd">sent at least every 10 s per line · not retransmitted</div></div>
+<div class="take" data-cue="4" style="left:120px;top:640px;width:1680px">OPRA is many small feeds, <span class="c-amber">and every one must keep up.</span></div>
+</div>

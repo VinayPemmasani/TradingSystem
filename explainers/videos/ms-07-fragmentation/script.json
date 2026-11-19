@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "Fragmentation",
+  "text": "One US stock trades in dozens of places at once. Each venue has its own book, its own fees and its own speed. Here is how big the split is, what holds it together, and what it does to a large order."
+ },
+ {
+  "id": "count",
+  "title": "Count the venues",
+  "text": "In June 2026, the SEC counted 17 operating exchanges trading NMS stocks. In 2005 there were eight, before Nasdaq became an exchange in 2006. Cboe's market share table, for the five days to November 18, 2026, puts the NYSE group at 18.8 percent of volume. Nasdaq has 13.5, and Cboe 8.8. Trades reported off exchange, through FINRA's trade reporting facilities, came to 51.7 percent."
+ },
+ {
+  "id": "glue",
+  "title": "What holds it together",
+  "text": "Three things hold this together. Each exchange sends its best bid and offer to a central processor, which builds the national best bid and offer. Rule 611 tells venues not to trade through a better protected quote elsewhere. And brokers run smart order routers, which split each order across venues by price, size, fees and the odds of a fill."
+ },
+ {
+  "id": "sweep",
+  "title": "A worked sweep",
+  "text": "Here is a sweep I made up. You want 3,000 shares. Three exchanges offer at 30.02: 800, 1,000 and 500 shares. A fourth offers 1,200 at 30.03. The router sends four orders at once: 2,300 shares at 30.02, and 700 at 30.03. The average price is 30.0223. At today's fee cap of three tenths of a cent, taking costs another nine dollars."
+ },
+ {
+  "id": "fade",
+  "title": "Fading liquidity",
+  "text": "Now the catch. Your orders reach the venues at slightly different times. Once the first fill prints, fast traders can cancel quotes on other venues before your orders land. The liquidity you saw fades. So routers time their child orders to arrive together, and that race is the subject of video nine."
+ },
+ {
+  "id": "rules",
+  "title": "Rules in motion",
+  "text": "The rules keep moving. In September 2024, the SEC voted to cut the fee cap to a tenth of a cent, and allow half-cent ticks in tightly quoted stocks. Compliance is now due in November 2027. In June 2026, it proposed rescinding Rule 611 altogether. Meanwhile hidden trading grew on exchanges too: the median share against non-displayed orders rose from 16 percent in 2015 to 30.7 percent in 2025."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, simex is a single venue, so its book is the whole market. The book builder rebuilds that one book from ITCH. To route across venues, a firm would run one such book per venue, and merge their tops into its own view of the national best bid and offer."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Fragmentation buys competition on fees and speed, and pays for it in complexity: many books, many feeds, and child orders that race each other. The best price is something every router has to build for itself."
+ }
+]

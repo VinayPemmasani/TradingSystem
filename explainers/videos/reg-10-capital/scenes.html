@@ -1,0 +1,89 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">RISK &amp; REGULATION · 10 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px;width:1700px">Margin and capital<br>for trading firms</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:510px;width:1600px">The limits behind your limits.</div>
+<div class="box teal" data-cue="1" style="left:140px;top:630px;width:640px;height:130px"><div class="t">margin</div><div class="s">posted against each position</div></div>
+<div class="box violet" data-cue="2" style="left:840px;top:630px;width:640px;height:130px"><div class="t">capital</div><div class="s">loss the firm itself can absorb</div></div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">Who each one protects</div>
+<div class="box amber" data-cue="0" data-d="0.3" style="left:120px;top:240px;width:360px;height:110px"><div class="t">trader</div></div>
+<div class="box teal" data-cue="0" data-d="0.6" style="left:700px;top:240px;width:520px;height:110px"><div class="t">lender · clearing house</div></div>
+<svg class="full"><path class="draw" data-cue="0" data-d="0.9" d="M 485 295 L 690 295" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="lbl" data-cue="0" data-d="1.0" style="left:520px;top:250px;color:var(--teal)">margin</div>
+<div class="box violet" data-cue="1" style="left:120px;top:420px;width:360px;height:110px"><div class="t">the firm</div></div>
+<div class="box blue" data-cue="1" data-d="0.3" style="left:700px;top:420px;width:520px;height:110px"><div class="t">customers · market</div></div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.6" d="M 485 475 L 690 475" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/></svg>
+<div class="lbl" data-cue="1" data-d="0.7" style="left:520px;top:430px;color:var(--violet)">capital</div>
+<div class="tagx" data-cue="2" style="left:1300px;top:350px;border-color:var(--red);color:var(--red)">short of either → forced cuts</div>
+<div class="rule" data-cue="3" style="left:120px;top:620px;width:1680px;text-align:center">Both are rules with numbers: compute them before you trade.</div>
+</div>
+
+<div class="scene" id="s-margin">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">Margin on US stocks</div>
+<div class="stat" data-cue="0" data-d="0.3" style="left:120px;top:200px;width:360px;text-align:left"><div class="n c-teal">50%</div><div class="l">initial · Regulation T</div></div>
+<div class="stat" data-cue="1" style="left:520px;top:200px;width:400px;text-align:left"><div class="n c-teal">25%</div><div class="l">maintenance, long · FINRA 4210</div></div>
+<div class="lbl" data-cue="2" style="left:120px;top:400px">$100,000 of stock</div>
+<div class="bar" data-cue="2" data-anim="fade" style="left:120px;top:440px;width:500px;height:60px;background:var(--amber)"></div>
+<div class="bar" data-cue="2" data-anim="fade" style="left:620px;top:440px;width:500px;height:60px;background:var(--muted)"></div>
+<div class="lbl" data-cue="2" style="left:130px;top:455px;color:#06141a">equity $50,000</div>
+<div class="lbl" data-cue="2" style="left:630px;top:455px;color:#06141a">borrowed $50,000</div>
+<div class="code" data-cue="3" style="left:120px;top:540px;width:1000px;font-size:28px">equity ≥ 25% × value
+V − 50,000 ≥ 0.25 V   →   V ≥ <span class="r">66,667</span></div>
+<div class="tagx" data-cue="4" style="left:120px;top:700px;border-color:var(--red);color:var(--red)">below ≈ $66,700 (−33%): margin call</div>
+<div class="card" data-cue="5" style="left:1200px;top:400px;width:600px"><div class="ct c-violet">futures</div><div class="cs">set per contract by the clearing house, from its risk models</div></div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">12 CFR 220.12(a) · FINRA Rule 4210(c)(1) · example illustrative</div>
+</div>
+
+<div class="scene" id="s-capital">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">Net capital: SEC Rule 15c3-1</div>
+<div class="card" data-cue="1" style="left:120px;top:200px;width:820px"><div class="ct c-violet">minimum net capital</div><div class="cs">dealer: $100,000<br>carries customer accounts: $250,000</div></div>
+<div class="card" data-cue="2" style="left:980px;top:200px;width:820px"><div class="ct c-violet">haircuts on own positions</div><div class="cs" data-cue="3">most equities: 15% of the larger<br>of the long or short side</div></div>
+<div class="lbl" data-cue="4" style="left:120px;top:470px">$10 million of stock</div>
+<div class="bar" data-cue="4" data-anim="fade" style="left:120px;top:510px;width:1000px;height:60px;background:var(--amber)"></div>
+<div class="bar" data-cue="4" data-d="0.6" data-anim="fade" style="left:970px;top:510px;width:150px;height:60px;background:var(--red)"></div>
+<div class="lbl" data-cue="4" data-d="0.8" style="left:1140px;top:525px;color:var(--red)">−$1.5M haircut</div>
+<div class="lbl" data-cue="5" style="left:120px;top:620px">hedged: long $10M · short $2M (≤ 25%)</div>
+<div class="bar" data-cue="5" data-anim="fade" style="left:120px;top:660px;width:1000px;height:40px;background:var(--amber)"></div>
+<div class="bar" data-cue="5" data-anim="fade" style="left:120px;top:705px;width:200px;height:40px;background:var(--blue)"></div>
+<div class="lbl" data-cue="5" data-d="0.5" style="left:1140px;top:680px;color:var(--red)">haircut still $1.5M, on the larger side only</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">17 CFR 240.15c3-1(a)(2), (c)(2)(vi)(J) · bars to scale · illustrative positions</div>
+</div>
+
+<div class="scene" id="s-eu">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">The EU: Investment Firms Regulation</div>
+<div class="ev" data-cue="0" data-d="0.3" style="left:120px;top:210px;width:600px"><div class="d c-pink">26 Jun 2021</div><div class="e">IFR / IFD apply</div></div>
+<div class="stat" data-cue="1" style="left:120px;top:340px;width:600px;text-align:left"><div class="n c-violet">€750,000</div><div class="l">initial capital · dealing on own account</div></div>
+<div class="lbl" data-cue="2" style="left:900px;top:210px">ongoing requirement = the highest of</div>
+<div class="box" data-cue="2" data-d="0.3" style="left:900px;top:260px;width:900px;height:100px"><div class="t" style="font-size:28px">permanent minimum</div></div>
+<div class="box" data-cue="2" data-d="0.6" style="left:900px;top:380px;width:900px;height:100px"><div class="t" style="font-size:28px">¼ of annual fixed overheads</div></div>
+<div class="box violet" data-cue="2" data-d="0.9" style="left:900px;top:500px;width:900px;height:100px"><div class="t" style="font-size:28px">K-factors</div></div>
+<div class="tagx" data-cue="3" style="left:900px;top:630px;border-color:var(--violet);color:var(--violet)">risk to clients</div>
+<div class="tagx" data-cue="3" data-d="0.3" style="left:1140px;top:630px;border-color:var(--violet);color:var(--violet)">risk to market</div>
+<div class="tagx" data-cue="3" data-d="0.6" style="left:1390px;top:630px;border-color:var(--violet);color:var(--violet)">risk to firm</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">Regulation (EU) 2019/2033 (IFR) · Directive (EU) 2019/2034 Art. 9(1) · European Commission IFR/IFD page</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">In the lab: limits, in money</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:200px;width:900px;font-size:28px"><span class="line" data-hl="1" data-hlend="2">max_position       = <span class="r">2'000</span>;  <span class="c">// shares</span></span><span class="line">max_order_notional = <span class="r">$100,000</span>;</span></div>
+<table class="t" data-cue="2" style="left:120px;top:400px;width:1100px">
+<tr><th>at $50 a share</th><th></th></tr>
+<tr data-cue="2" data-anim="fade"><td>2,000 × $50 position</td><td class="c-amber">$100,000</td></tr>
+<tr data-cue="3" data-anim="fade"><td>Reg T initial margin, 50%</td><td class="c-teal">$50,000</td></tr>
+<tr data-cue="4" data-anim="fade"><td>15c3-1 haircut, 15%</td><td class="c-violet">$15,000</td></tr>
+</table>
+<div class="tagx" data-cue="5" style="left:1300px;top:420px;border-color:var(--muted);color:var(--muted)">illustration · per symbol</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">firm/risk/include/lab/risk/risk.hpp (Limits)</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">What pros do</div>
+<div class="chk" data-cue="1" style="left:160px;top:220px"><i style="background:var(--teal)"></i>compute margin and capital before the trade</div>
+<div class="chk" data-cue="2" style="left:160px;top:300px"><i style="background:var(--violet)"></i>keep a buffer above every minimum</div>
+<div class="chk" data-cue="3" style="left:160px;top:380px"><i style="background:var(--red)"></i>stress test for margin increases</div>
+<div class="chk" data-cue="4" style="left:160px;top:460px"><i style="background:var(--amber)"></i>watch gross positions, not just net</div>
+<div class="rule" data-cue="4" data-d="1.5" style="left:120px;top:580px;width:1680px;text-align:center">Survive the bad day first. Then trade.</div>
+<div class="foot" data-cue="5" style="left:120px;top:780px;width:1680px">Education, not legal advice.</div>
+</div>
