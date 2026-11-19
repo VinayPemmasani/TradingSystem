@@ -12,3 +12,5 @@
 
 ## Unsure / left out
 - Exact exchange count on Cboe's page vs SEC's 17 (new exchanges may have launched since June 2026): only the SEC count is narrated.
+
+Duration: 190.3 s.

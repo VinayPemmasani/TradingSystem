@@ -10,3 +10,5 @@
 
 ## Unsure / left out
 - The lab's agents results are noisy run to run (I ran simex+agents: makers did not reliably lose more at higher value rate), so the video only suggests the experiment, with no claimed outcome.
+
+Duration: 183.4 s.

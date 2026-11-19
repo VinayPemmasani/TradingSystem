@@ -10,3 +10,5 @@
 
 ## Unsure / left out
 - The 2012 paper's exact intraday VPIN path; flash crash time of day. Whether Andersen & Bondarenko used identical data (not stated on screen).
+
+Duration: 180.0 s.

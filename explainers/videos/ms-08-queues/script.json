@@ -12,7 +12,8 @@
  {
   "id": "worked",
   "title": "A worked example",
-  "text": "Here is one I made up. The bid at 30.00 holds 5,000 shares, and you join with 100 at the back. Over the next minute, 1,500 shares trade at the bid, and 2,000 shares ahead of you cancel. That leaves 1,500 ahead of you, and 400 more have joined behind. Then a seller sweeps 2,000 shares. It takes the 1,500, your 100 and the 400 behind you. The level is gone, and the bid drops to 29.99. You waited a full minute, and were filled at the worst moment."
+  "text": "Here is one I made up. The bid at 30.00 holds 5,000 shares, and you join with 100 at the back. Over the next minute, 1,500 shares trade at the bid, and 2,000 shares ahead of you cancel. That leaves 1,500 ahead of you, and 400 more have joined behind. Then a seller sweeps 2,000 shares. It takes the 1,500, your 100 and the 400 behind you. The level is gone, and the bid drops to 29.99. You waited a full minute, and were filled at the worst moment.",
+  "hold": 1.2
  },
  {
   "id": "adverse",
@@ -22,7 +23,8 @@
  {
   "id": "tick",
   "title": "Queues move prices",
-  "text": "With a one-tick spread, the price can only move when a queue at the best bid or offer runs out. So queue sizes, and how fast they shrink, forecast the next tick. That is the imbalance signal from the signal series, seen from the queue's side."
+  "text": "With a one-tick spread, the price can only move when a queue at the best bid or offer runs out. So queue sizes, and how fast they shrink, forecast the next tick. That is the imbalance signal from the signal series, seen from the queue's side.",
+  "hold": 1.2
  },
  {
   "id": "lab",

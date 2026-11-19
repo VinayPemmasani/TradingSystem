@@ -12,3 +12,5 @@
 
 ## Unsure / left out
 - Latest FINRA quarterly ATS share (spreadsheet download blocked by the proxy); used the SEC's Q1 2022 figure instead. FINRA publication delay not stated.
+
+Duration: 185.3 s.

@@ -87,7 +87,7 @@ Existing longer videos that already cover parts of this: rest-api, kafka, http, 
 | oe-07-seq | Sequence numbers, resends and gap fill | queued |
 | oe-08-throttles | Throttles and message rate limits | queued |
 | oe-09-kill | Kill switches | queued |
-| oe-10-sor | Smart order routing | authoring |
+| oe-10-sor | Smart order routing | queued |
 
 ## 8. Asset classes (ac-)
 | ac-01-equities | Cash equities | queued |
@@ -122,8 +122,8 @@ Existing longer videos that already cover parts of this: rest-api, kafka, http, 
 | reg-06-ccp | Clearing and central counterparties | queued |
 | reg-07-settlement | Settlement and T+1 | queued |
 | reg-08-best-ex | Best execution and TCA | queued |
-| reg-09-surveillance | Spoofing, layering and surveillance | authoring |
-| reg-10-capital | Margin and capital for trading firms | todo |
+| reg-09-surveillance | Spoofing, layering and surveillance | queued |
+| reg-10-capital | Margin and capital for trading firms | queued |
 
 ## 11. Market microstructure (ms-)
 | ms-01-spread | What the spread pays for | queued |
@@ -132,7 +132,7 @@ Existing longer videos that already cover parts of this: rest-api, kafka, http, 
 | ms-04-toxicity | Order flow toxicity | queued |
 | ms-05-pfof | Payment for order flow and wholesalers | queued |
 | ms-06-dark | Dark pools | queued |
-| ms-07-fragmentation | Fragmentation across venues | todo |
-| ms-08-queues | Queue dynamics at a price level | todo |
-| ms-09-races | Latency races and frequent batch auctions | todo |
-| ms-10-volume | Intraday volume curves and the close | todo |
+| ms-07-fragmentation | Fragmentation across venues | queued |
+| ms-08-queues | Queue dynamics at a price level | queued |
+| ms-09-races | Latency races and frequent batch auctions | queued |
+| ms-10-volume | Intraday volume curves and the close | queued |

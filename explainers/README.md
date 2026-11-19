@@ -161,7 +161,7 @@ Three-minute videos in 11 topics; the plan and status are in [library/CATALOGUE.
 | Sequence numbers, resends and gap fill | `oe-07-seq` | 3:01 |
 | Throttles and message rate limits | `oe-08-throttles` | 3:01 |
 | Kill switches | `oe-09-kill` | 2:58 |
-| Smart order routing | `oe-10-sor` | not rendered yet |
+| Smart order routing | `oe-10-sor` | 3:04 |
 
 #### Asset classes
 
@@ -206,6 +206,7 @@ Three-minute videos in 11 topics; the plan and status are in [library/CATALOGUE.
 | Settlement and T+1 | `reg-07-settlement` | 3:01 |
 | Best execution and TCA | `reg-08-best-ex` | 2:55 |
 | Spoofing, layering and surveillance | `reg-09-surveillance` | 2:56 |
+| Margin and capital for trading firms | `reg-10-capital` | 3:13 |
 
 #### Market microstructure
 
@@ -218,9 +219,9 @@ Three-minute videos in 11 topics; the plan and status are in [library/CATALOGUE.
 | Payment for order flow and wholesalers | `ms-05-pfof` | 3:00 |
 | Dark pools | `ms-06-dark` | 3:05 |
 | Fragmentation across venues | `ms-07-fragmentation` | 3:10 |
-| Queue dynamics at a price level | `ms-08-queues` | not rendered yet |
-| Latency races and frequent batch auctions | `ms-09-races` | not rendered yet |
-| Intraday volume curves and the close | `ms-10-volume` | not rendered yet |
+| Queue dynamics at a price level | `ms-08-queues` | 2:47 |
+| Latency races and frequent batch auctions | `ms-09-races` | 3:11 |
+| Intraday volume curves and the close | `ms-10-volume` | 2:58 |
 
 ## Layout
 

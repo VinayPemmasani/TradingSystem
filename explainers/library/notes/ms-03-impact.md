@@ -12,3 +12,5 @@
 
 ## Unsure / left out
 - No fitted value of Y from the paper (it gives none for the CFM data). Impact decay after a metaorder ends: not covered.
+
+Duration: 187.5 s.

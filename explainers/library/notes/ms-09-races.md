@@ -10,3 +10,5 @@
 
 ## Unsure / left out
 - The ~800–900 opportunities per day figure (versions differ); the 1-minute correlation 0.98 is from the working paper's table as read by the fetch tool.
+
+Duration: 191.3 s.

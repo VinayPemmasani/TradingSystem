@@ -10,3 +10,5 @@
 
 ## Unsure / left out
 - "Changing price or adding size usually sends you to the back" is general exchange practice, hedged with "usually"; per-exchange rules not cited. Pro-rata markets not covered.
+
+Duration: 166.6 s.

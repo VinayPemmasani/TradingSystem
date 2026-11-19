@@ -11,3 +11,5 @@
 
 ## Unsure / left out
 - No lab tie-in (the lab has no wholesaler/retail routing). Total industry PFOF dollars not stated.
+
+Duration: 180.3 s.

@@ -11,3 +11,5 @@
 
 ## Unsure / left out
 - No real intraday volume curve on screen: market data APIs available here gave daily bars only, so the U-shape is labelled illustrative. Closing share of share volume (vs notional) not stated.
+
+Duration: 177.7 s.

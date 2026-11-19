@@ -14,3 +14,5 @@
 
 ## Unsure / left out
 - Huang & Stoll's numeric component shares (not read; only the qualitative ordering). Bar widths on screen are illustrative.
+
+Duration: 178.0 s.
