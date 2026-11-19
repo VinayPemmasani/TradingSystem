@@ -1,0 +1,299 @@
+<!-- 0 HOOK -->
+<div class="scene" id="s-hook">
+  <div class="eyebrow" data-cue="0" style="left:130px;top:230px">Trading lab · market microstructure</div>
+  <div class="h1" data-cue="0" data-d="0.3" style="left:124px;top:290px">Signals on<br>the order book</div>
+  <div class="sub" data-cue="0" data-d="0.9" style="left:130px;top:600px;width:900px">From top of book to fair value, one message at a time.</div>
+  <div class="lad" id="hk-lad" data-cue="1" data-anim="fade" style="left:1060px;top:230px;height:616px"></div>
+  <div class="lbl" data-cue="1" data-d="0.4" style="left:1060px;top:870px">live: <span class="c-teal">mid</span> · <span class="c-amber">microprice</span></div>
+</div>
+
+<!-- 1 PIPELINE -->
+<div class="scene" id="s-pipeline">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">How the lab gets data</div>
+  <div class="box" data-cue="0" style="left:90px;top:330px;width:240px;text-align:center"><div class="t">ITCH 5.0</div><div class="s">UDP feed or<br>Aeron IPC</div></div>
+  <div class="box teal" data-cue="0" data-d="0.4" style="left:440px;top:230px;width:420px;height:330px"><div class="t">market data thread</div><div class="s">decode · BookBuilder<br>full book, every symbol</div></div>
+  <div data-cue="0" data-d="0.9" id="pl-book" style="left:480px;top:380px;width:340px;height:160px"></div>
+  <div class="box" data-cue="1" style="left:960px;top:330px;width:300px;text-align:center"><div class="t">SPSC ring</div><div class="s">TopOfBook × 16384</div></div>
+  <div class="lbl" data-cue="1" data-d="0.5" style="left:880px;top:470px;width:470px;text-align:center">pushed only when the top two<br>levels or trading state change</div>
+  <div class="box amber" data-cue="2" style="left:1360px;top:230px;width:450px;height:330px"><div class="t">trading thread</div><div class="s">MarketMaker · risk · OMS</div></div>
+  <div data-cue="2" data-d="0.4" style="left:1390px;top:370px;width:400px">
+    <div class="lbl" style="margin-bottom:10px">dirty instruments</div>
+    <span class="pill" id="pl-d0">SYM0001</span> <span class="pill" id="pl-d1">SYM0002</span>
+    <div class="lbl" style="margin-top:14px;color:var(--amber)">drain ring → requote each once</div>
+  </div>
+  <svg class="full">
+    <path class="draw" data-cue="0" data-d="0.3" d="M330 395 L440 395" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+    <path class="draw" data-cue="1" d="M860 395 L960 395" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/>
+    <path class="draw" data-cue="2" d="M1260 395 L1360 395" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/>
+    <path id="pl-path" d="M860 395 L1360 395" fill="none" stroke="none"/>
+  </svg>
+  <div class="pkt" data-path="pl-path" data-cue="2" data-dur="1.6" data-loop="1"></div>
+  <div class="pkt" data-path="pl-path" data-cue="2" data-dur="1.6" data-loop="1" data-phase="0.5"></div>
+  <div class="code" data-cue="1" data-d="0.6" style="left:440px;top:600px;font-size:24px">struct alignas(64) TopOfBook {        <span class="c">// 64 bytes</span>
+  <span class="v">uint64_t</span> rx_tsc, feed_ns;
+<span class="line" data-hl="3">  <span class="v">uint32_t</span> bid_px[<span class="r">2</span>], bid_qty[<span class="r">2</span>];    <span class="c">// two levels</span></span><span class="line" data-hl="3">  <span class="v">uint32_t</span> ask_px[<span class="r">2</span>], ask_qty[<span class="r">2</span>];    <span class="c">// Price(4), shares</span></span>  <span class="v">uint16_t</span> instrument, locate;
+  <span class="k">char</span> trading_state;          <span class="c">// T H P Q</span>
+};</div>
+  <div class="box violet" data-cue="3" data-d="0.8" style="left:90px;top:600px;width:310px"><div class="t" style="font-size:26px">compute here:</div><div class="s">depth imbalance<br>book pressure<br>trade flow<br>queue position</div></div>
+  <svg class="full"><path class="draw" data-cue="3" data-d="1.2" d="M245 600 C 245 560 330 540 440 520" stroke="#a98bff" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/></svg>
+</div>
+
+<!-- 2 TOB -->
+<div class="scene" id="s-tob">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Top of book: mid and spread</div>
+  <div class="lad" id="tb-lad" data-cue="0" data-anim="fade" style="left:190px;top:250px;height:616px"></div>
+  <div class="fcard" data-cue="0" data-d="0.5" style="left:1060px;top:230px;width:740px">
+    <span class="lbl">ITCH Price(4) · 4 implied decimals</span>
+    <div class="mono" style="font:600 40px var(--mono)"><span class="c-green">500100</span> = $50.0100 <span class="c-muted" style="font-size:28px">· 1¢ = 100</span></div>
+  </div>
+  <div class="fcard" data-cue="1" style="left:1060px;top:410px;width:740px">
+    <div class="math"><i>mid</i><span class="eq">=</span><span class="frac"><span><i>p</i><sub>b</sub> + <i>p</i><sub>a</sub></span><span>2</span></span><span class="eq">=</span><span class="val c-teal">500200</span></div>
+  </div>
+  <div class="fcard" data-cue="2" style="left:1060px;top:600px;width:740px">
+    <div class="math"><i>spread</i><span class="eq">=</span><i>p</i><sub>a</sub> − <i>p</i><sub>b</sub><span class="eq">=</span><span class="val c-amber">200</span> <span class="val c-muted">= 2 ticks</span></div>
+  </div>
+  <div class="code" data-cue="3" style="left:1060px;top:760px;font-size:23px;padding:14px 22px"><span class="c">// lab::strategy::Market (market_maker.hpp)</span>
+<span class="v">uint32_t</span> mid() { <span class="k">return</span> (bid + ask) / <span class="r">2</span>; }</div>
+</div>
+
+<!-- 3 MICRO -->
+<div class="scene" id="s-micro">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Microprice and imbalance</div>
+  <div class="lad" id="mc-lad" data-cue="0" data-anim="fade" style="left:150px;top:250px;height:616px"></div>
+  <div class="fcard" data-cue="1" style="left:1060px;top:220px;width:760px">
+    <div class="math"><i>I</i><span class="eq">=</span><span class="frac"><span><i>q</i><sub>b</sub></span><span><i>q</i><sub>b</sub> + <i>q</i><sub>a</sub></span></span><span class="eq">=</span><span class="val c-violet" id="mc-i">0.600</span></div>
+  </div>
+  <div class="fcard" data-cue="2" style="left:1060px;top:420px;width:760px">
+    <div class="math"><i>micro</i><span class="eq">=</span><span class="frac"><span><i>p</i><sub>b</sub><i>q</i><sub>a</sub> + <i>p</i><sub>a</sub><i>q</i><sub>b</sub></span><span><i>q</i><sub>a</sub> + <i>q</i><sub>b</sub></span></span><span class="eq">=</span><span class="val c-amber" id="mc-m">500220</span></div>
+  </div>
+  <div class="fcard" data-cue="3" style="left:1060px;top:630px;width:760px">
+    <div class="math"><span class="eq" style="margin-left:0">=</span><i>mid</i> + <i>spread</i> · (<i>I</i> − ½)</div>
+  </div>
+  <div class="lbl" data-cue="3" data-d="1" style="left:1060px;top:770px;width:760px;font-size:19px;line-height:1.4">Also called the weighted mid. Stoikov (2018) defines a refined micro-price that adds a learned adjustment.</div>
+</div>
+
+<!-- 4 DEPTH -->
+<div class="scene" id="s-depth">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Full book: depth and pressure</div>
+  <div class="lad" id="dp-lad" data-cue="0" data-anim="fade" style="left:250px;top:250px;height:616px"></div>
+  <div class="fcard" data-cue="1" style="left:1150px;top:220px;width:700px">
+    <div class="math" style="font-size:38px"><i>DI</i><sub>N</sub><span class="eq">=</span><span class="frac"><span><span class="op"><b>Σ</b></span><i>w</i><sub>i</sub>(<i>q</i><sup>b</sup><sub>i</sub> − <i>q</i><sup>a</sup><sub>i</sub>)</span><span><span class="op"><b>Σ</b></span><i>w</i><sub>i</sub>(<i>q</i><sup>b</sup><sub>i</sub> + <i>q</i><sup>a</sup><sub>i</sub>)</span></span></div>
+    <div class="math" style="font-size:32px;margin-top:8px"><i>w</i><sub>i</sub> = λ<sup><i>i</i></sup>, λ = 0.5, <i>i</i> = 0…<i>N</i>−1<span class="eq">→</span><span class="val c-violet" id="dp-di">+0.000</span></div>
+  </div>
+  <div class="lbl" data-cue="2" style="left:1150px;top:510px;width:700px;line-height:1.4">level 4 bid grows 1300 → 3000: <span class="c-violet">small move</span><br>best ask trades 400 → 150: <span class="c-violet">bigger move</span></div>
+  <div class="fcard" data-cue="3" style="left:1150px;top:610px;width:700px">
+    <div class="math" style="font-size:34px"><i>P</i><sub>N</sub><span class="eq">=</span><span class="frac"><span><i>B̄</i> <i>Q</i><sub>a</sub> + <i>Ā</i> <i>Q</i><sub>b</sub></span><span><i>Q</i><sub>a</sub> + <i>Q</i><sub>b</sub></span></span> <span class="eq">,</span> <i>pressure</i> = <i>P</i><sub>N</sub> − <i>mid</i></div>
+    <div class="lbl" style="margin-top:8px;font-size:19px">B̄, Ā: w-weighted mean bid and ask prices · Q<sub>b</sub>, Q<sub>a</sub>: w-weighted sizes</div>
+    <div class="mono" style="font:600 28px var(--mono);margin-top:6px">pressure = <span class="c-pink" id="dp-pr">+0.00</span> ticks</div>
+  </div>
+</div>
+
+<!-- 5 OFI -->
+<div class="scene" id="s-ofi">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Order flow imbalance</div>
+  <div class="fcard" data-cue="0" style="left:120px;top:210px;width:800px"><span class="lbl">imbalance</span><div class="h3">a snapshot of the two queues</div></div>
+  <div class="fcard" data-cue="1" style="left:960px;top:210px;width:840px"><span class="lbl">OFI · Cont, Kukanov &amp; Stoikov (2014)</span><div class="h3">how the queues changed</div><div class="lbl" style="margin-top:6px;font-size:19px">"The Price Impact of Order Book Events", J. Financial Econometrics</div></div>
+  <div class="fcard" data-cue="2" style="left:120px;top:410px;width:1680px">
+    <div class="math" style="font-size:40px"><i>e</i><sub>n</sub><span class="eq">=</span><span class="c-green"><i>I</i>{<i>P</i><sup>B</sup><sub>n</sub> ≥ <i>P</i><sup>B</sup><sub>n−1</sub>} <i>q</i><sup>B</sup><sub>n</sub> − <i>I</i>{<i>P</i><sup>B</sup><sub>n</sub> ≤ <i>P</i><sup>B</sup><sub>n−1</sub>} <i>q</i><sup>B</sup><sub>n−1</sub></span></div>
+    <div class="math" style="font-size:40px;padding-left:96px"><span class="c-red">− <i>I</i>{<i>P</i><sup>A</sup><sub>n</sub> ≤ <i>P</i><sup>A</sup><sub>n−1</sub>} <i>q</i><sup>A</sup><sub>n</sub> + <i>I</i>{<i>P</i><sup>A</sup><sub>n</sub> ≥ <i>P</i><sup>A</sup><sub>n−1</sub>} <i>q</i><sup>A</sup><sub>n−1</sub></span></div>
+  </div>
+  <div class="fcard" data-cue="3" style="left:120px;top:640px;width:700px">
+    <div class="math"><i>OFI</i><sub>k</sub><span class="eq">=</span><span class="op"><small><i>N</i>(<i>t</i><sub>k</sub>)</small><b>Σ</b><small><i>n</i> = <i>N</i>(<i>t</i><sub>k−1</sub>)+1</small></span><i>e</i><sub>n</sub></div>
+  </div>
+  <div class="fcard" data-cue="4" style="left:860px;top:640px;width:540px">
+    <div class="math" style="font-size:38px">Δ<i>P</i><sub>k</sub> = β · <i>OFI</i><sub>k</sub> + ε<sub>k</sub></div>
+    <div class="lbl" style="margin-top:6px">same interval · β ∝ 1 / depth</div>
+  </div>
+  <svg class="full" id="of-sc" data-cue="4" data-d="0.5" data-anim="fade"></svg>
+</div>
+
+<!-- 6 OFI EVENTS -->
+<div class="scene" id="s-ofievents">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">OFI, event by event</div>
+  <table class="t case" id="oe-tab" style="left:120px;top:210px;font-size:32px">
+    <tr data-cue="0"><td class="c-green">bid</td><td>price rose</td><td class="c-green">+ q<sup>B</sup><sub>n</sub></td></tr>
+    <tr data-cue="1"><td class="c-green">bid</td><td>unchanged</td><td class="c-green">+ (q<sup>B</sup><sub>n</sub> − q<sup>B</sup><sub>n−1</sub>)</td></tr>
+    <tr data-cue="2"><td class="c-green">bid</td><td>price fell</td><td class="c-green">− q<sup>B</sup><sub>n−1</sub></td></tr>
+    <tr data-cue="3"><td class="c-red">ask</td><td>price fell</td><td class="c-red">− q<sup>A</sup><sub>n</sub></td></tr>
+    <tr data-cue="3" data-d="0.3"><td class="c-red">ask</td><td>unchanged</td><td class="c-red">− (q<sup>A</sup><sub>n</sub> − q<sup>A</sup><sub>n−1</sub>)</td></tr>
+    <tr data-cue="3" data-d="0.6"><td class="c-red">ask</td><td>price rose</td><td class="c-red">+ q<sup>A</sup><sub>n−1</sub></td></tr>
+  </table>
+  <div class="fcard" data-cue="4" style="left:960px;top:210px;width:840px">
+    <span class="lbl">best levels</span>
+    <div class="mono" style="font:700 36px var(--mono);white-space:pre"><span class="c-green" id="oe-b">50.01 × 600</span>   <span class="c-red" id="oe-a">50.03 × 400</span></div>
+  </div>
+  <div data-cue="4" style="left:960px;top:360px;width:840px;font:600 25px/1.75 var(--mono)" id="oe-log"></div>
+  <div data-cue="4" style="left:120px;top:690px;width:760px">
+    <div class="lbl">running OFI</div>
+    <div style="position:relative;height:70px;margin-top:10px;background:#08121a;border:2px solid var(--line);border-radius:10px">
+      <div style="position:absolute;left:250px;top:-6px;bottom:-6px;width:2px;background:var(--muted)"></div>
+      <div id="oe-bar" style="position:absolute;left:250px;top:10px;height:46px;width:0;background:var(--violet);border-radius:4px"></div>
+    </div>
+    <div class="big c-violet" id="oe-v" style="margin-top:10px">0</div>
+  </div>
+</div>
+
+<!-- 7 TRADES -->
+<div class="scene" id="s-trades">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Trade flow, big orders, icebergs</div>
+  <div data-cue="1" style="left:120px;top:220px;width:900px">
+    <div class="lbl" style="margin-bottom:8px">ITCH Order Executed (E), 31 bytes</div>
+    <div class="bytes">
+      <div style="width:60px;background:var(--amber)">E</div>
+      <div style="width:180px;background:#8ea3b1">locate · time</div>
+      <div style="width:250px;background:var(--teal)">order ref 11:8</div>
+      <div style="width:180px;background:#6aa8ff">shares 19:4</div>
+      <div style="width:180px;background:#a98bff">match 23:8</div>
+    </div>
+    <div class="mono" style="font:600 25px var(--mono);margin-top:14px">order ref → resting <span class="c-red">SELL</span> @ 50.03 → aggressor <span class="c-green">BUY</span></div>
+  </div>
+  <div data-cue="2" style="left:120px;top:440px;width:900px">
+    <div class="lbl" style="margin-bottom:10px">tape (aggressor side, shares)</div>
+    <div id="tr-tape" style="height:110px"></div>
+  </div>
+  <div class="fcard" data-cue="2" data-d="0.3" style="left:120px;top:620px;width:900px">
+    <div class="math" style="font-size:36px"><i>TFI</i><span class="eq">=</span><span class="frac"><span><i>V</i><sub>buy</sub> − <i>V</i><sub>sell</sub></span><span><i>V</i><sub>buy</sub> + <i>V</i><sub>sell</sub></span></span><span class="eq">=</span><span class="val c-blue" id="tr-v">+0.00</span></div>
+    <div style="position:relative;height:20px;margin-top:12px;background:#08121a;border-radius:10px;border:1px solid var(--line)">
+      <div style="position:absolute;left:50%;top:-5px;bottom:-5px;width:2px;background:var(--muted)"></div>
+      <div id="tr-dot" style="position:absolute;top:-6px;width:30px;height:30px;margin-left:-15px;border-radius:50%;background:var(--blue);left:50%"></div>
+    </div>
+  </div>
+  <div class="lad" id="tr-lad" data-cue="0" data-anim="fade" style="left:1180px;top:250px;height:616px"></div>
+  <div class="tag" data-cue="3" data-d="0.4" style="left:1100px;top:885px;white-space:nowrap;color:var(--amber);border-color:var(--amber)">6000 at 49.99: ~10× usual</div>
+  <div class="tag" id="tr-ice" data-cue="4" data-d="0.4" style="left:1440px;top:885px;white-space:nowrap;color:var(--amber);border-color:var(--amber)">50.03 refilled ×0</div>
+</div>
+
+<!-- 8 QUEUE -->
+<div class="scene" id="s-queue">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Queue position and fill odds</div>
+  <div class="lbl" data-cue="0" data-d="0.4" style="left:160px;top:220px">bid 50.01 · price-time priority · front of queue ←</div>
+  <div data-cue="0" data-d="0.4" data-anim="fade" style="left:160px;top:270px;width:1600px;height:96px" id="qu-q"></div>
+  <div class="fcard" data-cue="1" style="left:120px;top:430px;width:900px">
+    <span class="lbl">simex: one reference number on both sides</span>
+    <div class="mono" style="font:600 25px/1.6 var(--mono)">OUCH Order Accepted · Order Reference Number <span class="c-muted">36:8</span><br>= ITCH Add Order · order ref <span class="c-muted">11:8</span></div>
+  </div>
+  <div data-cue="2" style="left:1120px;top:430px;width:680px">
+    <div class="lbl">shares ahead of you</div>
+    <div class="big c-pink" id="qu-ahead" style="font-size:96px">600</div>
+    <div class="lbl" id="qu-note" style="color:var(--amber);height:30px"></div>
+  </div>
+  <div class="fcard" data-cue="5" style="left:120px;top:660px;width:1680px">
+    <div class="math" style="font-size:38px"><i>expected wait</i> ≈ <span class="frac"><span><i>shares ahead</i></span><span><i>execution rate at the price</i></span></span> = <span class="frac"><span>100</span><span>250 shares/s</span></span> ≈ 0.4 s</div>
+    <div class="lbl" style="margin-top:6px">example numbers · a crude fill probability: a short wait fills; a long one usually sees the price move first</div>
+  </div>
+</div>
+
+<!-- 9 EWMA -->
+<div class="scene" id="s-ewma">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Smoothing: decay by time</div>
+  <div data-cue="0" data-anim="fade" style="left:120px;top:220px;width:1060px;height:600px;background:rgba(8,18,26,.6);border:2px solid var(--line);border-radius:16px"></div>
+  <div class="lbl" data-cue="0" style="left:150px;top:236px">imbalance · 10 s of updates</div>
+  <div class="lbl" data-cue="0" style="left:1060px;top:780px">time →</div>
+  <svg class="full">
+    <line x1="160" y1="520" x2="1140" y2="520" stroke="#2c4351" stroke-width="2"/>
+    <path class="draw" id="ew-raw" data-cue="0" data-d="0.3" data-dur="3" d="" stroke="#8ea3b1" stroke-width="2.5" fill="none"/>
+    <path class="draw" id="ew-pu" data-cue="1" data-d="0.2" data-dur="2.5" d="" stroke="#ff6b5e" stroke-width="4" fill="none"/>
+    <path class="draw" id="ew-tm" data-cue="2" data-d="0.2" data-dur="2.5" d="" stroke="#3fd0dc" stroke-width="4" fill="none"/>
+  </svg>
+  <div class="tag" data-cue="1" data-d="1.2" style="left:770px;top:270px;color:var(--red);border-color:var(--red)">burst: 100 updates in 1 µs</div>
+  <div class="fcard" data-cue="1" style="left:1240px;top:220px;width:580px">
+    <span class="lbl" style="color:var(--red)">per update (fixed α = 0.05)</span>
+    <div class="math" style="font-size:36px"><i>x̄</i> ← <i>x̄</i> + α(<i>x</i> − <i>x̄</i>)</div>
+    <div class="lbl" style="margin-top:4px">0.95<sup>100</sup> ≈ 0.006 of the past survives</div>
+  </div>
+  <div class="fcard" data-cue="2" style="left:1240px;top:430px;width:580px;border-color:var(--teal)">
+    <span class="lbl" style="color:var(--teal)">by time (τ = 1 s)</span>
+    <div class="math" style="font-size:38px">α = 1 − <i>e</i><sup>−Δ<i>t</i> / τ</sup></div>
+  </div>
+  <div class="fcard" data-cue="3" style="left:1240px;top:600px;width:580px;border-color:var(--teal)">
+    <div class="math" style="font-size:36px"><i>x̄</i> ← <i>x̄</i> + α(<i>x</i><sub>prev</sub> − <i>x̄</i>)</div>
+    <div class="lbl" style="margin-top:6px;line-height:1.4">x<sub>prev</sub>: the value that held during Δt<br>Δt from ITCH timestamps (feed_ns)</div>
+  </div>
+</div>
+
+<!-- 10 FAIR -->
+<div class="scene" id="s-fair">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">From signals to quotes</div>
+  <div data-cue="0" id="fr-axis" style="left:110px;top:240px;width:900px;height:700px"></div>
+  <div class="fcard" data-cue="1" style="left:1050px;top:210px;width:800px">
+    <div class="math" style="font-size:34px"><i>FV</i> = <i>micro</i> + <i>tick</i> · (β<sub>1</sub><i>OFI</i> + β<sub>2</sub><i>DI</i> + β<sub>3</sub><i>TFI</i>)</div>
+    <div class="lbl" style="margin-top:4px">signals smoothed and normalized · β fitted offline</div>
+  </div>
+  <div class="fcard" data-cue="2" style="left:1050px;top:360px;width:800px">
+    <div class="math" style="font-size:32px"><i>bid</i> = ⌊<i>FV</i> − <i>h</i>⌋<sub>tick</sub> − <i>lean</i> ,  <i>ask</i> = ⌈<i>FV</i> + <i>h</i>⌉<sub>tick</sub> − <i>lean</i></div>
+  </div>
+  <div class="code" data-cue="3" style="left:1050px;top:470px;width:800px;font-size:20px;padding:14px 20px"><span class="c">// market_maker.hpp: MarketMaker::quote()</span>
+<span class="line" data-hl="4" data-hlend="5"><span class="k">int64_t</span> bid = m.bid, ask = m.ask;   <span class="c">// anchor → FV ± h</span></span><span class="line" data-hl="3" data-hlend="4">lean = position / quote_qty * skew_ticks * tick;</span><span class="line" data-hl="3" data-hlend="4">bid -= lean; ask -= lean;</span>if (ask &lt;= m.bid) ask = m.bid + tick;  <span class="c">// stay passive</span>
+<span class="line" data-hl="5"><span class="c">// should_move(), called from trading.cpp</span></span><span class="line" data-hl="5">move only if |working − wanted| &gt; hold_ticks * tick</span></div>
+  <div class="lbl" data-cue="3" data-d="0.5" style="left:1050px;top:760px;color:var(--pink);font-size:23px">position +200 → lean 2 ticks: both quotes down</div>
+  <div class="lbl" data-cue="5" data-d="0.3" style="left:1050px;top:800px;color:var(--amber);font-size:23px">working ask 50.03, wanted 50.02: 1 tick → hold</div>
+</div>
+
+<!-- 11 ENGINEERING -->
+<div class="scene" id="s-engineering">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Hot path rules</div>
+  <div class="code" data-cue="0" style="left:90px;top:200px;width:1150px;font-size:21px;line-height:1.42;padding:16px 22px"><span class="line" data-hl="5" data-hlend="6"><span class="k">struct</span> <span class="v">Sig</span> {   <span class="c">// one per instrument, in an array sized at startup</span></span><span class="line" data-hl="5" data-hlend="6">  <span class="v">uint32_t</span> pb, qb, pa, qa;  <span class="c">// previous best: Price(4), shares</span></span><span class="line" data-hl="5" data-hlend="6">  <span class="v">int64_t</span> ofi;  <span class="v">double</span> ofi_avg, imb_avg;  <span class="v">uint64_t</span> t_ns;</span>};
+<span class="line" data-hl="0" data-hlend="1"><span class="k">void</span> on_top(<span class="v">Sig</span>&amp; s, <span class="k">const</span> <span class="v">TopOfBook</span>&amp; t) {   <span class="c">// O(1)</span></span><span class="line" data-hl="1" data-hlend="2">  <span class="v">int64_t</span> e = <span class="r">0</span>;</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">if</span> (t.bid_px[<span class="r">0</span>] &gt;= s.pb) e += t.bid_qty[<span class="r">0</span>];</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">if</span> (t.bid_px[<span class="r">0</span>] &lt;= s.pb) e -= s.qb;</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">if</span> (t.ask_px[<span class="r">0</span>] &lt;= s.pa) e -= t.ask_qty[<span class="r">0</span>];</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">if</span> (t.ask_px[<span class="r">0</span>] &gt;= s.pa) e += s.qa;</span>  s.ofi += e;  <span class="c">/* then store the new best into s.pb..s.qa */</span>
+  <span class="k">if</span> (!t.bid_qty[<span class="r">0</span>] || !t.ask_qty[<span class="r">0</span>]) <span class="k">return</span>;   <span class="c">// one-sided</span>
+<span class="line" data-hl="2" data-hlend="3">  <span class="v">uint64_t</span> qb = t.bid_qty[<span class="r">0</span>], qt = qb + t.ask_qty[<span class="r">0</span>];</span><span class="line" data-hl="2" data-hlend="3">  <span class="v">uint64_t</span> micro = t.bid_px[<span class="r">0</span>] + <span class="v">uint64_t</span>(t.ask_px[<span class="r">0</span>] - t.bid_px[<span class="r">0</span>]) * qb / qt;</span><span class="line" data-hl="3" data-hlend="4">  <span class="v">double</span> imb = <span class="v">double</span>(qb) / qt;   <span class="c">// ratio: double</span></span><span class="line" data-hl="3" data-hlend="4">  ewma(s.imb_avg, imb, t.feed_ns - s.t_ns);</span><span class="line" data-hl="6">  mark(t.instrument);   <span class="c">// requote once, after the ring drains</span></span>}</div>
+  <div class="pill" data-cue="0" style="left:1290px;top:210px;width:540px;color:var(--teal)">O(1) work per message</div>
+  <div class="pill" data-cue="1" style="left:1290px;top:290px;width:540px">OFI: previous best only<br>depth: fixed N, contiguous</div>
+  <div class="pill" data-cue="2" style="left:1290px;top:400px;width:540px">prices: uint32 Price(4)<br>products: 64-bit integers</div>
+  <div class="pill" data-cue="3" style="left:1290px;top:510px;width:540px">ratios, EWMA state: double</div>
+  <div class="pill" data-cue="4" style="left:1290px;top:590px;width:540px">FV → ticks: bid floors, ask ceils</div>
+  <div class="pill" data-cue="5" style="left:1290px;top:670px;width:540px">no allocation after startup</div>
+  <div class="pill" data-cue="6" style="left:1290px;top:750px;width:540px;color:var(--amber)">md skips unchanged tops<br>trader requotes dirty only</div>
+</div>
+
+<!-- 12 PITFALLS -->
+<div class="scene" id="s-pitfalls">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Research pitfalls</div>
+  <div class="card3" data-cue="1" style="left:100px;top:220px;width:540px;height:480px;border-color:var(--red)">
+    <div class="h3 c-red">Stale data</div>
+    <div class="lbl">age = now − rx_tsc</div>
+    <div style="position:relative;height:34px;margin:14px 0 24px;background:#08121a;border-radius:8px;border:1px solid var(--line)">
+      <div class="grow" data-cue="1" data-d="0.5" data-w="480" data-dur="3" style="position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:linear-gradient(90deg,var(--green),var(--amber) 60%,var(--red))"></div>
+      <div style="position:absolute;left:330px;top:-8px;bottom:-8px;width:3px;background:#fff"></div>
+    </div>
+    <div class="body" style="font-size:26px">past the limit, or trading_state ≠ 'T':<br><span class="c-red">pull quotes, reset the averages</span></div>
+  </div>
+  <div class="card3" data-cue="2" style="left:690px;top:220px;width:540px;height:480px;border-color:var(--amber)">
+    <div class="h3 c-amber">Lookahead</div>
+    <svg width="490" height="170" style="position:relative;display:block">
+      <line x1="10" y1="90" x2="480" y2="90" stroke="#8ea3b1" stroke-width="2"/>
+      <g fill="#3fd0dc"><circle cx="40" cy="90" r="8"/><circle cx="100" cy="90" r="8"/><circle cx="150" cy="90" r="8"/><circle cx="210" cy="90" r="8"/></g>
+      <g fill="#4a5a66"><circle cx="330" cy="90" r="8"/><circle cx="400" cy="90" r="8"/><circle cx="450" cy="90" r="8"/></g>
+      <line x1="240" y1="30" x2="240" y2="150" stroke="#ffb347" stroke-width="3"/>
+      <rect x="240" y="74" width="60" height="32" fill="rgba(255,179,71,.25)"/>
+      <text x="240" y="22" fill="#ffb347" font-family="IBM Plex Mono" font-size="19" text-anchor="middle">decide</text>
+      <text x="300" y="140" fill="#ffb347" font-family="IBM Plex Mono" font-size="17">+latency</text>
+      <text x="390" y="60" fill="#ff6b5e" font-family="IBM Plex Mono" font-size="19" text-anchor="middle">not yet known</text>
+    </svg>
+    <div class="body" style="font-size:25px">use only feed_ns ≤ decision time</div>
+    <div class="body" data-cue="3" style="position:relative;font-size:25px;margin-top:20px;color:var(--amber)">CKS fit: Δ<i>P</i><sub>k</sub> vs <i>OFI</i><sub>k</sub>, same window.<br>To predict: Δ<i>P</i><sub>k+1</sub> vs <i>OFI</i><sub>k</sub>.</div>
+  </div>
+  <div class="card3" data-cue="4" style="left:1280px;top:220px;width:540px;height:480px;border-color:var(--violet)">
+    <div class="h3 c-violet">Same-day fitting</div>
+    <div id="pf-days" style="position:relative;height:250px"></div>
+    <div class="body" style="font-size:25px">fit β on earlier days,<br>test on later ones, walk forward</div>
+  </div>
+</div>
+
+<!-- 13 CLOSE -->
+<div class="scene" id="s-close">
+  <div class="h2" data-cue="0" style="left:120px;top:110px">Recap</div>
+  <div class="box teal" data-cue="0" style="left:100px;top:260px;width:430px"><div class="t">top of book</div><div class="s">mid · spread<br>microprice · imbalance</div></div>
+  <div class="box violet" data-cue="1" style="left:100px;top:520px;width:430px"><div class="t">full book + trades</div><div class="s">depth · pressure · OFI<br>trade flow · queue</div></div>
+  <div class="box" data-cue="2" style="left:680px;top:390px;width:300px;text-align:center"><div class="t">EWMA(Δt)</div><div class="s">decay by time</div></div>
+  <div class="box blue" data-cue="2" data-d="0.8" style="left:1100px;top:390px;width:300px;text-align:center"><div class="t">fair value</div><div class="s">Price(4), ticks</div></div>
+  <div class="box amber" data-cue="2" data-d="1.6" style="left:1520px;top:390px;width:320px;text-align:center"><div class="t">quotes</div><div class="s">skew · hold</div></div>
+  <svg class="full">
+    <path class="draw" data-cue="2" d="M530 330 C 610 330 600 440 680 440" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/>
+    <path class="draw" data-cue="2" d="M530 590 C 610 590 600 470 680 470" stroke="#a98bff" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+    <path class="draw" data-cue="2" data-d="0.6" d="M980 455 L1100 455" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+    <path class="draw" data-cue="2" data-d="1.4" d="M1400 455 L1520 455" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+    <path id="cl-path" d="M530 330 C 610 330 600 440 680 440 L1520 455" fill="none" stroke="none"/>
+  </svg>
+  <div data-cue="2" data-d="2.4" style="left:100px;top:740px;width:1740px;font:600 26px var(--mono);color:var(--muted)">Price(4) integers · O(1) per message · no allocation · decay by time · no lookahead</div>
+  <div class="pkt" data-path="cl-path" data-cue="2" data-d="2" data-dur="2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+</div>

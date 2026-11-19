@@ -1,0 +1,19 @@
+[
+{"id": "title", "title": "SPSC ring", "text": "The book thread hands every top of book update to the trading thread. It needs a bounded queue with no allocation, no system calls and, ideally, no locks. Let's build one, test it, and measure it."},
+
+{"id": "mutex", "title": "With a mutex", "text": "Start with the obvious version. An array, a head, a tail, and a mutex. Push takes the lock, checks for full, writes, and bumps the head. Pop mirrors it. It works, but every call does a locked read modify write on one shared cache line. Under contention, a waiter may sleep in a futex call."},
+
+{"id": "layout", "title": "Layout", "text": "Now the lock-free ring. With a power of two capacity, the slot is the index masked with capacity minus one. Head and tail only grow, so full means head minus tail equals capacity. Only the producer writes head, only the consumer writes tail. Each sits on its own 64 byte cache line."},
+
+{"id": "push", "title": "try_push", "text": "Push reads its own head, relaxed: no other thread writes it. It loads tail with acquire, so the consumer is done with a slot before it is reused. If full, it returns false: it never blocks. Otherwise it writes the slot. Then it stores head plus one, with release. Release orders the slot write first, so a reader that sees the new head also sees the data."},
+
+{"id": "pop", "title": "try_pop", "text": "Pop is the mirror image. It loads head with acquire, which pairs with the producer's release. If tail equals head, the ring is empty. Otherwise it copies the slot out, then stores tail plus one with release, freeing the slot."},
+
+{"id": "cached", "title": "Cached indices", "text": "One problem remains. Every push reads tail, and every pop reads head, so both index lines bounce between the cores. The fix: keep a private copy of the other side's index, on your own line. The producer rereads tail only when its copy says full. The consumer, head only when its copy says empty."},
+
+{"id": "test", "title": "Test", "text": "Test it with a tiny capacity of eight, so it wraps and fills constantly. One thread pushes ten million numbers in order. The other checks each value is the next expected, and that nothing is left. All three queues pass, and the thread sanitizer reports no data races."},
+
+{"id": "bench", "title": "Benchmark", "text": "Two spinning threads, at real time priority, on this shared 4 vCPU cloud box. The mutex queue moved a message every 240 to 435 nanoseconds. The ring without cached indices took 17 to 31. With them, 7 to 16. A ping pong round trip took about 470 nanoseconds through the ring, and 1.8 microseconds through the mutex."},
+
+{"id": "lab", "title": "The lab's ring", "text": "The lab's SpscRing has the same design: power of two capacity, separate lines, cached indices, release and acquire. It differs in three ways. Its indices are always lock free 64 bit atomics, and slots are trivially copyable, so it works in shared memory across processes. It adds a zero copy API: claim and commit, front and pop. And it zeroes its slots up front, faulting the pages in early.", "hold": 1.5}
+]

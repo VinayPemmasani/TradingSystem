@@ -1,0 +1,73 @@
+[
+ {
+  "id": "title",
+  "title": "HTTP on the wire",
+  "text": "Market data and order APIs reach the lab over HTTP and WebSocket. This video reads the bytes: HTTP/1.1, HTTP/2, a glance at HTTP/3, and WebSocket. Then the lab's vendor feed, and what text costs."
+ },
+ {
+  "id": "h1",
+  "title": "HTTP/1.1 request",
+  "text": "An HTTP/1.1 request is plain text. The request line holds method, target and version, separated by single spaces. Each header field is a name, a colon, and a value. Every line ends with CRLF, and an empty line ends the head."
+ },
+ {
+  "id": "framing",
+  "title": "Body framing",
+  "text": "Where does the body end? With Content-Length, the receiver counts exactly that many bytes. With chunked coding, each chunk is its size in hex, CRLF, the data, and another CRLF. A chunk of size zero ends the body. If both headers arrive, Transfer-Encoding wins."
+ },
+ {
+  "id": "hol",
+  "title": "Head-of-line blocking",
+  "text": "HTTP/1.1 connections are persistent by default, so requests reuse one TCP connection. But responses must come back in request order. One slow response blocks every response behind it. So browsers opened about six connections per host."
+ },
+ {
+  "id": "h2frame",
+  "title": "HTTP/2 frames",
+  "text": "HTTP/2 keeps HTTP's meaning but sends binary frames. The client first sends a fixed 24 byte preface. Every frame then starts with a 9 byte header. 24 bits of length, 8 bits of type, 8 bits of flags. Then one reserved bit and a 31 bit stream ID."
+ },
+ {
+  "id": "types",
+  "title": "Frame types",
+  "text": "HEADERS carries a compressed header block, and DATA carries the body. SETTINGS sets connection parameters, and WINDOW_UPDATE grants flow control credit. PING measures a round trip with 8 opaque bytes. RST_STREAM cancels one stream, and GOAWAY shuts the connection down cleanly."
+ },
+ {
+  "id": "mux",
+  "title": "Streams",
+  "text": "Each request is a stream. Clients open odd numbered streams: 1, 3, 5. Frames from many streams interleave on one connection, so a slow response no longer blocks the fast ones. The END_STREAM flag marks a stream's last frame."
+ },
+ {
+  "id": "hpack",
+  "title": "HPACK",
+  "text": "Headers are compressed with HPACK. A static table of 61 common fields makes method GET index 2, sent as the single byte 0x82. New fields enter a dynamic table, so next time that authority costs one byte. String literals can be Huffman coded: www.example.com shrinks from 15 bytes to 12."
+ },
+ {
+  "id": "flow",
+  "title": "Flow control",
+  "text": "Flow control works per stream and per connection. Each window starts at 65,535 bytes. The sender subtracts every DATA payload, and stops at zero until a WINDOW_UPDATE arrives. But all streams still share one TCP byte stream. Lose one packet, and TCP holds back every stream."
+ },
+ {
+  "id": "h3",
+  "title": "HTTP/3",
+  "text": "HTTP/3 moves to QUIC, which runs over UDP. QUIC provides the streams itself, so a lost packet only stalls the stream it belonged to. Header compression becomes QPACK, with its own encoder and decoder streams, because headers may now arrive out of order."
+ },
+ {
+  "id": "wshs",
+  "title": "WebSocket upgrade",
+  "text": "WebSocket starts as an HTTP/1.1 GET with Upgrade: websocket and a random base64 key. The server appends a fixed GUID, takes SHA-1, and returns it in base64 as Sec-WebSocket-Accept. The status is 101 Switching Protocols. After that, the connection carries frames."
+ },
+ {
+  "id": "wsframe",
+  "title": "WebSocket frame",
+  "text": "Here is a frame the lab's client sends. The first byte, 0x81, means FIN and opcode 1, text. Opcodes 8, 9 and 10 are close, ping and pong. The second byte holds the mask bit and a 7 bit length: 104. 126 means a 16 bit length follows; 127, a 64 bit one. Client frames add a 4 byte masking key, XORed over the payload."
+ },
+ {
+  "id": "lab",
+  "title": "The lab's vendor",
+  "text": "In the lab, rt-server speaks the Refinitiv OMM JSON API on subprotocol tr_json2. That masked frame was vendor-client's login. Each quote change comes back as an Update with only the changed fields. This one is 135 bytes, too long for 7 bits. So the server writes 0x81, 0x7E, a 16 bit length, and no mask."
+ },
+ {
+  "id": "latency",
+  "title": "Text vs binary",
+  "text": "For latency, the text is the expensive part. A JSON parser scans every byte, then converts decimal text to numbers. ITCH puts the price at a fixed offset: one load and a byte swap. On this shared cloud machine, the lab's JSON parser took around a microsecond for that update. An ITCH add order decoded in under a nanosecond. Keep text at the edges, and binary layouts on the hot path.",
+  "hold": 1.0
+ }
+]

@@ -1,0 +1,154 @@
+[
+[
+"\\bETag",
+"E tag"
+],
+[
+"\\bTLS 1\\.3\\b",
+"T L S one point three"
+],
+[
+"\\bSHA256\\b",
+"shaw two fifty six"
+],
+[
+"\\bHMAC\\b",
+"H mac"
+],
+[
+"\\bRFC 9110\\b",
+"R F C ninety one ten"
+],
+[
+"\\bSoupBinTCP\\b",
+"soup bin T C P"
+],
+[
+"\\bTCP\\b",
+"T C P"
+],
+[
+"\\bDNS\\b",
+"D N S"
+],
+[
+"\\bRTT\\b",
+"R T T"
+],
+[
+"\\bACK\\b",
+"ack"
+],
+[
+"\\bAPI\\b",
+"A P I"
+],
+[
+"\\bURIs\\b",
+"U R Is"
+],
+[
+"\\bJSON\\b",
+"jay son"
+],
+[
+"\\bID\\b",
+"I D"
+],
+[
+"\\bIDs\\b",
+"I Ds"
+],
+[
+"\\bOUCH\\b",
+"ouch"
+],
+[
+"\\bPOST\\b",
+"post"
+],
+[
+"\\bGET\\b",
+"get"
+],
+[
+"\\bHEAD\\b",
+"head"
+],
+[
+"\\bPUT\\b",
+"put"
+],
+[
+"\\bDELETE\\b",
+"delete"
+],
+[
+"\\bPATCH\\b",
+"patch"
+],
+[
+"\\bOK\\b",
+"O K"
+],
+[
+"If-Match",
+"if match"
+],
+[
+"Retry-After",
+"retry after"
+],
+[
+"keep-alive",
+"keep alive"
+],
+[
+"\\bv1\\b",
+"v one"
+],
+[
+"\\b200s\\b",
+"two hundreds"
+],
+[
+"\\b400s\\b",
+"four hundreds"
+],
+[
+"\\b500s\\b",
+"five hundreds"
+],
+[
+"\\b201\\b",
+"two oh one"
+],
+[
+"\\b409\\b",
+"four oh nine"
+],
+[
+"\\b412\\b",
+"four twelve"
+],
+[
+"\\b422\\b",
+"four twenty two"
+],
+[
+"\\b429\\b",
+"four twenty nine"
+],
+[
+"\\b500 bytes\\b",
+"five hundred bytes"
+],
+[
+"\\b47\\b",
+"forty seven"
+],
+[
+"\\b42\\b",
+"forty two"
+]
+]

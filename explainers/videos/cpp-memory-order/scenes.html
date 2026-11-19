@@ -1,0 +1,146 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">TRADING LAB · LOW-LATENCY C++</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Memory ordering</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:360px;width:1500px">Acquire, release, and what your CPU is allowed to do.</div>
+<div class="box teal" data-cue="0" data-d="0.8" style="left:140px;top:520px;width:560px;height:300px"><div class="t">Thread 1 · producer</div><div class="s" style="margin-top:22px">msg.price = 101250</div><div class="s">msg.qty&#160;&#160; = 300</div><div class="s c-amber">ready&#160;&#160;&#160;&#160; = true</div></div>
+<div class="box violet" data-cue="1" style="left:1220px;top:520px;width:560px;height:300px"><div class="t">Thread 2 · consumer</div><div class="s c-amber" style="margin-top:22px">if (ready)</div><div class="s">&#160;&#160;use(msg.price)</div></div>
+<div class="flag" data-cue="0" data-d="1.4" style="left:860px;top:610px">ready</div>
+<svg class="full"><path id="ti-p" class="draw" data-cue="1" data-d="0.3" d="M 705 660 L 1210 660" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="tag c-red" data-cue="2" data-anim="scale" style="left:1300px;top:850px;font-size:26px;border-color:var(--red)">price = ??? (stale)</div>
+</div>
+<div class="scene" id="s-publish">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Publish with a flag: the naive version</div>
+<div class="code" data-cue="0" data-d="0"  style="left:120px;top:210px;width:980px;font-size:26px"><span class="line"><span class="k">struct</span> <span class="v">Msg</span> { <span class="k">long</span> price; <span class="k">int</span> qty; };</span><span class="line">Msg msg;</span><span class="line" data-hl="3"><span class="k">bool</span> ready = <span class="k">false</span>;              <span class="c">// plain bool: a data race</span></span><span class="line"></span><span class="line" data-hl="1" data-hlend="2"><span class="k">void</span> publish(<span class="k">long</span> p, <span class="k">int</span> q) {    <span class="c">// thread 1</span></span><span class="line" data-hl="1" data-hlend="2">  msg.price = p;</span><span class="line" data-hl="1" data-hlend="2">  msg.qty = q;</span><span class="line" data-hl="1">  ready = <span class="k">true</span>;</span><span class="line">}</span><span class="line" data-hl="2" data-hlend="3"><span class="k">long</span> consume() {                 <span class="c">// thread 2</span></span><span class="line" data-hl="2">  <span class="k">while</span> (!ready) {}              <span class="c">// spin until published</span></span><span class="line" data-hl="2">  <span class="k">return</span> msg.price;</span><span class="line">}</span></div>
+<div class="lbl c-muted" data-cue="0" data-d="0.6" style="left:120px;top:870px">compiles cleanly with g++ 13.3 -O2 -Wall · it is still wrong</div>
+<div class="lbl" data-cue="1" style="left:1220px;top:230px">SHARED MEMORY</div>
+<div class="mem" data-cue="1" style="left:1220px;top:280px"><span class="mn">msg.price</span></div>
+<div class="mv mono" data-cue="1" data-d="0.0" style="left:1560px;top:298px;color:var(--teal)">p</div>
+<div class="mem" data-cue="1" style="left:1220px;top:390px"><span class="mn">msg.qty</span></div>
+<div class="mv mono" data-cue="1" data-d="0.3" style="left:1560px;top:408px;color:var(--teal)">q</div>
+<div class="mem" data-cue="1" style="left:1220px;top:500px"><span class="mn">ready</span></div>
+<div class="mv mono" data-cue="1.6" data-d="0.6" style="left:1560px;top:518px;color:var(--amber)">true</div>
+<div class="tag c-violet" data-cue="2" style="left:1220px;top:640px;font-size:24px;border-color:var(--violet)">thread 2: sees ready → reads price</div>
+<div class="promise" data-cue="3" style="left:1220px;top:720px;width:580px">if <span class="c-amber">ready</span> is true,<br>then <span class="c-teal">msg</span> is complete</div>
+</div>
+<div class="scene" id="s-reorder">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two layers can reorder</div>
+<div class="box blue" data-cue="1" style="left:120px;top:220px;width:800px;height:620px"><div class="t c-blue">1 · The compiler</div></div>
+<div class="body" data-cue="2" style="left:160px;top:300px;width:720px;font-size:27px">A data race is undefined behavior, so GCC may assume no other thread writes <span class="mono c-amber">ready</span>.</div>
+<div class="code" data-cue="3" data-d="0"  style="left:160px;top:450px;width:720px;font-size:26px"><span class="line"><span class="c"># g++ -O2 -S broken.cpp</span></span><span class="line">consume():</span><span class="line">    endbr64</span><span class="line" data-hl="3">    movq    msg(%rip), %rax</span><span class="line">    ret</span></div>
+<div class="lbl c-red" data-cue="3" data-d="0.6" style="left:160px;top:720px;width:720px;line-height:1.5">no load of ready, no loop:<br>the spin loop was deleted</div>
+<div class="box pink" data-cue="4" style="left:1000px;top:220px;width:800px;height:620px"><div class="t c-pink">2 · The CPU</div></div>
+<div class="cpu" data-cue="4" data-d="0.3" style="left:1040px;top:320px;width:280px">core 1<div class="lbl">program order</div></div>
+<div class="sbq mono" data-cue="4" data-d="0.4" style="left:1040px;top:410px">price = p</div>
+<div class="sbq mono" data-cue="4" data-d="0.6000000000000001" style="left:1040px;top:472px">qty = q</div>
+<div class="sbq mono" data-cue="4" data-d="0.8" style="left:1040px;top:534px">ready = true</div>
+<div class="lbl" data-cue="5" style="left:1340px;top:330px">STORE BUFFER</div>
+<div class="sb" data-cue="5" style="left:1340px;top:370px;width:420px;height:230px"></div>
+<div class="sbq mono sbi" id="ro-s0" data-cue="5" data-d="0.2" data-anim="fade" style="left:1360px;top:390px;background:#3d2f17">ready = true</div>
+<div class="sbq mono sbi" id="ro-s1" data-cue="5" data-d="0.2" data-anim="fade" style="left:1360px;top:460px;background:#123038">qty = q</div>
+<div class="sbq mono sbi" id="ro-s2" data-cue="5" data-d="0.2" data-anim="fade" style="left:1360px;top:530px;background:#123038">price = p</div>
+<div class="lbl" data-cue="5" data-d="1.4" style="left:1340px;top:640px">→ L1 → other cores see them</div>
+<div class="lbl c-pink" data-cue="5" data-d="2.0" style="left:1040px;top:720px;width:720px;line-height:1.5">ARM: may drain in a different order<br>x86: drains in program order</div>
+</div>
+<div class="scene" id="s-tso">
+<div class="h2" data-cue="0" style="left:120px;top:110px">x86 (TSO) versus ARM</div>
+<div class="lbl" data-cue="0" style="left:120px;top:235px;width:520px">PAIR (different addresses)</div>
+<div class="colh c-teal" data-cue="0" data-d="0.3" style="left:700px;top:220px">x86-64</div>
+<div class="colh c-violet" data-cue="3" style="left:1250px;top:220px">ARM (AArch64)</div>
+<div class="pair mono" data-cue="0" data-d="0.2" style="left:120px;top:300px">load → later load</div>
+<div class="cellx ok" data-cue="1" data-d="0.0"  style="left:700px;top:300px">kept</div>
+<div class="cellx bad" data-cue="4" data-d="0.0" style="left:1250px;top:300px">may reorder</div>
+<div class="pair mono" data-cue="0" data-d="0.35" style="left:120px;top:420px">store → later store</div>
+<div class="cellx ok" data-cue="1" data-d="0.1"  style="left:700px;top:420px">kept</div>
+<div class="cellx bad" data-cue="4" data-d="0.15" style="left:1250px;top:420px">may reorder</div>
+<div class="pair mono" data-cue="0" data-d="0.5" style="left:120px;top:540px">load → later store</div>
+<div class="cellx ok" data-cue="1" data-d="0.2"  style="left:700px;top:540px">kept</div>
+<div class="cellx bad" data-cue="4" data-d="0.3" style="left:1250px;top:540px">may reorder</div>
+<div class="pair mono" data-cue="0" data-d="0.6499999999999999" style="left:120px;top:660px">store → later load</div>
+<div class="cellx bad" data-cue="2" data-d="0" data-hl="2" data-hlend="3" style="left:700px;top:660px">may reorder</div>
+<div class="cellx bad" data-cue="4" data-d="0.44999999999999996" style="left:1250px;top:660px">may reorder</div>
+<div class="lbl c-amber" data-cue="2" data-d="0.6" style="left:700px;top:790px;width:500px;line-height:1.45">the store is still in the store buffer<br>when the load reads cache</div>
+<div class="lbl c-violet" data-cue="4" data-d="0.8" style="left:1250px;top:790px;width:560px;line-height:1.45">unless a dependency, barrier,<br>or acquire / release says otherwise</div>
+</div>
+<div class="scene" id="s-acqrel">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Release on the store, acquire on the load</div>
+<div class="lane teal" data-cue="0" style="left:160px;top:210px">Thread 1</div>
+<div class="lane violet" data-cue="0" style="left:1160px;top:210px">Thread 2</div>
+<div class="op mono" data-cue="0" data-d="0.3" style="left:160px;top:300px;border-color:var(--teal)">msg.price = p;</div>
+<div class="op mono" data-cue="0" data-d="0.5" style="left:160px;top:380px;border-color:var(--teal)">msg.qty = q;</div>
+<div class="op mono strong" data-cue="1" style="left:160px;top:500px;border-color:var(--amber)">ready.store(true, <span class="c-amber">memory_order_release</span>);</div>
+<div class="fence" data-cue="1" data-d="0.4" style="left:160px;top:480px;width:640px;border-color:var(--amber)"></div>
+<div class="lbl c-amber" data-cue="1" data-d="0.6" style="left:160px;top:440px">▲ nothing above may move below</div>
+<div class="op mono strong" data-cue="2" style="left:1160px;top:500px;border-color:var(--amber)">ready.load(<span class="c-amber">memory_order_acquire</span>) == true</div>
+<div class="fence" data-cue="2" data-d="0.4" style="left:1160px;top:578px;width:640px;border-color:var(--amber)"></div>
+<div class="lbl c-amber" data-cue="2" data-d="0.6" style="left:1160px;top:590px">▼ nothing below may move above</div>
+<div class="op mono" data-cue="2" data-d="0.8" style="left:1160px;top:650px;border-color:var(--violet)">use(msg.price);</div>
+<div class="op mono" data-cue="2" data-d="1.0" style="left:1160px;top:730px;border-color:var(--violet)">use(msg.qty);</div>
+<svg class="full"><path class="draw" data-cue="3" data-d="0.2" data-dur="1.2" d="M 830 532 C 950 532, 1030 532, 1150 532" stroke="var(--amber)" stroke-width="6" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="4" data-d="0.2" data-dur="1.2" d="M 600 330 C 980 330, 900 680, 1150 680" stroke="var(--green)" stroke-width="3" stroke-dasharray="0" fill="none" marker-end="url(#ah-green)"/><path class="draw" data-cue="4" data-d="0.5" data-dur="1.2" d="M 600 410 C 960 410, 900 760, 1150 760" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="hb" data-cue="3" data-d="0.8" style="left:860px;top:450px">happens-before</div>
+<div class="lbl c-green" data-cue="4" data-d="1.0" style="left:700px;top:820px;width:700px;text-align:center">writes before the store are visible after the load</div>
+</div>
+<div class="scene" id="s-asm">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What g++ -O2 emits on x86-64</div>
+<div class="code" data-cue="0" data-d="0"  style="left:120px;top:210px;width:860px;font-size:24px"><span class="line"><span class="c">// fixed.cpp: atomic flag</span></span><span class="line" data-hl="1" data-hlend="2">ready.store(<span class="k">true</span>, std::memory_order_release);</span><span class="line"></span><span class="line" data-hl="2" data-hlend="4"><span class="k">while</span> (!ready.load(std::memory_order_acquire)) {}</span><span class="line" data-hl="2" data-hlend="4"><span class="k">return</span> msg.price;</span></div>
+<div class="code" data-cue="0" data-d="0.5"  style="left:1020px;top:210px;width:780px;font-size:22px"><span class="line"><span class="c"># publish(long, int)</span></span><span class="line">    movq    %rdi, msg(%rip)</span><span class="line">    movl    %esi, 8+msg(%rip)</span><span class="line" data-hl="1" data-hlend="2">    movb    $1, ready(%rip)      <span class="c"># release: plain mov</span></span><span class="line">    ret</span><span class="line"><span class="c"># consume()</span></span><span class="line" data-hl="2" data-hlend="4">.L4: movzbl ready(%rip), %eax   <span class="c"># acquire: plain mov</span></span><span class="line" data-hl="2" data-hlend="4">    testb   %al, %al</span><span class="line" data-hl="2" data-hlend="4">    je      .L4                  <span class="c"># the loop stays</span></span><span class="line">    movq    msg(%rip), %rax</span><span class="line">    ret</span></div>
+<div class="code" data-cue="1" data-d="0.3"  style="left:120px;top:470px;width:860px;font-size:22px"><span class="line"><span class="c"># store_relaxed()</span></span><span class="line" data-hl="1" data-hlend="2">    movl    $1, flag(%rip)</span><span class="line"><span class="c"># store_release()</span></span><span class="line" data-hl="1" data-hlend="2">    movl    $1, flag(%rip)</span></div>
+<div class="lbl c-muted" data-cue="1" data-d="0.6" style="left:120px;top:690px">real output: g++ 13.3 -O2 -S on this box (directives trimmed)</div>
+<div class="note teal" data-cue="3" style="left:120px;top:750px;width:860px">x86: the hardware already keeps these orders.<br>Acquire / release mostly restrain the compiler.</div>
+<div class="note violet" data-cue="4" style="left:1020px;top:750px;width:780px">AArch64: release store → <span class="mono">stlr</span><br>acquire load → <span class="mono">ldar</span> (or <span class="mono">ldapr</span>)</div>
+</div>
+<div class="scene" id="s-seqcst">
+<div class="h2" data-cue="0" style="left:120px;top:110px">seq_cst costs a locked store; relaxed orders nothing</div>
+<div class="code" data-cue="0" data-d="0.3"  style="left:120px;top:220px;width:860px;font-size:24px"><span class="line"><span class="c"># store_seq_cst(): flag.store(1)</span></span><span class="line">    movl    $1, %eax</span><span class="line" data-hl="1" data-hlend="2">    xchgl   flag(%rip), %eax     <span class="c"># implicitly locked</span></span><span class="line">    ret</span></div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:1040px;top:230px;width:760px;line-height:1.5">default std::atomic order · forbids store → load reordering · one total order all threads agree on</div>
+<div class="lbl c-pink" data-cue="1" data-d="0.4" style="left:1040px;top:350px;width:760px">xchg waits for the store buffer to drain</div>
+<div class="lbl" data-cue="2" style="left:120px;top:470px">LOOP: STORE PAYLOAD, THEN PUBLISH · NS PER ITERATION · BEST OF 7</div>
+<div class="lbl c-green" data-cue="2" style="left:120px;top:525px;width:200px">release</div>
+<div class="grow bar" data-cue="2" data-w="74" data-dur="1.0" style="left:330px;top:515px;background:var(--green);height:52px"></div>
+<div class="val mono c-green" data-cue="2" data-d="0.6" style="left:430px;top:520px">0.70 ns</div>
+<div class="lbl c-red" data-cue="2.5" style="left:120px;top:605px;width:200px">seq_cst</div>
+<div class="grow bar" data-cue="2.5" data-w="940" data-dur="1.2" style="left:330px;top:595px;background:var(--red);height:52px"></div>
+<div class="val mono c-red" data-cue="2.5" data-d="1.0" style="left:1290px;top:600px">8.9 ns</div>
+<div class="lbl c-muted" data-cue="2.5" data-d="1.0" style="left:120px;top:670px">one thread on CPU 3, chrt -f 10, 100 million iterations · 4 vCPU KVM Xeon @ 2.10 GHz</div>
+<div class="code" data-cue="3" data-d="0"  style="left:120px;top:730px;width:1300px;font-size:24px"><span class="line"><span class="c">// a statistics counter: only its own value matters</span></span><span class="line" data-hl="3">stats.msgs.fetch_add(<span class="r">1</span>, std::memory_order_relaxed);   <span class="c"># lock addl $1, …</span></span></div>
+</div>
+<div class="scene" id="s-ring">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The lab’s SpscRing</div>
+<div class="code" data-cue="0" data-d="0"  style="left:120px;top:200px;width:1080px;font-size:22px"><span class="line"><span class="c">// producer</span></span><span class="line" data-hl="3" data-hlend="4"><span class="k">const</span> std::uint64_t head = head_.load(std::memory_order_relaxed);</span><span class="line" data-hl="4"><span class="k">if</span> (head - cached_tail_ == Capacity)</span><span class="line" data-hl="4">  cached_tail_ = tail_.load(std::memory_order_acquire);</span><span class="line" data-hl="4"><span class="k">if</span> (head - cached_tail_ == Capacity) <span class="k">return</span> <span class="k">false</span>;</span><span class="line" data-hl="1" data-hlend="2">slots_[head &amp; kMask] = value;</span><span class="line" data-hl="1" data-hlend="2">head_.store(head + <span class="r">1</span>, std::memory_order_release);</span><span class="line"><span class="c">// consumer</span></span><span class="line" data-hl="3" data-hlend="4"><span class="k">const</span> std::uint64_t tail = tail_.load(std::memory_order_relaxed);</span><span class="line" data-hl="4"><span class="k">if</span> (tail == cached_head_)</span><span class="line" data-hl="2" data-hlend="3">  cached_head_ = head_.load(std::memory_order_acquire);</span><span class="line" data-hl="4"><span class="k">if</span> (tail == cached_head_) <span class="k">return</span> <span class="k">false</span>;</span><span class="line" data-hl="2" data-hlend="3">out = slots_[tail &amp; kMask];</span><span class="line" data-hl="2" data-hlend="3">tail_.store(tail + <span class="r">1</span>, std::memory_order_release);</span></div>
+<div class="lbl c-muted" data-cue="0" data-d="0.5" style="left:120px;top:850px;width:1080px">libs/core/include/lab/core/spsc_ring.hpp, condensed: the real code splits this into try_claim / commit and front / pop</div>
+<div class="box teal" data-cue="1" style="left:1270px;top:220px;width:250px;height:100px;text-align:center"><div class="t">producer</div><div class="s">writes head_</div></div>
+<div class="box violet" data-cue="2" style="left:1560px;top:220px;width:250px;height:100px;text-align:center"><div class="t">consumer</div><div class="s">writes tail_</div></div>
+<div class="slot" id="rg-s0" data-cue="0" data-d="0.3" style="left:1270px;top:420px"></div>
+<div class="slot" id="rg-s1" data-cue="0" data-d="0.35" style="left:1338px;top:420px"></div>
+<div class="slot" id="rg-s2" data-cue="0" data-d="0.4" style="left:1406px;top:420px"></div>
+<div class="slot" id="rg-s3" data-cue="0" data-d="0.45" style="left:1474px;top:420px"></div>
+<div class="slot" id="rg-s4" data-cue="0" data-d="0.5" style="left:1542px;top:420px"></div>
+<div class="slot" id="rg-s5" data-cue="0" data-d="0.55" style="left:1610px;top:420px"></div>
+<div class="slot" id="rg-s6" data-cue="0" data-d="0.6000000000000001" style="left:1678px;top:420px"></div>
+<div class="slot" id="rg-s7" data-cue="0" data-d="0.65" style="left:1746px;top:420px"></div>
+<div class="ptr c-teal" id="rg-h" data-cue="1" style="left:1270px;top:500px">▲ head</div>
+<div class="ptr c-violet" id="rg-t" data-cue="2" style="left:1270px;top:380px">▼ tail</div>
+<div class="lbl c-amber" data-cue="1" data-d="0.6" style="left:1270px;top:580px;width:540px;line-height:1.5">slot write, then release store of head</div>
+<div class="lbl c-amber" data-cue="2" data-d="0.6" style="left:1270px;top:640px;width:540px;line-height:1.5">acquire load of head, then slot read</div>
+<div class="lbl" data-cue="4" data-d="0.4" style="left:1270px;top:720px;width:540px;line-height:1.5">cached_tail_ / cached_head_: the other side’s index is re-read only when the copy says full or empty</div>
+</div>
+<div class="scene" id="s-aeron">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Aeron: the frame length is the flag</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:220px">ONE FRAME IN THE TERM · 32-BYTE HEADER + 36-BYTE ITCH ADD ORDER = 68</div>
+<div class="fcell fl" id="ae-fl" data-cue="0" data-d="0.5" data-anim="fade" style="left:120px;top:270px;width:96px">frame_length<br><span class="sz">4</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:216px;top:270px;width:24px">v<br><span class="sz">1</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:240px;top:270px;width:24px">f<br><span class="sz">1</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:264px;top:270px;width:48px">type<br><span class="sz">2</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:312px;top:270px;width:96px">term_offset<br><span class="sz">4</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:408px;top:270px;width:96px">session_id<br><span class="sz">4</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:504px;top:270px;width:96px">stream_id<br><span class="sz">4</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:600px;top:270px;width:96px">term_id<br><span class="sz">4</span></div>
+<div class="fcell hdr" data-cue="1" data-d="0.6" data-anim="fade" style="left:696px;top:270px;width:192px">reserved_value<br><span class="sz">8</span></div>
+<div class="fcell pay" data-cue="1" data-d="1.2" data-anim="fade" style="left:888px;top:270px;width:864px">payload · ITCH Add Order<br><span class="sz">36</span></div>
+<div class="flv mono" id="ae-v" data-cue="0" data-d="0.5" style="left:120px;top:380px">—</div>
+<div class="step" data-cue="1" style="left:120px;top:480px;border-color:var(--red)"><span class="sn" style="background:var(--red)">1</span><span class="mono">frame_length = −68</span><span class="lbl">store, release · frame is not ready</span></div>
+<div class="step" data-cue="1.5" style="left:120px;top:585px;border-color:var(--teal)"><span class="sn" style="background:var(--teal)">2</span><span class="mono">write header + payload</span><span class="lbl">plain stores</span></div>
+<div class="step" data-cue="2" style="left:120px;top:690px;border-color:var(--amber)"><span class="sn" style="background:var(--amber)">3</span><span class="mono">frame_length = +68</span><span class="lbl">store, release · commits the frame</span></div>
+<div class="step" data-cue="3" style="left:120px;top:795px;border-color:var(--violet)"><span class="sn" style="background:var(--violet)">4</span><span class="mono">subscriber: load frame_length, acquire</span><span class="lbl">positive ⇒ the whole frame is visible</span></div>
+<div class="lbl c-muted" data-cue="4" style="left:1280px;top:480px;width:540px;line-height:1.5">docs/aeron.md, from aeron_exclusive_publication.c at 1.47.7: one writer thread, no lock, no syscall</div>
+<div class="lbl c-green" data-cue="4" data-d="0.6" style="left:1280px;top:620px;width:540px;line-height:1.5">the handler gets a pointer into the shared pages: nothing is copied</div>
+</div>

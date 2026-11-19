@@ -62,6 +62,8 @@ the project playbook. Build phases are listed in README.md.
   B-PIPE sessions; `vendors/{icf,rtws,bpipe}` the three servers
 - `libs/aeron`  C++ layer over the Aeron C client and media driver (fetched by `cmake/Aeron.cmake`,
   version 1.47.7); `tools/aeron-driver`, `tools/aeron-ping`; design notes in `docs/aeron.md`
+- `explainers/`  narrated explainer videos: scene engine (`engine/GUIDE.md`), per-video sources, and the
+  C++ example code shown in them (not in the CMake build)
 - `research/`  Python (numpy, pandas): PnL, reconciliation, TCA, backtests; stdlib unittest
 - `exchange/`, `tools/`  as in the design doc
 - One library or executable per directory, each with its own CMakeLists.txt and

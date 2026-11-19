@@ -1,0 +1,47 @@
+[
+{
+"id": "title",
+"title": "Fast price parsing",
+"text": "Parse an ASCII price, like 123.4567 or 0.5, from FIX or a text feed. Return an integer count of ten thousandths of a dollar: the Price(4) format the lab uses for ITCH. No floating point anywhere."
+},
+{
+"id": "naive",
+"title": "The float answer",
+"text": "The quick answer is stod, times ten thousand. It is wrong. 1.13 becomes 11299: the double lands just below 11300, and the cast truncates. Over a million random prices, 5.8 percent came out wrong. Rounding fixes that, but stod still takes 1e3, inf, leading spaces, and stops silently at garbage. A stringstream adds stream setup on every call."
+},
+{
+"id": "loop",
+"title": "Digit loop",
+"text": "Do it with integers. Walk the whole part, multiplying by ten and adding each digit. Subtracting the character zero, as unsigned, turns any non digit into a big number, so one compare rejects it. Then the fraction, at most four digits."
+},
+{
+"id": "frac",
+"title": "Short fractions",
+"text": "A short fraction needs scaling. In 0.5, the 5 is worth 5000, so multiply by ten to the power of four minus the digits seen. 100 and 100 dot both mean a million. An empty string or a lone dot is rejected. So is a fifth decimal."
+},
+{
+"id": "valid",
+"title": "Validation and overflow",
+"text": "Everything else is rejected too: signs, exponents, spaces and stray characters. For overflow, check before each multiply, so the whole part can never wrap. The cap is a trillion dollars, the same limit as the lab's FIX codec."
+},
+{
+"id": "fromchars",
+"title": "std::from_chars",
+"text": "Or let std::from_chars do the whole part. It reads only digits, needs no terminator, ignores the locale, and reports overflow as result out of range. If it finds no digits, a dot may still follow, as in .5. The lab's parse_price in libs/fix works the same way."
+},
+{
+"id": "swar",
+"title": "SWAR: eight at once",
+"text": "For extra credit, load eight ASCII digits as one 64 bit word. Mask each byte down to its digit value. Then three multiply and shift steps merge pairs, then fours, then all eight. For prices under ten thousand dollars, right align the whole part and left align the fraction in eight zeros. One call then yields Price(4)."
+},
+{
+"id": "tests",
+"title": "Tests and complexity",
+"text": "The tests hit the edges: .5, 100 dot, 0.0001, the cap, and 64 bit overflow. Signs, spaces, exponents and inf are rejected. Two million random prices must agree across all four parsers, including the lab's. The SWAR kernel also saw every bad byte in every position. Each parser is linear in the length."
+},
+{
+"id": "bench",
+"title": "Benchmark",
+"text": "Timing a million short prices, on a shared four vCPU cloud box under heavy load. Doubles cost 120 to 210 nanoseconds each, a stringstream 370 to 660. Our integer parsers took 19 to 47. SWAR did not win: building its buffer eats the gain. On fixed eight digit fields, it beat the loop two and a half to five times."
+}
+]

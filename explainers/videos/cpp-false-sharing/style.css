@@ -1,0 +1,15 @@
+.brace{height:14px;border:3px solid;border-top:none;border-radius:0 0 8px 8px}
+.glow{border:3px solid var(--teal);border-radius:6px;box-shadow:0 0 30px rgba(63,208,220,.5)}
+.badge{width:64px;height:52px;border-radius:10px;display:grid;place-items:center;font:800 32px var(--mono);color:#06141a;background:var(--blue)}
+.st{display:flex;gap:26px;align-items:center;width:760px;height:118px;padding:0 22px;border-radius:16px;border:2px solid;background:var(--panel)}
+.st .sl{width:76px;height:76px;border-radius:12px;display:grid;place-items:center;font:800 44px var(--mono);color:#06141a;flex:none}
+.st .sn{font:700 34px var(--body)} .st .sd{font:500 22px var(--mono);color:var(--muted);margin-top:4px}
+.tok{padding:6px 16px;border-radius:10px;background:var(--amber);color:#06141a;font:700 22px var(--mono);box-shadow:0 0 18px var(--amber);transform:translate(-50%,-50%)}
+.cnt{font-size:30px;font-weight:700}
+.tb{width:48px;height:44px;border-radius:6px;opacity:0}
+.tlax{height:3px;background:var(--line)}
+.big{font:800 78px var(--display);font-stretch:80%;letter-spacing:.01em}
+.fact{font:600 28px var(--mono);padding:12px 20px;border-radius:12px;background:var(--panel);border:2px solid var(--line);width:430px}
+.warn{font:500 20px/1.55 var(--mono);color:#dce8ee;background:#08121a;border:2px solid var(--amber);border-radius:14px;padding:16px 22px;white-space:pre}
+.val{font-size:34px;font-weight:700}
+.bytes > div{font-size:19px}

@@ -1,0 +1,374 @@
+<!-- 0 TITLE -->
+<div class="scene" id="s-title">
+  <div class="eyebrow" style="left:140px;top:200px">TRADING LAB · PROTOCOLS</div>
+  <div class="h1" style="left:132px;top:250px">HTTP on<br>the wire</div>
+  <div class="sub" style="left:140px;top:560px;width:860px">Bytes, frames and streams: what a request really costs.</div>
+  <div class="box teal" data-cue="1" data-d="0.0" style="left:1150px;top:200px;width:620px"><div class="t">HTTP/1.1</div><div class="s">text lines · RFC 9112</div></div>
+  <div class="box green" data-cue="1" data-d="0.5" style="left:1150px;top:320px;width:620px"><div class="t">HTTP/2</div><div class="s">binary frames · RFC 9113</div></div>
+  <div class="box blue" data-cue="1" data-d="1.0" style="left:1150px;top:440px;width:620px"><div class="t">HTTP/3</div><div class="s">QUIC over UDP · RFC 9114</div></div>
+  <div class="box violet" data-cue="1" data-d="1.5" style="left:1150px;top:560px;width:620px"><div class="t">WebSocket</div><div class="s">upgrade + frames · RFC 6455</div></div>
+  <div class="box amber" data-cue="2" data-d="0.2" style="left:1150px;top:700px;width:300px"><div class="t">rt-server</div><div class="s">OMM JSON</div></div>
+  <div class="box red" data-cue="2" data-d="1.4" style="left:1470px;top:700px;width:300px"><div class="t">latency</div><div class="s">text vs ITCH</div></div>
+</div>
+
+<!-- 1 HTTP/1.1 REQUEST -->
+<div class="scene" id="s-h1">
+  <div class="h2" style="left:120px;top:110px">An HTTP/1.1 request is text</div>
+  <div class="code big" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:1000px"><span class="line"><span data-hl="1" data-hlend="2">GET</span> <span data-hl="1" data-hld="0.8" data-hlend="2">/quotes/ACME</span> <span data-hl="1" data-hld="1.6" data-hlend="2">HTTP/1.1</span><span class="cr" data-hl="3" data-hlend="4">\r\n</span></span><span class="line"><span data-hl="2" data-hlend="3">Host</span>: <span class="g">api.lab.local</span><span class="cr" data-hl="3" data-hlend="4">\r\n</span></span><span class="line"><span data-hl="2" data-hld="0.6" data-hlend="3">Accept</span>: <span class="g">application/json</span><span class="cr" data-hl="3" data-hlend="4">\r\n</span></span><span class="line"><span class="cr" data-hl="3.5">\r\n</span></span></div>
+  <div class="box teal" data-cue="1" data-d="0.2" style="left:1220px;top:230px;width:580px"><div class="t" style="font-size:28px">request line</div><div class="s">method SP target SP version</div></div>
+  <div class="box green" data-cue="2" data-d="0.2" style="left:1220px;top:370px;width:580px"><div class="t" style="font-size:28px">header field</div><div class="s">name ":" OWS value</div></div>
+  <div class="box amber" data-cue="3" data-d="0.2" style="left:1220px;top:510px;width:580px"><div class="t" style="font-size:28px">CRLF = 0D 0A</div><div class="s">empty line ends the head</div></div>
+  <div class="lbl" data-cue="0" data-d="1.2" style="left:120px;top:690px">first line on the wire, 27 bytes</div>
+  <div class="mono" data-cue="0" data-d="1.2" data-anim="fade" style="left:120px;top:730px;font-size:27px;color:#cfdde5;width:1700px"><span class="type" data-cue="0" data-d="1.2" data-dur="3">47 45 54 20 2F 71 75 6F 74 65 73 2F 41 43 4D 45 20 48 54 54 50 2F 31 2E 31 </span><span class="cr" data-cue="3" data-anim="fade">0D 0A</span></div>
+  <div class="note" data-cue="2" data-d="0.8" style="left:120px;top:800px;width:1600px">Every byte is read and searched: lengths are not known up front.</div>
+</div>
+
+<!-- 2 FRAMING -->
+<div class="scene" id="s-framing">
+  <div class="h2" style="left:120px;top:110px">Where does the body end?</div>
+  <div class="lbl" data-cue="1" style="left:120px;top:215px">Content-Length</div>
+  <div class="code mid" data-cue="1" style="left:120px;top:255px;width:760px"><span class="line">HTTP/1.1 200 OK<span class="cr">\r\n</span></span><span class="line"><span class="k">Content-Length</span>: <span class="r" data-hl="1" data-hld="0.6" data-hlend="2">14</span><span class="cr">\r\n</span></span><span class="line"><span class="cr">\r\n</span></span><span class="line"><span class="g">{"bid":101.25}</span></span></div>
+  <div class="grow" data-cue="1" data-d="0.8" data-w="760" data-dur="1.4" style="left:120px;top:515px;height:44px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--teal) 0 52px,#0b1319 52px 54px);opacity:.85"></div>
+  <div class="mono" data-cue="1" data-d="0.8" style="left:120px;top:570px;font-size:26px;color:var(--teal)">count <span class="count" data-cue="1" data-d="0.8" data-to="14" data-dur="1.4"></span> bytes, then stop</div>
+  <div class="lbl" data-cue="2" style="left:980px;top:215px">Transfer-Encoding: chunked</div>
+  <div class="code mid" data-cue="2" style="left:980px;top:255px;width:820px"><span class="line">HTTP/1.1 200 OK<span class="cr">\r\n</span></span><span class="line"><span class="k">Transfer-Encoding</span>: chunked<span class="cr">\r\n</span></span><span class="line"><span class="cr">\r\n</span></span><span class="line"><span class="r" data-hl="2" data-hld="1" data-hlend="3">6</span><span class="cr">\r\n</span></span><span class="line"><span class="g">{"bid"</span><span class="cr">\r\n</span></span><span class="line"><span class="r" data-hl="2" data-hld="1.6" data-hlend="3">8</span><span class="cr">\r\n</span></span><span class="line"><span class="g">:101.25}</span><span class="cr">\r\n</span></span><span class="line" data-hl="3"><span class="r">0</span><span class="cr">\r\n</span></span><span class="line" data-hl="3"><span class="cr">\r\n</span></span></div>
+  <div class="note" data-cue="2" data-d="1.4" style="left:980px;top:740px;width:820px"><b>size</b> in hex · CRLF · data · CRLF</div>
+  <div class="note" data-cue="3" style="left:980px;top:790px;width:820px"><b>0</b> CRLF CRLF: last chunk, no trailers</div>
+  <div class="box amber" data-cue="4" style="left:120px;top:690px;width:760px"><div class="t" style="font-size:28px">Both present?</div><div class="s">Transfer-Encoding overrides Content-Length</div></div>
+</div>
+
+<!-- 3 HOL -->
+<div class="scene" id="s-hol">
+  <div class="h2" style="left:120px;top:110px">One connection, responses in order</div>
+  <div class="box teal" style="left:120px;top:230px;width:220px;text-align:center" data-cue="0"><div class="t">client</div></div>
+  <div class="box violet" style="left:1580px;top:230px;width:220px;text-align:center" data-cue="0"><div class="t">server</div></div>
+  <div class="lane" data-cue="0" data-d="0.4" style="left:360px;top:268px;width:1200px"></div>
+  <div class="tag" data-cue="0" data-d="0.8" style="left:740px;top:212px;color:var(--teal)">one TCP connection, kept alive</div>
+  <div class="lbl" data-cue="1" style="left:120px;top:360px">requests</div>
+  <div class="fr" data-cue="0.5" style="left:360px;top:400px;background:var(--teal);width:150px">GET 1</div>
+  <div class="fr" data-cue="0.5" data-d="0.3" style="left:530px;top:400px;background:var(--teal);width:150px">GET 2</div>
+  <div class="fr" data-cue="0.5" data-d="0.6" style="left:700px;top:400px;background:var(--teal);width:150px">GET 3</div>
+  <div class="lbl" data-cue="1" style="left:120px;top:520px">responses</div>
+  <div class="grow" data-cue="1" data-d="0.3" data-w="760" data-dur="2.2" style="left:360px;top:560px;height:76px;border-radius:8px;background:var(--red);display:grid;place-items:center;font:700 24px var(--mono);color:#06141a;overflow:hidden;white-space:nowrap">response 1 · slow</div>
+  <div class="fr" data-cue="2" style="left:1140px;top:560px;background:var(--green);width:150px">resp 2</div>
+  <div class="fr" data-cue="2" data-d="0.2" style="left:1310px;top:560px;background:var(--green);width:150px">resp 3</div>
+  <div class="tag" data-cue="2" data-d="0.6" style="left:1140px;top:656px;color:var(--red)">ready early, must wait</div>
+  <div class="lbl" data-cue="3" style="left:120px;top:715px">browser: about 6 connections per host</div>
+  <svg class="full">
+    <path id="hol-p0" d="M360 760 H1560" stroke="#2c4351" stroke-width="4" class="draw" data-cue="3" data-d="0.0"/>
+    <path id="hol-p1" d="M360 788 H1560" stroke="#2c4351" stroke-width="4" class="draw" data-cue="3" data-d="0.1"/>
+    <path id="hol-p2" d="M360 816 H1560" stroke="#2c4351" stroke-width="4" class="draw" data-cue="3" data-d="0.2"/>
+    <path id="hol-p3" d="M360 844 H1560" stroke="#2c4351" stroke-width="4" class="draw" data-cue="3" data-d="0.3"/>
+    <path id="hol-p4" d="M360 872 H1560" stroke="#2c4351" stroke-width="4" class="draw" data-cue="3" data-d="0.4"/>
+    <path id="hol-p5" d="M360 900 H1560" stroke="#2c4351" stroke-width="4" class="draw" data-cue="3" data-d="0.5"/>
+  </svg>
+  <div class="pkt" data-path="hol-p0" data-cue="3" data-d="0.6" data-dur="1.6" data-loop="1" data-phase="0.0"></div>
+  <div class="pkt" data-path="hol-p1" data-cue="3" data-d="0.6" data-dur="1.9" data-loop="1" data-phase="0.4"></div>
+  <div class="pkt" data-path="hol-p2" data-cue="3" data-d="0.6" data-dur="1.4" data-loop="1" data-phase="0.7"></div>
+  <div class="pkt" data-path="hol-p3" data-cue="3" data-d="0.6" data-dur="2.1" data-loop="1" data-phase="0.2"></div>
+  <div class="pkt" data-path="hol-p4" data-cue="3" data-d="0.6" data-dur="1.7" data-loop="1" data-phase="0.55"></div>
+  <div class="pkt" data-path="hol-p5" data-cue="3" data-d="0.6" data-dur="1.5" data-loop="1" data-phase="0.85"></div>
+</div>
+
+<!-- 4 HTTP/2 FRAME HEADER -->
+<div class="scene" id="s-h2frame">
+  <div class="h2" style="left:120px;top:110px">HTTP/2: binary frames</div>
+  <div class="box green" data-cue="0" data-d="0.4" style="left:1240px;top:200px;width:560px"><div class="t" style="font-size:28px">Same HTTP semantics</div><div class="s">methods, status, fields → frames</div></div>
+  <div class="lbl" data-cue="1" style="left:120px;top:215px">client connection preface · 24 bytes</div>
+  <div class="mono" data-cue="1" style="left:120px;top:255px;font-size:40px;font-weight:700;color:var(--teal)"><span class="type" data-cue="1" data-dur="2">PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n</span></div>
+  <div class="mono" data-cue="1" data-d="1.6" style="left:120px;top:320px;font-size:24px;color:var(--muted)">50 52 49 20 2A 20 48 54 54 50 2F 32 2E 30 0D 0A 0D 0A 53 4D 0D 0A 0D 0A</div>
+  <div class="lbl" data-cue="2" style="left:195px;top:405px">frame header · 9 bytes · then the payload</div>
+  <div class="fld" data-cue="3" style="left:195px;top:450px;width:510px;border-color:var(--teal);color:var(--teal)">Length · 24 bits</div>
+  <div class="fld" data-cue="3" data-d="0.5" style="left:705px;top:450px;width:170px;border-color:var(--amber);color:var(--amber)">Type · 8</div>
+  <div class="fld" data-cue="3" data-d="1.0" style="left:875px;top:450px;width:170px;border-color:var(--violet);color:var(--violet)">Flags · 8</div>
+  <div class="fld" data-cue="4" style="left:1045px;top:450px;width:680px;border-color:var(--green);color:var(--green)">R · Stream Identifier · 31 bits</div>
+  <div class="cellx" data-cue="2" data-d="0.2" style="left:195px;top:500px;width:170px;background:var(--teal)">00</div>
+  <div class="cellx" data-cue="2" data-d="0.3" style="left:365px;top:500px;width:170px;background:var(--teal)">00</div>
+  <div class="cellx" data-cue="2" data-d="0.4" style="left:535px;top:500px;width:170px;background:var(--teal)">11</div>
+  <div class="cellx" data-cue="2" data-d="0.5" style="left:705px;top:500px;width:170px;background:var(--amber)">01</div>
+  <div class="cellx" data-cue="2" data-d="0.6" style="left:875px;top:500px;width:170px;background:var(--violet)">05</div>
+  <div class="cellx" data-cue="2" data-d="0.7" style="left:1045px;top:500px;width:170px;background:var(--green)">00</div>
+  <div class="cellx" data-cue="2" data-d="0.8" style="left:1215px;top:500px;width:170px;background:var(--green)">00</div>
+  <div class="cellx" data-cue="2" data-d="0.9" style="left:1385px;top:500px;width:170px;background:var(--green)">00</div>
+  <div class="cellx" data-cue="2" data-d="1.0" style="left:1555px;top:500px;width:170px;background:var(--green)">01</div>
+  <div class="mono" data-cue="3" data-d="0.2" style="left:195px;top:600px;width:510px;text-align:center;font-size:26px;color:var(--teal)">17-byte payload</div>
+  <div class="mono" data-cue="3" data-d="0.7" style="left:705px;top:600px;width:170px;text-align:center;font-size:26px;color:var(--amber)">HEADERS</div>
+  <div class="mono" data-cue="3" data-d="1.2" style="left:855px;top:600px;width:210px;text-align:center;font-size:20px;color:var(--violet);line-height:1.3">END_STREAM<br>| END_HEADERS</div>
+  <div class="mono" data-cue="4" data-d="0.3" style="left:1045px;top:600px;width:680px;text-align:center;font-size:26px;color:var(--green)">stream 1</div>
+  <div class="lbl" data-cue="4" data-d="0.4" style="left:1045px;top:690px">first byte, bit by bit</div>
+  <div class="bit" data-cue="4" data-d="0.5" style="left:1045px;top:730px;background:var(--red)">0</div>
+  <div class="bit" data-cue="4" data-d="0.6" style="left:1109px;top:730px;background:var(--green)">0</div>
+  <div class="bit" data-cue="4" data-d="0.6" style="left:1173px;top:730px;background:var(--green)">0</div>
+  <div class="bit" data-cue="4" data-d="0.6" style="left:1237px;top:730px;background:var(--green)">0</div>
+  <div class="bit" data-cue="4" data-d="0.6" style="left:1301px;top:730px;background:var(--green)">0</div>
+  <div class="bit" data-cue="4" data-d="0.6" style="left:1365px;top:730px;background:var(--green)">0</div>
+  <div class="bit" data-cue="4" data-d="0.6" style="left:1429px;top:730px;background:var(--green)">0</div>
+  <div class="bit" data-cue="4" data-d="0.6" style="left:1493px;top:730px;background:var(--green)">0</div>
+  <div class="tag" data-cue="4" data-d="0.9" style="left:1000px;top:815px;color:var(--red)">R: reserved, ignored</div>
+  <div class="box" data-cue="3" data-d="1.6" style="left:195px;top:700px;width:680px"><div class="t" style="font-size:28px">Length excludes the 9 header bytes</div><div class="s">default max payload 16,384</div></div>
+</div>
+
+<!-- 5 FRAME TYPES -->
+<div class="scene" id="s-types">
+  <div class="h2" style="left:120px;top:110px">Frame types</div>
+  <div class="card" data-cue="0" style="left:120px;top:220px;border-color:var(--amber)"><div class="nm c-amber">HEADERS</div><div class="rl">HPACK-compressed header block</div><div class="code-hex">0x1</div></div>
+  <div class="card" data-cue="0" data-d="1.4" style="left:1000px;top:220px;border-color:var(--teal)"><div class="nm c-teal">DATA</div><div class="rl">body bytes</div><div class="code-hex">0x0</div></div>
+  <div class="card" data-cue="1" style="left:120px;top:390px"><div class="nm">SETTINGS</div><div class="rl">connection parameters, acked</div><div class="code-hex">0x4</div></div>
+  <div class="card" data-cue="1" data-d="1.2" style="left:1000px;top:390px;border-color:var(--green)"><div class="nm c-green">WINDOW_UPDATE</div><div class="rl">flow control credit</div><div class="code-hex">0x8</div></div>
+  <div class="card" data-cue="2" style="left:120px;top:560px;border-color:var(--blue)"><div class="nm c-blue">PING</div><div class="rl">round trip, 8 opaque bytes, ACK flag back</div><div class="code-hex">0x6</div></div>
+  <div class="note" data-cue="2" data-d="1.2" style="left:1000px;top:590px;width:780px;color:var(--muted)">also: PRIORITY 0x2 · PUSH_PROMISE 0x5 · CONTINUATION 0x9</div>
+  <div class="card" data-cue="3" style="left:120px;top:730px;border-color:var(--red)"><div class="nm c-red">RST_STREAM</div><div class="rl">cancel one stream</div><div class="code-hex">0x3</div></div>
+  <div class="card" data-cue="3" data-d="1.2" style="left:1000px;top:730px;border-color:var(--red)"><div class="nm c-red">GOAWAY</div><div class="rl">last stream id, then close</div><div class="code-hex">0x7</div></div>
+</div>
+
+<!-- 6 MUX -->
+<div class="scene" id="s-mux">
+  <div class="h2" style="left:120px;top:110px">Many streams, one connection</div>
+  <div class="box teal" data-cue="0" style="left:120px;top:250px;width:220px;text-align:center"><div class="t">client</div></div>
+  <div class="box violet" data-cue="0" style="left:1580px;top:250px;width:220px;text-align:center"><div class="t">server</div></div>
+  <svg class="full"><path id="mux-p" d="M350 290 H1570" stroke="#2c4351" stroke-width="30" stroke-linecap="round" class="draw" data-cue="0" data-d="0.3" fill="none"/></svg>
+  <div class="pkt" data-path="mux-p" data-cue="2" data-dur="2.0" data-loop="1" data-phase="0.0" style="background:var(--teal)"></div>
+  <div class="pkt" data-path="mux-p" data-cue="2" data-dur="2.0" data-loop="1" data-phase="0.2" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+  <div class="pkt" data-path="mux-p" data-cue="2" data-dur="2.0" data-loop="1" data-phase="0.4" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+  <div class="pkt" data-path="mux-p" data-cue="2" data-dur="2.0" data-loop="1" data-phase="0.6" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+  <div class="pkt" data-path="mux-p" data-cue="2" data-dur="2.0" data-loop="1" data-phase="0.8" style="background:var(--teal)"></div>
+  <div class="pill" data-cue="1" style="left:360px;top:370px;color:var(--teal)">stream 1</div>
+  <div class="pill" data-cue="1" data-d="0.3" style="left:540px;top:370px;color:var(--green)">stream 3</div>
+  <div class="pill" data-cue="1" data-d="0.6" style="left:720px;top:370px;color:var(--pink)">stream 5</div>
+  <div class="tag" data-cue="1" data-d="1.0" style="left:920px;top:372px;color:var(--muted)">client ids odd · server ids even · 0 = the connection</div>
+  <div class="lbl" data-cue="2" style="left:120px;top:480px">frames on the wire, in order</div>
+  <div class="fr" data-cue="2" data-d="0.0" style="left:120px;top:530px;background:var(--teal)">H 1</div>
+  <div class="fr" data-cue="2" data-d="0.2" style="left:240px;top:530px;background:var(--green)">H 3</div>
+  <div class="fr" data-cue="2" data-d="0.4" style="left:360px;top:530px;background:var(--pink)">H 5</div>
+  <div class="fr" data-cue="2" data-d="0.6" style="left:480px;top:530px;background:var(--green)">D 3</div>
+  <div class="fr" data-cue="2" data-d="0.8" style="left:600px;top:530px;background:var(--teal)">D 1</div>
+  <div class="fr" data-cue="2" data-d="1.0" style="left:720px;top:530px;background:var(--green)" data-hl="3" data-hlend="end">D 3<i>ES</i></div>
+  <div class="fr" data-cue="2" data-d="1.2" style="left:840px;top:530px;background:var(--pink)">D 5</div>
+  <div class="fr" data-cue="2" data-d="1.4" style="left:960px;top:530px;background:var(--teal)">D 1</div>
+  <div class="fr" data-cue="2" data-d="1.6" style="left:1080px;top:530px;background:var(--pink)" data-hl="3" data-hlend="end">D 5<i>ES</i></div>
+  <div class="fr" data-cue="2" data-d="1.8" style="left:1200px;top:530px;background:var(--teal)">D 1</div>
+  <div class="fr" data-cue="2" data-d="2.0" style="left:1320px;top:530px;background:var(--teal)" data-hl="3" data-hlend="end">D 1<i>ES</i></div>
+  <div class="note" data-cue="2" data-d="2.4" style="left:120px;top:650px;width:1500px">Stream 3 finishes first. Nobody waits for the slow stream 1.</div>
+  <div class="box amber" data-cue="3" style="left:120px;top:740px;width:900px"><div class="t" style="font-size:28px">END_STREAM = flag 0x1</div><div class="s">set on the stream's last DATA (or HEADERS)</div></div>
+</div>
+
+<!-- 7 HPACK -->
+<div class="scene" id="s-hpack">
+  <div class="h2" style="left:120px;top:110px">HPACK header compression</div>
+  <div class="lbl" data-cue="0" style="left:120px;top:210px">static table (RFC 7541)</div>
+  <table class="t trow" data-cue="0" data-d="0.3" style="left:120px;top:250px;width:620px">
+    <tr><td class="c-muted">1</td><td>:authority</td><td></td></tr>
+    <tr data-hl="1" data-hlend="2"><td class="c-amber">2</td><td>:method</td><td class="c-green">GET</td></tr>
+    <tr><td class="c-muted">3</td><td>:method</td><td class="c-green">POST</td></tr>
+    <tr><td class="c-muted">4</td><td>:path</td><td class="c-green">/</td></tr>
+    <tr><td class="c-muted">6</td><td>:scheme</td><td class="c-green">http</td></tr>
+    <tr><td class="c-muted">7</td><td>:scheme</td><td class="c-green">https</td></tr>
+    <tr><td class="c-muted">8</td><td>:status</td><td class="c-green">200</td></tr>
+    <tr><td class="c-muted">…61</td><td class="c-muted">www-authenticate</td><td></td></tr>
+  </table>
+  <div class="lbl" data-cue="1" style="left:840px;top:210px">request 1 · RFC 7541 C.4.1 · 17 bytes</div>
+  <div class="cellx" data-cue="1" data-d="0.2" data-hl="1" data-hld="0.6" data-hlend="2" style="left:840px;top:250px;width:70px;background:var(--amber);font-size:24px">82</div>
+  <div class="cellx" data-cue="1" data-d="0.3" style="left:910px;top:250px;width:70px;background:var(--amber);font-size:24px">86</div>
+  <div class="cellx" data-cue="1" data-d="0.4" style="left:980px;top:250px;width:70px;background:var(--amber);font-size:24px">84</div>
+  <div class="cellx" data-cue="1" data-d="0.5" data-hl="2" data-hlend="3" style="left:1050px;top:250px;width:70px;background:var(--violet);font-size:24px">41</div>
+  <div class="cellx" data-cue="1" data-d="0.6" data-hl="3" style="left:1120px;top:250px;width:70px;background:var(--blue);font-size:24px">8c</div>
+  <div class="cellx" data-cue="1" data-d="0.7" data-hl="3" style="left:1190px;top:250px;width:600px;background:#6f8fa3;font-size:22px">f1 e3 c2 e5 f2 3a 6b a0 ab 90 f4 ff</div>
+  <div class="mono" data-cue="1" data-d="0.8" style="left:840px;top:335px;font-size:22px;color:var(--amber);width:960px">82 = 1·0000010 → index 2 → :method GET</div>
+  <div class="mono" data-cue="1" data-d="1.2" style="left:840px;top:370px;font-size:22px;color:var(--muted);width:960px">86 → :scheme http · 84 → :path /</div>
+  <div class="box violet" data-cue="2" style="left:840px;top:440px;width:950px"><div class="t" style="font-size:26px">41 = 01·000001 → add to dynamic table</div><div class="s">[62] :authority: www.example.com · 57 bytes</div></div>
+  <div class="lbl" data-cue="2" data-d="1.0" style="left:840px;top:590px">request 2 starts</div>
+  <div class="cellx" data-cue="2" data-d="1.1" style="left:840px;top:630px;width:70px;background:var(--amber);font-size:24px">82</div>
+  <div class="cellx" data-cue="2" data-d="1.2" style="left:910px;top:630px;width:70px;background:var(--amber);font-size:24px">86</div>
+  <div class="cellx" data-cue="2" data-d="1.3" style="left:980px;top:630px;width:70px;background:var(--amber);font-size:24px">84</div>
+  <div class="cellx" data-cue="2" data-d="1.4" style="left:1050px;top:630px;width:70px;background:var(--violet);font-size:24px">be</div>
+  <div class="mono" data-cue="2" data-d="1.6" style="left:1140px;top:650px;font-size:24px;color:var(--violet)">be → index 62: one byte</div>
+  <div class="box blue" data-cue="3" style="left:120px;top:760px;width:1670px"><div class="t" style="font-size:28px">8c = H·0001100: Huffman, 12 bytes</div><div class="s">www.example.com · 15 ASCII bytes → 12 bytes, static code tuned on real headers</div></div>
+</div>
+
+<!-- 8 FLOW CONTROL -->
+<div class="scene" id="s-flow">
+  <div class="h2" style="left:120px;top:110px">Flow control, then the catch</div>
+  <div class="lbl" data-cue="0" style="left:120px;top:215px">stream 1 send window · the connection has its own</div>
+  <div data-cue="0" data-d="0.3" style="left:120px;top:255px;width:1300px;height:64px;border:2px solid var(--line);border-radius:10px"></div>
+  <div id="fl-fill" data-cue="1" style="left:122px;top:257px;width:1296px;height:60px;border-radius:8px;background:var(--green)"></div>
+  <div id="fl-num" class="mono" data-cue="1" style="left:1450px;top:262px;font-size:38px;font-weight:700;color:var(--green)">65,535</div>
+  <div class="fr" data-cue="2" data-d="0.0" style="left:120px;top:350px;width:300px;background:var(--teal)">DATA 16,384</div>
+  <div class="fr" data-cue="2" data-d="0.6" style="left:440px;top:350px;width:300px;background:var(--teal)">DATA 16,384</div>
+  <div class="fr" data-cue="2" data-d="1.2" style="left:760px;top:350px;width:300px;background:var(--teal)">DATA 16,384</div>
+  <div class="fr" data-cue="2" data-d="1.8" style="left:1080px;top:350px;width:300px;background:var(--teal)">DATA 16,383</div>
+  <div class="tag" data-cue="2" data-d="2.4" style="left:1400px;top:370px;color:var(--red)">window 0: stop</div>
+  <div class="fr" data-cue="2" data-d="3.2" style="left:120px;top:450px;width:420px;background:var(--green)">WINDOW_UPDATE +32,768</div>
+  <div class="lbl" data-cue="3" style="left:120px;top:590px">underneath: one TCP byte stream</div>
+  <div class="lane" data-cue="3" style="left:120px;top:700px;width:1680px;height:10px"></div>
+  <div class="fr" data-cue="3" data-d="0.1" style="left:160px;top:660px;background:var(--teal)">1</div>
+  <div class="fr" data-cue="3" data-d="0.2" style="left:300px;top:660px;background:var(--green)">3</div>
+  <div class="fr" data-cue="3" data-d="0.3" style="left:440px;top:660px;background:var(--pink)" data-dim="4">5</div>
+  <div class="x" data-cue="4" style="left:470px;top:648px">✕</div>
+  <div class="fr" data-cue="3" data-d="0.4" style="left:580px;top:660px;background:var(--teal)" data-dim="4">1</div>
+  <div class="fr" data-cue="3" data-d="0.5" style="left:720px;top:660px;background:var(--green)" data-dim="4">3</div>
+  <div class="fr" data-cue="3" data-d="0.6" style="left:860px;top:660px;background:var(--teal)" data-dim="4">1</div>
+  <div class="fr" data-cue="3" data-d="0.7" style="left:1000px;top:660px;background:var(--green)" data-dim="4">3</div>
+  <div class="fr" data-cue="3" data-d="0.8" style="left:1140px;top:660px;background:var(--pink)" data-dim="4">5</div>
+  <div class="note" data-cue="4" data-d="0.4" style="left:440px;top:770px;width:1300px;color:var(--red)">one lost segment: TCP holds every later byte until the retransmit, for all streams</div>
+</div>
+
+<!-- 9 HTTP/3 -->
+<div class="scene" id="s-h3">
+  <div class="h2" style="left:120px;top:110px">HTTP/3: streams move into QUIC</div>
+  <div class="lbl" data-cue="0" style="left:120px;top:215px">HTTP/2</div>
+  <div class="stack" data-cue="0" style="left:120px;top:255px;width:360px">HTTP/2 + HPACK</div>
+  <div class="stack" data-cue="0" data-d="0.1" style="left:120px;top:349px;width:360px">TLS</div>
+  <div class="stack" data-cue="0" data-d="0.2" style="left:120px;top:443px;width:360px;border-color:var(--red)">TCP</div>
+  <div class="lbl" data-cue="0" data-d="0.8" style="left:540px;top:215px">HTTP/3</div>
+  <div class="stack" data-cue="0" data-d="0.8" style="left:540px;top:255px;width:360px;border-color:var(--blue)">HTTP/3 + QPACK</div>
+  <div class="stack" data-cue="0" data-d="0.9" style="text-align:center;left:540px;top:349px;width:360px;border-color:var(--blue);height:178px">QUIC<br>streams · TLS 1.3</div>
+  <div class="stack" data-cue="0" data-d="1.0" style="left:540px;top:537px;width:360px">UDP</div>
+  <div class="lbl" data-cue="1" style="left:1040px;top:215px">QUIC streams, lost packet on stream 5</div>
+  <svg class="full">
+    <path id="h3-a" d="M1040 290 H1780" stroke="#2c4351" stroke-width="6" class="draw" data-cue="1" fill="none"/>
+    <path id="h3-b" d="M1040 390 H1780" stroke="#2c4351" stroke-width="6" class="draw" data-cue="1" fill="none"/>
+    <path id="h3-c" d="M1040 490 H1400" stroke="#2c4351" stroke-width="6" class="draw" data-cue="1" fill="none"/>
+    <path id="h3-c2" d="M1400 490 H1780" stroke="#2c4351" stroke-width="6" stroke-dasharray="8 10" fill="none"/>
+  </svg>
+  <div class="pkt" data-path="h3-a" data-cue="1" data-d="0.3" data-dur="1.5" data-loop="1" style="background:var(--teal)"></div>
+  <div class="pkt" data-path="h3-a" data-cue="1" data-d="0.3" data-dur="1.5" data-loop="1" data-phase="0.5" style="background:var(--teal)"></div>
+  <div class="pkt" data-path="h3-b" data-cue="1" data-d="0.3" data-dur="1.5" data-loop="1" data-phase="0.25" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+  <div class="pkt" data-path="h3-b" data-cue="1" data-d="0.3" data-dur="1.5" data-loop="1" data-phase="0.75" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+  <div class="pkt" data-path="h3-c" data-cue="1" data-d="0.3" data-dur="1.2" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+  <div class="x" data-cue="1" data-d="1.4" style="left:1382px;top:455px">✕</div>
+  <div class="pill" data-cue="1" data-d="0.3" style="left:1040px;top:240px;color:var(--teal)">1 flowing</div>
+  <div class="pill" data-cue="1" data-d="0.3" style="left:1040px;top:340px;color:var(--green)">3 flowing</div>
+  <div class="pill" data-cue="1" data-d="1.6" style="left:1440px;top:440px;color:var(--pink)">5 waits alone</div>
+  <div class="box blue" data-cue="2" style="left:1040px;top:600px;width:740px"><div class="t" style="font-size:28px">QPACK (RFC 9204)</div><div class="s">encoder stream + decoder stream<br>table updates no longer need strict order</div></div>
+</div>
+
+<!-- 10 WS HANDSHAKE -->
+<div class="scene" id="s-wshs">
+  <div class="h2" style="left:120px;top:110px">WebSocket: an HTTP upgrade</div>
+  <div class="code sm" data-cue="0" style="left:100px;top:210px;width:860px"><span class="line"><span class="k">GET</span> /WebSocket HTTP/1.1</span><span class="line">Host: 127.0.0.1:17002</span><span class="line" data-hl="0" data-hld="1" data-hlend="1">Upgrade: websocket</span><span class="line">Connection: Upgrade</span><span class="line" data-hl="0" data-hld="2" data-hlend="2">Sec-WebSocket-Key: <span class="g">dGhlIHNhbXBsZSBub25jZQ==</span></span><span class="line">Sec-WebSocket-Version: 13</span><span class="line">Sec-WebSocket-Protocol: tr_json2</span></div>
+  <div class="tag" data-cue="0" data-d="2.4" style="left:560px;top:516px;color:var(--muted)">key: RFC 6455's sample nonce</div>
+  <div class="code sm" data-cue="2" style="left:1000px;top:210px;width:820px"><span class="line" data-hl="2" data-hlend="3"><span class="k">HTTP/1.1</span> <span class="r">101</span> Switching Protocols</span><span class="line">Upgrade: websocket</span><span class="line">Connection: Upgrade</span><span class="line">Sec-WebSocket-Accept: <span class="g">s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</span></span><span class="line">Sec-WebSocket-Protocol: tr_json2</span></div>
+  <div class="box" data-cue="1" style="left:100px;top:560px;width:640px"><div class="s" style="margin:0;color:#dce8ee">dGhlIHNhbXBsZSBub25jZQ==</div><div class="s" style="color:var(--amber)">+ 258EAFA5-E914-47DA-95CA-C5AB0DC85B11</div></div>
+  <div class="box amber" data-cue="1" data-d="0.8" style="left:800px;top:568px;width:200px;text-align:center"><div class="t" style="font-size:28px">SHA-1</div><div class="s">20 bytes</div></div>
+  <div class="box" data-cue="1" data-d="1.4" style="left:1060px;top:568px;width:200px;text-align:center"><div class="t" style="font-size:28px">base64</div><div class="s">28 chars</div></div>
+  <div class="box green" data-cue="1" data-d="2.0" style="left:1320px;top:568px;width:500px;text-align:center"><div class="t mono" style="font-size:26px">s3pPLMBiTxaQ9kYGzzhZRbK+xOo=</div></div>
+  <svg class="full">
+    <path d="M745 612 H790" stroke="#8ea3b1" stroke-width="3" marker-end="url(#ah)" class="draw" data-cue="1" data-d="0.6"/>
+    <path d="M1005 612 H1050" stroke="#8ea3b1" stroke-width="3" marker-end="url(#ah)" class="draw" data-cue="1" data-d="1.2"/>
+    <path d="M1265 612 H1310" stroke="#8ea3b1" stroke-width="3" marker-end="url(#ah)" class="draw" data-cue="1" data-d="1.8"/>
+    <path id="ws-up" d="M200 820 H1720" stroke="#a98bff" stroke-width="5" class="draw" data-cue="3" fill="none"/>
+  </svg>
+  <div class="pkt" data-path="ws-up" data-cue="3" data-d="0.5" data-dur="1.6" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+  <div class="pkt" data-path="ws-up" data-cue="3" data-d="0.5" data-dur="1.6" data-loop="1" data-phase="0.5" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+  <div class="tag" data-cue="3" style="left:760px;top:750px;color:var(--violet)">same TCP connection · now WebSocket frames</div>
+</div>
+
+<!-- 11 WS FRAME PARSE -->
+<div class="scene" id="s-wsframe">
+  <div class="h2" style="left:120px;top:110px">Parsing a WebSocket frame</div>
+  <div class="lbl" data-cue="0" style="left:120px;top:200px">vendor-client → rt-server · login frame</div>
+  <div class="cellx" data-cue="0" data-d="0.2" style="left:120px;top:240px;width:120px;background:var(--teal)">81</div>
+  <div class="cellx" data-cue="0" data-d="0.3" style="left:240px;top:240px;width:120px;background:var(--teal)">E8</div>
+  <div class="cellx" data-cue="0" data-d="0.4" style="left:360px;top:240px;width:120px;background:var(--amber)">B3</div>
+  <div class="cellx" data-cue="0" data-d="0.5" style="left:480px;top:240px;width:120px;background:var(--amber)">AC</div>
+  <div class="cellx" data-cue="0" data-d="0.6" style="left:600px;top:240px;width:120px;background:var(--amber)">0F</div>
+  <div class="cellx" data-cue="0" data-d="0.7" style="left:720px;top:240px;width:120px;background:var(--amber)">5A</div>
+  <div class="cellx" data-cue="0" data-d="0.8" style="left:840px;top:240px;width:120px;background:#6f8fa3">C8</div>
+  <div class="cellx" data-cue="0" data-d="0.9" style="left:960px;top:240px;width:120px;background:#6f8fa3">8E</div>
+  <div class="cellx" data-cue="0" data-d="1.0" style="left:1080px;top:240px;width:120px;background:#6f8fa3">46</div>
+  <div class="cellx" data-cue="0" data-d="1.1" style="left:1200px;top:240px;width:120px;background:#6f8fa3">1E</div>
+  <div class="cellx" data-cue="0" data-d="1.2" style="left:1320px;top:240px;width:460px;background:#4a6577;color:#dce8ee">… 100 more masked bytes</div>
+  <div id="wf-cur" class="cursor" data-cue="1" data-anim="fade" style="left:116px;top:236px;width:128px;height:80px"></div>
+  <div class="lbl" data-cue="1" style="left:120px;top:360px">byte 0 = 0x81</div>
+  <div class="bit" data-cue="1" data-d="0.2" style="left:120px;top:400px;background:var(--teal)">1</div>
+  <div class="bit" data-cue="1" data-d="0.3" style="left:184px;top:400px;background:#4a6577;color:#dce8ee">0</div>
+  <div class="bit" data-cue="1" data-d="0.3" style="left:248px;top:400px;background:#4a6577;color:#dce8ee">0</div>
+  <div class="bit" data-cue="1" data-d="0.3" style="left:312px;top:400px;background:#4a6577;color:#dce8ee">0</div>
+  <div class="bit" data-cue="1" data-d="0.4" style="left:376px;top:400px;background:var(--amber)">0</div>
+  <div class="bit" data-cue="1" data-d="0.4" style="left:440px;top:400px;background:var(--amber)">0</div>
+  <div class="bit" data-cue="1" data-d="0.4" style="left:504px;top:400px;background:var(--amber)">0</div>
+  <div class="bit" data-cue="1" data-d="0.4" style="left:568px;top:400px;background:var(--amber)">1</div>
+  <div class="mono" data-cue="1" data-d="0.6" style="left:120px;top:474px;font-size:21px;color:var(--teal)">FIN</div>
+  <div class="mono" data-cue="1" data-d="0.6" style="left:200px;top:474px;font-size:21px;color:var(--muted)">RSV1-3</div>
+  <div class="mono" data-cue="1" data-d="0.6" style="left:400px;top:474px;font-size:21px;color:var(--amber)">opcode 1 = text</div>
+  <table class="t trow" data-cue="2" style="left:720px;top:380px;font-size:22px">
+    <tr><td class="c-amber">0x0</td><td>continuation</td><td class="c-amber">0x8</td><td>close</td></tr>
+    <tr><td class="c-amber">0x1</td><td>text</td><td class="c-amber">0x9</td><td>ping</td></tr>
+    <tr><td class="c-amber">0x2</td><td>binary</td><td class="c-amber">0xA</td><td>pong</td></tr>
+  </table>
+  <div class="lbl" data-cue="3" style="left:120px;top:560px">byte 1 = 0xE8</div>
+  <div class="bit" data-cue="3" data-d="0.2" style="left:120px;top:600px;background:var(--red)">1</div>
+  <div class="bit" data-cue="3" data-d="0.4" style="left:184px;top:600px;background:var(--teal)">1</div>
+  <div class="bit" data-cue="3" data-d="0.4" style="left:248px;top:600px;background:var(--teal)">1</div>
+  <div class="bit" data-cue="3" data-d="0.4" style="left:312px;top:600px;background:var(--teal)">0</div>
+  <div class="bit" data-cue="3" data-d="0.4" style="left:376px;top:600px;background:var(--teal)">1</div>
+  <div class="bit" data-cue="3" data-d="0.4" style="left:440px;top:600px;background:var(--teal)">0</div>
+  <div class="bit" data-cue="3" data-d="0.4" style="left:504px;top:600px;background:var(--teal)">0</div>
+  <div class="bit" data-cue="3" data-d="0.4" style="left:568px;top:600px;background:var(--teal)">0</div>
+  <div class="mono" data-cue="3" data-d="0.6" style="left:120px;top:674px;font-size:21px;color:var(--red)">MASK</div>
+  <div class="mono" data-cue="3" data-d="0.6" style="left:240px;top:674px;font-size:21px;color:var(--teal)">length 1101000 = 104</div>
+  <table class="t trow" data-cue="4" style="left:720px;top:580px;font-size:22px">
+    <tr><td class="c-teal">0–125</td><td>the length itself</td></tr>
+    <tr><td class="c-teal">126</td><td>+2 bytes, 16-bit length</td></tr>
+    <tr><td class="c-teal">127</td><td>+8 bytes, 64-bit length</td></tr>
+  </table>
+  <div class="lbl" data-cue="5" style="left:120px;top:740px">masking key B3 AC 0F 5A · payload[i] XOR key[i mod 4]</div>
+  <div class="mono" data-cue="5" data-d="0.6" style="left:120px;top:785px;font-size:28px">C8⊕B3 = <span class="c-green">7B {</span></div>
+  <div class="mono" data-cue="5" data-d="1.0" style="left:500px;top:785px;font-size:28px">8E⊕AC = <span class="c-green">22 "</span></div>
+  <div class="mono" data-cue="5" data-d="1.4" style="left:880px;top:785px;font-size:28px">46⊕0F = <span class="c-green">49 I</span></div>
+  <div class="mono" data-cue="5" data-d="1.8" style="left:1260px;top:785px;font-size:28px">1E⊕5A = <span class="c-green">44 D</span></div>
+  <div class="mono" data-cue="5" data-d="2.4" style="left:120px;top:845px;font-size:28px;color:var(--green)">{"ID":1,"Domain":"Login",…</div>
+</div>
+
+<!-- 12 LAB -->
+<div class="scene" id="s-lab">
+  <div class="h2" style="left:120px;top:110px">The lab: rt-server, OMM JSON</div>
+  <div class="box teal" data-cue="0" style="left:120px;top:210px;width:330px;text-align:center"><div class="t">vendor-client</div><div class="s">masks</div></div>
+  <div class="box violet" data-cue="0" style="left:1470px;top:210px;width:330px;text-align:center"><div class="t">rt-server</div><div class="s">does not mask</div></div>
+  <svg class="full"><path id="lab-p" d="M1460 255 H460" stroke="#2c4351" stroke-width="6" class="draw" data-cue="0" data-d="0.4" fill="none"/></svg>
+  <div class="tag" data-cue="0" data-d="0.8" style="left:560px;top:180px;color:var(--muted)">ws://127.0.0.1:17002/WebSocket · tr_json2</div>
+  <div class="pkt" data-path="lab-p" data-cue="2" data-dur="1.6" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+  <div class="lbl" data-cue="1" style="left:120px;top:340px">client → server · 104 bytes · masked · header 81 E8 + key</div>
+  <div class="code sm" data-cue="1" data-d="0.2" style="left:120px;top:380px;width:1680px;font-size:23px"><span class="g">{"ID":1,"Domain":"Login","Key":{"Name":"lab","Elements":{"ApplicationId":"256","Position":"127.0.0.1"}}}</span></div>
+  <div class="lbl" data-cue="2" style="left:120px;top:480px">server → client · stream 3 (batch request ID 2) · 135 bytes</div>
+  <div class="code sm" data-cue="2" data-d="0.2" style="left:120px;top:520px;width:1680px;font-size:23px"><span class="line">[{"ID":3,"Type":"Update","UpdateType":"Quote","SeqNumber":1842,</span><span class="line">  "Fields":{<span class="r">"BID":101.25</span>,<span class="r">"BIDSIZE":300</span>,<span class="r">"QUOTIM_NS":"14:30:05.123456789"</span>}}]</span></div>
+  <div class="cellx" data-cue="4" data-d="0.0" style="left:120px;top:710px;width:150px;background:var(--violet)">81</div>
+  <div class="cellx" data-cue="4" data-d="0.4" style="left:270px;top:710px;width:150px;background:var(--violet)">7E</div>
+  <div class="cellx" data-cue="4" data-d="0.8" style="left:420px;top:710px;width:150px;background:var(--green)">00</div>
+  <div class="cellx" data-cue="4" data-d="0.9" style="left:570px;top:710px;width:150px;background:var(--green)">87</div>
+  <div class="cellx" data-cue="4" data-d="1.4" style="left:720px;top:710px;width:1080px;background:#4a6577;color:#dce8ee">135 bytes of JSON, unmasked</div>
+  <div class="mono" data-cue="4" data-d="0.2" style="left:120px;top:795px;width:150px;text-align:center;font-size:20px;color:var(--violet)">FIN · text</div>
+  <div class="mono" data-cue="4" data-d="0.6" style="left:270px;top:795px;width:150px;text-align:center;font-size:20px;color:var(--violet)">mask 0 · 126</div>
+  <div class="mono" data-cue="4" data-d="1.0" style="left:420px;top:795px;width:300px;text-align:center;font-size:20px;color:var(--green)">0x0087 = 135</div>
+  <div class="tag" data-cue="3" style="left:120px;top:645px;color:var(--amber)">135 &gt; 125: needs the 16-bit length</div>
+  <div class="note" data-cue="2" data-d="1.2" style="left:1060px;top:640px;width:740px;color:var(--muted);font-size:24px">only the changed fields: bid, its size, quote time</div>
+</div>
+
+<!-- 13 LATENCY -->
+<div class="scene" id="s-latency">
+  <div class="h2" style="left:120px;top:110px">Text vs fixed binary</div>
+  <div class="lbl" data-cue="0" style="left:120px;top:205px">JSON: scan, match, convert</div>
+  <div class="mono" data-cue="0" data-d="0.2" style="left:120px;top:245px;font-size:44px;font-weight:700;letter-spacing:.04em"><span id="lt-js">"BID":101.25,"BIDSIZE":300</span></div>
+  <div id="lt-scan" class="cursor" data-cue="0" data-d="0.4" data-anim="fade" style="left:116px;top:240px;width:34px;height:66px"></div>
+  <div class="note" data-cue="1" style="left:120px;top:330px;width:900px">find <b>"</b> · match the key · find <b>:</b> · digits → 1012500</div>
+  <div class="lbl" data-cue="2" style="left:120px;top:420px">ITCH Add Order 'A' · 36 bytes · price at offset 32</div>
+  <div class="cellx" data-cue="2" data-d="0.2" style="left:120px;top:460px;width:44px;background:#6f8fa3;font-size:18px">A</div>
+  <div class="cellx" data-cue="2" data-d="0.25" style="left:164px;top:460px;width:88px;background:#6f8fa3;font-size:16px">locate</div>
+  <div class="cellx" data-cue="2" data-d="0.3" style="left:252px;top:460px;width:88px;background:#6f8fa3;font-size:16px">track</div>
+  <div class="cellx" data-cue="2" data-d="0.35" style="left:340px;top:460px;width:264px;background:#6f8fa3;font-size:18px">timestamp</div>
+  <div class="cellx" data-cue="2" data-d="0.4" style="left:604px;top:460px;width:352px;background:#6f8fa3;font-size:18px">order ref</div>
+  <div class="cellx" data-cue="2" data-d="0.45" style="left:956px;top:460px;width:44px;background:#6f8fa3;font-size:18px">B</div>
+  <div class="cellx" data-cue="2" data-d="0.5" style="left:1000px;top:460px;width:176px;background:#6f8fa3;font-size:18px">shares</div>
+  <div class="cellx" data-cue="2" data-d="0.55" style="left:1176px;top:460px;width:352px;background:#6f8fa3;font-size:18px">stock</div>
+  <div class="cellx" data-cue="2" data-d="0.6" data-hl="2" data-hld="1" data-hlend="3" style="left:1528px;top:460px;width:176px;background:var(--amber);font-size:18px">price</div>
+  <div class="mono" data-cue="2" data-d="1.2" style="left:1300px;top:545px;font-size:22px;color:var(--amber)">load_be32(p + 32) → 1012500</div>
+  <div class="lbl" data-cue="3" style="left:120px;top:615px">busy shared cloud machine · one message, in cache · lab code, -O2 · median of runs</div>
+  <div class="mono" data-cue="3" style="left:120px;top:660px;font-size:24px;width:300px">JSON update</div>
+  <div class="grow" data-cue="3" data-d="0.3" data-w="1140" data-dur="1.6" style="left:440px;top:656px;height:40px;border-radius:6px;background:var(--red)"></div>
+  <div class="mono" data-cue="3" data-d="0.3" style="left:1600px;top:660px;font-size:24px;color:var(--red);font-weight:700">0.8–1.5 µs</div>
+  <div class="mono" data-cue="4" style="left:120px;top:730px;font-size:24px;width:300px">ITCH decode</div>
+  <div class="grow" data-cue="4" data-d="0.3" data-w="6" data-dur="0.4" style="left:440px;top:726px;height:40px;border-radius:3px;background:var(--green)"></div>
+  <div class="mono" data-cue="4" data-d="0.3" style="left:470px;top:730px;font-size:26px;color:var(--green);font-weight:700">~0.7 ns</div>
+  <div class="note" data-cue="4" data-d="0.8" style="left:120px;top:790px;width:1600px;color:var(--muted);font-size:21px">the lab JSON parser is control-path code and allocates; a SIMD parser is faster, but still scans every byte</div>
+  <div class="box green" data-cue="5" style="left:120px;top:840px;width:1680px;padding:10px 22px"><div class="t" style="font-size:28px">HTTP and WebSocket at the edges · fixed binary layouts on the hot path</div></div>
+</div>

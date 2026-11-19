@@ -1,0 +1,19 @@
+[
+{"id": "title", "title": "Static dispatch", "text": "A trading thread asks its strategy the same question millions of times: given this market, what do I quote? How that call is dispatched decides what the compiler can optimize. Let's compare the options, with real g++ output and timings."},
+
+{"id": "vtable", "title": "vptr and vtable", "text": "Start with virtual. Each object begins with a hidden vptr, pointing at its class's vtable, an array of function addresses. A call loads the vptr, loads the slot, and calls through it. Under the Itanium ABI, a virtual destructor takes two slots, so quote sits third, at byte offset 16."},
+
+{"id": "asm", "title": "The assembly", "text": "Here is g++ O2 output for one loop, compiled two ways. Through the base class, every iteration reloads the vptr and calls through offset 16. Four callee saved registers are pushed, because the call may clobber the rest. Through a final Maker, there is no call. The edge is loaded once, before the loop, and each iteration is a load, a subtract and an add."},
+
+{"id": "cost", "title": "Where the cost is", "text": "So what does the virtual call cost? Not the loads: they hit L1, and the predictor guesses the target before they finish. The cost is lost inlining. Across an unknown call, the compiler cannot hoist, fold or vectorize. With one object, that measured 1.4 nanoseconds per call, against 0.35 inlined. With two types in random order, the indirect branch mispredicts: 8 to 11 nanoseconds."},
+
+{"id": "final", "title": "final", "text": "The keyword final says no class derives from Maker. So a call through a Maker reference has exactly one target. The compiler calls it directly, then inlines it. That is devirtualization. It also happens whenever the compiler can see an object's exact type."},
+
+{"id": "templates", "title": "Templates and concepts", "text": "Templates move the choice to compile time. A function template on S is stamped out once per strategy, with direct calls inside. A concept states what S must provide: a quote that takes an int and returns an int. CRTP gives a base class the same trick, by casting this to the derived type."},
+
+{"id": "variant", "title": "variant and visit", "text": "When types really mix at run time, std::variant holds one of a closed set of types inline, with no heap pointer. std::visit dispatches on its index, which g++ compiled to a compare and branch. With random types, it took 4.9 nanoseconds a call. With a single type, 0.75."},
+
+{"id": "startup", "title": "Choose once", "text": "Better still, choose once. Read the config at startup, build the strategy, and visit it a single time. Inside, the hot loop is monomorphic: the type is fixed, so everything inlines. That measured 0.35 nanoseconds, the same as the hand written loop."},
+
+{"id": "lab", "title": "In the lab", "text": "In the lab, the strategy classes share no base class and no virtual functions. The trader holds a MarketMaker by value and calls quote directly, and the quant lab holds all four as plain members. In the release build, reconcile contains no call to quote: it is inlined. Virtual calls appear only in the vendor servers' sessions, off the hot path.", "hold": 1.5}
+]

@@ -1,0 +1,188 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">TRADING LAB · LOW-LATENCY C++</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">No allocation<br>on the hot path</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">Pools, arenas, reserve, prefaulting, and the allocations you don’t see.</div>
+<div class="bar" data-cue="1" data-d="0.0" data-anim="fade" style="left:140px;top:852px;width:20px;height:48px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.02" data-anim="fade" style="left:169px;top:863px;width:20px;height:37px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.04" data-anim="fade" style="left:198px;top:847px;width:20px;height:53px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.06" data-anim="fade" style="left:227px;top:869px;width:20px;height:31px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.08" data-anim="fade" style="left:256px;top:868px;width:20px;height:32px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.1" data-anim="fade" style="left:285px;top:866px;width:20px;height:34px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.12" data-anim="fade" style="left:314px;top:849px;width:20px;height:51px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.14" data-anim="fade" style="left:343px;top:869px;width:20px;height:31px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.16" data-anim="fade" style="left:372px;top:840px;width:20px;height:60px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.18" data-anim="fade" style="left:401px;top:859px;width:20px;height:41px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.2" data-anim="fade" style="left:430px;top:870px;width:20px;height:30px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.22" data-anim="fade" style="left:459px;top:867px;width:20px;height:33px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.24" data-anim="fade" style="left:488px;top:845px;width:20px;height:55px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="2" data-d="0.2" data-anim="fade" style="left:517px;top:674px;width:20px;height:226px;background:var(--red);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.28" data-anim="fade" style="left:546px;top:868px;width:20px;height:32px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.3" data-anim="fade" style="left:575px;top:857px;width:20px;height:43px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.32" data-anim="fade" style="left:604px;top:867px;width:20px;height:33px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.34" data-anim="fade" style="left:633px;top:845px;width:20px;height:55px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.36" data-anim="fade" style="left:662px;top:869px;width:20px;height:31px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.38" data-anim="fade" style="left:691px;top:865px;width:20px;height:35px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.4" data-anim="fade" style="left:720px;top:858px;width:20px;height:42px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.42" data-anim="fade" style="left:749px;top:869px;width:20px;height:31px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.44" data-anim="fade" style="left:778px;top:847px;width:20px;height:53px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.46" data-anim="fade" style="left:807px;top:869px;width:20px;height:31px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.48" data-anim="fade" style="left:836px;top:858px;width:20px;height:42px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.5" data-anim="fade" style="left:865px;top:870px;width:20px;height:30px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.52" data-anim="fade" style="left:894px;top:864px;width:20px;height:36px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.54" data-anim="fade" style="left:923px;top:854px;width:20px;height:46px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.56" data-anim="fade" style="left:952px;top:846px;width:20px;height:54px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.58" data-anim="fade" style="left:981px;top:863px;width:20px;height:37px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.6" data-anim="fade" style="left:1010px;top:865px;width:20px;height:35px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="2" data-d="0.2" data-anim="fade" style="left:1039px;top:664px;width:20px;height:236px;background:var(--red);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.64" data-anim="fade" style="left:1068px;top:853px;width:20px;height:47px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.66" data-anim="fade" style="left:1097px;top:861px;width:20px;height:39px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.68" data-anim="fade" style="left:1126px;top:866px;width:20px;height:34px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.7000000000000001" data-anim="fade" style="left:1155px;top:860px;width:20px;height:40px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.72" data-anim="fade" style="left:1184px;top:849px;width:20px;height:51px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.74" data-anim="fade" style="left:1213px;top:866px;width:20px;height:34px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.76" data-anim="fade" style="left:1242px;top:868px;width:20px;height:32px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.78" data-anim="fade" style="left:1271px;top:869px;width:20px;height:31px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.8" data-anim="fade" style="left:1300px;top:859px;width:20px;height:41px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.8200000000000001" data-anim="fade" style="left:1329px;top:841px;width:20px;height:59px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.84" data-anim="fade" style="left:1358px;top:845px;width:20px;height:55px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.86" data-anim="fade" style="left:1387px;top:852px;width:20px;height:48px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.88" data-anim="fade" style="left:1416px;top:843px;width:20px;height:57px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.9" data-anim="fade" style="left:1445px;top:843px;width:20px;height:57px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.92" data-anim="fade" style="left:1474px;top:849px;width:20px;height:51px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="2" data-d="0.2" data-anim="fade" style="left:1503px;top:681px;width:20px;height:219px;background:var(--red);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.96" data-anim="fade" style="left:1532px;top:857px;width:20px;height:43px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="0.98" data-anim="fade" style="left:1561px;top:861px;width:20px;height:39px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="1.0" data-anim="fade" style="left:1590px;top:857px;width:20px;height:43px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="1.02" data-anim="fade" style="left:1619px;top:867px;width:20px;height:33px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="1.04" data-anim="fade" style="left:1648px;top:853px;width:20px;height:47px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="1.06" data-anim="fade" style="left:1677px;top:841px;width:20px;height:59px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="1.08" data-anim="fade" style="left:1706px;top:851px;width:20px;height:49px;background:var(--teal);border-radius:4px"></div>
+<div class="bar" data-cue="1" data-d="1.1" data-anim="fade" style="left:1735px;top:844px;width:20px;height:56px;background:var(--teal);border-radius:4px"></div>
+<div class="tlax" data-cue="1" style="left:140px;top:904px;width:1640px"></div>
+<div class="lbl c-teal" data-cue="1" data-d="0.8" style="left:140px;top:600px">each bar: one allocation (illustration)</div>
+<div class="lbl c-red" data-cue="2" data-d="0.5" style="left:1300px;top:600px">page fault · syscall</div>
+</div>
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why malloc’s cost is not fixed</div>
+<div class="box blue" data-cue="0" data-d="0.3" style="left:120px;top:260px;width:300px;height:110px;text-align:center"><div class="t">new / malloc</div><div class="s">general purpose</div></div>
+<div class="box green" data-cue="1" style="left:560px;top:220px;width:420px;height:110px"><div class="t c-green">tcache</div><div class="s">per thread · no lock</div></div>
+<div class="box amber" data-cue="1" data-d="0.8" style="left:560px;top:380px;width:420px;height:110px"><div class="t c-amber">arena + lock</div><div class="s">on a cache miss</div></div>
+<div class="box red" data-cue="2" style="left:1120px;top:380px;width:660px;height:110px"><div class="t c-red">kernel: brk / mmap</div><div class="s">grow the heap · large blocks are mmapped</div></div>
+<div class="box red" data-cue="3" style="left:1120px;top:620px;width:660px;height:110px"><div class="t c-red">page fault</div><div class="s">first write to a new page</div></div>
+<svg class="full"><path class="draw" data-cue="1" d="M 420 300 L 550 280" stroke="var(--green)" stroke-width="4" fill="none" marker-end="url(#ah-green)"/><path class="draw" data-cue="1" data-d="0.8" d="M 420 340 L 550 430" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="2" d="M 980 435 L 1110 435" stroke="var(--red)" stroke-width="4" fill="none" marker-end="url(#ah-red)"/><path class="draw" data-cue="3" d="M 1450 490 L 1450 610" stroke="var(--red)" stroke-width="4" fill="none" marker-end="url(#ah-red)"/></svg>
+<div class="cost c-green" data-cue="1" data-d="0.4" style="left:1000px;top:250px">tens of ns</div>
+<div class="cost c-amber" data-cue="1" data-d="1.2" style="left:600px;top:510px">contended? you wait</div>
+<div class="cost c-red" data-cue="2" data-d="0.4" style="left:1120px;top:510px">a system call</div>
+<div class="cost c-red" data-cue="3" data-d="0.4" style="left:1120px;top:750px">microseconds, at random</div>
+<div class="lbl c-muted" data-cue="2" data-d="0.8" style="left:120px;top:620px;width:900px;line-height:1.5">glibc defaults: blocks of 128 KiB and up go to mmap (M_MMAP_THRESHOLD)</div>
+</div>
+<div class="scene" id="s-rule">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The lab’s rule</div>
+<div class="quote" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1680px"><div class="lbl" style="margin-bottom:14px">/home/claude/ts-push/CLAUDE.md · Hot-path rules</div><div class="ql" data-hl="1" data-hlend="2">- No allocation, locks, exceptions, syscalls or logging I/O on hot threads.</div><div class="ql" data-hl="2">&#160;&#160;Allocate and fault pages in at startup. Log through <span class="c-teal">lab::LogChannel</span> only.</div></div>
+<div class="phase" data-cue="2" style="left:120px;top:560px;width:700px;border-color:var(--amber)"><div class="pt c-amber">STARTUP</div><div class="ps">allocate · reserve · touch every page</div></div>
+<div class="phase" data-cue="2" data-d="0.5" style="left:860px;top:560px;width:940px;border-color:var(--green)"><div class="pt c-green">TRADING (hot threads)</div><div class="ps">reuse only · no new memory</div></div>
+<svg class="full"><path class="draw" data-cue="2" data-d="0.3" d="M 120 760 L 1790 760" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="lbl" data-cue="2" data-d="0.6" style="left:1700px;top:780px">time</div>
+</div>
+<div class="scene" id="s-pool">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Object pools and free lists</div>
+<div class="code" data-cue="0" data-d="0" style="left:120px;top:200px;width:1120px;font-size:20px"><span class="line"><span class="k">template</span> &lt;<span class="k">class</span> T&gt; <span class="k">class</span> <span class="v">Pool</span> {</span><span class="line"> public:</span><span class="line" data-hl="0" data-hlend="1">  <span class="k">explicit</span> Pool(std::size_t n) : slots_(n) {</span><span class="line" data-hl="0" data-hlend="1">    <span class="k">for</span> (std::size_t i = <span class="r">0</span>; i + <span class="r">1</span> &lt; n; ++i) slots_[i].next = &amp;slots_[i + <span class="r">1</span>];</span><span class="line" data-hl="0" data-hlend="1">    free_ = &amp;slots_[<span class="r">0</span>];</span><span class="line">  }</span><span class="line" data-hl="1" data-hlend="3">  T* get() <span class="k">noexcept</span> { T* p = free_; <span class="k">if</span> (p) free_ = p-&gt;next; <span class="k">return</span> p; }</span><span class="line" data-hl="1" data-hlend="3">  <span class="k">void</span> put(T* p) <span class="k">noexcept</span> { p-&gt;next = free_; free_ = p; }</span><span class="line"> private:</span><span class="line">  std::vector&lt;T&gt; slots_;</span><span class="line">  T* free_ = <span class="k">nullptr</span>;</span><span class="line">};</span></div>
+<div class="slot" id="pl-s0" data-cue="0" data-d="0.4" style="left:1300px;top:250px"></div>
+<div class="slot" id="pl-s1" data-cue="0" data-d="0.45" style="left:1362px;top:250px"></div>
+<div class="slot" id="pl-s2" data-cue="0" data-d="0.5" style="left:1424px;top:250px"></div>
+<div class="slot" id="pl-s3" data-cue="0" data-d="0.55" style="left:1486px;top:250px"></div>
+<div class="slot" id="pl-s4" data-cue="0" data-d="0.6000000000000001" style="left:1548px;top:250px"></div>
+<div class="slot" id="pl-s5" data-cue="0" data-d="0.65" style="left:1610px;top:250px"></div>
+<div class="slot" id="pl-s6" data-cue="0" data-d="0.7000000000000001" style="left:1672px;top:250px"></div>
+<div class="slot" id="pl-s7" data-cue="0" data-d="0.75" style="left:1734px;top:250px"></div>
+<div class="ptr c-amber" id="pl-f" data-cue="1" style="left:1300px;top:320px">▲ free_</div>
+<div class="lbl" data-cue="0" data-d="0.6" style="left:1300px;top:205px">slots_ · teal = in use</div>
+<div class="lbl c-green" data-cue="2" style="left:1300px;top:380px;width:500px">no lock · no syscall · two pointer moves</div>
+<div class="code" data-cue="3" data-d="0" style="left:120px;top:610px;width:1120px;font-size:20px"><span class="line"><span class="c">// libs/match/include/lab/match/engine.hpp</span></span><span class="line" data-hl="4" data-hlend="5">std::size_t max_orders = <span class="r">1u</span> &lt;&lt; <span class="r">20</span>;  <span class="c">// EngineConfig: 1,048,576</span></span><span class="line" data-hl="4" data-hlend="5">nodes_(cfg.max_orders)        <span class="c">// vector&lt;Node, HugePageAllocator&lt;Node&gt;&gt;</span></span><span class="line" data-hl="4" data-hlend="5">free_.reserve(cfg.max_orders);</span><span class="line" data-hl="4" data-hlend="5"><span class="k">for</span> (std::size_t i = cfg.max_orders; i-- &gt; <span class="r">0</span>;) free_.push_back(i);</span><span class="line"><span class="c">// allocate(key)</span></span><span class="line" data-hl="5"><span class="k">const</span> std::uint32_t n = free_.back(); &#8230; free_.pop_back();</span><span class="line"><span class="c">// release(n)</span></span><span class="line" data-hl="5">free_.push_back(n);</span></div>
+<div class="lbl c-muted" data-cue="4" data-d="0.5" style="left:1300px;top:640px;width:500px;line-height:1.5">condensed from the Engine constructor, allocate() and release(); the push_backs never grow past the reserve</div>
+</div>
+<div class="scene" id="s-arena">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Arenas: std::pmr::monotonic_buffer_resource</div>
+<div class="code" data-cue="0" data-d="0" style="left:120px;top:200px;width:1500px;font-size:23px"><span class="line" data-hl="0" data-hlend="1"><span class="k">alignas</span>(<span class="r">16</span>) <span class="k">static</span> <span class="k">char</span> buf[<span class="r">64</span> * <span class="r">1024</span>];       <span class="c">// owned, faulted in at startup</span></span><span class="line" data-hl="1" data-hlend="2">std::pmr::monotonic_buffer_resource arena{</span><span class="line" data-hl="3">    buf, <span class="k">sizeof</span> buf, std::pmr::null_memory_resource()};  <span class="c">// never falls back to malloc</span></span><span class="line"></span><span class="line" data-hl="1" data-hlend="2">std::pmr::vector&lt;Fill&gt; fills{&amp;arena};              <span class="c">// scratch for one batch</span></span><span class="line" data-hl="1" data-hlend="2">fills.reserve(<span class="r">64</span>);</span><span class="line" data-hl="1" data-hlend="2">fills.push_back({<span class="r">1</span>, <span class="r">100</span>, <span class="r">101250</span>});</span><span class="line"><span class="c">// … batch done, fills destroyed …</span></span><span class="line" data-hl="2" data-hlend="3">arena.release();                                   <span class="c">// free everything at once</span></span></div>
+<div class="lbl" data-cue="1" style="left:120px;top:620px">BUFFER · 64 KiB</div>
+<div class="abuf" data-cue="1" style="left:120px;top:660px;width:1500px"></div>
+<div class="afill" id="ar-fill" data-cue="1" data-anim="fade" style="left:120px;top:660px;width:0"></div>
+<div class="ptr c-amber" id="ar-p" data-cue="1" data-anim="fade" style="left:120px;top:750px">▲ bump</div>
+<div class="lbl c-green" id="ar-rel" data-cue="2" data-d="1.0" style="left:120px;top:820px">release(): pointer back to the start</div>
+<div class="tag c-red" data-cue="3" data-d="2.4" style="left:1650px;top:665px;border-color:var(--red)">full ⇒ bad_alloc</div>
+</div>
+<div class="scene" id="s-fixed">
+<div class="h2" data-cue="0" style="left:120px;top:110px">reserve, and fixed capacity</div>
+<div class="code" data-cue="0" data-d="0" style="left:120px;top:200px;width:1000px;font-size:24px"><span class="line">std::vector&lt;Order&gt; v;</span><span class="line" data-hl="1">v.reserve(<span class="r">1000</span>);                <span class="c">// startup: one allocation</span></span><span class="line" data-hl="1"><span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; <span class="r">1000</span>; ++i)</span><span class="line" data-hl="1">  v.push_back(Order{});         <span class="c">// hot path: 0 mallocs</span></span><span class="line" data-hl="0" data-hlend="1">v.push_back(Order{});           <span class="c">// #1001: reallocates, 1 malloc</span></span></div>
+<div class="lbl c-muted" data-cue="1" data-d="0.5" style="left:120px;top:460px">malloc calls counted on this box (glibc, g++ 13.3)</div>
+<div class="card" data-cue="2" style="left:120px;top:530px;width:820px;border-color:var(--teal)"><div class="ct c-teal">libs/book · OrderMap</div><div class="cs">OrderMap(std::size_t initial_capacity = 1u &lt;&lt; 20)</div><div class="cd">open addressing · growth rehashes everything</div></div>
+<div class="card" data-cue="3" style="left:980px;top:530px;width:820px;border-color:var(--violet)"><div class="ct c-violet">libs/match · Engine</div><div class="cs">levels_per_side = 512 · side.reserve() at open</div><div class="cd">grows only if an instrument outgrows it</div></div>
+<div class="card" data-cue="4" style="left:120px;top:740px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">Fixed capacity</div><div class="cs">std::array&lt;T, N&gt; + a count, or C++26 std::inplace_vector&lt;T, N&gt;</div><div class="cd">full is a result you check, not a reallocation</div></div>
+</div>
+<div class="scene" id="s-pages">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Prefault, and use huge pages</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:220px">16 × 4 KiB PAGES, RESERVED</div>
+<div class="pg" id="pg-0" data-cue="0" data-d="0.3" style="left:120px;top:260px">0</div>
+<div class="pg" id="pg-1" data-cue="0" data-d="0.32999999999999996" style="left:224px;top:260px">1</div>
+<div class="pg" id="pg-2" data-cue="0" data-d="0.36" style="left:328px;top:260px">2</div>
+<div class="pg" id="pg-3" data-cue="0" data-d="0.39" style="left:432px;top:260px">3</div>
+<div class="pg" id="pg-4" data-cue="0" data-d="0.42" style="left:536px;top:260px">4</div>
+<div class="pg" id="pg-5" data-cue="0" data-d="0.44999999999999996" style="left:640px;top:260px">5</div>
+<div class="pg" id="pg-6" data-cue="0" data-d="0.48" style="left:744px;top:260px">6</div>
+<div class="pg" id="pg-7" data-cue="0" data-d="0.51" style="left:848px;top:260px">7</div>
+<div class="pg" id="pg-8" data-cue="0" data-d="0.54" style="left:952px;top:260px">8</div>
+<div class="pg" id="pg-9" data-cue="0" data-d="0.5700000000000001" style="left:1056px;top:260px">9</div>
+<div class="pg" id="pg-10" data-cue="0" data-d="0.6" style="left:1160px;top:260px">10</div>
+<div class="pg" id="pg-11" data-cue="0" data-d="0.6299999999999999" style="left:1264px;top:260px">11</div>
+<div class="pg" id="pg-12" data-cue="0" data-d="0.6599999999999999" style="left:1368px;top:260px">12</div>
+<div class="pg" id="pg-13" data-cue="0" data-d="0.69" style="left:1472px;top:260px">13</div>
+<div class="pg" id="pg-14" data-cue="0" data-d="0.72" style="left:1576px;top:260px">14</div>
+<div class="pg" id="pg-15" data-cue="0" data-d="0.75" style="left:1680px;top:260px">15</div>
+<div class="lbl" id="pg-lab" data-cue="0" data-d="0.8" style="left:120px;top:360px;width:1600px">not mapped yet: the first write to each page faults</div>
+<div class="code" data-cue="2" data-d="0" style="left:120px;top:430px;width:1400px;font-size:23px"><span class="line"><span class="c">// libs/core/include/lab/core/spsc_ring.hpp</span></span><span class="line"><span class="c">// Zeroed on construction, which also faults the pages in before the hot path runs.</span></span><span class="line" data-hl="2"><span class="k">alignas</span>(kCacheLine) T slots_[Capacity]{};</span></div>
+<div class="lbl" data-cue="3" style="left:120px;top:640px">TLB ENTRIES TO MAP 2 MiB</div>
+<div class="grid4k" data-cue="3" data-d="0.2" style="left:120px;top:680px"></div>
+<div class="lbl c-red" data-cue="3" data-d="0.4" style="left:120px;top:880px">4 KiB pages: 512 entries</div>
+<div class="hp" data-cue="3" data-d="0.9" style="left:1000px;top:680px">1</div>
+<div class="lbl c-green" data-cue="3" data-d="1.1" style="left:1000px;top:880px">one 2 MiB page: 1 entry</div>
+<div class="lbl" data-cue="3" data-d="1.4" style="left:1260px;top:690px;width:540px;line-height:1.5">lab::HugePageAllocator: mmap on a 2 MiB boundary, then madvise(MADV_HUGEPAGE); falls back to normal pages if refused</div>
+</div>
+<div class="scene" id="s-hidden">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Hidden allocations</div>
+<div class="lbl" data-cue="1" style="left:120px;top:210px">malloc CALLS COUNTED ON THIS BOX · g++ 13.3 -O2 · glibc · libstdc++</div>
+<div class="hrow" data-cue="2" data-d="0.0" style="left:120px;top:260px"><span class="mono">std::function, 16-byte capture</span><span class="hn ok">0</span></div>
+<div class="hrow" data-cue="2" data-d="0.3" style="left:120px;top:342px"><span class="mono">std::function, 24-byte capture</span><span class="hn bad">1</span></div>
+<div class="hrow" data-cue="3" data-d="0.0" style="left:120px;top:424px"><span class="mono">std::string, 15 chars (SSO)</span><span class="hn ok">0</span></div>
+<div class="hrow" data-cue="3" data-d="0.3" style="left:120px;top:506px"><span class="mono">std::string, 16 chars</span><span class="hn bad">1</span></div>
+<div class="hrow" data-cue="4" data-d="0.0" style="left:120px;top:588px"><span class="mono">throw std::runtime_error</span><span class="hn bad">2</span></div>
+<div class="hrow" data-cue="5" data-d="0.3" style="left:120px;top:670px"><span class="mono">std::make_shared&lt;Order&gt;()</span><span class="hn bad">1</span></div>
+<div class="hrow" data-cue="5" data-d="0.0" style="left:120px;top:752px"><span class="mono">copy a shared_ptr</span><span class="hn warn">0 · atomic ++</span></div>
+<div class="lbl c-muted" data-cue="5" data-d="0.8" style="left:120px;top:850px;width:1500px">a malloc() wrapper around __libc_malloc counted the calls; the refcount is atomic once the program has threads</div>
+</div>
+<div class="scene" id="s-measured">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measured on this box: new/delete vs a pool</div>
+<div class="pill" data-cue="0" data-d="0.3" style="left:120px;top:200px">4 vCPU KVM · Xeon @ 2.10 GHz · g++ 13.3 -O2 · glibc malloc · one thread, chrt -f 10</div>
+<div class="lbl" data-cue="1" style="left:120px;top:270px;width:1680px">2 million messages · 64-byte Order · 100,000 live, then each frees a random one · timed with rdtsc, timer included</div>
+<div class="gl" data-cue="2" style="left:560px;top:340px;height:430px"></div><div class="lbl" data-cue="2" style="left:500px;top:775px;width:120px;text-align:center;white-space:nowrap">10 ns</div>
+<div class="gl" data-cue="2" style="left:890px;top:340px;height:430px"></div><div class="lbl" data-cue="2" style="left:830px;top:775px;width:120px;text-align:center;white-space:nowrap">100 ns</div>
+<div class="gl" data-cue="2" style="left:1220px;top:340px;height:430px"></div><div class="lbl" data-cue="2" style="left:1160px;top:775px;width:120px;text-align:center;white-space:nowrap">1 µs</div>
+<div class="q mono" data-cue="2" style="left:120px;top:370px">p50</div>
+<div class="grow bar" data-cue="2" data-w="151" data-dur="1.0" style="left:560px;top:350px;height:46px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="2" data-d="0.8" style="left:725px;top:354px">new 28.6 ns</div>
+<div class="grow bar" data-cue="3" data-w="92" data-dur="1.0" style="left:560px;top:406px;height:46px;background:var(--green)"></div>
+<div class="bv mono c-green" data-cue="3" data-d="0.8" style="left:666px;top:410px">pool 19 ns</div>
+<div class="q mono" data-cue="2" style="left:120px;top:510px">p99</div>
+<div class="grow bar" data-cue="2" data-w="282" data-dur="1.0" style="left:560px;top:490px;height:46px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="2" data-d="0.8" style="left:856px;top:494px">new 71.4 ns</div>
+<div class="grow bar" data-cue="3" data-w="112" data-dur="1.0" style="left:560px;top:546px;height:46px;background:var(--green)"></div>
+<div class="bv mono c-green" data-cue="3" data-d="0.8" style="left:686px;top:550px">pool 21.9 ns</div>
+<div class="q mono" data-cue="4" style="left:120px;top:650px">p99.9</div>
+<div class="grow bar" data-cue="4" data-w="711" data-dur="1.0" style="left:560px;top:630px;height:46px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="4" data-d="0.8" style="left:1285px;top:634px">new 1.4 µs</div>
+<div class="grow bar" data-cue="5" data-w="237" data-dur="1.0" style="left:560px;top:686px;height:46px;background:var(--green)"></div>
+<div class="bv mono c-green" data-cue="5" data-d="0.8" style="left:811px;top:690px">pool 52.4 ns</div>
+<div class="lbl" data-cue="2" style="left:330px;top:775px">log scale</div>
+<div class="faults" data-cue="4" data-d="0.6" style="left:1400px;top:340px;width:420px;border-color:var(--red)"><span class="c-red">new</span>: 1,953 page faults while timing</div>
+<div class="faults" data-cue="5" data-d="0.3" style="left:1400px;top:470px;width:420px;border-color:var(--green)"><span class="c-green">pool</span>: 0</div>
+<div class="lbl c-muted" data-cue="5" data-d="0.8" style="left:120px;top:830px;width:1680px">median of 3 runs each · new p99 ranged 68–104 ns, pool p99.9 35–125 ns</div>
+</div>

@@ -1,0 +1,146 @@
+<!-- 0 TITLE -->
+<div class="scene" id="s-title">
+  <div class="eyebrow" style="left:140px;top:210px">C++ · INTERVIEW PROBLEM</div>
+  <div class="h1" style="left:132px;top:260px">Fast price<br>parsing</div>
+  <div class="sub" style="left:140px;top:570px;width:820px">ASCII to fixed point, without a single double.</div>
+  <div class="lbl" data-cue="0" style="left:1080px;top:230px">FIX tag 44 · text feed</div>
+  <div class="big c-teal" data-cue="0" data-d="0.3" style="left:1080px;top:270px"><span class="type" data-cue="0" data-d="0.3" data-dur="1.2">"123.4567"</span></div>
+  <div class="big c-teal" data-cue="0" data-d="1.4" style="left:1080px;top:470px"><span class="type" data-cue="0" data-d="1.4" data-dur="0.8">"0.5"</span></div>
+  <svg class="full"><path class="draw" data-cue="1" d="M1440 305 H1520" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="1" data-d="0.3" d="M1440 505 H1520" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/></svg>
+  <div class="big c-amber" data-cue="1" data-d="0.5" style="left:1550px;top:270px">1234567</div>
+  <div class="big c-amber" data-cue="1" data-d="0.8" style="left:1550px;top:470px">5000</div>
+  <div class="lbl" data-cue="1" data-d="1.2" style="left:1550px;top:360px;color:var(--amber)">Price(4): 1/10000 $</div>
+  <div class="box red" data-cue="2" style="left:1080px;top:640px;width:600px"><div class="t">no float, no double</div><div class="s">exact, and validated</div></div>
+</div>
+
+<!-- 1 NAIVE -->
+<div class="scene" id="s-naive">
+  <div class="h2" style="left:100px;top:110px">The float answer is wrong</div>
+  <div class="code sm" data-cue="0" data-d="0.2" style="left:100px;top:215px"><span class="line" data-hl="0" data-hld="0.4" data-hlend="2"><span class="v">uint64_t</span> px = std::stod(s) * 10000;   <span class="c">// cast truncates</span></span></div>
+  <div class="big c-teal" data-cue="2" style="left:100px;top:330px;font-size:44px">"1.13"</div>
+  <div class="mono" data-cue="2" data-d="0.6" style="left:300px;top:340px;font-size:28px;color:var(--muted)">double = 1.12999999999999989…</div>
+  <div class="mono" data-cue="2" data-d="1.4" style="left:300px;top:390px;font-size:28px;color:var(--muted)">× 10000 = 11299.999999999998</div>
+  <div class="big c-red" data-cue="2" data-d="2.2" style="left:300px;top:440px;font-size:44px">→ 11299 ✗</div>
+  <div class="lbl" data-cue="3" style="left:1100px;top:330px">1,000,000 random prices 0.0000 … 999.9999</div>
+  <div class="grow" data-cue="3" data-d="0.3" data-w="700" style="left:1100px;top:370px;height:50px;border-radius:6px;background:var(--green);opacity:.8"></div>
+  <div class="grow" data-cue="3" data-d="1.2" data-w="41" style="left:1100px;top:370px;height:50px;border-radius:6px 0 0 6px;background:var(--red)"></div>
+  <div class="mono" data-cue="3" data-d="1.4" style="left:1100px;top:435px;font-size:28px;color:var(--red)"><span class="count" data-cue="3" data-d="1.4" data-to="58317"></span> wrong · 5.8%</div>
+  <div class="lbl" data-cue="4" style="left:100px;top:560px">llround fixes the rounding, but stod still takes</div>
+  <div class="chip bad" data-cue="4" data-d="0.8" style="left:100px;top:605px">"1e3" → 1000</div>
+  <div class="chip bad" data-cue="4" data-d="1.1" style="left:380px;top:605px">"inf"</div>
+  <div class="chip bad" data-cue="4" data-d="1.4" style="left:520px;top:605px">" 1.5" → 1.5</div>
+  <div class="chip bad" data-cue="4" data-d="2.0" style="left:800px;top:605px">"12abc" → 12</div>
+  <div class="chip bad" data-cue="4" data-d="2.3" style="left:1100px;top:605px">"0x10" → 16</div>
+  <div class="code sm" data-cue="5" style="left:100px;top:720px"><span class="line">std::istringstream ss{std::string(s)};  <span class="v">double</span> d;  ss &gt;&gt; d;</span></div>
+  <div class="tag" data-cue="5" data-d="0.8" style="left:1040px;top:737px;color:var(--red)">same float + stream setup per call</div>
+</div>
+
+<!-- 2 LOOP -->
+<div class="scene" id="s-loop">
+  <div class="h2" style="left:100px;top:110px">Integers only: a digit loop</div>
+  <div class="ch w" data-cue="0" data-d="0.3" style="left:200px;top:220px">1</div>
+  <div class="ch w" data-cue="0" data-d="0.35" style="left:290px;top:220px">2</div>
+  <div class="ch w" data-cue="0" data-d="0.4" style="left:380px;top:220px">3</div>
+  <div class="ch d" data-cue="0" data-d="0.45" style="left:470px;top:220px">.</div>
+  <div class="ch f" data-cue="0" data-d="0.5" style="left:560px;top:220px">4</div>
+  <div class="ch f" data-cue="0" data-d="0.55" style="left:650px;top:220px">5</div>
+  <div class="ch f" data-cue="0" data-d="0.6" style="left:740px;top:220px">6</div>
+  <div class="ch f" data-cue="0" data-d="0.65" style="left:830px;top:220px">7</div>
+  <div class="cur" id="lp-cur" style="left:194px;top:214px;opacity:0"></div>
+  <div class="lbl" data-cue="1" style="left:1000px;top:215px">whole</div>
+  <div class="acc c-teal" id="lp-w" data-cue="1" style="left:1000px;top:245px">0</div>
+  <div class="lbl" data-cue="3" style="left:1350px;top:215px">frac</div>
+  <div class="acc c-amber" id="lp-f" data-cue="3" style="left:1350px;top:245px">0</div>
+  <div class="code sm" data-cue="1" style="left:100px;top:400px"><span class="line" data-hl="1" data-hlend="2"><span class="v">uint64_t</span> whole = 0;</span><span class="line" data-hl="1" data-hld="0.4" data-hlend="2"><span class="k">for</span> (; p &lt; e &amp;&amp; *p != <span class="g">'.'</span>; ++p) {</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">const unsigned</span> d = <span class="k">unsigned</span>(*p - <span class="g">'0'</span>);</span><span class="line" data-hl="2" data-hld="2.4" data-hlend="3">  <span class="k">if</span> (d &gt; 9 || whole &gt; kMaxWhole / 10) <span class="k">return</span> std::nullopt;</span><span class="line" data-hl="1" data-hld="1.0" data-hlend="2">  whole = whole * 10 + d;</span><span class="line">}</span></div>
+  <div class="chip ok" data-cue="2" data-d="0.8" style="left:1250px;top:420px">'7' - '0' = 7</div>
+  <div class="chip bad" data-cue="2" data-d="1.4" style="left:1250px;top:500px">'a' - '0' = 49</div>
+  <div class="chip bad" data-cue="2" data-d="2.0" style="left:1250px;top:580px">'/' - '0' = 4294967295</div>
+  <div class="note" data-cue="2" data-d="2.6" style="left:1250px;top:660px;width:560px">as unsigned, one compare: <b class="c-amber">d &gt; 9</b></div>
+  <div class="tag" data-cue="3" data-d="0.5" style="left:100px;top:740px;color:var(--amber)">fraction: same loop, at most 4 digits</div>
+</div>
+
+<!-- 3 FRAC -->
+<div class="scene" id="s-frac">
+  <div class="h2" style="left:100px;top:110px">Short fractions scale up</div>
+  <div class="code xs" data-cue="0" data-d="0.2" style="left:100px;top:210px"><span class="line"><span class="v">uint64_t</span> frac = 0;  <span class="k">int</span> n = 0;</span><span class="line"><span class="k">if</span> (p &lt; e) {                       <span class="c">// *p == '.'</span></span><span class="line">  <span class="k">for</span> (++p; p &lt; e; ++p, ++n) {</span><span class="line">    <span class="k">const unsigned</span> d = <span class="k">unsigned</span>(*p - <span class="g">'0'</span>);</span><span class="line" data-hl="4" data-hlend="end">    <span class="k">if</span> (d &gt; 9 || n == 4) <span class="k">return</span> std::nullopt;</span><span class="line">    frac = frac * 10 + d;</span><span class="line">  }</span><span class="line">}</span><span class="line" data-hl="3" data-hlend="4"><span class="k">if</span> (!has_whole &amp;&amp; n == 0) <span class="k">return</span> std::nullopt;</span><span class="line" data-hl="1" data-hlend="3"><span class="k">return</span> whole * 10000 + frac * kPow10[4 - n];</span></div>
+  <table class="t ex" data-cue="0" data-anim="fade" style="left:1060px;top:210px;width:760px">
+    <tr data-cue="0" data-d="0.4"><th>input</th><th>n</th><th>Price(4)</th></tr>
+    <tr data-cue="1" data-hl="1" data-hld="0.4" data-hlend="2"><td class="c-teal">"0.5"</td><td>1</td><td class="c-amber">0 + 5 × 1000 = 5000</td></tr>
+    <tr data-cue="1" data-d="1.4"><td class="c-teal">"123.45"</td><td>2</td><td class="c-amber">1230000 + 4500</td></tr>
+    <tr data-cue="2"><td class="c-teal">"100"</td><td>0</td><td class="c-amber">1000000</td></tr>
+    <tr data-cue="2" data-d="0.5"><td class="c-teal">"100."</td><td>0</td><td class="c-amber">1000000</td></tr>
+    <tr data-cue="3"><td class="c-teal">""  "."</td><td>0</td><td class="c-red">rejected</td></tr>
+    <tr data-cue="4"><td class="c-teal">"1.23456"</td><td>5th</td><td class="c-red">rejected, not rounded</td></tr>
+  </table>
+  <div class="mono" data-cue="1" data-d="1.0" style="left:1060px;top:700px;font-size:24px;color:var(--muted)">kPow10 = {1, 10, 100, 1000, 10000}</div>
+</div>
+
+<!-- 4 VALID -->
+<div class="scene" id="s-valid">
+  <div class="h2" style="left:100px;top:110px">Validate, and never wrap</div>
+  <div class="chips" style="left:100px;top:215px;width:1720px"><div class="chip bad" data-cue="0" data-d="0.3">"-1.5"</div><div class="chip bad" data-cue="0" data-d="0.5">"+1.5"</div><div class="chip bad" data-cue="0" data-d="1.0">"1e3"</div><div class="chip bad" data-cue="0" data-d="1.2">"inf"</div><div class="chip bad" data-cue="0" data-d="1.4">"nan"</div><div class="chip bad" data-cue="0" data-d="1.8">" 1.5"</div><div class="chip bad" data-cue="0" data-d="2.0">"1.5 "</div><div class="chip bad" data-cue="0" data-d="2.4">"1.2.3"</div><div class="chip bad" data-cue="0" data-d="2.6">"12a"</div><div class="chip bad" data-cue="0" data-d="2.8">"1,5"</div><div class="chip bad" data-cue="0" data-d="3.0">"0x10"</div></div>
+                        <div class="code sm" data-cue="1" style="left:100px;top:360px"><span class="line" data-hl="1" data-hld="0.3" data-hlend="2">  <span class="k">if</span> (d &gt; 9 || whole &gt; kMaxWhole / 10) <span class="k">return</span> std::nullopt;</span><span class="line">  whole = whole * 10 + d;</span><span class="line">...</span><span class="line" data-hl="1" data-hld="1.6" data-hlend="2"><span class="k">if</span> (whole &gt; kMaxWhole) <span class="k">return</span> std::nullopt;</span><span class="line"> </span><span class="line" data-hl="2"><span class="k">constexpr</span> <span class="v">uint64_t</span> kMaxWhole = 1'000'000'000'000;  <span class="c">// $1 trillion</span></span></div>
+  <div class="lbl" data-cue="2" data-d="0.4" style="left:100px;top:700px">largest result vs uint64</div>
+  <div class="grow" data-cue="2" data-d="0.6" data-w="1600" style="left:100px;top:740px;height:40px;border-radius:6px;background:var(--panel2);border:1px solid var(--line)"></div>
+  <div class="grow" data-cue="2" data-d="1.2" data-w="9" style="left:100px;top:740px;height:40px;border-radius:6px 0 0 6px;background:var(--amber)"></div>
+  <div class="mono" data-cue="2" data-d="1.4" style="left:100px;top:795px;font-size:22px;color:var(--amber)">10¹² × 10⁴ ≈ 1.0 × 10¹⁶</div>
+  <div class="mono" data-cue="2" data-d="1.4" style="left:1380px;top:795px;font-size:22px;color:var(--muted)">2⁶⁴ ≈ 1.8 × 10¹⁹</div>
+  <div class="tag" data-cue="2" data-d="2.0" style="left:1250px;top:440px;color:var(--teal)">same cap: libs/fix parse_price</div>
+</div>
+
+<!-- 5 FROM_CHARS -->
+<div class="scene" id="s-fromchars">
+  <div class="h2" style="left:100px;top:110px">std::from_chars for the whole part</div>
+  <div class="code xs" data-cue="0" data-d="0.2" style="left:100px;top:210px"><span class="line" data-hl="0" data-hld="0.4" data-hlend="1"><span class="k">const auto</span> [q, ec] = std::from_chars(p, e, whole);</span><span class="line" data-hl="1" data-hld="2.4" data-hlend="2"><span class="k">if</span> (ec == std::errc::result_out_of_range || whole &gt; kMaxWhole)</span><span class="line">  <span class="k">return</span> std::nullopt;</span><span class="line" data-hl="2" data-hlend="3"><span class="k">if</span> (ec != std::errc{} &amp;&amp; (q == e || *q != <span class="g">'.'</span>))</span><span class="line">  <span class="k">return</span> std::nullopt;            <span class="c">// no digits, no dot</span></span><span class="line"><span class="k">const bool</span> has_whole = ec == std::errc{};</span></div>
+  <div class="chip ok" data-cue="1" data-d="0.0" style="left:1250px;top:215px">digits only</div>
+  <div class="chip ok" data-cue="1" data-d="0.6" style="left:1250px;top:285px">no '\0' needed</div>
+  <div class="chip ok" data-cue="1" data-d="1.2" style="left:1250px;top:355px">no locale</div>
+  <div class="chip ok" data-cue="1" data-d="2.0" style="left:1250px;top:425px">overflow → errc</div>
+  <div class="chip" data-cue="2" data-d="0.6" style="left:1560px;top:285px;border-color:var(--amber);color:var(--amber)">".5" → ok</div>
+  <div class="lbl" data-cue="3" style="left:100px;top:540px">libs/fix/include/lab/fix/codec.hpp · parse_price (abridged)</div>
+  <div class="code xs" data-cue="3" data-d="0.3" style="left:100px;top:580px;border-color:var(--teal)"><span class="line"><span class="k">const</span> std::size_t dot = s.find(<span class="g">'.'</span>);</span><span class="line"><span class="k">if</span> (frac.size() &gt; 4 || (whole.empty() &amp;&amp; frac.empty())) <span class="k">return</span> std::nullopt;</span><span class="line"><span class="k">const auto</span> v = parse_uint(whole);   <span class="c">// std::from_chars</span></span><span class="line"><span class="k">if</span> (!v || *v &gt; 1'000'000'000'000ULL) <span class="k">return</span> std::nullopt;</span><span class="line"><span class="c">// four fraction digits, missing ones count as 0</span></span><span class="line"><span class="k">return</span> w * 10'000 + f;</span></div>
+</div>
+
+<!-- 6 SWAR -->
+<div class="scene" id="s-swar">
+  <div class="h2" style="left:100px;top:110px">SWAR: eight digits in one word</div>
+  <div class="lbl" data-cue="0" style="left:100px;top:200px">uint64_t, little-endian: byte 0 is the first character</div>
+  <div id="sw-host" data-cue="0" data-anim="fade" style="left:0;top:0;width:1px;height:1px"></div>
+  <div class="code xs" data-cue="1" style="left:100px;top:560px"><span class="line" data-hl="0" data-hlend="1"><span class="v">uint64_t</span> v;  std::memcpy(&amp;v, buf, 8);</span><span class="line" data-hl="1" data-hlend="2">v = (v &amp; <span class="r">0x0F0F0F0F0F0F0F0F</span>) * <span class="r">2561</span> &gt;&gt; 8;</span><span class="line" data-hl="2" data-hld="1.4" data-hlend="3">v = (v &amp; <span class="r">0x00FF00FF00FF00FF</span>) * <span class="r">6553601</span> &gt;&gt; 16;</span><span class="line" data-hl="2" data-hld="2.6" data-hlend="3"><span class="k">return</span> (v &amp; <span class="r">0x0000FFFF0000FFFF</span>) * <span class="r">42949672960001</span> &gt;&gt; 32;</span></div>
+  <div class="note" data-cue="2" data-d="0.4" style="left:1140px;top:570px;width:680px;font-size:23px">×2561 = 10·2⁸ + 1: each digit pair → 10a + b</div>
+  <div class="note" data-cue="2" data-d="1.8" style="left:1140px;top:620px;width:680px;font-size:23px">×6553601 = 100·2¹⁶ + 1: pairs → 4 digits</div>
+  <div class="note" data-cue="2" data-d="3.0" style="left:1140px;top:670px;width:680px;font-size:23px">×42949672960001 = 10⁴·2³² + 1: → 8 digits</div>
+  <div class="code xs" data-cue="3" style="left:100px;top:760px"><span class="line" data-hl="3" data-hlend="4"><span class="k">char</span> buf[8] = {<span class="g">'0'</span>,<span class="g">'0'</span>,<span class="g">'0'</span>,<span class="g">'0'</span>,<span class="g">'0'</span>,<span class="g">'0'</span>,<span class="g">'0'</span>,<span class="g">'0'</span>};</span><span class="line" data-hl="3" data-hld="0.8" data-hlend="4">std::memcpy(buf + 4 - w, s.data(), w);  std::memcpy(buf + 4, s.data() + w + 1, f);</span><span class="line" data-hl="4"><span class="k">if</span> (!all_digits8(v)) <span class="k">return</span> std::nullopt;   <span class="k">return</span> swar8(v);</span></div>
+</div>
+
+<!-- 7 TESTS -->
+<div class="scene" id="s-tests">
+  <div class="h2" style="left:100px;top:110px">Test the edges, then fuzz</div>
+  <div class="chips" style="left:100px;top:215px;width:1720px"><div class="chip ok" data-cue="0" data-d="0.6" >".5" 5000</div><div class="chip ok" data-cue="0" data-d="1.0" >"100." 1000000</div><div class="chip ok" data-cue="0" data-d="1.4" >"0.0001" 1</div><div class="chip ok" data-cue="0" data-d="1.9" >"1000000000000" ok</div><div class="chip bad" data-cue="0" data-d="2.3" >"1000000000001"</div><div class="chip bad" data-cue="0" data-d="2.6" >20 nines</div></div>
+  <div class="chips" style="left:100px;top:290px;width:1720px"><div class="chip bad" data-cue="1" >"-1.5"</div><div class="chip bad" data-cue="1" data-d="0.3" >" 1.5"</div><div class="chip bad" data-cue="1" data-d="0.6" >"1e3"</div><div class="chip bad" data-cue="1" data-d="0.9" >"inf"</div><div class="chip bad" data-cue="1" data-d="1.2" >"1..2"</div><div class="chip bad" data-cue="1" data-d="1.4" >"1.2.3"</div></div>
+  <div class="term" data-cue="2" style="left:100px;top:400px;width:1100px"><span class="c-muted">$</span> g++ -std=c++20 -O2 -Wall -Wextra test.cpp &amp;&amp; ./test
+<span class="c-muted"># loop · from_chars · swar · lab parse_price</span>
+<span data-cue="2" data-d="1.0" data-anim="none">2,000,000 random prices: all four agree</span>
+<span data-cue="3" data-anim="none">swar8: 2,000,000 words + every bad byte in every position</span>
+<span class="c-green" data-cue="3" data-d="1.4" data-anim="none">all tests passed</span></div>
+  <table class="t" data-cue="4" style="left:1280px;top:400px;width:540px">
+    <tr><th>cost</th><th></th></tr>
+    <tr><td>time</td><td class="c-green">O(length)</td></tr>
+    <tr><td>memory</td><td class="c-green">no allocation</td></tr>
+    <tr><td>branches</td><td class="c-green">per digit</td></tr>
+    <tr><td>SWAR</td><td class="c-green">3 multiplies</td></tr>
+  </table>
+</div>
+
+<!-- 8 BENCH -->
+<div class="scene" id="s-bench">
+  <div class="h2" style="left:100px;top:110px">Benchmark: ns per price</div>
+  <div class="tag" data-cue="0" data-d="0.4" style="left:100px;top:200px;color:var(--amber)">shared 4-vCPU cloud box · load avg 23–32 · g++ 13.3 -O2 · 1M prices, 0, 2 or 4 decimals</div>
+  <div id="bp-host" style="left:0;top:0;width:1px;height:1px"></div>
+  <div class="lbl" data-cue="0" data-d="0.8" style="left:430px;top:262px">median of runs, two sessions: bar = lower, label = range</div>
+  <div class="card2" data-cue="4" style="left:1260px;top:590px;width:560px;border-color:var(--violet);padding:18px 24px">
+    <div class="lbl" style="font-size:20px">fixed 8-digit fields, ns per field</div>
+    <div class="mono" style="font-size:26px;margin-top:10px;color:#cfe3ea">digit loop <b class="c-teal">4.7 – 9.8</b></div>
+    <div class="mono" style="font-size:26px;margin-top:6px;color:#cfe3ea">SWAR       <b class="c-violet">1.9 – 2.8</b></div>
+  </div>
+</div>

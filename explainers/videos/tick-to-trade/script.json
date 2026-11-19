@@ -1,0 +1,29 @@
+[
+{"id": "title", "title": "Tick to trade", "text": "One ITCH Add Order comes in, and an OUCH Enter Order goes out. Let's follow it through the lab, thread by thread, and see where each timestamp is taken."},
+
+{"id": "cores", "title": "Threads and cores", "text": "Each hot thread busy polls on its own core. In the lab's eight core layout, receive is pinned to core 2, book to 3, trading to 4, order entry to 5. The exchange takes 6 and 7, and Linux keeps 0 and 1."},
+
+{"id": "mold", "title": "MoldUDP64", "text": "It starts at simex, the lab's exchange, which multicasts MoldUDP64 to group 239.1.1.2. A 20 byte header holds the session, the first message's sequence number, and a message count. Each message gets a 2 byte length. Our Add Order is one 36 byte block."},
+
+{"id": "kernel", "title": "NIC and kernel", "text": "On a real network, the NIC copies the frame into memory by DMA and raises an interrupt. The kernel runs IP and UDP, matches the group, and queues the datagram on the socket, which asks for a 16 megabyte buffer. In the lab, loopback stands in for the NIC."},
+
+{"id": "rx", "title": "recvmmsg", "text": "The receive thread calls recvmmsg, non blocking, for up to 32 datagrams per system call. It stamps the batch once with rdtsc, about 17 nanoseconds here. Each datagram is copied into a 1536 byte slot of a lock-free ring. That stamp is tick time."},
+
+{"id": "seq", "title": "Ring and sequencing", "text": "One producer, one consumer: a release store commits a slot, an acquire load sees it, and nothing locks. The book thread checks each sequence number. On a gap, it holds later messages and waits 100 microseconds for reordering. Then the receive thread sends the re-request, so the book thread never touches a socket."},
+
+{"id": "book", "title": "Decode and book", "text": "The Add Order is decoded at fixed big endian offsets. Type, locate, timestamp, an 8 byte order reference, side, shares, symbol, and a price with four implied decimals. The BookBuilder stores the order and adds its shares to the level. If the top two levels changed, a 64 byte TopOfBook goes out, still carrying tick time."},
+
+{"id": "handoff", "title": "To the trader", "text": "In one process, it crosses another ring to the trading thread. With Aeron, the itch-fh feed handler sequences once for every trader. It republishes each ITCH message on stream 1001 in shared memory, with tick time in the frame header. On this box, an Aeron round trip took 0.72 to 0.81 microseconds at the median."},
+
+{"id": "trading", "title": "Trading thread", "text": "The trading thread drains responses, then top of book updates, and the market maker requotes. Pre-trade risk checks size, notional, a 5 percent price collar, position, open orders and order rate. The OMS assigns a UserRefNum. A 64 byte OrderRequest goes on a ring, with tick time and decide time."},
+
+{"id": "oe", "title": "Order entry", "text": "The order entry thread encodes a 47 byte OUCH Enter Order. SoupBinTCP adds 3 bytes: length, and type U, unsequenced. One non blocking send, with Nagle off. Then rdtsc again: minus tick time is tick to wire, and minus decide time is decide to wire."},
+
+{"id": "exchange", "title": "simex and back", "text": "At simex, the gateway thread owns the sockets. It passes a command through a ring to the matcher, which makes no system calls. Back comes a 64 byte Order Accepted, and on a fill, a 36 byte Order Executed. Order entry stamps the arrival: that is the order round trip."},
+
+{"id": "nosys", "title": "No syscalls", "text": "Why no system calls on hot threads? A system call enters the kernel, may block or reschedule, and can evict the cache. So only receive and order entry touch sockets. Memory is allocated and faulted in at startup, and logging goes through a ring to a background thread."},
+
+{"id": "measured", "title": "Measured", "text": "Here is one run of the firm end to end test, on a shared 4 vCPU cloud box. The fastest tick to wire was 11.9 microseconds. Decide to wire, 1.8. Order round trip, 3.9. The medians reach milliseconds, because that test runs more busy threads than cores, unpinned. That is queueing, not code."},
+
+{"id": "close", "title": "What's left", "text": "On a quiet, pinned machine, what remains? The kernel's receive path and recvmmsg on the way in. TCP and send on the way out. A cache line transfer at each ring hop. Kernel bypass maps the NIC's queues into user space, removing the kernel from both ends. An FPGA goes further: it parses the feed and fires the order in hardware.", "hold": 1.5}
+]

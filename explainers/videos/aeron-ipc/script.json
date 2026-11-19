@@ -1,0 +1,46 @@
+[
+[
+"hook",
+"The feed handler has rebuilt the ITCH feed once. Now several trader processes need that stream, with no system calls on the data path. That is Aeron IPC."
+],
+[
+"pieces",
+"Three pieces. The media driver. The command and control file, cnc dot dat: a ring buffer for commands, a broadcast buffer for replies, and counters holding every position. And the clients. Messages live in a log buffer in shared memory, which the driver creates but never touches on the data path."
+],
+[
+"handshake",
+"The feed handler writes an add publication command into the driver's ring. The driver creates the log buffer and broadcasts publication ready, with the file name. The trader subscribes, gets an available image message, and maps the same file. Now both processes share the same pages."
+],
+[
+"layout",
+"A log buffer is three term partitions plus a metadata page, holding a tail counter per term and the active term count. The lab uses four megabyte terms. Aeron's IPC default is sixty four megabytes."
+],
+[
+"header",
+"Each message is a frame with a thirty two byte header, little endian: length, version, flags, type, term offset, session, stream, term id, and an eight byte reserved value. Frames align to thirty two bytes, so a sixty four byte ping takes ninety six. The lab puts the feed handler's receive timestamp in the reserved value, to measure latency across processes."
+],
+[
+"publish",
+"Publishing takes no lock and no system call. An exclusive publication has one writer, so it moves the tail with an ordered store, not an atomic add. It writes the length as a negative number, then the header and the payload. Finally it stores the positive length with release ordering. That one store is the commit."
+],
+[
+"subscribe",
+"The subscriber spins on the frame length at its position, with an acquire load. Positive means a whole frame is ready. The handler gets a pointer straight into the shared pages, with no copy. Then the position advances and is stored in its counter. Each subscriber reads independently."
+],
+[
+"flow",
+"The driver's conductor reads every subscriber position, and sets the publisher's limit to the slowest one plus half a term. Past the limit, offer returns back pressured. With no subscriber, not connected. The driver also cleans the partition behind."
+],
+[
+"rotate",
+"When a frame won't fit, a padding frame fills the term, the active term count goes up, and writing moves to the next partition. That offer returns admin action, and the caller retries."
+],
+[
+"lab",
+"In the lab, simex multicasts ITCH. The feed handler recovers gaps once, and republishes on Aeron stream ten oh one, where two traders read it. On this shared cloud machine, an Aeron round trip took about three quarters of a microsecond at the median, close to the lab's own shared memory ring; a pinned machine will be faster. Aeron's reader touches one cache line per message, while the ring also reads the writer's index."
+],
+[
+"close",
+"To try it, run the driver, then the feed handler and traders with the Aeron option, and aeron ping. The code is in the Aeron IPC pull request on your TradingSystem repo."
+]
+]

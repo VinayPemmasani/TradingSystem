@@ -1,0 +1,24 @@
+.cr{color:var(--amber);font-weight:700}
+.code.big{font-size:38px;line-height:1.6}
+.code.mid{font-size:30px;line-height:1.5}
+.code.sm{font-size:24px;line-height:1.5}
+.code .hl{background:rgba(255,179,71,.18);border-radius:4px;box-shadow:none!important;outline:2px solid var(--amber)}
+.note{font:500 26px/1.35 var(--body);color:#d4e0e7}
+.note b{font-family:var(--mono);color:var(--amber);font-weight:600}
+.cellx{position:absolute;height:72px;display:grid;place-items:center;font:700 28px var(--mono);color:#06141a;border:1px solid rgba(0,0,0,.35);border-radius:4px}
+.fld{position:absolute;height:44px;border-top:3px solid;display:grid;place-items:center;font:600 22px var(--mono)}
+.card{position:absolute;width:780px;height:140px;border-radius:16px;background:var(--panel);border:2px solid var(--line);padding:18px 26px}
+.card .code-hex{position:absolute;right:26px;top:20px;font:700 44px var(--mono);color:var(--muted)}
+.card .nm{font:700 38px var(--mono)}
+.card .rl{font:400 26px var(--body);color:#c3d2db;margin-top:10px}
+.fr{position:absolute;width:108px;height:76px;border-radius:8px;display:grid;place-items:center;font:700 24px var(--mono);color:#06141a}
+.fr i{position:absolute;right:-8px;top:-14px;font:700 15px var(--mono);font-style:normal;background:var(--amber);color:#06141a;border-radius:6px;padding:1px 5px}
+.trow{font:500 24px var(--mono)}
+.trow td{padding:7px 14px!important}
+.bit{position:absolute;width:64px;height:64px;display:grid;place-items:center;font:700 30px var(--mono);color:#06141a;border:1px solid rgba(0,0,0,.4)}
+.cursor{position:absolute;border:4px solid var(--amber);border-radius:8px;box-shadow:0 0 24px rgba(255,179,71,.5)}
+.lane{position:absolute;height:6px;border-radius:3px;background:var(--line)}
+.x{position:absolute;font:800 52px var(--body);color:var(--red)}
+.stack{position:absolute;width:380px;height:84px;border-radius:12px;display:grid;place-items:center;font:700 30px var(--mono);border:2px solid var(--line);background:var(--panel)}
+table.t tr.hl td{background:rgba(255,179,71,.2)}
+table.t tr.hl{box-shadow:none!important}

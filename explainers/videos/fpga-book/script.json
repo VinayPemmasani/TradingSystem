@@ -1,0 +1,72 @@
+[
+ {
+  "id": "hook",
+  "title": "FPGA order book",
+  "text": "Software builds the order book after a packet lands. An FPGA builds it while the packet is still arriving. Follow one Add Order, clock by clock."
+ },
+ {
+  "id": "why",
+  "title": "Why FPGA",
+  "text": "In the lab, itch-fh reads each packet from a socket, checks the MoldUDP64 sequence, and hands each message to BookBuilder. That decodes it, finds the order in a hash map, and updates a price level. Each step waits for the one before. An FPGA makes these steps a pipeline that works on bytes as they arrive."
+ },
+ {
+  "id": "bus",
+  "title": "The bus",
+  "text": "A 10G Ethernet MAC hands the logic one 64-bit word per clock. The clock runs at 156.25 MHz, so a word lands every 6.4 ns. Eight bytes per clock is exactly ten gigabits a second. On the fiber, 10GBASE-R adds 64b/66b coding, for 10.3125 gigabaud. Lane zero holds each word's earliest byte."
+ },
+ {
+  "id": "headers",
+  "title": "Parsing headers",
+  "text": "Count bytes from the destination MAC. Ethernet takes 14, IPv4 without options 20, and UDP 8. The MoldUDP64 header adds 20 more: session, sequence number and message count. Then a 2-byte message length. So the first ITCH message starts at byte 64: word eight, lane zero."
+ },
+ {
+  "id": "addorder",
+  "title": "Where an Add Order lands",
+  "text": "Here is a 36-byte Add Order, from the lab's ITCH layout. Type, locate and tracking number fill lanes zero to four of word eight. The 6-byte timestamp starts in lane five and spills into word nine. The order reference runs from word nine, lane three, into word ten. Side and shares finish word ten, the stock fills word eleven, and price sits in word twelve."
+ },
+ {
+  "id": "stitch",
+  "title": "Stitching across clocks",
+  "text": "A field that straddles a word boundary takes two clocks. On clock nine, the parser saves the five reference bytes in lanes three to seven. On clock ten it joins them with lanes zero to two, and the reference is valid. The next message starts at lane six of word twelve, so a byte shifter realigns it."
+ },
+ {
+  "id": "filter",
+  "title": "Filtering",
+  "text": "Stock locate arrives early, in lanes one and two of word eight. It is two bytes, so a 65,536-bit table in block RAM holds one keep bit per stock. One clock later, the pipeline knows whether to drop the message."
+ },
+ {
+  "id": "table",
+  "title": "The order table",
+  "text": "Later messages carry only the order reference, so the card must remember every live order. Each entry holds locate, side, price and shares. The lab's OrderMap already hashes by the reference's low bits, since Nasdaq assigns references in sequence. In hardware, those bits become a block RAM address. BookBuilder is sized for four million live orders, more than most chips hold, so big designs filter or go off-chip."
+ },
+ {
+  "id": "hazard",
+  "title": "Pipeline hazards",
+  "text": "A block RAM read takes a clock or two, and the write lands after that. An order can be added and deleted in back-to-back messages. A Delete is only 19 bytes, so it can follow three clocks later and read a stale entry. So each lookup compares its reference with writes in flight, and forwards the newest value."
+ },
+ {
+  "id": "exec",
+  "title": "Executions, cancels, deletes",
+  "text": "An Order Executed carries the reference and executed shares. The lookup returns locate, side and price. The pipeline subtracts the shares from the order and from its price level. A cancel subtracts too; a delete removes the rest. An order or level at zero leaves the book."
+ },
+ {
+  "id": "levels",
+  "title": "The price-level book",
+  "text": "Each side keeps its top N levels in registers, sorted best first. A new price is compared with every level in the same clock. It updates a match in place, or inserts a level and shifts the rest down. Deeper levels wait in RAM. If level zero changed, the pipeline raises a top-of-book event."
+ },
+ {
+  "id": "cut",
+  "title": "Cut-through",
+  "text": "All of this happens before the frame ends. The CRC comes after the last byte. In a full 1400-byte packet, the first message is booked about a microsecond before the CRC is known. So a bad CRC needs a policy: roll back from an undo log, or drop the books and resynchronize."
+ },
+ {
+  "id": "out",
+  "title": "Output and gaps",
+  "text": "Results go over PCIe DMA to a host ring the strategy polls, or straight to order entry on the card. The MoldUDP64 sequence number sits in words six and seven. On a gap the card cannot invent missing orders, so it flags the books and hands over to software recovery."
+ },
+ {
+  "id": "timing",
+  "title": "Timing budget",
+  "text": "The price is complete on clock twelve, 83.2 ns after the first byte. Table and level updates typically add about seven clocks, so the book moves around 130 ns in, plus PHY and MAC latency. Software typically spends microseconds just getting a packet through a kernel socket. The lab's BookBuilder benchmark averages 107 ns per message. The FPGA wins by never waiting for the whole packet."
+ }
+]
