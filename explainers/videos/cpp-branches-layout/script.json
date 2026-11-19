@@ -1,0 +1,19 @@
+[
+{"id": "title", "title": "Branches and layout", "text": "A modern core runs hundreds of instructions ahead of the one it retires. Two things stall it: a branch it guessed wrong, and data it must wait for. Let's measure both on this box, and fix them."},
+
+{"id": "predict", "title": "The predictor", "text": "At every conditional jump, the core guesses a direction and keeps fetching down that path. The branch predictor learns from history, so a repeating pattern costs almost nothing. A wrong guess throws the speculative work away and refetches. On current x86 cores, that typically costs 15 to 20 cycles."},
+
+{"id": "sorted", "title": "Sorted or not", "text": "This filter keeps bytes of 128 or more, from 64 thousand random bytes. Unsorted, the branch is a coin flip: 4.8 nanoseconds per element. Sort the same bytes first, and it becomes predictable: 0.52. That gap is about 8.5 nanoseconds per mispredict, on a shared 4 vCPU cloud box."},
+
+{"id": "branchless", "title": "Branchless", "text": "The branchless version always stores, then advances the index by the comparison: zero or one. The g++ assembly confirms it: a shift and an add, and the only jump is the loop. It runs at 0.35 nanoseconds, sorted or not. For a plain conditional sum, g++ had already picked a conditional move. So read the assembly before rewriting."},
+
+{"id": "likely", "title": "likely and unlikely", "text": "C++20 adds the likely and unlikely attributes. They do not program the predictor, which still learns at run time. They change code layout. With unlikely, the reject path moves out of line, and the hot path falls straight through to its return. Mark it likely instead, and the same compare and jump just flips."},
+
+{"id": "aos", "title": "Hot and cold", "text": "Now data. This order struct is one 64 byte cache line, but only price and quantity are hot. Summing notional over a million orders reads all 64 megabytes: about 5 nanoseconds per order. Split the hot fields into their own 8 byte array, and the scan reads 8 megabytes: 0.5 nanoseconds. Full struct of arrays, 0.43."},
+
+{"id": "ws", "title": "Working set", "text": "Why does size matter so much? These are dependent random loads, each one waiting for the last. Inside 32 kilobytes, the L1 cache, 3 to 4 nanoseconds. At one megabyte, in L2, 13 to 20. Past the caches, 250 nanoseconds or more, page walks included. Keep the hot working set inside L1 and L2."},
+
+{"id": "chase", "title": "Pointer chasing", "text": "Node based containers pay that latency per element. Summing a million ints from a vector takes 0.19 nanoseconds each, streamed and prefetched. The same values in a std::list with scattered nodes take about 250. A std::map, about 300. The core cannot fetch the next node until it has read this one."},
+
+{"id": "close", "title": "Checklist", "text": "So, make hot branches predictable or branchless, and check the assembly. Treat likely and unlikely as layout hints. Keep hot fields together and cold fields elsewhere. Size the working set for L1 and L2, and walk arrays, not pointers. And measure on your own machine.", "hold": 1.5}
+]

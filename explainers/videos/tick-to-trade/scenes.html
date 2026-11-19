@@ -1,0 +1,408 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">TRADING LAB · LOW LEVEL</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Tick to trade</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:370px;width:1500px">One ITCH Add Order in. One OUCH Enter Order out. Every thread in between.</div>
+<svg class="full">
+<path id="tt-flow" class="draw" data-cue="0" data-d="0.6" data-dur="1.6" d="M 225 640 L 1695 640" stroke="#8ea3b1" stroke-width="3" fill="none" stroke-dasharray="1 1"/>
+<path class="draw" data-cue="1" data-d="0.3" d="M 575 790 L 575 810 L 1450 810 L 1450 790" stroke="var(--amber)" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="1" data-d="0.9" d="M 1205 860 L 1205 880 L 1450 880 L 1450 860" stroke="var(--pink)" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="1" data-d="1.5" d="M 1450 860 L 1450 880 L 1695 880 L 1695 860" stroke="var(--violet)" stroke-width="3" fill="none"/>
+</svg>
+<div class="box violet" data-cue="0" data-d="0.60" style="left:120px;top:585px;width:210px;height:110px;text-align:center;padding:14px 8px"><div class="t" style="font-size:28px">simex</div><div class="s" style="font-size:19px">md thread</div></div>
+<div class="box blue" data-cue="0" data-d="0.78" style="left:365px;top:585px;width:210px;height:110px;text-align:center;padding:14px 8px"><div class="t" style="font-size:28px">kernel</div><div class="s" style="font-size:19px">UDP rx</div></div>
+<div class="box teal" data-cue="0" data-d="0.96" style="left:610px;top:585px;width:210px;height:110px;text-align:center;padding:14px 8px"><div class="t" style="font-size:28px">rx</div><div class="s" style="font-size:19px">recvmmsg</div></div>
+<div class="box green" data-cue="0" data-d="1.14" style="left:855px;top:585px;width:210px;height:110px;text-align:center;padding:14px 8px"><div class="t" style="font-size:28px">book</div><div class="s" style="font-size:19px">seq · decode</div></div>
+<div class="box amber" data-cue="0" data-d="1.32" style="left:1100px;top:585px;width:210px;height:110px;text-align:center;padding:14px 8px"><div class="t" style="font-size:28px">trading</div><div class="s" style="font-size:19px">risk · OMS</div></div>
+<div class="box pink" data-cue="0" data-d="1.50" style="left:1345px;top:585px;width:210px;height:110px;text-align:center;padding:14px 8px"><div class="t" style="font-size:28px">order entry</div><div class="s" style="font-size:19px">OUCH · send</div></div>
+<div class="box violet" data-cue="0" data-d="1.68" style="left:1590px;top:585px;width:210px;height:110px;text-align:center;padding:14px 8px"><div class="t" style="font-size:28px">simex</div><div class="s" style="font-size:19px">gateway</div></div>
+<div class="pkt" data-cue="0" data-d="1.4" data-path="tt-flow" data-dur="3.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 16px var(--amber)"></div>
+<div class="lbl c-amber" data-cue="1" data-d="0.3" style="left:820px;top:818px">tick to wire</div>
+<div class="lbl c-pink" data-cue="1" data-d="0.9" style="left:1150px;top:888px">decide to wire</div>
+<div class="lbl c-violet" data-cue="1" data-d="1.5" style="left:1475px;top:888px">order round trip</div>
+<div class="stamp" data-cue="1" data-d="0.3" data-anim="fade" style="left:530px;top:735px;border-color:var(--amber);color:var(--amber)">rdtsc</div>
+<div class="stamp" data-cue="1" data-d="0.9" data-anim="fade" style="left:1160px;top:735px;border-color:var(--pink);color:var(--pink)">rdtsc</div>
+<div class="stamp" data-cue="1" data-d="1.2" data-anim="fade" style="left:1405px;top:735px;border-color:var(--teal);color:var(--teal)">rdtsc</div>
+<div class="stamp" data-cue="1" data-d="1.5" data-anim="fade" style="left:1650px;top:735px;border-color:var(--violet);color:var(--violet)">rdtsc</div>
+</div>
+<div class="scene" id="s-cores">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One hot thread per core</div>
+<div class="box" data-cue="2" data-d="0.9" style="left:120px;top:230px;width:400px;height:180px;border-color:var(--line)"><div class="lbl">CPU 0</div><div class="t" style="margin-top:6px">Linux · tools</div><div class="s">logger, slow paths</div></div>
+<div class="box" data-cue="2" data-d="1.1" style="left:540px;top:230px;width:400px;height:180px;border-color:var(--line)"><div class="lbl">CPU 1</div><div class="t" style="margin-top:6px">slow paths</div><div class="s">simex gateway, journal</div></div>
+<div class="box" data-cue="1" data-d="0.0" style="left:960px;top:230px;width:400px;height:180px;border-color:var(--teal)"><div class="lbl">CPU 2</div><div class="t" style="margin-top:6px">rx thread</div><div class="s">recvmmsg · re-requests</div></div>
+<div class="box" data-cue="1" data-d="0.5" style="left:1380px;top:230px;width:400px;height:180px;border-color:var(--green)"><div class="lbl">CPU 3</div><div class="t" style="margin-top:6px">book thread</div><div class="s">sequence · decode · books</div></div>
+<div class="box" data-cue="1" data-d="1.0" style="left:120px;top:430px;width:400px;height:180px;border-color:var(--amber)"><div class="lbl">CPU 4</div><div class="t" style="margin-top:6px">trading thread</div><div class="s">strategy · risk · OMS</div></div>
+<div class="box" data-cue="1" data-d="1.5" style="left:540px;top:430px;width:400px;height:180px;border-color:var(--pink)"><div class="lbl">CPU 5</div><div class="t" style="margin-top:6px">order entry</div><div class="s">OUCH session · its socket</div></div>
+<div class="box" data-cue="2" data-d="0.0" style="left:960px;top:430px;width:400px;height:180px;border-color:var(--violet)"><div class="lbl">CPU 6</div><div class="t" style="margin-top:6px">simex matcher</div><div class="s">no syscalls</div></div>
+<div class="box" data-cue="2" data-d="0.3" style="left:1380px;top:430px;width:400px;height:180px;border-color:var(--violet)"><div class="lbl">CPU 7</div><div class="t" style="margin-top:6px">simex market data</div><div class="s">MoldUDP64 out</div></div>
+<svg class="full">
+<path id="spin2" d="M 1315 256 A 16 16 0 1 1 1314.9 256" stroke="var(--teal)" stroke-opacity=".35" stroke-width="3" fill="none" data-cue="1" data-d="0.0"/>
+<path id="spin3" d="M 1735 256 A 16 16 0 1 1 1734.9 256" stroke="var(--green)" stroke-opacity=".35" stroke-width="3" fill="none" data-cue="1" data-d="0.5"/>
+<path id="spin4" d="M 475 456 A 16 16 0 1 1 474.9 456" stroke="var(--amber)" stroke-opacity=".35" stroke-width="3" fill="none" data-cue="1" data-d="1.0"/>
+<path id="spin5" d="M 895 456 A 16 16 0 1 1 894.9 456" stroke="var(--pink)" stroke-opacity=".35" stroke-width="3" fill="none" data-cue="1" data-d="1.5"/>
+<path id="spin6" d="M 1315 456 A 16 16 0 1 1 1314.9 456" stroke="var(--violet)" stroke-opacity=".35" stroke-width="3" fill="none" data-cue="2" data-d="0.0"/>
+<path id="spin7" d="M 1735 456 A 16 16 0 1 1 1734.9 456" stroke="var(--violet)" stroke-opacity=".35" stroke-width="3" fill="none" data-cue="2" data-d="0.3"/>
+</svg>
+<div class="pkt dot" data-cue="1" data-d="0.0" data-path="spin2" data-dur="0.8" data-loop="1" style="background:var(--teal);box-shadow:0 0 10px var(--teal)"></div>
+<div class="pkt dot" data-cue="1" data-d="0.5" data-path="spin3" data-dur="0.8" data-loop="1" style="background:var(--green);box-shadow:0 0 10px var(--green)"></div>
+<div class="pkt dot" data-cue="1" data-d="1.0" data-path="spin4" data-dur="0.8" data-loop="1" style="background:var(--amber);box-shadow:0 0 10px var(--amber)"></div>
+<div class="pkt dot" data-cue="1" data-d="1.5" data-path="spin5" data-dur="0.8" data-loop="1" style="background:var(--pink);box-shadow:0 0 10px var(--pink)"></div>
+<div class="pkt dot" data-cue="2" data-d="0.0" data-path="spin6" data-dur="0.8" data-loop="1" style="background:var(--violet);box-shadow:0 0 10px var(--violet)"></div>
+<div class="pkt dot" data-cue="2" data-d="0.3" data-path="spin7" data-dur="0.8" data-loop="1" style="background:var(--violet);box-shadow:0 0 10px var(--violet)"></div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:660px"><span class="k">while</span> (!stop) rx.poll(deliver);   <span class="c">// never sleeps, never yields</span></div>
+<div class="code" data-cue="1" data-d="0.4" style="left:120px;top:770px;font-size:24px">trader <span class="r">--rx-cpu 2 --md-cpu 3 --trader-cpu 4 --oe-cpu 5</span>   <span class="c">// docs/core-plan.md</span></div>
+</div>
+<div class="scene" id="s-mold">
+<div class="h2" data-cue="0" style="left:120px;top:110px">MoldUDP64: one packet, many messages</div>
+<div class="box violet" data-cue="0" style="left:120px;top:240px;width:330px"><div class="t">simex</div><div class="s">market data thread</div></div>
+<div class="pill" data-cue="0" data-d="0.6" style="left:560px;top:265px;font-size:26px;border-color:var(--violet)">239.1.1.2 : 31001</div>
+<div class="box teal" data-cue="0" data-d="1.0" style="left:1380px;top:205px;width:330px;padding:10px 20px"><div class="t" style="font-size:26px">trader rx</div></div>
+<div class="box teal" data-cue="0" data-d="1.2" style="left:1380px;top:285px;width:330px;padding:10px 20px"><div class="t" style="font-size:26px">itch-fh rx</div></div>
+<div class="box teal" data-cue="0" data-d="1.4" style="left:1380px;top:365px;width:330px;padding:10px 20px"><div class="t" style="font-size:26px">any subscriber</div></div>
+<svg class="full">
+<path id="m-out" class="draw" data-cue="0" data-d="0.3" d="M 450 290 L 555 290" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="m-f0" class="draw" data-cue="0" data-d="0.9" d="M 840 290 C 1080 290 1120 235 1370 235" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="m-f1" class="draw" data-cue="0" data-d="0.9" d="M 840 290 C 1080 290 1120 315 1370 315" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="m-f2" class="draw" data-cue="0" data-d="0.9" d="M 840 290 C 1080 290 1120 395 1370 395" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+</svg>
+<div class="pkt" data-cue="0" data-d="1.6" data-path="m-f0" data-dur="1.6" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-cue="0" data-d="1.6" data-path="m-f1" data-dur="1.6" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-cue="0" data-d="1.6" data-path="m-f2" data-dur="1.6" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="bc" data-cue="1" data-d="0.00" data-anim="fade" style="left:120px;top:570px;width:240px;height:70px;background:#b9a4ff;font-size:19px">session<br>10</div>
+<div class="bc" data-cue="1" data-d="0.00" data-anim="fade" style="left:360px;top:570px;width:192px;height:70px;background:#b9a4ff;font-size:19px">sequence<br>8</div>
+<div class="bc" data-cue="1" data-d="0.00" data-anim="fade" style="left:552px;top:570px;width:48px;height:70px;background:#b9a4ff;font-size:19px">cnt<br>2</div>
+<div class="bc" data-cue="2" data-d="0.00" data-anim="fade" style="left:600px;top:570px;width:48px;height:70px;background:#ffd08a;font-size:19px">len<br>2</div>
+<div class="bc" data-cue="3" data-d="0.00" data-anim="fade" style="left:648px;top:570px;width:864px;height:70px;background:var(--amber);font-size:19px">ITCH Add Order · 36 bytes</div>
+<div class="bc" data-cue="3" data-d="0.00" data-anim="fade" style="left:1512px;top:570px;width:48px;height:70px;background:#ffd08a;font-size:19px">len<br>2</div>
+<div class="bc" data-cue="3" data-d="0.00" data-anim="fade" style="left:1560px;top:570px;width:240px;height:70px;background:#3a4d59;font-size:19px">next …</div>
+<div class="off" data-cue="1" data-anim="fade" style="left:90px;top:532px">0</div>
+<div class="off" data-cue="1" data-anim="fade" style="left:330px;top:532px">10</div>
+<div class="off" data-cue="1" data-anim="fade" style="left:522px;top:532px">18</div>
+<div class="off" data-cue="1" data-anim="fade" style="left:570px;top:532px">20</div>
+<div class="off" data-cue="1" data-anim="fade" style="left:618px;top:532px">22</div>
+<div class="off" data-cue="1" data-anim="fade" style="left:1482px;top:532px">58</div>
+<div class="off" data-cue="1" data-anim="fade" style="left:1530px;top:532px">60</div>
+<div class="brace" data-cue="1" data-d="0.3" style="left:120px;top:655px;width:480px;border-color:#b9a4ff"></div>
+<div class="lbl" data-cue="1" data-d="0.3" style="left:120px;top:675px;color:#b9a4ff">header · 20 bytes</div>
+<div class="brace" data-cue="2" style="left:600px;top:655px;width:912px;border-color:var(--amber)"></div>
+<div class="lbl c-amber" data-cue="2" style="left:600px;top:675px">message block · 2 + 36</div>
+<div class="body" data-cue="1" data-d="0.8" style="left:120px;top:740px;width:1680px;font-size:26px">Sequence is the <b>first</b> message's number; the rest count on from it. Count 0 is a heartbeat, 0xFFFF End of Session. Big-endian.</div>
+<div class="lbl" data-cue="3" data-d="0.6" style="left:120px;top:820px">lab: up to 1400 bytes of payload per packet · e2e tests send unicast to 127.0.0.1:31001</div>
+</div>
+<div class="scene" id="s-kernel">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Through the NIC and the kernel</div>
+<svg class="full">
+<path id="k-flow" d="M 140 425 L 1760 425" stroke="none" fill="none"/>
+<path class="draw" data-cue="0" data-d="1.2" d="M 412 425 L 458 425" stroke="var(--blue)" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="1" data-d="0.0" d="M 754 425 L 800 425" stroke="var(--blue)" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="1" data-d="0.6" d="M 1096 425 L 1142 425" stroke="var(--blue)" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="1" data-d="1.2" d="M 1438 425 L 1484 425" stroke="var(--blue)" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="1" d="M 462 300 L 462 280 L 1778 280 L 1778 300" stroke="var(--blue)" stroke-width="3" fill="none"/>
+</svg>
+<div class="lbl c-blue" data-cue="1" style="left:900px;top:240px">kernel · softirq context</div>
+<div class="box blue" id="k-b0" data-cue="0" data-d="0.0" data-dim="2" style="left:120px;top:340px;width:290px;height:170px"><div class="t">NIC</div><div class="s">frame → RX ring<br>by DMA</div></div>
+<div class="box blue" id="k-b1" data-cue="0" data-d="1.2" style="left:462px;top:340px;width:290px;height:170px"><div class="t">interrupt</div><div class="s">→ softirq</div></div>
+<div class="box blue" id="k-b2" data-cue="1" data-d="0.0" style="left:804px;top:340px;width:290px;height:170px"><div class="t">IP · UDP</div><div class="s">headers, checksum</div></div>
+<div class="box blue" id="k-b3" data-cue="1" data-d="0.6" style="left:1146px;top:340px;width:290px;height:170px"><div class="t">group match</div><div class="s">239.1.1.2 : 31001</div></div>
+<div class="box blue" id="k-b4" data-cue="1" data-d="1.2" style="left:1488px;top:340px;width:290px;height:170px"><div class="t">socket queue</div><div class="s">SO_RCVBUF: asks 16 MiB</div></div>
+<div class="lbl" data-cue="0" style="left:120px;top:525px">hardware</div>
+<div class="lbl" data-cue="1" data-d="1.6" style="left:1488px;top:525px">capped by net.core.rmem_max</div>
+<div class="pkt" data-cue="1" data-d="1.4" data-path="k-flow" data-dur="2.4" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="box teal" data-cue="1" data-d="1.8" style="left:1488px;top:600px;width:290px"><div class="t" style="font-size:26px">rx thread</div><div class="s">recvmmsg ↑</div></div>
+<div class="tag" data-cue="2" style="left:130px;top:300px;border-color:var(--amber);color:var(--amber)">lab: lo, loopback</div>
+<div class="body" data-cue="2" data-d="0.4" style="left:120px;top:620px;width:1300px">The lab runs every process on one machine: no wire, no DMA. On a real network the NIC, its interrupt and the stack all add to every tick.</div>
+</div>
+<div class="scene" id="s-rx">
+<div class="h2" data-cue="0" style="left:120px;top:110px">recvmmsg on the rx thread · CPU 2</div>
+<div class="code" data-cue="0" style="left:120px;top:220px;width:1000px"><span class="line" data-hl="0" data-hlend="1"><span class="k">int</span> n = recvmmsg(fd, msgs, <span class="r">32</span>,</span><span class="line" data-hl="0" data-hlend="1">             MSG_DONTWAIT, <span class="k">nullptr</span>);</span><span class="line" data-hl="1" data-hlend="2"><span class="v">uint64_t</span> tsc = rdtsc();  <span class="c">// one stamp per batch</span></span><span class="line" data-hl="2" data-hlend="3"><span class="k">for</span> (<span class="k">int</span> i = <span class="r">0</span>; i &lt; n; ++i)</span><span class="line" data-hl="2" data-hlend="3">  push(batch.datagram(i), tsc);</span></div>
+<div class="pill" data-cue="1" data-d="0.5" style="left:1160px;top:330px;border-color:var(--amber);font-size:24px">rdtsc ≈ <span class="count c-amber" data-cue="1" data-d="0.5" data-from="0" data-to="16.7" data-dec="1">0</span> ns <span class="c-muted">· core_bench, this box</span></div>
+<div class="lbl" data-cue="2" style="left:1160px;top:420px">struct alignas(64) RxPacket · 1536 bytes</div>
+<div class="bc" data-cue="2" data-d="0.00" data-anim="fade" style="left:1160px;top:455px;width:104px;height:70px;background:var(--amber);font-size:19px">rx_tsc<br>8</div>
+<div class="bc" data-cue="2" data-d="0.15" data-anim="fade" style="left:1264px;top:455px;width:52px;height:70px;background:#9fe7ee;font-size:19px">len<br>4</div>
+<div class="bc" data-cue="2" data-d="0.30" data-anim="fade" style="left:1316px;top:455px;width:52px;height:70px;background:#5d7684;font-size:19px">rsv<br>4</div>
+<div class="bc" data-cue="2" data-d="0.45" data-anim="fade" style="left:1368px;top:455px;width:416px;height:70px;background:var(--teal);font-size:19px">data[1472]</div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:120px;top:585px">SpscRing&lt;RxPacket, 4096&gt; · 6 MiB, zeroed at startup</div>
+<div class="slot" id="rx-slot0" data-cue="2" data-d="0.4" data-anim="fade" style="left:120px;top:625px"></div>
+<div class="slot" id="rx-slot1" data-cue="2" data-d="0.4" data-anim="fade" style="left:225px;top:625px"></div>
+<div class="slot" id="rx-slot2" data-cue="2" data-d="0.4" data-anim="fade" style="left:330px;top:625px"></div>
+<div class="slot" id="rx-slot3" data-cue="2" data-d="0.4" data-anim="fade" style="left:435px;top:625px"></div>
+<div class="slot" id="rx-slot4" data-cue="2" data-d="0.4" data-anim="fade" style="left:540px;top:625px"></div>
+<div class="slot" id="rx-slot5" data-cue="2" data-d="0.4" data-anim="fade" style="left:645px;top:625px"></div>
+<div class="slot" id="rx-slot6" data-cue="2" data-d="0.4" data-anim="fade" style="left:750px;top:625px"></div>
+<div class="slot" id="rx-slot7" data-cue="2" data-d="0.4" data-anim="fade" style="left:855px;top:625px"></div>
+<div class="slot" id="rx-slot8" data-cue="2" data-d="0.4" data-anim="fade" style="left:960px;top:625px"></div>
+<div class="slot" id="rx-slot9" data-cue="2" data-d="0.4" data-anim="fade" style="left:1065px;top:625px"></div>
+<div class="slot" id="rx-slot10" data-cue="2" data-d="0.4" data-anim="fade" style="left:1170px;top:625px"></div>
+<div class="slot" id="rx-slot11" data-cue="2" data-d="0.4" data-anim="fade" style="left:1275px;top:625px"></div>
+<div class="slot" id="rx-slot12" data-cue="2" data-d="0.4" data-anim="fade" style="left:1380px;top:625px"></div>
+<div class="slot" id="rx-slot13" data-cue="2" data-d="0.4" data-anim="fade" style="left:1485px;top:625px"></div>
+<div class="slot" id="rx-slot14" data-cue="2" data-d="0.4" data-anim="fade" style="left:1590px;top:625px"></div>
+<div class="slot" id="rx-slot15" data-cue="2" data-d="0.4" data-anim="fade" style="left:1695px;top:625px"></div>
+<div class="lbl" data-cue="2" data-d="0.6" style="left:1810px;top:650px">…</div>
+<div class="box amber" data-cue="3" style="left:120px;top:770px;width:1100px"><div class="t">tick time = rx_tsc</div><div class="s">travels with the message to the order on the wire</div></div>
+</div>
+<div class="scene" id="s-seq">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The ring, then sequencing</div>
+<div class="box teal" data-cue="0" style="left:120px;top:205px;width:560px;padding:10px 20px"><div class="s" style="margin:0;color:var(--teal)">producer cache line</div><div class="t" style="font-size:26px">head_ · cached_tail_</div></div>
+<div class="box green" data-cue="0" data-d="0.2" style="left:1240px;top:205px;width:560px;padding:10px 20px"><div class="s" style="margin:0;color:var(--green)">consumer cache line</div><div class="t" style="font-size:26px">tail_ · cached_head_</div></div>
+<div class="slot sm" id="sq-slot0" data-cue="0" data-d="0.3" data-anim="fade" style="left:460px;top:330px"></div>
+<div class="slot sm" id="sq-slot1" data-cue="0" data-d="0.3" data-anim="fade" style="left:545px;top:330px"></div>
+<div class="slot sm" id="sq-slot2" data-cue="0" data-d="0.3" data-anim="fade" style="left:630px;top:330px"></div>
+<div class="slot sm" id="sq-slot3" data-cue="0" data-d="0.3" data-anim="fade" style="left:715px;top:330px"></div>
+<div class="slot sm" id="sq-slot4" data-cue="0" data-d="0.3" data-anim="fade" style="left:800px;top:330px"></div>
+<div class="slot sm" id="sq-slot5" data-cue="0" data-d="0.3" data-anim="fade" style="left:885px;top:330px"></div>
+<div class="slot sm" id="sq-slot6" data-cue="0" data-d="0.3" data-anim="fade" style="left:970px;top:330px"></div>
+<div class="slot sm" id="sq-slot7" data-cue="0" data-d="0.3" data-anim="fade" style="left:1055px;top:330px"></div>
+<div class="slot sm" id="sq-slot8" data-cue="0" data-d="0.3" data-anim="fade" style="left:1140px;top:330px"></div>
+<div class="slot sm" id="sq-slot9" data-cue="0" data-d="0.3" data-anim="fade" style="left:1225px;top:330px"></div>
+<div class="slot sm" id="sq-slot10" data-cue="0" data-d="0.3" data-anim="fade" style="left:1310px;top:330px"></div>
+<div class="slot sm" id="sq-slot11" data-cue="0" data-d="0.3" data-anim="fade" style="left:1395px;top:330px"></div>
+<div class="ptr c-teal" id="sq-head" data-cue="0" data-d="0.4" data-anim="fade" style="left:460px;top:400px">▲ head</div>
+<div class="ptr c-green" id="sq-tail" data-cue="0" data-d="0.4" data-anim="fade" style="left:460px;top:290px">▼ tail</div>
+<div class="lbl" data-cue="0" data-d="1" style="left:120px;top:450px">commit: head_.store(h + 1, <span class="c-teal">release</span>)  ·  front: head_.load(<span class="c-green">acquire</span>)  ·  no lock, no syscall</div>
+<div class="lbl c-green" data-cue="1" style="left:120px;top:540px">book thread · CPU 3 · sequencer</div>
+<div class="sq ok" data-cue="1" data-d="0.00" data-anim="scale" style="left:120px;top:585px">101</div>
+<div class="sq ok" data-cue="1" data-d="0.15" data-anim="scale" style="left:260px;top:585px">102</div>
+<div class="sq ok" data-cue="1" data-d="0.30" data-anim="scale" style="left:400px;top:585px">103</div>
+<div class="sq ok" data-cue="1" data-d="0.45" data-anim="scale" style="left:540px;top:585px">104</div>
+<div class="sq gap" data-cue="2" data-d="0.00" data-anim="scale" style="left:680px;top:585px">105</div>
+<div class="sq gap" data-cue="2" data-d="0.00" data-anim="scale" style="left:820px;top:585px">106</div>
+<div class="sq held" data-cue="2" data-d="0.30" data-anim="scale" style="left:960px;top:585px">107</div>
+<div class="sq held" data-cue="2" data-d="0.45" data-anim="scale" style="left:1100px;top:585px">108</div>
+<div class="sq held" data-cue="2" data-d="0.60" data-anim="scale" style="left:1240px;top:585px">109</div>
+<div class="sq held" data-cue="2" data-d="0.75" data-anim="scale" style="left:1380px;top:585px">110</div>
+<div class="sq held" data-cue="2" data-d="0.90" data-anim="scale" style="left:1520px;top:585px">111</div>
+<div class="sq held" data-cue="2" data-d="1.05" data-anim="scale" style="left:1660px;top:585px">112</div>
+<div class="ptr c-amber" data-cue="1" data-d="0.8" data-anim="fade" style="left:690px;top:675px">▲ expected</div>
+<div class="lbl c-amber" data-cue="2" data-d="0.9" style="left:1000px;top:675px">held in a window: 107 … 112</div>
+<div class="pill" data-cue="2" data-d="1.4" style="left:540px;top:730px;border-color:var(--red);color:var(--red)">wait 100 µs for reordering</div>
+<div class="box teal" data-cue="3" style="left:120px;top:800px;width:1680px;padding:12px 22px"><div class="t" style="font-size:26px">request ring → rx thread → sendto: MoldUDP64 request, 20 bytes</div><div class="s">session · sequence 105 · count 2  →  re-request server</div></div>
+</div>
+<div class="scene" id="s-book">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Decode the Add Order, update the book</div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:120px;top:245px;width:46px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:166px;top:245px;width:92px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:258px;top:245px;width:92px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:350px;top:245px;width:276px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:626px;top:245px;width:368px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:994px;top:245px;width:46px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:1040px;top:245px;width:184px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:1224px;top:245px;width:368px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="bc" data-cue="0" data-d="0.00" data-anim="fade" style="left:1592px;top:245px;width:184px;height:70px;background:#22343f;font-size:19px"></div>
+<div class="off" data-cue="0" data-anim="fade" style="left:90px;top:207px">0</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:136px;top:207px">1</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:228px;top:207px">3</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:320px;top:207px">5</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:596px;top:207px">11</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:964px;top:207px">19</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:1010px;top:207px">20</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:1194px;top:207px">24</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:1562px;top:207px">32</div>
+<div class="off" data-cue="0" data-anim="fade" style="left:1746px;top:207px">36</div>
+<div class="bc" data-cue="1" data-d="0.20" data-anim="fade" style="left:120px;top:245px;width:46px;height:70px;background:var(--amber);font-size:19px">A</div>
+<div class="bc" data-cue="1" data-d="0.55" data-anim="fade" style="left:166px;top:245px;width:92px;height:70px;background:#ffd08a;font-size:19px">locate</div>
+<div class="bc" data-cue="1" data-d="0.90" data-anim="fade" style="left:258px;top:245px;width:92px;height:70px;background:#e5c38f;font-size:19px">track</div>
+<div class="bc" data-cue="1" data-d="1.25" data-anim="fade" style="left:350px;top:245px;width:276px;height:70px;background:#9fe7ee;font-size:19px">timestamp · ns</div>
+<div class="bc" data-cue="1" data-d="1.60" data-anim="fade" style="left:626px;top:245px;width:368px;height:70px;background:var(--teal);font-size:19px">order reference</div>
+<div class="bc" data-cue="1" data-d="1.95" data-anim="fade" style="left:994px;top:245px;width:46px;height:70px;background:var(--green);font-size:19px">B</div>
+<div class="bc" data-cue="1" data-d="2.30" data-anim="fade" style="left:1040px;top:245px;width:184px;height:70px;background:#8ee6b3;font-size:19px">shares</div>
+<div class="bc" data-cue="1" data-d="2.65" data-anim="fade" style="left:1224px;top:245px;width:368px;height:70px;background:var(--violet);font-size:19px">stock</div>
+<div class="bc" data-cue="1" data-d="3.00" data-anim="fade" style="left:1592px;top:245px;width:184px;height:70px;background:var(--amber);font-size:19px">price</div>
+<div class="val" data-cue="1" data-d="0.20" style="left:120px;top:325px;width:46px">'A'</div>
+<div class="val" data-cue="1" data-d="1.95" style="left:994px;top:325px;width:46px">'B'</div>
+<div class="val" data-cue="1" data-d="2.30" style="left:1040px;top:325px;width:184px">100</div>
+<div class="val" data-cue="1" data-d="2.65" style="left:1224px;top:325px;width:368px">SYM0001</div>
+<div class="val" data-cue="1" data-d="3.00" style="left:1592px;top:325px;width:184px">3800200</div>
+<div class="lbl" data-cue="1" data-d="3.5" style="left:120px;top:362px">example · 3800200 = $380.0200</div>
+<div class="box green" data-cue="2" style="left:120px;top:440px;width:540px"><div class="t">OrderMap</div><div class="s">open addressing, linear probing<br>ref → price, shares, locate, side</div></div>
+<svg class="full">
+<path class="draw" data-cue="2" data-d="0.6" d="M 665 520 L 780 520" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="3" data-d="0.2" d="M 1225 600 L 1330 600" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+</svg>
+<div class="ladder" data-cue="2" data-d="0.4" style="left:790px;top:420px;width:430px"><div class="lv ask"><span>380.0500</span><span>300</span></div><div class="lv ask"><span>380.0400</span><span>200</span></div><div class="lv bid" id="b-lv" data-hl="2" data-hld="1" data-hlend="3"><span>380.0200</span><span class="count" data-cue="2" data-d="1" data-from="500" data-to="600">500</span></div><div class="lv bid"><span>380.0100</span><span>400</span></div></div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:790px;top:385px">BookSide levels, best at the back</div>
+<div class="code" data-cue="3" style="left:1340px;top:420px;font-size:21px;padding:16px 20px"><span class="k">struct</span> alignas(<span class="r">64</span>) <span class="v">TopOfBook</span> {
+  <span class="v">u64</span> rx_tsc;  <span class="c">// tick time</span>
+  <span class="v">u64</span> feed_ns;
+  <span class="v">u32</span> bid_px[2], bid_qty[2];
+  <span class="v">u32</span> ask_px[2], ask_qty[2];
+  <span class="v">u16</span> instrument, locate;
+  <span class="k">char</span> trading_state;
+};  <span class="c">// 64 bytes</span></div>
+<div class="lbl" data-cue="3" data-d="0.5" style="left:120px;top:640px;width:1100px">sent only when the top two levels or the trading state change, for symbols the trader trades</div>
+</div>
+<div class="scene" id="s-handoff">
+<div class="h2" data-cue="0" style="left:120px;top:110px">To the trader: a ring, or Aeron IPC</div>
+<div class="lbl" data-cue="0" style="left:120px;top:205px">IN ONE PROCESS</div>
+<div class="box green" data-cue="0" style="left:120px;top:240px;width:360px"><div class="t">md thread</div><div class="s">CPU 3</div></div>
+<div class="ringbar" data-cue="0" data-d="0.3" style="left:580px;top:255px;width:580px">SpscRing&lt;TopOfBook, 16384&gt;</div>
+<div class="box amber" data-cue="0" data-d="0.5" style="left:1260px;top:240px;width:400px"><div class="t">trading thread</div><div class="s">CPU 4</div></div>
+<svg class="full">
+<path id="h-p1" class="draw" data-cue="0" data-d="0.3" d="M 485 290 L 1250 290" stroke="#8ea3b1" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+<path id="h-p2" class="draw" data-cue="1" data-d="0.6" d="M 485 560 L 1250 500" stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#ah-teal)"/>
+<path id="h-p3" class="draw" data-cue="1" data-d="0.6" d="M 485 560 L 1250 650" stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#ah-teal)"/>
+</svg>
+<div class="pkt" data-cue="0" data-d="0.8" data-path="h-p1" data-dur="1.4" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="pkt" data-cue="2" data-d="0.4" data-path="h-p2" data-dur="1.6" data-loop="1" style="background:var(--teal)"></div>
+<div class="pkt" data-cue="2" data-d="0.4" data-path="h-p3" data-dur="1.6" data-loop="1" data-phase="0.15" style="background:var(--teal)"></div>
+<div class="lbl" data-cue="1" style="left:120px;top:420px">AERON IPC · SEVERAL TRADERS</div>
+<div class="box teal" data-cue="1" style="left:120px;top:500px;width:360px"><div class="t">itch-fh</div><div class="s">rx + book threads, once</div></div>
+<div class="ringbar teal" data-cue="2" style="left:580px;top:500px;width:580px;background:#123f48">/dev/shm log buffer · stream 1001</div>
+<div class="box green" data-cue="1" data-d="0.4" style="left:1260px;top:455px;width:400px;padding:10px 20px"><div class="t" style="font-size:26px">trader A · md thread</div><div class="s">rebuilds its own books</div></div>
+<div class="box green" data-cue="1" data-d="0.6" style="left:1260px;top:610px;width:400px;padding:10px 20px"><div class="t" style="font-size:26px">trader B · md thread</div><div class="s">rebuilds its own books</div></div>
+<div class="bc" data-cue="2" data-d="0.00" data-anim="fade" style="left:580px;top:640px;width:192px;height:60px;background:var(--teal);font-size:19px">header 32</div>
+<div class="bc" data-cue="2" data-d="0.25" data-anim="fade" style="left:772px;top:640px;width:216px;height:60px;background:var(--amber);font-size:19px">Add Order 36</div>
+<div class="bc" data-cue="2" data-d="0.50" data-anim="fade" style="left:988px;top:640px;width:168px;height:60px;background:#3a4d59;font-size:19px">pad → 96</div>
+<div class="tag" data-cue="2" data-d="1" style="left:580px;top:712px;border-color:var(--amber);color:var(--amber)">reserved_value = rx_tsc</div>
+<div class="box" data-cue="3" style="left:120px;top:790px;width:1540px;padding:12px 22px;border-color:var(--amber)"><div class="t" style="font-size:28px">Aeron IPC round trip, median <span class="c-amber">0.72 – 0.81 µs</span></div><div class="s">aeron-ping, 64-byte messages, four runs · shared 4-vCPU cloud box · docs/aeron.md</div></div>
+</div>
+<div class="scene" id="s-trading">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The trading thread · CPU 4</div>
+<svg class="full">
+<path class="draw" data-cue="0" data-d="0.5" d="M 362 285 L 396 285" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="0" data-d="1.2" d="M 642 285 L 676 285" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="1" data-d="0.0" d="M 922 285 L 956 285" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="2" data-d="0.0" d="M 1202 285 L 1236 285" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="3" data-d="0.0" d="M 1482 285 L 1516 285" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+</svg>
+<div class="box amber" data-cue="0" data-d="0.0" style="left:120px;top:225px;width:240px;height:120px;text-align:center;padding:14px 8px"><div class="t" style="font-size:30px">responses</div><div class="s" style="font-size:19px">drain first</div></div>
+<div class="box amber" data-cue="0" data-d="0.5" style="left:400px;top:225px;width:240px;height:120px;text-align:center;padding:14px 8px"><div class="t" style="font-size:30px">tops</div><div class="s" style="font-size:19px">drain, mark dirty</div></div>
+<div class="box amber" data-cue="0" data-d="1.2" style="left:680px;top:225px;width:240px;height:120px;text-align:center;padding:14px 8px"><div class="t" style="font-size:30px">quote</div><div class="s" style="font-size:19px">market maker</div></div>
+<div class="box amber" data-cue="1" data-d="0.0" style="left:960px;top:225px;width:240px;height:120px;text-align:center;padding:14px 8px"><div class="t" style="font-size:30px">risk</div><div class="s" style="font-size:19px">pre-trade</div></div>
+<div class="box amber" data-cue="2" data-d="0.0" style="left:1240px;top:225px;width:240px;height:120px;text-align:center;padding:14px 8px"><div class="t" style="font-size:30px">OMS</div><div class="s" style="font-size:19px">UserRefNum</div></div>
+<div class="box pink" data-cue="3" data-d="0.0" style="left:1520px;top:225px;width:240px;height:120px;text-align:center;padding:14px 8px"><div class="t" style="font-size:30px">request</div><div class="s" style="font-size:19px">to the ring</div></div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:400px;font-size:23px"><span class="k">for</span> (;;) {
+  <span class="k">while</span> (responses.try_pop(r)) on_response(r);
+  <span class="k">while</span> (tops.try_pop(t)) mark(t.instrument);
+  <span class="k">for</span> (i : dirty) reconcile(i);
+}</div>
+<div class="chk" data-cue="1" data-d="0.25" data-anim="left" style="left:960px;top:385px"><span class="c-green">✓</span> kill switch</div>
+<div class="chk" data-cue="1" data-d="0.55" data-anim="left" style="left:960px;top:427px"><span class="c-green">✓</span> quantity ≤ 1,000</div>
+<div class="chk" data-cue="1" data-d="0.85" data-anim="left" style="left:960px;top:469px"><span class="c-green">✓</span> notional ≤ $100,000</div>
+<div class="chk" data-cue="1" data-d="1.15" data-anim="left" style="left:960px;top:511px"><span class="c-green">✓</span> collar 5% from the mid</div>
+<div class="chk" data-cue="1" data-d="1.45" data-anim="left" style="left:960px;top:553px"><span class="c-green">✓</span> position ≤ 2,000 shares</div>
+<div class="chk" data-cue="1" data-d="1.75" data-anim="left" style="left:960px;top:595px"><span class="c-green">✓</span> open orders ≤ 200</div>
+<div class="chk" data-cue="1" data-d="2.05" data-anim="left" style="left:960px;top:637px"><span class="c-green">✓</span> rate 2,000/s, burst 100</div>
+<div class="lbl" data-cue="1" data-d="2.5" style="left:1420px;top:400px;width:380px;line-height:1.5">lab defaults,<br>firm/risk</div>
+<div class="lbl" data-cue="3" style="left:120px;top:715px">OrderRequest · 64 bytes</div>
+<div class="bc" data-cue="3" data-d="0.00" data-anim="fade" style="left:120px;top:750px;width:208px;height:70px;background:var(--amber);font-size:19px">tick_tsc</div>
+<div class="bc" data-cue="3" data-d="0.12" data-anim="fade" style="left:328px;top:750px;width:208px;height:70px;background:var(--pink);font-size:19px">decide_tsc</div>
+<div class="bc" data-cue="3" data-d="0.24" data-anim="fade" style="left:536px;top:750px;width:104px;height:70px;background:#ffd08a;font-size:19px">user_ref</div>
+<div class="bc" data-cue="3" data-d="0.36" data-anim="fade" style="left:640px;top:750px;width:104px;height:70px;background:#5d7684;font-size:19px">orig</div>
+<div class="bc" data-cue="3" data-d="0.48" data-anim="fade" style="left:744px;top:750px;width:104px;height:70px;background:#8ee6b3;font-size:19px">qty</div>
+<div class="bc" data-cue="3" data-d="0.60" data-anim="fade" style="left:848px;top:750px;width:104px;height:70px;background:#ffd08a;font-size:19px">price</div>
+<div class="bc" data-cue="3" data-d="0.72" data-anim="fade" style="left:952px;top:750px;width:208px;height:70px;background:var(--violet);font-size:19px">symbol</div>
+<div class="bc" data-cue="3" data-d="0.84" data-anim="fade" style="left:1160px;top:750px;width:78px;height:70px;background:#9fe7ee;font-size:19px">t s f</div>
+<div class="bc" data-cue="3" data-d="0.96" data-anim="fade" style="left:1238px;top:750px;width:546px;height:70px;background:#2c3e49;font-size:19px">reserved · align 64</div>
+</div>
+<div class="scene" id="s-oe">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Order entry · CPU 5 · OUCH in SoupBinTCP</div>
+<div class="bc" data-cue="1" data-d="0.00" data-anim="fade" style="left:120px;top:255px;width:66px;height:70px;background:var(--pink);font-size:17px">len</div>
+<div class="bc" data-cue="1" data-d="0.00" data-anim="fade" style="left:186px;top:255px;width:33px;height:70px;background:var(--pink);font-size:17px">U</div>
+<div class="bc" data-cue="0" data-d="0.30" data-anim="fade" style="left:219px;top:255px;width:33px;height:70px;background:var(--amber);font-size:17px">O</div>
+<div class="bc" data-cue="0" data-d="0.48" data-anim="fade" style="left:252px;top:255px;width:132px;height:70px;background:#ffd08a;font-size:17px">UserRef</div>
+<div class="bc" data-cue="0" data-d="0.66" data-anim="fade" style="left:384px;top:255px;width:33px;height:70px;background:var(--green);font-size:17px">B</div>
+<div class="bc" data-cue="0" data-d="0.84" data-anim="fade" style="left:417px;top:255px;width:132px;height:70px;background:#8ee6b3;font-size:17px">qty</div>
+<div class="bc" data-cue="0" data-d="1.02" data-anim="fade" style="left:549px;top:255px;width:264px;height:70px;background:var(--violet);font-size:17px">symbol</div>
+<div class="bc" data-cue="0" data-d="1.20" data-anim="fade" style="left:813px;top:255px;width:264px;height:70px;background:var(--amber);font-size:17px">price · 8</div>
+<div class="bc" data-cue="0" data-d="1.38" data-anim="fade" style="left:1077px;top:255px;width:165px;height:70px;background:#9fe7ee;font-size:17px">5 flags</div>
+<div class="bc" data-cue="0" data-d="1.56" data-anim="fade" style="left:1242px;top:255px;width:462px;height:70px;background:#5fb7c0;font-size:17px">ClOrdID · 14</div>
+<div class="bc" data-cue="0" data-d="1.74" data-anim="fade" style="left:1704px;top:255px;width:66px;height:70px;background:#5d7684;font-size:17px">app</div>
+<div class="brace" data-cue="1" style="left:120px;top:335px;width:99px;border-color:var(--pink)"></div>
+<div class="lbl c-pink" data-cue="1" style="left:120px;top:352px">SoupBinTCP · 3</div>
+<div class="brace" data-cue="0" data-d="0.3" style="left:219px;top:335px;width:1551px;border-color:var(--amber)"></div>
+<div class="lbl c-amber" data-cue="0" data-d="0.3" style="left:900px;top:352px">OUCH Enter Order · 47 bytes</div>
+<div class="lbl" data-cue="1" data-d="0.5" style="left:120px;top:215px">length = 48 = bytes after the length field</div>
+<div class="code" data-cue="0" data-d="0.6" style="left:120px;top:440px;font-size:25px;width:1150px"><span class="line" data-hl="0" data-hlend="1">n   = ouch::encode(m, msg);            <span class="c">// 47 bytes</span></span><span class="line" data-hl="1" data-hlend="2">len = soup::write_data(pkt, <span class="g">'U'</span>, msg); <span class="c">// 50 bytes</span></span><span class="line" data-hl="2" data-hlend="3">sock.send(pkt, len);  <span class="c">// MSG_DONTWAIT, TCP_NODELAY</span></span><span class="line" data-hl="3">now = rdtsc();</span><span class="line" data-hl="3">tick_to_wire.record(now - r.tick_tsc);</span><span class="line" data-hl="3">decide_to_wire.record(now - r.decide_tsc);</span></div>
+<div class="box amber" data-cue="3" data-d="0.4" style="left:1330px;top:450px;width:470px;padding:12px 20px"><div class="t" style="font-size:27px">Tick to wire</div><div class="s">rx stamp → after send()</div></div>
+<div class="box pink" data-cue="3" data-d="1.0" style="left:1330px;top:590px;width:470px;padding:12px 20px"><div class="t" style="font-size:27px">Decide to wire</div><div class="s">decision → after send()</div></div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:120px;top:790px">The send is a system call; a short write is queued and flushed on the next pass.</div>
+</div>
+<div class="scene" id="s-exchange">
+<div class="h2" data-cue="0" style="left:120px;top:110px">simex, and back</div>
+<svg class="full">
+<path class="draw" data-cue="0" d="M 270 280 L 270 860" stroke="#2c4351" stroke-width="3" stroke-dasharray="1 1" fill="none"/>
+<path class="draw" data-cue="0" d="M 730 280 L 730 860" stroke="#2c4351" stroke-width="3" stroke-dasharray="1 1" fill="none"/>
+<path class="draw" data-cue="0" d="M 1190 280 L 1190 860" stroke="#2c4351" stroke-width="3" stroke-dasharray="1 1" fill="none"/>
+<path class="draw" data-cue="1" d="M 1650 280 L 1650 860" stroke="#2c4351" stroke-width="3" stroke-dasharray="1 1" fill="none"/>
+<path id="x-a1" class="draw" data-cue="0" data-d="0.6" d="M 730 330 L 1198 330" stroke="var(--pink)" stroke-width="3" fill="none" marker-end="url(#ah-pink)"/>
+<path id="x-a2" class="draw" data-cue="1" data-d="0.3" d="M 1190 410 L 1658 410" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="x-a3" class="draw" data-cue="2" data-d="0.0" d="M 1650 500 L 1182 500" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="x-a4" class="draw" data-cue="2" data-d="0.5" d="M 1190 570 L 722 570" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="x-a5" class="draw" data-cue="2" data-d="1.4" d="M 1190 650 L 722 650" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path id="x-a6" class="draw" data-cue="3" data-d="1.2" d="M 730 760 L 262 760" stroke="var(--pink)" stroke-width="3" fill="none" marker-end="url(#ah-pink)"/>
+<path class="draw" data-cue="3" data-d="0.3" d="M 700 330 L 680 330 L 680 570 L 700 570" stroke="var(--amber)" stroke-width="3" fill="none"/>
+</svg>
+<div class="box amber" data-cue="0" style="left:120px;top:205px;width:300px;padding:10px;text-align:center"><div class="t" style="font-size:27px">trading</div></div>
+<div class="box pink" data-cue="0" style="left:580px;top:205px;width:300px;padding:10px;text-align:center"><div class="t" style="font-size:27px">order entry</div></div>
+<div class="box violet" data-cue="0" style="left:1040px;top:205px;width:300px;padding:10px;text-align:center"><div class="t" style="font-size:27px">simex gateway</div></div>
+<div class="box violet" data-cue="1" style="left:1500px;top:205px;width:300px;padding:10px;text-align:center"><div class="t" style="font-size:27px">simex matcher</div></div>
+<div class="alab c-pink" data-cue="0" data-d="0.6" data-anim="fade" style="left:730px;top:292px;width:460px">Enter Order · 50 B · TCP</div>
+<div class="alab c-violet" data-cue="1" data-d="0.3" data-anim="fade" style="left:1190px;top:372px;width:460px">command · ring</div>
+<div class="alab c-violet" data-cue="2" data-d="0.0" data-anim="fade" style="left:1190px;top:462px;width:460px">response · ring</div>
+<div class="alab c-violet" data-cue="2" data-d="0.5" data-anim="fade" style="left:730px;top:532px;width:460px">Order Accepted · 64 B · S</div>
+<div class="alab c-green" data-cue="2" data-d="1.4" data-anim="fade" style="left:730px;top:612px;width:460px">Order Executed · 36 B · S</div>
+<div class="alab c-pink" data-cue="3" data-d="1.2" data-anim="fade" style="left:270px;top:722px;width:460px">OrderResponse · ring</div>
+<div class="tag" data-cue="1" data-d="1.2" style="left:1500px;top:560px;width:300px;line-height:1.35;white-space:normal">no syscalls · firm orders before replayed liquidity</div>
+<div class="tag" data-cue="0" data-d="0.2" style="left:1080px;top:875px;border-color:var(--violet)">owns every socket</div>
+<div class="lbl c-amber" data-cue="3" data-d="0.3" style="left:420px;top:430px;width:250px;text-align:right">order<br>round trip</div>
+<div class="stamp" data-cue="3" data-d="0.3" data-anim="fade" style="left:560px;top:585px;border-color:var(--amber);color:var(--amber)">rdtsc</div>
+</div>
+<div class="scene" id="s-nosys">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why hot threads make no system calls</div>
+<div class="band" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:1680px;height:110px">user space · the thread spins on its rings</div>
+<div class="band k" data-cue="0" data-d="0.5" style="left:120px;top:400px;width:1680px;height:110px">kernel</div>
+<svg class="full">
+<path class="draw" data-cue="1" data-dur="1.6" d="M 260 300 L 420 300 C 470 300 470 460 520 460 L 980 460 C 1030 460 1030 300 1080 300 L 1240 300" stroke="var(--red)" stroke-width="4" fill="none" marker-end="url(#ah-red)"/>
+</svg>
+<div class="tag" data-cue="1" data-d="0.5" style="left:560px;top:470px;border-color:var(--red);color:var(--red)">mode switch</div>
+<div class="tag" data-cue="1" data-d="1.0" style="left:760px;top:470px;border-color:var(--red);color:var(--red)">may block or reschedule</div>
+<div class="tag" data-cue="1" data-d="1.5" style="left:1300px;top:360px;border-color:var(--red);color:var(--red)">may evict the cache</div>
+<div class="box teal" data-cue="2" data-d="0.00" style="left:120px;top:590px;width:540px;padding:10px 20px;"><div class="t" style="font-size:26px">rx</div><div class="s" style="color:var(--red)">syscalls: recvmmsg · sendto</div></div>
+<div class="box green" data-cue="2" data-d="0.15" style="left:690px;top:590px;width:540px;padding:10px 20px;opacity:1"><div class="t" style="font-size:26px">book</div><div class="s" style="color:var(--green)">syscalls: none</div></div>
+<div class="box amber" data-cue="2" data-d="0.30" style="left:1260px;top:590px;width:540px;padding:10px 20px;opacity:1"><div class="t" style="font-size:26px">trading</div><div class="s" style="color:var(--green)">syscalls: none</div></div>
+<div class="box pink" data-cue="2" data-d="0.45" style="left:120px;top:700px;width:540px;padding:10px 20px;"><div class="t" style="font-size:26px">order entry</div><div class="s" style="color:var(--red)">syscalls: send · recv</div></div>
+<div class="box violet" data-cue="2" data-d="0.60" style="left:690px;top:700px;width:540px;padding:10px 20px;opacity:1"><div class="t" style="font-size:26px">simex matcher</div><div class="s" style="color:var(--green)">syscalls: none</div></div>
+<div class="box violet" data-cue="2" data-d="0.75" style="left:1260px;top:700px;width:540px;padding:10px 20px;"><div class="t" style="font-size:26px">simex gateway</div><div class="s" style="color:var(--red)">syscalls: send · recv</div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:830px">startup: allocate, fault pages in  ·  hot path: fixed 64-byte structs  ·  logging: LogChannel ring → logger thread</div>
+</div>
+<div class="scene" id="s-measured">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What the trader reports</div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:190px">scripts/e2e-firm.sh · release build · shared 4-vCPU cloud box · threads unpinned · one run</div>
+<div class="mt" data-cue="0" data-d="0.6" style="left:120px;top:250px"><span style="width:420px">metric</span><span style="width:520px">from → to</span><span style="width:240px">fastest</span><span style="width:240px">median</span><span style="width:200px">n</span></div>
+<div class="mr" data-cue="1" style="left:120px;top:320px;border-color:var(--amber)"><span style="width:420px" class="c-amber">Tick to wire</span><span style="width:520px" class="c-muted">rx stamp → after send()</span><span style="width:240px;font-weight:700">11.9 µs</span><span style="width:240px"></span><span style="width:200px" class="c-muted">770</span></div>
+<div class="medv" data-cue="4" data-d="0.0" data-anim="fade" style="left:1325px;top:338px">9.7 ms</div>
+<div class="mr" data-cue="2" style="left:120px;top:415px;border-color:var(--pink)"><span style="width:420px" class="c-pink">Decide to wire</span><span style="width:520px" class="c-muted">decision → after send()</span><span style="width:240px;font-weight:700">1.8 µs</span><span style="width:240px"></span><span style="width:200px" class="c-muted">1,790</span></div>
+<div class="medv" data-cue="4" data-d="0.2" data-anim="fade" style="left:1325px;top:433px">25 µs</div>
+<div class="mr" data-cue="3" style="left:120px;top:510px;border-color:var(--violet)"><span style="width:420px" class="c-violet">Order round trip</span><span style="width:520px" class="c-muted">after send() → response rx</span><span style="width:240px;font-weight:700">3.9 µs</span><span style="width:240px"></span><span style="width:200px" class="c-muted">1,790</span></div>
+<div class="medv" data-cue="4" data-d="0.4" data-anim="fade" style="left:1325px;top:528px">12.2 ms</div>
+<div class="lbl" data-cue="4" data-d="0.8" style="left:120px;top:615px">4 vCPUs, busy threads:</div>
+<div class="chip" data-cue="4" data-d="1.0" data-anim="scale" style="left:430px;top:605px;border-color:var(--teal)">trader rx</div>
+<div class="chip" data-cue="4" data-d="1.2" data-anim="scale" style="left:660px;top:605px;border-color:var(--green)">trader md</div>
+<div class="chip" data-cue="4" data-d="1.4" data-anim="scale" style="left:890px;top:605px;border-color:var(--amber)">trading</div>
+<div class="chip" data-cue="4" data-d="1.6" data-anim="scale" style="left:1120px;top:605px;border-color:var(--pink)">order entry</div>
+<div class="chip" data-cue="4" data-d="1.8" data-anim="scale" style="left:1350px;top:605px;border-color:var(--violet)">simex threads</div>
+<div class="chip" data-cue="4" data-d="2.0" data-anim="scale" style="left:1580px;top:605px;border-color:var(--muted)">ouch-client</div>
+<div class="box red" data-cue="5" style="left:120px;top:720px;width:1680px;padding:14px 22px"><div class="t">Medians here are queueing behind other threads, not code.</div><div class="s">The fastest samples show what the path costs. Pin and isolate cores for real tails.</div></div>
+</div>
+<div class="scene" id="s-close">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Where the rest of the time goes</div>
+<div class="seg" data-cue="0" data-d="0.00" data-anim="fade" data-hl="1" data-hlend="2" style="left:160px;top:260px;width:120px;background:var(--blue)">NIC</div>
+<div class="seg" data-cue="0" data-d="0.15" data-anim="fade" data-hl="1" data-hlend="2" style="left:280px;top:260px;width:170px;background:var(--blue)">kernel<br>rx</div>
+<div class="seg" data-cue="0" data-d="0.30" data-anim="fade" data-hl="1" data-hlend="2" style="left:450px;top:260px;width:140px;background:var(--blue)">recv<br>mmsg</div>
+<div class="seg" data-cue="0" data-d="0.45" data-anim="fade" data-hl="3" data-hlend="4" style="left:590px;top:260px;width:80px;background:#8ea3b1">ring</div>
+<div class="seg" data-cue="0" data-d="0.60" data-anim="fade" style="left:670px;top:260px;width:230px;background:var(--green)">seq · decode<br>book</div>
+<div class="seg" data-cue="0" data-d="0.75" data-anim="fade" data-hl="3" data-hlend="4" style="left:900px;top:260px;width:80px;background:#8ea3b1">ring</div>
+<div class="seg" data-cue="0" data-d="0.90" data-anim="fade" style="left:980px;top:260px;width:230px;background:var(--amber)">strategy<br>risk · OMS</div>
+<div class="seg" data-cue="0" data-d="1.05" data-anim="fade" data-hl="3" data-hlend="4" style="left:1210px;top:260px;width:80px;background:#8ea3b1">ring</div>
+<div class="seg" data-cue="0" data-d="1.20" data-anim="fade" style="left:1290px;top:260px;width:120px;background:var(--pink)">encode</div>
+<div class="seg" data-cue="0" data-d="1.35" data-anim="fade" data-hl="2" data-hlend="3" style="left:1410px;top:260px;width:170px;background:var(--blue)">send<br>TCP</div>
+<div class="seg" data-cue="0" data-d="1.50" data-anim="fade" data-hl="2" data-hlend="3" style="left:1580px;top:260px;width:120px;background:var(--blue)">NIC</div>
+<div class="lbl" data-cue="0" data-d="1.8" style="left:160px;top:380px">one tick to one order · not to scale</div>
+<svg class="full">
+<path class="draw" data-cue="4" d="M 160 470 L 160 490 L 590 490 L 590 470" stroke="var(--blue)" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="4" d="M 1410 470 L 1410 490 L 1700 490 L 1700 470" stroke="var(--blue)" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="5" d="M 160 615 L 160 635 L 1700 635 L 1700 615" stroke="var(--violet)" stroke-width="3" fill="none"/>
+</svg>
+<div class="box blue" data-cue="4" data-d="0.4" style="left:160px;top:510px;width:1100px;padding:10px 20px"><div class="t" style="font-size:27px">Kernel bypass: the NIC's queues mapped into user space</div><div class="s">e.g. ef_vi, DPDK · no kernel stack, no syscall at either end</div></div>
+<div class="box violet" data-cue="5" data-d="0.4" style="left:160px;top:655px;width:1100px;padding:10px 20px"><div class="t" style="font-size:27px">FPGA: parse the feed and fire the order in hardware</div><div class="s">the packet never reaches a CPU on the fast path</div></div>
+</div>

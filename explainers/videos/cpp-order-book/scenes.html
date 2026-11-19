@@ -1,0 +1,179 @@
+<!-- 0 TITLE -->
+<div class="scene" id="s-title">
+  <div class="eyebrow" style="left:140px;top:210px">C++ · INTERVIEW PROBLEM</div>
+  <div class="h1" style="left:132px;top:260px">Order book,<br>O(1) cancel</div>
+  <div class="sub" style="left:140px;top:570px;width:820px">Pool slots, intrusive queues, a flat price ladder.</div>
+  <div class="lbl" data-cue="1" style="left:1060px;top:215px">THE API, KEYED BY ORDER ID</div>
+  <div class="code sm" data-cue="1" data-d="0.2" style="left:1060px;top:255px"><span class="line" data-hl="1" data-hld="0.9" data-hlend="2"><span class="v">bool</span> add(id, side, price, qty);   <span class="c">// A</span></span><span class="line" data-hl="1" data-hld="1.4" data-hlend="2"><span class="v">bool</span> cancel(id);                 <span class="c">// D</span></span><span class="line" data-hl="1" data-hld="1.9" data-hlend="2"><span class="v">bool</span> execute(id, qty);           <span class="c">// E</span></span><span class="line" data-hl="1" data-hld="2.6" data-hlend="2"><span class="v">optional</span>&lt;<span class="v">uint32_t</span>&gt; best_bid();</span><span class="line" data-hl="1" data-hld="2.6" data-hlend="2"><span class="v">optional</span>&lt;<span class="v">uint32_t</span>&gt; best_ask();</span></div>
+  <div class="tag" data-cue="1" data-d="1.2" style="left:1060px;top:520px;color:var(--muted)">ITCH: A add · D delete · E executed</div>
+  <div class="box amber" data-cue="2" style="left:1060px;top:610px;width:330px"><div class="t">millions / s</div><div class="s">busy feed</div></div>
+  <div class="box teal" data-cue="3" style="left:1420px;top:610px;width:330px"><div class="t">O(1) each</div><div class="s">no allocation</div></div>
+</div>
+
+<!-- 1 NAIVE -->
+<div class="scene" id="s-naive">
+  <div class="h2" style="left:100px;top:110px">The first answer: map of lists</div>
+  <div class="code xs" data-cue="0" data-d="0.2" style="left:100px;top:230px"><span class="line" data-hl="0" data-hld="0.4" data-hlend="2">std::map&lt;<span class="v">uint32_t</span>, std::list&lt;<span class="v">Order</span>&gt;&gt; bids, asks;</span><span class="line"> </span><span class="line" data-hl="2" data-hlend="3"><span class="v">bool</span> cancel(<span class="v">uint64_t</span> id) {</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">for</span> (<span class="k">auto</span> l = bids.begin(); l != bids.end(); ++l)   <span class="c">// every level</span></span><span class="line" data-hl="3" data-hld="0.5" data-hlend="4">    <span class="k">for</span> (<span class="k">auto</span> it = l-&gt;second.begin(); it != l-&gt;second.end(); ++it)</span><span class="line" data-hl="3" data-hld="1" data-hlend="4">      <span class="k">if</span> (it-&gt;id == id) {                         <span class="c">// every order</span></span><span class="line">        l-&gt;second.erase(it);</span><span class="line">        <span class="k">if</span> (l-&gt;second.empty()) bids.erase(l);</span><span class="line">        <span class="k">return true</span>;</span><span class="line">      }</span><span class="line">  <span class="c">// ... then the same loops over asks</span></span><span class="line">  <span class="k">return false</span>;</span><span class="line">}</span></div>
+  <div class="lbl" data-cue="0" data-d="0.8" style="left:1110px;top:215px">BIDS · std::map → std::list</div>
+  <div class="lvl" data-cue="0" data-d="1.0" data-hl="1" data-hld="0.3" data-hlend="2" style="left:1110px;top:265px">100.02</div>
+  <div class="lvl" data-cue="0" data-d="1.2" style="left:1110px;top:395px">100.01</div>
+  <div class="lvl" data-cue="0" data-d="1.4" style="left:1110px;top:525px">100.00</div>
+  <svg class="full">
+    <path class="draw" data-cue="0" data-d="1.6" d="M1180 329 V395 M1180 459 V525" stroke="var(--amber)" stroke-width="3" fill="none"/>
+    <path class="draw" data-cue="0" data-d="1.8" d="M1250 297 H1700 M1250 427 H1570 M1250 557 H1830" stroke="#2c4351" stroke-width="3" fill="none"/>
+  </svg>
+  <div class="node" data-cue="0" data-d="1.8" style="left:1300px;top:265px">17</div>
+  <div class="node" data-cue="0" data-d="1.9" style="left:1440px;top:265px">23</div>
+  <div class="node" data-cue="0" data-d="2.0" style="left:1580px;top:265px">41</div>
+  <div class="node" data-cue="0" data-d="1.9" style="left:1300px;top:395px">8</div>
+  <div class="node" data-cue="0" data-d="2.0" style="left:1440px;top:395px">52</div>
+  <div class="node" data-cue="0" data-d="2.0" style="left:1300px;top:525px">5</div>
+  <div class="node" data-cue="0" data-d="2.1" style="left:1440px;top:525px">31</div>
+  <div class="node" data-cue="0" data-d="2.2" style="left:1580px;top:525px" id="nv-target">64</div>
+  <div class="node" data-cue="0" data-d="2.3" style="left:1720px;top:525px">77</div>
+  <div class="tag" data-cue="2" style="left:1110px;top:650px;color:var(--red)">cancel(64): only the id</div>
+  <div class="cursor" id="nv-cur" style="left:1294px;top:259px;width:122px;height:76px;opacity:0"></div>
+  <div class="mono" data-cue="3" data-d="0.4" style="left:1450px;top:652px;font-size:24px;color:var(--muted)">visited <span id="nv-n" style="color:var(--red);font-weight:700">0</span> orders</div>
+  <div class="newtag" data-cue="4" data-d="0.8" style="left:1380px;top:250px">new</div>
+  <div class="newtag" data-cue="4" data-d="0.9" style="left:1520px;top:380px">new</div>
+  <div class="newtag" data-cue="4" data-d="1.0" style="left:1800px;top:510px">new</div>
+  <div class="newtag" data-cue="4" data-d="1.1" style="left:1220px;top:380px">new</div>
+  <div class="box red" data-cue="4" style="left:1110px;top:740px;width:710px"><div class="t" style="font-size:30px">O(n) per cancel</div><div class="s">plus a heap node per order, per level</div></div>
+</div>
+
+<!-- 2 POOL -->
+<div class="scene" id="s-pool">
+  <div class="h2" style="left:100px;top:110px">A pool of slots, and an id map</div>
+  <div class="idx" data-cue="1" style="left:100px;top:200px">slot 0</div>
+  <div class="idx" data-cue="1" data-d="0.1" style="left:310px;top:200px">slot 1</div>
+  <div class="idx" data-cue="1" data-d="0.2" style="left:520px;top:200px">slot 2</div>
+  <div class="idx" data-cue="1" data-d="0.3" style="left:730px;top:200px">slot 3</div>
+  <div class="idx" data-cue="1" data-d="0.4" style="left:940px;top:200px">slot 4</div>
+  <div class="idx" data-cue="1" data-d="0.5" style="left:1150px;top:200px">slot 5</div>
+  <div class="slot" data-cue="1" style="left:100px;top:235px" data-hl="2" data-hlend="3"><b>id</b> 1043<br>B 1000100<br>qty 200<br>◀3  ▶5</div>
+  <div class="slot free" data-cue="1" data-d="0.1" style="left:310px;top:235px">free</div>
+  <div class="slot" data-cue="1" data-d="0.2" style="left:520px;top:235px;border-color:var(--red)"><b style="color:var(--red)">id</b> 1050<br>S 1000300<br>qty 100<br>◀–  ▶–</div>
+  <div class="slot" data-cue="1" data-d="0.3" style="left:730px;top:235px"><b>id</b> 1042<br>B 1000100<br>qty 100<br>◀–  ▶0</div>
+  <div class="slot free" data-cue="1" data-d="0.4" style="left:940px;top:235px">free</div>
+  <div class="slot" data-cue="1" data-d="0.5" style="left:1150px;top:235px" data-hl="3" data-hld="0.8" data-hlend="4"><b>id</b> 1047<br>B 1000100<br>qty 300<br>◀0  ▶–</div>
+  <div class="lbl" data-cue="1" data-d="0.8" style="left:1430px;top:200px">free_ · stack</div>
+  <div class="cellv" data-cue="1" data-d="0.9" style="left:1440px;top:240px;border-color:var(--blue);color:var(--blue)">4</div>
+  <div class="cellv" data-cue="1" data-d="1.0" style="left:1440px;top:310px;border-color:var(--blue);color:var(--blue)">1</div>
+  <div class="note" data-cue="1" data-d="1.4" style="left:1530px;top:250px;width:300px;font-size:22px">add pops a slot,<br>cancel pushes it back</div>
+  <div class="code xs" data-cue="0" data-d="0.3" style="left:100px;top:450px"><span class="line" data-hl="2" data-hlend="3"><span class="k">struct</span> <span class="v">Order</span> {             <span class="c">// one pool slot</span></span><span class="line" data-hl="2" data-hld="0.3" data-hlend="3">  <span class="v">uint64_t</span> id;</span><span class="line" data-hl="2" data-hld="0.6" data-hlend="3">  <span class="v">uint32_t</span> price, qty;     <span class="c">// Price(4), shares</span></span><span class="line" data-hl="2" data-hld="1.4" data-hlend="3">  <span class="v">uint32_t</span> prev, next;     <span class="c">// links: slot indexes</span></span><span class="line" data-hl="2" data-hld="1.0" data-hlend="3">  <span class="v">Side</span> side;</span><span class="line">};</span><span class="line" data-hl="1" data-hlend="2">std::vector&lt;<span class="v">Order</span>&gt;    pool_(max_orders);</span><span class="line" data-hl="1" data-hld="1.2" data-hlend="2">std::vector&lt;<span class="v">uint32_t</span>&gt; free_;   <span class="c">// free slots</span></span><span class="line" data-hl="3" data-hlend="5"><span class="v">IdMap</span>                 ids_;    <span class="c">// id -&gt; slot</span></span></div>
+  <div class="card2" data-cue="3" style="left:1010px;top:450px;width:560px;border-color:var(--violet)"><div class="hd c-violet" style="font-size:28px">IdMap · id → slot</div>
+    <table class="t" style="margin-top:12px;font-size:23px"><tr><td>1042</td><td class="c-teal">3</td></tr><tr><td class="c-muted">·</td><td></td></tr><tr id="pm-row"><td>1047</td><td class="c-teal">5</td></tr><tr><td>1043</td><td class="c-teal">0</td></tr><tr><td>1050</td><td class="c-teal">2</td></tr></table></div>
+  <svg class="full"><path class="draw" data-cue="3" data-d="0.8" d="M1570 640 C1700 640 1700 420 1250 392" stroke="var(--violet)" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/></svg>
+  <div class="tag" data-cue="4" style="left:1600px;top:690px;color:var(--violet);white-space:normal;width:250px">open addressing<br>linear probing<br>sized at startup</div>
+  <div class="tag" data-cue="4" data-d="1.4" style="left:1600px;top:830px;color:var(--green)">no malloc here</div>
+</div>
+
+<!-- 3 QUEUE -->
+<div class="scene" id="s-queue">
+  <div class="h2" style="left:100px;top:110px">Intrusive FIFO per price level</div>
+  <div class="box amber" data-cue="1" style="left:100px;top:275px;width:300px" data-hl="1" data-hld="0.3" data-hlend="2"><div class="t c-amber" style="font-size:28px">level 100.01</div><div class="s">head 3 · tail 5</div><div class="s">qty <span data-cue="0" data-anim="none" data-out="4" data-od="0.6">600</span><span data-cue="4" data-d="0.6" data-anim="none" style="margin-left:-42px;color:var(--amber)">400</span></div></div>
+  <div class="qslot" data-cue="0" data-d="0.4" style="left:520px;top:275px"><b>slot 3</b> · id 1042<br>100 shares<br><span class="c-muted">oldest · trades first</span></div>
+  <div class="qslot" id="q-mid" data-cue="0" data-d="0.6" data-out="4" data-od="0.8" data-hl="3" data-hld="0.4" data-hlend="4" style="left:900px;top:275px"><b>slot 0</b> · id 1043<br>200 shares</div>
+  <div class="qslot" data-cue="0" data-d="0.8" style="left:1280px;top:275px"><b>slot 5</b> · id 1047<br>300 shares<br><span class="c-muted">newest</span></div>
+  <div class="tag" data-cue="3" data-d="0.4" style="left:930px;top:445px;color:var(--red)">cancel(1043)</div>
+  <svg class="full">
+    <path class="draw" data-cue="0" data-d="1.0" data-out="4" d="M770 315 H893" stroke="var(--teal)" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+    <path class="draw" data-cue="0" data-d="1.1" data-out="4" d="M1150 315 H1273" stroke="var(--teal)" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+    <path class="draw" data-cue="0" data-d="1.2" data-out="4" d="M900 390 H777" stroke="var(--violet)" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/>
+    <path class="draw" data-cue="0" data-d="1.3" data-out="4" d="M1280 390 H1157" stroke="var(--violet)" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/>
+    <path class="draw" data-cue="1" data-d="0.6" d="M400 320 H513" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+    <path class="draw" data-cue="1" data-d="0.9" d="M250 275 C250 220 1405 220 1405 268" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+    <path class="draw" data-cue="4" data-d="0.3" d="M770 315 H1273" stroke="var(--teal)" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+    <path class="draw" data-cue="4" data-d="0.9" d="M1280 390 H777" stroke="var(--violet)" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/>
+  </svg>
+  <div class="lbl c-teal" data-cue="0" data-d="1.4" style="left:790px;top:282px;color:var(--teal)">next</div>
+  <div class="lbl" data-cue="0" data-d="1.4" style="left:790px;top:398px;color:var(--violet)">prev</div>
+  <div class="lbl" data-cue="1" data-d="0.9" style="left:700px;top:210px;color:var(--amber)">tail</div>
+  <div class="lbl" data-cue="1" data-d="0.6" style="left:420px;top:288px;color:var(--amber)">head</div>
+  <div class="code xs" data-cue="2" style="left:100px;top:580px"><span class="line c"><span class="c">// add: append at the tail</span></span><span class="line" data-hl="2" data-hlend="3">o.prev = L.tail;</span><span class="line" data-hl="2" data-hld="0.3" data-hlend="3"><span class="k">if</span> (L.tail != NIL) pool_[L.tail].next = slot;</span><span class="line" data-hl="2" data-hld="0.3" data-hlend="3"><span class="k">else</span>               L.head = slot;</span><span class="line" data-hl="2" data-hld="0.6" data-hlend="3">L.tail = slot;</span><span class="line" data-hl="2" data-hld="0.6" data-hlend="3">L.qty += qty;</span></div>
+  <div class="code xs" data-cue="3" style="left:880px;top:580px"><span class="line" data-hl="3" data-hlend="4"><span class="k">const</span> <span class="v">uint32_t</span> slot = ids_.find(id);</span><span class="line c"><span class="c">// splice out</span></span><span class="line" data-hl="4" data-hlend="5"><span class="k">if</span> (o.prev != NIL) pool_[o.prev].next = o.next;</span><span class="line" data-hl="4" data-hlend="5"><span class="k">else</span>               L.head = o.next;</span><span class="line" data-hl="4" data-hld="1.0" data-hlend="5"><span class="k">if</span> (o.next != NIL) pool_[o.next].prev = o.prev;</span><span class="line" data-hl="4" data-hld="1.0" data-hlend="5"><span class="k">else</span>               L.tail = o.prev;</span><span class="line" data-hl="5">L.qty -= o.qty;</span><span class="line" data-hl="5" data-hld="0.4">ids_.erase(o.id);  free_.push_back(slot);</span></div>
+  <div class="tag" data-cue="5" data-d="0.8" style="left:100px;top:860px;color:var(--green);font-size:26px">cancel: one hash probe + two link writes = O(1)</div>
+</div>
+
+<!-- 4 LEVELS -->
+<div class="scene" id="s-levels">
+  <div class="h2" style="left:100px;top:110px">Price levels: a flat array by tick</div>
+  <div id="lv-ladder" data-cue="0" data-d="0.3" style="left:0;top:0;width:1920px;height:1px"></div>
+  <div class="marker c-green" id="lv-bid" data-cue="3" data-anim="fade" style="left:0;top:190px">best<br>bid<br>▼</div>
+  <div class="marker c-red" id="lv-ask" data-cue="3" data-anim="fade" style="left:0;top:190px">best<br>ask<br>▼</div>
+  <div class="lbl" data-cue="1" style="left:150px;top:520px">index i →   0 = $99.90 · 10 = $100.00 · 19 = $100.09</div>
+  <div class="code xs" data-cue="2" style="left:100px;top:580px"><span class="line" data-hl="2" data-hlend="3"><span class="v">int64_t</span> index(<span class="v">uint32_t</span> price) <span class="k">const</span> {</span><span class="line" data-hl="2" data-hld="0.3" data-hlend="3">  <span class="k">if</span> (price &lt; base_ || (price - base_) % tick_ != 0) <span class="k">return</span> -1;</span><span class="line" data-hl="2" data-hld="0.6" data-hlend="3">  <span class="k">const</span> <span class="v">uint32_t</span> i = (price - base_) / tick_;</span><span class="line" data-hl="2" data-hld="0.9" data-hlend="3">  <span class="k">return</span> i &lt; n_ ? <span class="v">int64_t</span>(i) : -1;</span><span class="line">}</span><span class="line"><span class="c">// add: an improving price moves the best</span></span><span class="line" data-hl="3" data-hlend="4"><span class="k">if</span> (s == Side::Buy ? i &gt; best_[0] : i &lt; best_[1]) best_[<span class="k">int</span>(s)] = i;</span><span class="line"><span class="c">// remove: best level emptied, walk to the next live one</span></span><span class="line" data-hl="4">while (best_[0] &gt;= 0 &amp;&amp; lv_[0][best_[0]].head == NIL) --best_[0];</span></div>
+  <div class="card2" data-cue="1" data-d="0.4" style="left:1260px;top:580px;width:560px;border-color:var(--amber)"><div class="hd c-amber" style="font-size:26px">Price(4): 1/10000 dollar</div><div class="sb mono" style="font-size:22px;line-height:1.6;color:#cfe3ea">$100.00 = 1000000<br>one cent tick = 100<br><span data-cue="2" data-d="0.4">i = (1000000 − 999000) / 100 = <b class="c-amber">10</b></span></div></div>
+</div>
+
+<!-- 5 TESTS -->
+<div class="scene" id="s-tests">
+  <div class="h2" style="left:100px;top:110px">Test the edges, then compare</div>
+  <div class="check" data-cue="0" data-d="0.6" style="left:100px;top:220px">empty book: no best bid or ask</div>
+  <div class="check" data-cue="0" data-d="1.2" style="left:100px;top:272px">duplicate id rejected</div>
+  <div class="check" data-cue="0" data-d="1.8" style="left:100px;top:324px">price off the grid, below or past the array</div>
+  <div class="check" data-cue="0" data-d="2.6" style="left:100px;top:376px">full pool rejects, freed slot reused</div>
+  <div class="check" data-cue="0" data-d="3.0" style="left:100px;top:428px">zero qty, unknown id, cancel twice</div>
+  <div class="check" data-cue="1" style="left:100px;top:480px">cancel head, middle, tail: FIFO kept</div>
+  <div class="check" data-cue="1" data-d="0.8" style="left:100px;top:532px">partial execute keeps queue position</div>
+  <div class="check" data-cue="1" data-d="1.4" style="left:100px;top:584px">best walks to the next live level</div>
+  <div class="term" data-cue="2" style="left:1000px;top:220px;width:820px"><span class="c-muted">$</span> g++ -std=c++20 -O2 -Wall -Wextra test.cpp
+<span class="c-muted">$</span> ./test   <span class="c-muted"># 200,000 random ops vs naive</span>
+<span class="c-green" data-cue="2" data-d="1.6" data-anim="none">all tests passed</span>
+<span class="c-muted" data-cue="2" data-d="2.2" data-anim="none">also clean under ASan + UBSan</span></div>
+  <table class="t cx" data-cue="3" style="left:1000px;top:520px;width:820px">
+    <tr><th>operation</th><th>cost</th></tr>
+    <tr><td>add</td><td class="c-green">O(1)</td></tr>
+    <tr><td>cancel · execute</td><td class="c-green">O(1)</td></tr>
+    <tr><td>best bid / ask</td><td class="c-green">O(1)</td></tr>
+    <tr data-hl="4"><td>best level empties</td><td class="c-amber">walk to next live tick</td></tr>
+  </table>
+</div>
+
+<!-- 6 BENCH -->
+<div class="scene" id="s-bench">
+  <div class="h2" style="left:100px;top:110px">Benchmark: ns per message</div>
+  <div class="tag" data-cue="0" data-d="0.5" style="left:100px;top:200px;color:var(--amber)">shared 4-vCPU cloud box · load avg &gt; 20 · g++ 13.3 -O2</div>
+  <div class="lbl" data-cue="1" style="left:100px;top:262px">2M messages: 50% add · 40% cancel · 10% execute · 10,000 resting · best read each time</div>
+  <div class="barl" data-cue="2" style="left:100px;top:340px;color:var(--teal)">pool book</div>
+  <div class="grow" data-cue="2" data-d="0.2" data-w="323" style="left:400px;top:330px;height:56px;border-radius:6px;background:var(--teal)"></div>
+  <div class="barv c-teal" data-cue="2" data-d="1.0" style="left:745px;top:337px">~95 ns</div>
+  <div class="barl" data-cue="3" style="left:100px;top:440px;color:var(--violet)">map + hash</div>
+  <div class="grow" data-cue="3" data-d="0.2" data-w="372" style="left:400px;top:430px;height:56px;border-radius:6px;background:var(--violet)"></div>
+  <div class="barv c-violet" data-cue="3" data-d="1.0" style="left:795px;top:437px">~140 ns</div>
+  <div class="barl" data-cue="4" style="left:100px;top:540px;color:var(--red)">naive search</div>
+  <div class="grow" data-cue="4" data-d="0.2" data-w="1305" data-dur="1.6" style="left:400px;top:530px;height:56px;border-radius:6px;background:var(--red)"></div>
+  <div class="barv c-red" data-cue="4" data-d="1.6" style="left:1480px;top:600px">~90,000 ns</div>
+  <svg class="full"><path class="draw" data-cue="2" d="M400 640 H1720" stroke="#2c4351" stroke-width="3" fill="none"/></svg>
+  <div class="lbl" data-cue="2" style="left:388px;top:650px">10</div>
+  <div class="lbl" data-cue="2" style="left:718px;top:650px">100</div>
+  <div class="lbl" data-cue="2" style="left:1040px;top:650px">1 µs</div>
+  <div class="lbl" data-cue="2" style="left:1370px;top:650px">10 µs</div>
+  <div class="lbl" data-cue="2" style="left:1690px;top:650px">100 µs</div>
+  <div class="lbl" data-cue="2" style="left:1560px;top:690px">log scale</div>
+  <table class="t" data-cue="4" data-d="1.4" style="left:400px;top:740px;font-size:22px">
+    <tr><th>median ns/msg</th><th>pool</th><th>map + hash</th><th>naive</th></tr>
+    <tr><td>10,000 resting</td><td>94 · 96</td><td>144 · 135</td><td>86,034 · 94,089</td></tr>
+    <tr><td>1,000 resting</td><td>66 · 95</td><td>106 · 146</td><td>2,290 · 2,853</td></tr>
+  </table>
+  <div class="lbl" data-cue="4" data-d="1.8" style="left:1380px;top:790px;width:420px;line-height:1.5">median of 7 runs,<br>two sessions shown</div>
+</div>
+
+<!-- 7 LAB -->
+<div class="scene" id="s-lab">
+  <div class="h2" style="left:100px;top:110px">What the lab chose</div>
+  <div class="card2" data-cue="0" data-d="0.4" style="left:100px;top:200px;width:830px;height:580px;border-color:var(--teal)">
+    <div class="hd c-teal">libs/book</div><div class="sb">feed handler · price levels only (L2)</div></div>
+  <div class="note" data-cue="1" style="left:140px;top:320px;width:760px">No queue position needed: nobody trades against this book.</div>
+  <div class="lbl" data-cue="2" style="left:140px;top:420px">BookSide: vector&lt;Level&gt;, worst … best</div>
+  <div class="bytes" data-cue="2" data-d="0.3" style="left:140px;top:455px;width:750px">
+    <div style="width:150px;background:#2f6b55">99.95</div><div style="width:150px;background:#2f6b55">99.96</div><div style="width:150px;background:#3c8c6c">99.97</div><div style="width:150px;background:#45a37c">99.98</div><div style="width:150px;background:var(--green)" data-hl="2" data-hld="1.2" data-hlend="3">99.99</div></div>
+  <div class="lbl" data-cue="2" data-d="0.6" style="left:140px;top:540px">Level { price, orders, shares } · best at the back</div>
+  <div class="box violet" data-cue="3" style="left:140px;top:600px;width:750px"><div class="t" style="font-size:26px">OrderMap: ref → {price, shares, side}</div><div class="s">open addressing · identity hash on sequential refs</div></div>
+  <div class="card2" data-cue="5" style="left:990px;top:200px;width:830px;height:580px;border-color:var(--amber)">
+    <div class="hd c-amber">libs/match</div><div class="sb">matching engine · time priority (L3)</div></div>
+  <div class="box teal" data-cue="5" data-d="0.6" style="left:1030px;top:330px;width:750px"><div class="t" style="font-size:26px">nodes_ pool + free_ stack</div><div class="s">reserved up front</div></div>
+  <div class="box violet" data-cue="5" data-d="1.2" style="left:1030px;top:460px;width:750px"><div class="t" style="font-size:26px">KeyIndex: key → node</div><div class="s">open addressing</div></div>
+  <div class="box amber" data-cue="5" data-d="1.8" style="left:1030px;top:590px;width:750px"><div class="t" style="font-size:26px">Level { head, tail }: intrusive FIFO</div><div class="s">levels in a sorted vector, best at the back</div></div>
+  <div class="tag" data-cue="4" style="left:100px;top:810px;color:var(--green);font-size:24px">same benchmark, 10,000 resting: libs/book 103 · 102 ns vs pool 94 · 96 ns</div>
+</div>

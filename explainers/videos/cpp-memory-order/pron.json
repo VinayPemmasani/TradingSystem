@@ -1,0 +1,62 @@
+[
+[
+"\\bg\\+\\+ -O2\\b",
+"G plus plus, dash O two,"
+],
+[
+"\\bx86\\b",
+"x eighty six"
+],
+[
+"\\bARM\\b",
+"arm"
+],
+[
+"\\bGCC\\b",
+"G C C"
+],
+[
+"\\bseq_cst\\b",
+"seek C S T"
+],
+[
+"\\bxchg\\b",
+"exchange"
+],
+[
+"\\bstlr\\b",
+"S T L R"
+],
+[
+"\\bldar\\b",
+"L D A R"
+],
+[
+"\\bmov\\b",
+"move"
+],
+[
+"\\bSpscRing\\b",
+"S P S C ring"
+],
+[
+"\\bbool\\b",
+"bool"
+],
+[
+"\\bAeron's\\b",
+"Aaron's"
+],
+[
+"\\bAeron\\b",
+"Aaron"
+],
+[
+"\\b0\\.7\\b",
+"zero point seven"
+],
+[
+"\\b8\\.9\\b",
+"eight point nine"
+]
+]

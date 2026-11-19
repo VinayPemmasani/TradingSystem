@@ -1,0 +1,18 @@
+[
+["\\bC\\+\\+20\\b", "C plus plus twenty"],
+["\\bg\\+\\+", "G plus plus"],
+["\\bx86\\b", "x eighty six"],
+["\\bvCPU\\b", "V C P U"],
+["\\bL1\\b", "L one"],
+["\\bL2\\b", "L two"],
+["std::list", "standard list"],
+["std::map", "standard map"],
+["\\b0\\.52\\b", "zero point five two"],
+["\\b0\\.35\\b", "zero point three five"],
+["\\b0\\.43\\b", "zero point four three"],
+["\\b0\\.19\\b", "zero point one nine"],
+["\\b0\\.5\\b", "zero point five"],
+["\\b4\\.8\\b", "four point eight"],
+["\\b8\\.5\\b", "eight and a half"],
+["\\b128\\b", "a hundred and twenty eight"]
+]

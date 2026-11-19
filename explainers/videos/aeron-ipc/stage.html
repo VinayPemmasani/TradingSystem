@@ -1,0 +1,440 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#0b1319;--panel:#13212b;--panel2:#18303c;--ink:#eef4f7;--muted:#8ea3b1;--line:#2c4351;
+--teal:#3fd0dc;--green:#4fd18b;--amber:#ffb347;--red:#ff6b5e;--violet:#a98bff;--blue:#6aa8ff;--pink:#ff8fc8;
+--display:"Archivo","Arial Narrow",sans-serif;--body:"IBM Plex Sans",sans-serif;--mono:"IBM Plex Mono",monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:var(--bg);font-family:var(--body);color:var(--ink)}
+#bg{position:absolute;inset:0;background:radial-gradient(1300px 800px at 25% 20%,#16323d 0%,#0b1319 65%)}
+.scene{position:absolute;inset:0;display:none}
+.a{position:absolute;opacity:0;will-change:opacity,transform}
+#caption{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);max-width:1640px;padding:14px 30px;border-radius:16px;background:rgba(5,10,14,.88);color:#f1f5f8;font:500 33px/1.32 var(--body);text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.35);border:1px solid #233743}
+#chapter{position:absolute;left:44px;top:34px;display:flex;gap:14px;align-items:center;padding:9px 20px 9px 12px;border-radius:999px;background:rgba(5,10,14,.85);color:#e8eef2;font:600 21px var(--mono);letter-spacing:.06em;text-transform:uppercase;border:1px solid #233743}
+#chapter b{background:var(--teal);color:#06141a;border-radius:999px;padding:3px 11px;font-weight:700}
+#brand{position:absolute;right:44px;top:40px;font:600 20px var(--mono);color:var(--muted);letter-spacing:.08em}
+.box{border-radius:16px;background:var(--panel);border:2px solid var(--line);padding:16px 22px}
+.box .t{font:700 32px var(--body)}
+.box .s{font:500 22px var(--mono);color:var(--muted);margin-top:4px}
+.mono{font-family:var(--mono)}
+.lbl{font:600 22px var(--mono);color:var(--muted);letter-spacing:.04em}
+.h2{font:800 64px/1 var(--display);font-stretch:80%;letter-spacing:-.005em}
+.pill{display:inline-block;padding:6px 14px;border-radius:999px;font:600 22px var(--mono)}
+svg{position:absolute;left:0;top:0;overflow:visible}
+.cell{position:absolute;height:64px;border:1px solid rgba(255,255,255,.18);display:grid;place-items:center;font:600 20px var(--mono);color:#06141a}
+.code{font:500 30px/1.55 var(--mono);color:#dce8ee}
+.code .k{color:var(--teal)} .code .c{color:#6f8796} .code .r{color:var(--amber)} .code .g{color:var(--green)}
+.frame{position:absolute;height:86px;border-radius:6px;display:grid;place-items:center;font:600 19px var(--mono);color:#06141a;overflow:hidden}
+.cursor{position:absolute;width:4px;height:130px;border-radius:2px}
+.cursor span{position:absolute;top:-38px;left:50%;transform:translateX(-50%);white-space:nowrap;font:700 22px var(--mono)}
+</style></head>
+<body>
+<div id="bg"></div>
+
+<!-- 1 HOOK -->
+<div class="scene" id="s-hook">
+  <div class="a" id="h-eyebrow" style="left:140px;top:170px;font:600 28px var(--mono);letter-spacing:.18em;color:var(--teal)">TRADING LAB · LOW LEVEL</div>
+  <div class="a" id="h-title" style="left:132px;top:215px;font:800 190px/0.95 var(--display);font-stretch:72%">Aeron IPC</div>
+  <div class="a" id="h-sub" style="left:140px;top:420px;font:400 40px/1.3 var(--body);color:#b7c7d2;width:900px">One feed handler. Many trader processes.<br>No system calls on the data path.</div>
+  <div class="a box" id="h-fh" style="left:1080px;top:440px;width:250px;text-align:center"><div class="t">itch-fh</div><div class="s">books rebuilt once</div></div>
+  <div class="a box" id="h-t0" style="left:1540px;top:250px;width:230px;text-align:center"><div class="t">trader A</div></div>
+  <div class="a box" id="h-t1" style="left:1540px;top:460px;width:230px;text-align:center"><div class="t">trader B</div></div>
+  <div class="a box" id="h-t2" style="left:1540px;top:670px;width:230px;text-align:center"><div class="t">trader C</div></div>
+  <svg width="1920" height="1080" id="h-svg"></svg>
+</div>
+
+<!-- 2 PIECES -->
+<div class="scene" id="s-pieces">
+  <div class="a h2" id="p-h" style="left:120px;top:120px">Three pieces</div>
+  <div class="a box" id="p-drv" style="left:120px;top:260px;width:430px;height:240px"><div class="t">Media driver</div><div class="s">a thread in one process<br>conductor: creates logs,<br>sets limits, cleans</div></div>
+  <div class="a" id="p-cnc" style="left:660px;top:250px;width:600px">
+    <div class="lbl" style="margin-bottom:10px">/dev/shm/aeron-lab/cnc.dat</div>
+    <div class="box" style="padding:0;overflow:hidden">
+      <div style="padding:16px 22px;border-bottom:2px solid var(--line);font:600 25px var(--mono)"><span style="color:var(--amber)">to-driver</span>  MPSC ring buffer <span style="color:var(--muted)">· commands</span></div>
+      <div style="padding:16px 22px;border-bottom:2px solid var(--line);font:600 25px var(--mono)"><span style="color:var(--violet)">to-clients</span> broadcast buffer <span style="color:var(--muted)">· replies</span></div>
+      <div style="padding:16px 22px;border-bottom:2px solid var(--line);font:600 25px var(--mono)"><span style="color:var(--green)">counters</span>  metadata</div>
+      <div style="padding:16px 22px;font:600 25px var(--mono)"><span style="color:var(--green)">counters</span>  values <span style="color:var(--muted)">· every position</span></div>
+    </div>
+  </div>
+  <div class="a box" id="p-c1" style="left:1380px;top:260px;width:420px"><div class="t">itch-fh</div><div class="s">client · publisher</div></div>
+  <div class="a box" id="p-c2" style="left:1380px;top:420px;width:420px"><div class="t">trader A, trader B</div><div class="s">clients · subscribers</div></div>
+  <div class="a" id="p-log" style="left:120px;top:640px;width:1680px">
+    <div class="lbl" style="margin-bottom:10px">/dev/shm/aeron-lab/publications/&lt;registration id&gt;.logbuffer</div>
+    <div style="display:flex;height:92px;border-radius:14px;overflow:hidden;border:2px solid var(--teal)">
+      <div style="flex:1;background:#123f48;display:grid;place-items:center;font:600 26px var(--mono)">messages, in shared memory</div>
+    </div>
+  </div>
+  <div class="a" id="p-not" style="left:120px;top:770px;font:600 30px var(--mono);color:var(--red)">driver ✕ data path — publishers and subscribers touch the log directly</div>
+</div>
+
+<!-- 3 HANDSHAKE -->
+<div class="scene" id="s-handshake">
+  <div class="a h2" id="k-h" style="left:120px;top:110px">Setup handshake</div>
+  <div class="a" id="k-lanes" style="left:0;top:0;width:1920px;height:1080px">
+    <div class="box" style="position:absolute;left:180px;top:220px;width:300px;text-align:center"><div class="t">itch-fh</div></div>
+    <div class="box" style="position:absolute;left:810px;top:220px;width:300px;text-align:center"><div class="t">driver</div></div>
+    <div class="box" style="position:absolute;left:1440px;top:220px;width:300px;text-align:center"><div class="t">trader A</div></div>
+  </div>
+  <svg width="1920" height="1080" id="k-svg"></svg>
+  <div class="a" id="k-m0" style="left:500px;top:345px;font:600 24px var(--mono);color:var(--amber)">ADD_EXCLUSIVE_PUBLICATION 0x03</div>
+  <div class="a" id="k-m0b" style="left:510px;top:378px;font:500 20px var(--mono);color:var(--muted)">aeron:ipc · stream 1001 → to-driver ring</div>
+  <div class="a" id="k-m1" style="left:500px;top:445px;font:600 24px var(--mono);color:var(--violet)">ON_EXCLUSIVE_PUBLICATION_READY 0x0F06</div>
+  <div class="a" id="k-m1b" style="left:510px;top:478px;font:500 20px var(--mono);color:var(--muted)">log file name ← broadcast buffer</div>
+  <div class="a" id="k-m2" style="left:1140px;top:545px;font:600 24px var(--mono);color:var(--amber)">ADD_SUBSCRIPTION 0x04</div>
+  <div class="a" id="k-m3" style="left:1140px;top:625px;font:600 24px var(--mono);color:var(--violet)">ON_AVAILABLE_IMAGE 0x0F02</div>
+  <div class="a" id="k-m3b" style="left:1150px;top:658px;font:500 20px var(--mono);color:var(--muted)">same log file name</div>
+  <div class="a" id="k-log" style="left:330px;top:780px;width:1260px;height:96px;border-radius:14px;border:2px solid var(--teal);background:#123f48;display:grid;place-items:center;font:600 26px var(--mono)">publications/…logbuffer  ·  mmap'd by both processes</div>
+  <div class="a" id="k-pages" style="left:330px;top:890px;font:600 26px var(--mono);color:var(--teal)">same physical pages</div>
+</div>
+
+<!-- 4 LAYOUT -->
+<div class="scene" id="s-layout">
+  <div class="a h2" id="l-h" style="left:120px;top:110px">Log buffer layout</div>
+  <div class="a" id="l-bar" style="left:120px;top:250px;width:1680px;height:130px;display:flex;gap:8px">
+    <div style="flex:4;border-radius:12px;background:#1d5563;display:grid;place-items:center;font:700 32px var(--mono)">term 0</div>
+    <div style="flex:4;border-radius:12px;background:#1d4a63;display:grid;place-items:center;font:700 32px var(--mono)">term 1</div>
+    <div style="flex:4;border-radius:12px;background:#22405f;display:grid;place-items:center;font:700 32px var(--mono)">term 2</div>
+    <div style="flex:1.4;border-radius:12px;background:#4a3b1c;display:grid;place-items:center;font:700 26px var(--mono);text-align:center">meta<br>data</div>
+  </div>
+  <div class="a" id="l-sz" style="left:120px;top:395px;width:1680px;display:flex;gap:8px;font:600 26px var(--mono);color:var(--teal)">
+    <div style="flex:4;text-align:center">4 MiB</div><div style="flex:4;text-align:center">4 MiB</div><div style="flex:4;text-align:center">4 MiB</div><div style="flex:1.4;text-align:center;color:var(--amber)">4 KiB page</div>
+  </div>
+  <div class="a box" id="l-meta" style="left:1060px;top:480px;width:740px">
+    <div class="code"><span class="c">// aeron_logbuffer_metadata_t</span><br>
+    <span class="k">int64</span> term_tail_counters[3]<br>
+    <span class="k">int32</span> active_term_count<br>
+    <span class="k">int64</span> end_of_stream_position<br>
+    <span class="c">…</span> initial_term_id, term_length,<br>
+    <span class="c">…</span> mtu_length, page_size, default_header</div>
+  </div>
+  <div class="a" id="l-tail" style="left:120px;top:500px;width:880px;font:500 30px/1.5 var(--body);color:#c9d7df">raw tail = <span class="mono" style="color:var(--amber)">term_id &lt;&lt; 32 | term_offset</span><br>one per partition</div>
+  <div class="a" id="l-def" style="left:120px;top:650px;width:880px">
+    <div class="code"><span class="k">aeron:ipc?term-length=4m</span> <span class="c">// lab</span><br>
+    64 MiB <span class="c">// Aeron IPC default</span><br>
+    64 KiB <span class="c">// minimum term</span></div>
+  </div>
+</div>
+
+<!-- 5 HEADER -->
+<div class="scene" id="s-header">
+  <div class="a h2" id="f-h" style="left:120px;top:100px">Frame header · 32 bytes · little endian</div>
+  <div class="a" id="f-offs" style="left:128px;top:215px;width:1664px;height:30px"></div>
+  <div class="a" id="f-row" style="left:128px;top:250px;width:1664px;height:64px"></div>
+  <div class="a" id="f-names" style="left:128px;top:325px;width:1664px;height:120px"></div>
+  <div class="a" id="f-flags" style="left:128px;top:470px;font:500 26px/1.5 var(--mono);color:#c9d7df">flags: B=0x80 E=0x40 → unfragmented 0xC0 · type: DATA=1 PAD=0 · version 0</div>
+  <div class="a" id="f-ping" style="left:128px;top:570px;width:1664px">
+    <div class="lbl" style="margin-bottom:8px">64-byte ping</div>
+    <div style="display:flex;height:70px;font:600 22px var(--mono);color:#06141a">
+      <div style="width:416px;background:var(--teal);display:grid;place-items:center">header 32</div>
+      <div style="width:832px;background:var(--green);display:grid;place-items:center">payload 64</div>
+      <div style="width:416px;display:grid;place-items:center;color:var(--ink)">= 96 bytes</div>
+    </div>
+  </div>
+  <div class="a" id="f-add" style="left:128px;top:690px;width:1664px">
+    <div class="lbl" style="margin-bottom:8px">ITCH Add Order (36 bytes)</div>
+    <div style="display:flex;height:70px;font:600 22px var(--mono);color:#06141a">
+      <div style="width:416px;background:var(--teal);display:grid;place-items:center">header 32</div>
+      <div style="width:468px;background:var(--amber);display:grid;place-items:center">36</div>
+      <div style="width:364px;background:repeating-linear-gradient(45deg,#2c4351 0 10px,#1b2c36 10px 20px);display:grid;place-items:center;color:var(--muted)">align → 96</div>
+      <div style="width:416px;display:grid;place-items:center;color:var(--ink)">68 → 96 bytes</div>
+    </div>
+  </div>
+  <div class="a" id="f-res" style="left:1340px;top:180px;width:452px;font:600 24px var(--mono);color:var(--pink);text-align:right">reserved_value = itch-fh rdtsc</div>
+</div>
+
+<!-- 6 PUBLISH -->
+<div class="scene" id="s-publish">
+  <div class="a h2" id="u-h" style="left:120px;top:100px">Publish · no lock, no syscall</div>
+  <div class="a" id="u-term" style="left:120px;top:240px;width:1680px;height:86px;border-radius:8px;background:#0f1c24;border:2px solid var(--line)"></div>
+  <div class="a frame" id="u-f0" style="left:122px;top:242px;width:200px;background:#2d7a6e">frame</div>
+  <div class="a frame" id="u-f1" style="left:326px;top:242px;width:200px;background:#2d7a6e">frame</div>
+  <div class="a frame" id="u-new" style="left:530px;top:242px;width:200px"></div>
+  <div class="a cursor" id="u-tail" style="left:530px;top:220px;background:var(--amber)"><span style="color:var(--amber)">tail</span></div>
+  <div class="a" id="u-fl" style="left:530px;top:345px;font:700 30px var(--mono)"></div>
+  <div class="a" id="u-steps" style="left:120px;top:440px;width:1100px">
+    <div class="code" id="u-code">
+      <div id="u-s1"><span class="c">1</span> tail ← tail + 96 <span class="c">// ordered store, not atomic add</span></div>
+      <div id="u-s2"><span class="c">2</span> frame_length ← <span class="r">−96</span> <span class="c">// release</span></div>
+      <div id="u-s3"><span class="c">3</span> header fields + payload <span class="c">// memcpy or try_claim</span></div>
+      <div id="u-s4"><span class="c">4</span> frame_length ← <span class="g">+96</span> <span class="c">// release</span>  <span class="g">◀ COMMIT</span></div>
+    </div>
+  </div>
+  <div class="a box" id="u-shared" style="left:1260px;top:440px;width:540px">
+    <div class="s" style="color:var(--ink);font-size:24px">shared publication (many writers):</div>
+    <div class="code" style="font-size:24px;margin-top:8px">getAndAdd(raw_tail, 96)<br><span class="c">raw_tail = term_id&lt;&lt;32 | offset</span></div>
+  </div>
+</div>
+
+<!-- 7 SUBSCRIBE -->
+<div class="scene" id="s-subscribe">
+  <div class="a h2" id="b-h" style="left:120px;top:100px">Subscribe · spin, read in place</div>
+  <div class="a" id="b-term" style="left:120px;top:250px;width:1680px;height:86px;border-radius:8px;background:#0f1c24;border:2px solid var(--line)"></div>
+  <div id="b-frames"></div>
+  <div class="a cursor" id="b-ca" style="top:228px;background:var(--teal)"><span style="color:var(--teal)">trader A</span></div>
+  <div class="a cursor" id="b-cb" style="top:228px;background:var(--violet)"><span style="color:var(--violet)">trader B</span></div>
+  <div class="a" id="b-code" style="left:120px;top:420px;width:1050px">
+    <div class="code">
+      <div><span class="k">loop</span>:</div>
+      <div id="b-l1">  len ← load_acquire(frame_length @ position)</div>
+      <div id="b-l2">  <span class="k">if</span> len &gt; 0: <span class="c">// a whole frame is ready</span></div>
+      <div id="b-l3">    handler(ptr into shared pages) <span class="c">// zero copy</span></div>
+      <div id="b-l4">    position += align(len, 32) → counter <span class="c">// ordered</span></div>
+    </div>
+  </div>
+  <div class="a box" id="b-ctr" style="left:1260px;top:420px;width:540px">
+    <div class="s" style="color:var(--ink)">subscriber-position counters</div>
+    <div class="code" style="margin-top:10px">A <span class="k" id="b-pa">0</span><br>B <span style="color:var(--violet)" id="b-pb">0</span></div>
+  </div>
+</div>
+
+<!-- 8 FLOW -->
+<div class="scene" id="s-flow">
+  <div class="a h2" id="w-h" style="left:120px;top:100px">Flow control</div>
+  <div class="a box" id="w-drv" style="left:120px;top:210px;width:560px"><div class="t">driver conductor</div><div class="s">limit = min(subscriber positions)<br>        + term_length / 2</div></div>
+  <div class="a" id="w-axis" style="left:120px;top:470px;width:1680px;height:6px;background:var(--line);border-radius:3px"></div>
+  <div class="a" id="w-clean" style="left:120px;top:440px;height:66px;background:repeating-linear-gradient(45deg,rgba(255,107,94,.22) 0 10px,transparent 10px 20px);border-radius:6px"></div>
+  <div class="a" id="w-cleanl" style="left:130px;top:520px;font:600 22px var(--mono);color:var(--red)">cleaned behind</div>
+  <div class="a cursor" id="w-b" style="top:410px;background:var(--violet)"><span style="color:var(--violet)">B (slowest)</span></div>
+  <div class="a cursor" id="w-a" style="top:410px;background:var(--teal)"><span style="color:var(--teal)">A</span></div>
+  <div class="a cursor" id="w-p" style="top:410px;background:var(--amber)"><span style="color:var(--amber)">publisher</span></div>
+  <div class="a cursor" id="w-l" style="top:395px;height:160px;background:var(--red)"><span style="color:var(--red);top:168px">limit</span></div>
+  <div class="a" id="w-win" style="top:600px;height:4px;background:var(--red);opacity:.7"></div>
+  <div class="a" id="w-winl" style="top:612px;font:600 22px var(--mono);color:var(--red)">term window = half a term</div>
+  <div class="a box" id="w-codes" style="left:1060px;top:690px;width:740px">
+    <div class="code" style="font-size:27px">offer() →<br>
+    <span id="w-c1"><span class="r">−1</span> NOT_CONNECTED   <span class="c">no subscriber</span></span><br>
+    <span id="w-c2"><span class="r">−2</span> BACK_PRESSURED  <span class="c">past the limit</span></span><br>
+    <span id="w-c3"><span class="r">−3</span> ADMIN_ACTION    <span class="c">term rotation</span></span></div>
+  </div>
+</div>
+
+<!-- 9 ROTATE -->
+<div class="scene" id="s-rotate">
+  <div class="a h2" id="r-h" style="left:120px;top:100px">Term rotation</div>
+  <div class="a" id="r-terms" style="left:120px;top:260px;width:1680px;height:120px;display:flex;gap:14px"></div>
+  <div class="a" id="r-pad" style="top:262px;height:116px;background:repeating-linear-gradient(45deg,#6b5a2a 0 10px,#3d331a 10px 20px);border-radius:6px;display:grid;place-items:center;font:700 24px var(--mono);color:#ffe2a8">PAD</div>
+  <div class="a" id="r-cnt" style="left:120px;top:440px;font:600 34px/1.6 var(--mono)"></div>
+  <div class="a" id="r-adm" style="left:120px;top:600px;font:600 32px var(--mono);color:var(--amber)">offer → −3 ADMIN_ACTION · retry</div>
+</div>
+
+<!-- 10 LAB -->
+<div class="scene" id="s-lab">
+  <div class="a h2" id="x-h" style="left:120px;top:96px">In the lab</div>
+  <div class="a box" id="x-sim" style="left:120px;top:200px;width:250px;text-align:center"><div class="t">simex</div><div class="s">exchange</div></div>
+  <div class="a box" id="x-fh" style="left:560px;top:200px;width:280px;text-align:center"><div class="t">itch-fh</div><div class="s">gaps, books</div></div>
+  <div class="a box" id="x-ta" style="left:1080px;top:150px;width:260px;text-align:center"><div class="t">trader A</div></div>
+  <div class="a box" id="x-tb" style="left:1080px;top:290px;width:260px;text-align:center"><div class="t">trader B</div></div>
+  <div class="a" id="x-l1" style="left:384px;top:180px;font:600 19px var(--mono);color:var(--muted)">UDP multicast</div>
+  <div class="a" id="x-l2" style="left:856px;top:180px;font:600 19px var(--mono);color:var(--teal)">aeron:ipc 1001</div>
+  <div class="a" id="x-l3" style="left:560px;top:368px;font:600 22px var(--mono);color:var(--amber)">OUCH → simex</div>
+  <svg width="1920" height="1080" id="x-svg"></svg>
+  <div class="a" id="x-chart" style="left:120px;top:430px;width:1060px"></div>
+  <div class="a" id="x-note" style="left:120px;top:725px;width:1060px;font:500 22px/1.4 var(--body);color:var(--muted)">aeron-ping · 64-byte messages · two processes busy-polling · shared 4-vCPU cloud VM · 500k round trips × 3 runs. One ring run hit 76 ns with both processes on the same physical core. A pinned WSL box will be lower.</div>
+  <div class="a box" id="x-cache" style="left:1260px;top:440px;width:540px">
+    <div class="s" style="color:var(--ink);font-size:24px">cache lines per message read</div>
+    <div style="margin-top:16px;font:600 24px var(--mono)">Aeron</div>
+    <div style="display:flex;gap:8px;margin-top:8px"><div class="pill" style="background:var(--teal);color:#06141a">frame</div></div>
+    <div style="margin-top:18px;font:600 24px var(--mono)">SpscRing</div>
+    <div style="display:flex;gap:8px;margin-top:8px"><div class="pill" style="background:var(--violet);color:#06141a">writer index</div><div class="pill" style="background:var(--teal);color:#06141a">slot</div></div>
+  </div>
+</div>
+
+<!-- 11 CLOSE -->
+<div class="scene" id="s-close">
+  <div class="a h2" id="c-h" style="left:120px;top:150px">Try it</div>
+  <div class="a box" id="c-term" style="left:120px;top:270px;width:1300px;background:#08111a">
+    <div class="code" style="font-size:32px">
+      <span class="g">$</span> aeron-driver<br>
+      <span class="g">$</span> itch-fh --aeron aeron:ipc …<br>
+      <span class="g">$</span> trader --md-aeron aeron:ipc …<br>
+      <span class="g">$</span> aeron-ping --transport aeron<br>
+      <span class="g">$</span> aeron-ping --transport shm</div>
+  </div>
+  <div class="a" id="c-pr" style="left:120px;top:640px;font:600 32px/1.6 var(--mono);color:var(--teal)">branch aeron-ipc · VinayPemmasani/TradingSystem<br><span style="color:#8ea3b1;font-size:26px">Aeron 1.47.7 · C client + C media driver · built by CMake FetchContent</span></div>
+</div>
+
+<div id="chapter" style="display:none"><b id="ch-n">1</b><span id="ch-t"></span></div>
+<div id="brand">AERON IPC · TRADING LAB</div>
+<div id="caption" style="display:none"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const NS='http://www.w3.org/2000/svg';
+const C=(x)=>Math.max(0,Math.min(1,x));
+const ease=x=>{x=C(x);return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
+const P=(u,a,d=0.5)=>ease((u-a)/d);
+function show(el,p,dy=18){ if(typeof el==='string') el=$(el); el.style.opacity=p; el.style.transform=`translateY(${(1-p)*dy}px)`; }
+function svgEl(svg,tag,attrs){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);svg.appendChild(e);return e;}
+let D, SCN={};
+const TITLES={hook:'Aeron IPC',pieces:'The pieces',handshake:'Setup handshake',layout:'Log buffer',header:'Frame header',publish:'Publish',subscribe:'Subscribe',flow:'Flow control',rotate:'Term rotation',lab:'In the lab',close:'Try it'};
+const CAPFIX=[[/cnc dot dat/g,'cnc.dat'],[/ten oh one/g,'1001'],[/thirty two/g,'32'],[/sixty four/g,'64'],[/ninety six/g,'96'],[/four megabyte/g,'4 MiB'],[/64 megabytes/g,'64 MiB'],[/aeron ping/g,'aeron-ping'],[/three quarters of a microsecond/g,'0.75 µs']];
+function fixCap(s){for(const [a,b] of CAPFIX)s=s.replace(a,b);return s;}
+
+// per-scene: draw(u, cue) where cue(k)=start of caption k (local seconds)
+const DRAW={};
+
+// ---------- 1 hook
+let hookDots;
+DRAW.hook=(u,q)=>{
+  show('h-eyebrow',P(u,0.1)); show('h-title',P(u,0.3,0.7)); show('h-sub',P(u,q(1)-0.2));
+  show('h-fh',P(u,q(0)+0.6)); ['h-t0','h-t1','h-t2'].forEach((id,i)=>show(id,P(u,q(1)+0.2+i*0.25)));
+  const svg=$('h-svg'); svg.innerHTML='';
+  const ys=[290,500,710]; const pa=P(u,q(1)+0.8);
+  ys.forEach((y,i)=>{ svgEl(svg,'path',{d:`M1330 480 C1440 480 1430 ${y} 1540 ${y}`,stroke:'#3fd0dc','stroke-width':3,fill:'none',opacity:pa*0.6});
+    for(let k=0;k<4;k++){const f=((u*0.55+k/4+i*0.13)%1); if(pa<1)break; const x=1330+210*f; const yy=480+(y-480)*ease(f);
+      svgEl(svg,'circle',{cx:x,cy:yy,r:7,fill:'#3fd0dc'});}});
+  const z=P(u,q(2)); $('h-title').style.color=z>0?`rgb(${238-z*175},${244-z*36},${247-z*27})`:'';
+};
+
+// ---------- 2 pieces
+DRAW.pieces=(u,q)=>{
+  show('p-h',P(u,0)); show('p-drv',P(u,q(1))); show('p-cnc',P(u,q(2)));
+  show('p-c1',P(u,q(3))); show('p-c2',P(u,q(3)+0.3)); show('p-log',P(u,q(4))); show('p-not',P(u,q(4)+2.6));
+};
+
+// ---------- 3 handshake
+DRAW.handshake=(u,q)=>{
+  show('k-h',P(u,0)); show('k-lanes',P(u,0.2));
+  const svg=$('k-svg'); svg.innerHTML='';
+  const x={fh:330,dr:960,tr:1590};
+  [x.fh,x.dr,x.tr].forEach(X=>svgEl(svg,'line',{x1:X,y1:300,x2:X,y2:740,stroke:'#2c4351','stroke-width':3,'stroke-dasharray':'8 8',opacity:P(u,0.2)}));
+  const arrow=(x1,x2,y,col,p)=>{ if(p<=0)return; const xe=x1+(x2-x1)*p;
+    svgEl(svg,'line',{x1,y1:y,x2:xe,y2:y,stroke:col,'stroke-width':5});
+    const d=Math.sign(x2-x1); svgEl(svg,'path',{d:`M${xe} ${y} l${-18*d} -11 l0 22 z`,fill:col});};
+  const p0=P(u,q(0)+0.3,1), p1=P(u,q(1)+1.2,1), p2=P(u,q(2),1), p3=P(u,q(2)+1.8,1);
+  arrow(x.fh,x.dr,420,'#ffb347',p0); show('k-m0',p0); show('k-m0b',p0);
+  arrow(x.dr,x.fh,520,'#a98bff',p1); show('k-m1',p1); show('k-m1b',p1);
+  arrow(x.tr,x.dr,595,'#ffb347',p2); show('k-m2',p2);
+  arrow(x.dr,x.tr,705,'#a98bff',p3); show('k-m3',p3); show('k-m3b',p3);
+  const pl=P(u,q(1)+0.4); show('k-log',pl);
+  const pm=P(u,q(3)-0.3);
+  if(pm>0){ svgEl(svg,'line',{x1:x.fh,y1:740,x2:x.fh,y2:740+40*pm,stroke:'#3fd0dc','stroke-width':6});
+            svgEl(svg,'line',{x1:x.tr,y1:740,x2:x.tr,y2:740+40*pm,stroke:'#3fd0dc','stroke-width':6}); }
+  show('k-pages',pm);
+};
+
+// ---------- 4 layout
+DRAW.layout=(u,q)=>{ show('l-h',P(u,0)); show('l-bar',P(u,0.4)); show('l-meta',P(u,2.2)); show('l-tail',P(u,3.4));
+  show('l-sz',P(u,q(1))); show('l-def',P(u,q(1)+0.6)); };
+
+// ---------- 5 header
+const FIELDS=[[0,4,'frame_length','int32','#3fd0dc'],[4,1,'ver','int8','#6aa8ff'],[5,1,'flags','u8','#a98bff'],[6,2,'type','int16','#ff8fc8'],
+ [8,4,'term_offset','int32','#4fd18b'],[12,4,'session_id','int32','#9be37a'],[16,4,'stream_id','int32','#ffd166'],[20,4,'term_id','int32','#ffb347'],[24,8,'reserved_value','int64','#ff8fc8']];
+const HEX=['60','00','00','00','00','c0','01','00','00','12','00','00','2a','7c','01','00','e9','03','00','00','05','00','00','00','8f','3a','41','9b','2c','05','00','00'];
+function buildHeader(){ const W=52; const row=$('f-row'), offs=$('f-offs'), nm=$('f-names');
+  for(let i=0;i<32;i++){ const f=FIELDS.find(f=>i>=f[0]&&i<f[0]+f[1]);
+    const c=document.createElement('div'); c.className='cell'; c.style.left=(i*W)+'px'; c.style.width=W+'px'; c.style.background=f[4]; c.id='fc'+i; c.textContent=HEX[i]; row.appendChild(c);
+    if([0,4,5,6,8,12,16,20,24].includes(i)){const o=document.createElement('div'); o.style.cssText=`position:absolute;left:${i*W}px;font:600 20px var(--mono);color:#8ea3b1`; o.textContent='@'+i; offs.appendChild(o);} }
+  FIELDS.forEach((f,j)=>{ const d=document.createElement('div'); d.id='fn'+j; d.style.cssText=`position:absolute;left:${f[0]*W}px;width:${f[1]*W}px;top:${(f[1]<2?(j%2)*48:0)}px;font:600 ${f[1]<2?17:21}px var(--mono);color:${f[4]};text-align:center;opacity:0`;
+    d.innerHTML=f[2]+(f[1]>1?`<br><span style="color:#8ea3b1;font-size:18px">${f[3]}</span>`:''); nm.appendChild(d); });
+}
+DRAW.header=(u,q)=>{ show('f-h',P(u,0)); show('f-offs',P(u,0.3)); show('f-row',P(u,0.3)); show('f-names',1,0);
+  const span=Math.max(3,q(1)-1.2); FIELDS.forEach((f,j)=>{ const p=P(u,0.6+span*j/FIELDS.length,0.35); $('fn'+j).style.opacity=p;
+     for(let i=f[0];i<f[0]+f[1];i++) $('fc'+i).style.filter=`brightness(${0.35+0.65*p})`; });
+  show('f-flags',P(u,q(1)-0.6)); show('f-ping',P(u,q(1)+0.4)); show('f-add',P(u,q(1)+2.0)); show('f-res',P(u,q(2)));
+  const hl=P(u,q(2))*(0.6+0.4*Math.sin(u*5)); for(let i=24;i<32;i++) $('fc'+i).style.boxShadow=`0 0 ${24*hl}px #ff8fc8`;
+};
+
+// ---------- 6 publish
+DRAW.publish=(u,q)=>{ show('u-h',P(u,0)); show('u-term',P(u,0.3)); show('u-f0',P(u,0.5)); show('u-f1',P(u,0.7));
+  show('u-steps',P(u,q(1)-0.4)); show('u-shared',P(u,q(1)+2.2));
+  const s1=P(u,q(1)+0.8,0.6), s2=P(u,q(2),0.4), s3=P(u,q(2)+2.0,0.6), s4=P(u,q(3)+0.3,0.4);
+  const tail=$('u-tail'); show(tail,P(u,0.8)); tail.style.left=(530+204*s1)+'px';
+  const nf=$('u-new'); show(nf,s2>0?1:0,0);
+  nf.style.background = s4>0? `rgb(${45+34*s4},${122+87*s4},${110+29*s4})` : (s3>0?'repeating-linear-gradient(45deg,#2d7a6e 0 10px,#24525a 10px 20px)':'repeating-linear-gradient(45deg,#3a4c57 0 10px,#2a3a44 10px 20px)');
+  nf.style.boxShadow = s4>0? `0 0 ${40*s4*(1.2-P(u,q(4)+1.5,1))}px #4fd18b`:'none';
+  nf.textContent = s3>0?'header + payload':'';
+  const fl=$('u-fl'); show(fl,s2>0?1:0,0); fl.innerHTML = s4>0?'frame_length = <span style="color:#4fd18b">+96</span>':'frame_length = <span style="color:#ff6b5e">−96</span>';
+  const act=[s1>0&&s2==0,s2>0&&s3==0,s3>0&&s4==0,s4>0];
+  ['u-s1','u-s2','u-s3','u-s4'].forEach((id,i)=>{$(id).style.opacity=act[i]?1:0.45; $(id).style.background=act[i]?'rgba(63,208,220,.12)':'none';});
+};
+
+// ---------- 7 subscribe
+function buildSub(){ const h=$('b-frames'); for(let i=0;i<8;i++){const f=document.createElement('div'); f.className='a frame'; f.id='bf'+i;
+  f.style.cssText=`left:${122+i*204}px;top:252px;width:200px;background:#2d7a6e`; f.textContent='frame '+i; h.appendChild(f);} }
+DRAW.subscribe=(u,q)=>{ show('b-h',P(u,0)); show('b-term',P(u,0.3)); for(let i=0;i<8;i++) show('bf'+i,P(u,0.4+i*0.08));
+  show('b-code',P(u,0.6)); show('b-ctr',P(u,q(3)-0.3));
+  const run=Math.max(0,u-1.2);
+  const nA=Math.min(8,Math.floor(run*0.55)), fA=Math.min(1,(run*0.55)%1*3);
+  const nB=Math.min(8,Math.floor(Math.max(0,run-2)*0.36));
+  const posA=nA*204, posB=nB*204;
+  const ca=$('b-ca'), cb=$('b-cb'); show(ca,P(u,0.9)); show(cb,P(u,q(4)-0.4));
+  ca.style.left=(120+posA)+'px'; cb.style.left=(120+posB)+'px';
+  $('b-pa').textContent=nA*96; $('b-pb').textContent=(P(u,q(4)-0.4)>0?nB*96:0);
+  const step=[q(0),q(1),q(2),q(3)]; const lines=['b-l1','b-l2','b-l3','b-l4'];
+  let cur=-1; for(let i=0;i<4;i++) if(u>=step[i]-0.2) cur=i; if(u>q(4)) cur=Math.floor(u*3)%4;
+  lines.forEach((id,i)=>{$(id).style.background=i===cur?'rgba(63,208,220,.14)':'none';});
+  for(let i=0;i<8;i++) $('bf'+i).style.outline = (i===nA && nA<8)? `3px solid rgba(63,208,220,${0.5+0.5*fA})`:'none';
+};
+
+// ---------- 8 flow
+DRAW.flow=(u,q)=>{ show('w-h',P(u,0)); show('w-drv',P(u,0.3)); show('w-axis',P(u,0.5));
+  const X=v=>120+v*1680;
+  const t=Math.max(0,u-1); const B=0.12+0.035*t*(u<q(1)?1:0.25)+0, A=Math.min(0.75,0.3+0.05*t);
+  const Bc=Math.min(0.42,B); const lim=Bc+0.4;
+  const pub=Math.min(lim,0.25+0.07*t);
+  const set=(id,v,p)=>{const e=$(id); e.style.left=X(v)+'px'; show(e,p,0);};
+  set('w-b',Bc,P(u,0.8)); set('w-a',A,P(u,0.8)); set('w-p',pub,P(u,1)); set('w-l',lim,P(u,q(0)+2.5));
+  const win=$('w-win'); win.style.left=X(Bc)+'px'; win.style.width=(0.4*1680)+'px'; show(win,P(u,q(0)+3),0);
+  const wl=$('w-winl'); wl.style.left=(X(Bc)+20)+'px'; show(wl,P(u,q(0)+3));
+  const hit=pub>=lim-0.002 && u>q(1)-0.5; $('w-p').style.boxShadow=hit?'0 0 24px #ff6b5e':'none';
+  show('w-codes',P(u,q(1)-0.3));
+  $('w-c2').style.color = hit?'#fff':''; $('w-c2').style.background=u>q(1)&&u<q(2)?'rgba(255,107,94,.18)':'none';
+  $('w-c1').style.background=u>q(2)&&u<q(3)?'rgba(255,107,94,.18)':'none';
+  const cl=$('w-clean'); cl.style.width=Math.max(0,X(Bc)-120-30)+'px'; show(cl,P(u,q(3)),0); show('w-cleanl',P(u,q(3)));
+};
+
+// ---------- 9 rotate
+function buildRot(){ const r=$('r-terms'); for(let i=0;i<3;i++){const d=document.createElement('div'); d.id='rt'+i;
+  d.style.cssText='flex:1;border-radius:12px;border:3px solid #2c4351;background:#0f1c24;position:relative;overflow:hidden';
+  d.innerHTML=`<div id="rf${i}" style="position:absolute;left:0;top:0;bottom:0;width:0;background:#2d7a6e"></div><div style="position:absolute;inset:0;display:grid;place-items:center;font:700 30px var(--mono)">term ${i}</div>`; r.appendChild(d);} }
+DRAW.rotate=(u,q)=>{ show('r-h',P(u,0)); show('r-terms',P(u,0.2));
+  const W=(1680-28)/3; const f0=Math.min(0.9,u*0.35); $('rf0').style.width=(f0*100)+'%';
+  const pad=$('r-pad'); const pp=P(u,2.8,0.4); pad.style.left=(120+W*0.9)+'px'; pad.style.width=(W*0.1)+'px'; show(pad,pp,0);
+  const rot=u>3.8; $('rf1').style.width=(rot?Math.min(0.5,(u-3.8)*0.2):0)*100+'%';
+  for(let i=0;i<3;i++) $('rt'+i).style.borderColor=(i===(rot?1:0))?'#3fd0dc':'#2c4351';
+  const c=$('r-cnt'); show(c,P(u,0.6)); const n=rot?1:0;
+  c.innerHTML=`active_term_count = <span style="color:${rot?'#4fd18b':'#eef4f7'}">${n}</span><br>partition index = term_count % 3 = <span style="color:#3fd0dc">${n%3}</span>`;
+  show('r-adm',P(u,q(1)));
+};
+
+// ---------- 10 lab
+const BARS=[['Aeron IPC  p50',0.72,0.76,'#3fd0dc'],['SpscRing  p50',0.76,0.98,'#a98bff'],['Aeron IPC  p99',1.4,1.7,'#3fd0dc'],['SpscRing  p99',0.93,1.3,'#a98bff']];
+function buildLab(){ const c=$('x-chart'); c.innerHTML='<div class="lbl" style="margin-bottom:14px">round trip between two processes (µs, range over 3 runs)</div>';
+  BARS.forEach((b,i)=>{ c.innerHTML+=`<div style="display:flex;align-items:center;gap:16px;height:62px"><div style="width:260px;font:600 24px var(--mono)">${b[0]}</div>
+   <div style="flex:1;position:relative;height:34px;background:#0f1c24;border-radius:6px"><div id="xb${i}" style="position:absolute;left:0;top:0;bottom:0;width:0;background:${b[3]};border-radius:6px;opacity:.85"></div>
+   <div id="xr${i}" style="position:absolute;top:-4px;bottom:-4px;width:0;border:2px solid #fff;border-radius:4px;opacity:0"></div></div>
+   <div id="xv${i}" style="width:150px;font:600 24px var(--mono);text-align:right;opacity:0">${b[1].toFixed(2)}–${b[2].toFixed(2)}</div></div>`; });
+}
+DRAW.lab=(u,q)=>{ show('x-h',P(u,0)); show('x-sim',P(u,0.3)); show('x-fh',P(u,q(1)-0.3)); show('x-ta',P(u,q(1)+1.6)); show('x-tb',P(u,q(1)+1.9));
+  show('x-l1',P(u,0.8)); show('x-l2',P(u,q(1)+0.8)); show('x-l3',P(u,q(1)+2.4));
+  const svg=$('x-svg'); svg.innerHTML='';
+  const line=(d,col,p,dash)=>{ if(p>0) svgEl(svg,'path',{d,stroke:col,'stroke-width':4,fill:'none',opacity:p,'stroke-dasharray':dash||''}); };
+  line('M370 245 L560 245','#8ea3b1',P(u,0.8),'10 8');
+  line('M840 245 C960 245 960 195 1080 195','#3fd0dc',P(u,q(1)+1.6)); line('M840 245 C960 245 960 335 1080 335','#3fd0dc',P(u,q(1)+1.9));
+  line('M1340 335 C1420 335 1420 400 1300 400 L245 400 L245 290','#ffb347',P(u,q(1)+2.4),'4 8');
+  // moving dots
+  if(u>q(1)+2) for(let k=0;k<3;k++){ const f=(u*0.7+k/3)%1; svgEl(svg,'circle',{cx:840+240*f,cy:245-50*ease(f),r:7,fill:'#3fd0dc'}); svgEl(svg,'circle',{cx:840+240*f,cy:245+90*ease(f),r:7,fill:'#3fd0dc'}); }
+  show('x-chart',P(u,q(2)-0.3)); const sc=v=>(v/1.8*100)+'%';
+  BARS.forEach((b,i)=>{ const p=P(u,q(2)+0.3+i*0.5,0.8); $('xb'+i).style.width=sc(b[1]*p); const r=$('xr'+i); r.style.left=sc(b[1]); r.style.width=`calc(${sc(b[2]-b[1])} + 2px)`; r.style.opacity=p; $('xv'+i).style.opacity=p; });
+  show('x-note',P(u,q(2)+2.6)); show('x-cache',P(u,q(3)));
+};
+
+// ---------- 11 close
+DRAW.close=(u,q)=>{ show('c-h',P(u,0)); show('c-term',P(u,0.4)); show('c-pr',P(u,q(1))); };
+
+function setup(d){ D=d; buildHeader(); buildSub(); buildRot(); buildLab(); }
+function render(t){
+  const S=D.scenes; let i=S.length-1; for(let k=0;k<S.length;k++){ if(t<S[k].start+S[k].dur){i=k;break;} }
+  const s=S[i]; const u=t-s.start;
+  for(const x of S) $('s-'+x.id).style.display = x.id===s.id?'block':'none';
+  const sc=$('s-'+s.id); const fin=C(u/0.35), fout=C((s.start+s.dur-t)/0.3); sc.style.opacity = i===S.length-1? Math.min(fin, C((D.total-t)/0.8)) : Math.min(fin, i<S.length-1?Math.max(fout,0):1);
+  const q=k=>s.caps[Math.min(k,s.caps.length-1)][0];
+  DRAW[s.id](u,q);
+  const ch=$('chapter'); ch.style.display = s.id==='hook'?'none':'flex'; $('ch-n').textContent=i+1; $('ch-t').textContent=TITLES[s.id];
+  let txt=''; for(const c of s.caps){ if(u>=c[0]-0.05 && u<c[1]+0.2) txt=c[2]; }
+  const ce=$('caption'); ce.style.display=txt?'block':'none'; ce.textContent=fixCap(txt);
+}
+</script>
+</body></html>

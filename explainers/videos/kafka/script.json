@@ -1,0 +1,68 @@
+[
+{
+"id": "hook",
+"title": "Kafka",
+"text": "The lab's hot path is simex, the feed handler and the trader, joined by multicast and shared memory. Risk, research, audit and TCA all want the same records, each at its own pace. The lab has no Kafka today, so this is how a pump would feed one."
+},
+{
+"id": "pump",
+"title": "The pump",
+"text": "The pump reads two streams. One is the drop copy: a 57-byte execution report for every firm fill. The other is market data from the feed handler. The pump produces each as a Kafka record, a key and a value, into two topics: fills and quotes. Four consumer groups read them, each keeping its own place."
+},
+{
+"id": "log",
+"title": "Topics and partitions",
+"text": "A topic is split into partitions. Each partition is an append-only log. Every record gets the next offset, a 64-bit number that never changes. Nothing is edited in place, and readers just remember an offset."
+},
+{
+"id": "partition",
+"title": "Producer: partition",
+"text": "Inside the producer, send() serializes the key and value, then picks a partition. With a key, the default is murmur2 of the key bytes, made positive, modulo the partition count. So every fill for one account lands in the same partition. With no key, the client sticks to one partition until batch.size bytes have gone there. Then it switches, favouring faster brokers."
+},
+{
+"id": "batch",
+"title": "Producer: batch",
+"text": "The record joins its partition's batch in the record accumulator. A batch goes when it reaches batch.size, 16 KiB by default, or when linger.ms expires. That is 5 ms since Kafka 4.0. Compression runs over the whole batch: gzip, snappy, LZ4 or zstd. A sender thread ships ready batches, one produce request per broker."
+},
+{
+"id": "idem",
+"title": "Producer: idempotence",
+"text": "Idempotence is on by default. The broker gives the producer an ID and an epoch, and each batch carries a per-partition sequence number. If a retry lands twice, the broker sees a sequence it already has and drops the copy. With acks=all, also the default, the leader answers only once every in-sync replica has the batch."
+},
+{
+"id": "format",
+"title": "Record batch v2",
+"text": "On the wire and on disk, that is a record batch, version 2. Its header is 61 bytes, big-endian: base offset, length, leader epoch, magic 2 and a CRC-32C. Then attributes for compression and transactions, the last offset delta, two timestamps, producer ID, epoch, base sequence and record count. Records inside store deltas from the header, as varints."
+},
+{
+"id": "broker",
+"title": "Broker: the log",
+"text": "The leader appends the batch to the active segment. The write lands in the page cache. By default Kafka does not fsync each write, and relies on replication instead. A segment is named by its first offset. It has a .log file of batches, a sparse .index from offset to position, and a .timeindex from time to offset. Segments roll at 1 GiB."
+},
+{
+"id": "replicate",
+"title": "Broker: replication",
+"text": "Followers fetch from the leader. Replicas that keep up form the in-sync replica set, the ISR. The high watermark marks how far all of them have copied, and consumers only read below it. So no consumer sees a record that a failover could lose. Each new leader bumps the leader epoch, which tells followers where to truncate. Since Kafka 4.0, a KRaft controller quorum picks leaders, with no ZooKeeper."
+},
+{
+"id": "group",
+"title": "Consumers: groups",
+"text": "A consumer group splits the partitions, one owner each. Two risk instances on six partitions take three each; one audit instance reads all six. A consumer sends fetch requests from its offset. The broker waits for fetch.min.bytes, or up to 500 ms, then sends, often straight from the page cache."
+},
+{
+"id": "commit",
+"title": "Consumers: offsets",
+"text": "After processing, the consumer commits its next offset to an internal topic, __consumer_offsets. When a member joins or dies, the group rebalances and partitions move. The new owner resumes from the committed offset. Lag is the high watermark minus that offset. For risk, it is the number to alarm on."
+},
+{
+"id": "delivery",
+"title": "Delivery and storage",
+"text": "Order holds only within a partition. Key fills by account, so one account's fills stay in order, and key quotes by symbol. Commit after processing, and a crash replays a few records. That is at-least-once, so make consumers idempotent, keyed on the match number. Transactions give exactly-once, but only for read, process and write inside Kafka. Retention deletes old segments, after seven days by default. Compaction instead keeps the latest record per key, like a position per account."
+},
+{
+"id": "latency",
+"title": "Off the hot path",
+"text": "So why not put Kafka between the feed handler and the strategy? Each record waits for linger, a network hop, a page cache write, replication and a consumer fetch. End to end, that is typically milliseconds. The lab's Aeron round trip measured under a microsecond. Kafka belongs after the trade: durable, replayable and shared.",
+"hold": 1
+}
+]

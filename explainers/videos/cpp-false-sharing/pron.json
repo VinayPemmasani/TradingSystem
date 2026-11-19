@@ -1,0 +1,74 @@
+[
+[
+"\\bg\\+\\+ -O2 -pthread\\b",
+"G plus plus, dash O two, dash P thread"
+],
+[
+"\\bC\\+\\+17\\b",
+"C plus plus seventeen"
+],
+[
+"\\bvCPU\\b",
+"V C P U"
+],
+[
+"\\bL1\\b",
+"L one"
+],
+[
+"\\bx86\\b",
+"x eighty six"
+],
+[
+"\\bAArch64\\b",
+"A arch sixty four"
+],
+[
+"\\bARM\\b",
+"arm"
+],
+[
+"\\bMESI\\b",
+"messy"
+],
+[
+"\\bSpscRing\\b",
+"S P S C ring"
+],
+[
+"\\bkCacheLine\\b",
+"K cache line"
+],
+[
+"\\balignas\\b",
+"align as"
+],
+[
+"\\b64 byte\\b",
+"sixty four byte"
+],
+[
+"\\b8 byte\\b",
+"eight byte"
+],
+[
+"\\bping-pongs\\b",
+"ping pongs"
+],
+[
+"\\bread only\\b",
+"read-only"
+],
+[
+"\\b33\\.5\\b",
+"thirty three point five"
+],
+[
+"\\b6\\.2\\b",
+"six point two"
+],
+[
+"\\b5\\.4\\b",
+"five point four"
+]
+]

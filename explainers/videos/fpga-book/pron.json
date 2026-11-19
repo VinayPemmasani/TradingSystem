@@ -1,0 +1,146 @@
+[
+ [
+  "\\bFPGA\\b",
+  "F P G A"
+ ],
+ [
+  "itch-fh",
+  "itch F H"
+ ],
+ [
+  "MoldUDP64",
+  "Mold U D P sixty four"
+ ],
+ [
+  "BookBuilder",
+  "Book Builder"
+ ],
+ [
+  "OrderMap",
+  "Order Map"
+ ],
+ [
+  "10G\\b",
+  "ten gig"
+ ],
+ [
+  "\\bMAC\\b",
+  "mac"
+ ],
+ [
+  "64-bit",
+  "sixty four bit"
+ ],
+ [
+  "156\\.25 MHz",
+  "one fifty six point two five megahertz"
+ ],
+ [
+  "6\\.4 ns",
+  "six point four nanoseconds"
+ ],
+ [
+  "10GBASE-R",
+  "ten gig base R"
+ ],
+ [
+  "64b/66b",
+  "sixty four b, sixty six b"
+ ],
+ [
+  "10\\.3125",
+  "ten point three one two five"
+ ],
+ [
+  "\\bIPv4\\b",
+  "I P v four"
+ ],
+ [
+  "\\bUDP\\b",
+  "U D P"
+ ],
+ [
+  "\\bITCH\\b",
+  "itch"
+ ],
+ [
+  "2-byte",
+  "two byte"
+ ],
+ [
+  "6-byte",
+  "six byte"
+ ],
+ [
+  "65,536-bit",
+  "sixty four K bit"
+ ],
+ [
+  "\\bRAM\\b",
+  "ram"
+ ],
+ [
+  "UltraRAM",
+  "ultra ram"
+ ],
+ [
+  "\\bCRC\\b",
+  "C R C"
+ ],
+ [
+  "1400-byte",
+  "fourteen hundred byte"
+ ],
+ [
+  "\\bPCIe\\b",
+  "P C I express"
+ ],
+ [
+  "\\bDMA\\b",
+  "D M A"
+ ],
+ [
+  "\\bPHY\\b",
+  "fie"
+ ],
+ [
+  "83\\.2 ns",
+  "eighty three point two nanoseconds"
+ ],
+ [
+  "130 ns",
+  "a hundred and thirty nanoseconds"
+ ],
+ [
+  "107 ns",
+  "a hundred and seven nanoseconds"
+ ],
+ [
+  "\\b64\\b",
+  "sixty four"
+ ],
+ [
+  "\\b36\\b",
+  "thirty six"
+ ],
+ [
+  "\\b14\\b",
+  "fourteen"
+ ],
+ [
+  "\\b20\\b",
+  "twenty"
+ ],
+ [
+  "\\b19\\b",
+  "nineteen"
+ ],
+ [
+  "\\b8\\b",
+  "eight"
+ ],
+ [
+  "\\bN\\b",
+  "N"
+ ]
+]

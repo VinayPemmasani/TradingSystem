@@ -1,0 +1,48 @@
+[
+{
+"id": "title",
+"title": "No allocation",
+"text": "A hot thread that allocates is playing a lottery. Most calls take tens of nanoseconds. A few take a page fault or a system call."
+},
+{
+"id": "why",
+"title": "Why malloc wobbles",
+"text": "malloc and new are general purpose, so their cost is not fixed. glibc serves small blocks from a per-thread cache, but a miss falls back to an arena guarded by a lock. When the heap runs out, malloc asks the kernel: brk to grow it, or mmap for large blocks. And new pages are only mapped on first touch, so the first write takes a page fault."
+},
+{
+"id": "rule",
+"title": "The lab's rule",
+"text": "So the lab's CLAUDE.md sets a hard rule. No allocation, locks, exceptions, syscalls or logging I/O on hot threads. Allocate and fault pages in at startup."
+},
+{
+"id": "pool",
+"title": "Pools and free lists",
+"text": "The workhorse is an object pool: a preallocated array plus a free list. Get pops the head, put pushes it back. No lock, no syscall, just two pointer moves. The matching engine works this way. Its constructor sizes the order pool for about a million orders, and fills a free list of indices. Accepting an order pops an index; releasing one pushes it back."
+},
+{
+"id": "arena",
+"title": "Arenas and pmr",
+"text": "For scratch data that dies together, use an arena. A monotonic buffer resource hands out memory by bumping a pointer through a buffer you own. Freeing is a no-op; you release everything at once, after each batch. With the null resource upstream, running out fails loudly instead of quietly calling malloc."
+},
+{
+"id": "fixed",
+"title": "reserve and fixed capacity",
+"text": "Containers allocate when they grow. Call reserve at startup, and push_back never reallocates while you stay under capacity. The book's OrderMap starts with a million slots, because growing it would rehash everything. The engine reserves 512 price levels per side. Fixed capacity is stricter: when it is full, that is an error you handle, not a hidden reallocation."
+},
+{
+"id": "pages",
+"title": "Prefault and huge pages",
+"text": "Reserved memory is still not mapped. Touch every page at startup, so faults happen before trading starts. The lab's ring zeroes its slots on construction for exactly this reason. Big tables use the HugePageAllocator: two megabyte pages through madvise, so a large table needs 512 times fewer TLB entries."
+},
+{
+"id": "hidden",
+"title": "Hidden allocations",
+"text": "Some allocations hide in ordinary code. I counted malloc calls on this box. A std::function holding a 24 byte capture allocated once. A std::string of 16 characters allocated; 15 fit inside the object. Throwing an exception allocated. And make_shared allocates a control block, while every copy costs an atomic increment."
+},
+{
+"id": "measured",
+"title": "Measured",
+"text": "Now a before and after on this box. Each message adds a 64 byte order, and once 100,000 are live, frees a random old one. With new and delete, the median was 28.6 nanoseconds, and p99 was 71. With a prefaulted pool, 19 and 22. At p99.9, new took 1.4 microseconds: the heap was growing and faulting in pages. The pool took 52 nanoseconds, with zero faults.",
+"hold": 1.5
+}
+]

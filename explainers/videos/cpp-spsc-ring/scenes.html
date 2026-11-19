@@ -1,0 +1,129 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:160px">TRADING LAB · C++ LOW LATENCY</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:210px">An SPSC ring</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:380px;width:1500px">One producer, one consumer, no locks: built step by step, tested, measured.</div>
+<div class="box green" data-cue="0" data-d="0.8" style="left:140px;top:560px;width:330px;height:130px"><div class="t">book thread</div><div class="s">producer</div></div>
+<div class="box amber" data-cue="0" data-d="1.0" style="left:1450px;top:560px;width:330px;height:130px"><div class="t">trading thread</div><div class="s">consumer</div></div>
+<div class="slot" id="ti-s0" data-cue="0" data-d="1.20" style="left:560px;top:582px">0</div>
+<div class="slot" id="ti-s1" data-cue="0" data-d="1.25" style="left:660px;top:582px">1</div>
+<div class="slot" id="ti-s2" data-cue="0" data-d="1.30" style="left:760px;top:582px">2</div>
+<div class="slot" id="ti-s3" data-cue="0" data-d="1.35" style="left:860px;top:582px">3</div>
+<div class="slot" id="ti-s4" data-cue="0" data-d="1.40" style="left:960px;top:582px">4</div>
+<div class="slot" id="ti-s5" data-cue="0" data-d="1.45" style="left:1060px;top:582px">5</div>
+<div class="slot" id="ti-s6" data-cue="0" data-d="1.50" style="left:1160px;top:582px">6</div>
+<div class="slot" id="ti-s7" data-cue="0" data-d="1.55" style="left:1260px;top:582px">7</div>
+<div class="lbl" data-cue="0" data-d="1.6" style="left:560px;top:540px">TopOfBook updates</div>
+<div class="tagx" data-cue="1" data-d="0.0" style="left:140px;top:770px;border-color:var(--teal);color:var(--teal)">bounded</div>
+<div class="tagx" data-cue="1" data-d="0.5" style="left:440px;top:770px;border-color:var(--teal);color:var(--teal)">no allocation</div>
+<div class="tagx" data-cue="1" data-d="1.0" style="left:740px;top:770px;border-color:var(--teal);color:var(--teal)">no system calls</div>
+<div class="tagx" data-cue="1" data-d="1.5" style="left:1040px;top:770px;border-color:var(--amber);color:var(--amber)">no locks</div>
+</div>
+<div class="scene" id="s-mutex">
+<div class="h2" data-cue="0" style="left:120px;top:110px">First, the obvious version</div>
+<div class="code sm" data-cue="0"  style="left:120px;top:210px;width:880px"><span class="line"><span class="k">template</span> &lt;<span class="k">class</span> <span class="v">T</span>, <span class="v">size_t</span> N&gt;</span><span class="line"><span class="k">class</span> <span class="v">MutexQueue</span> {</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">std</span>::<span class="v">mutex</span> m_;</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">std</span>::<span class="v">array</span>&lt;<span class="v">T</span>, N&gt; buf_{};</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">size_t</span> head_ = <span class="r">0</span>, tail_ = <span class="r">0</span>;</span><span class="line"> <span class="k">public</span>:</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">bool</span> try_push(<span class="k">const</span> <span class="v">T</span>&amp; v) {</span><span class="line" data-hl="4">    <span class="v">std</span>::<span class="v">lock_guard</span> lock(m_);</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">if</span> (head_ - tail_ == N) <span class="k">return</span> <span class="k">false</span>;  <span class="c">// full</span></span><span class="line" data-hl="2" data-hlend="3">    buf_[head_++ % N] = v;</span><span class="line">    <span class="k">return</span> <span class="k">true</span>;</span><span class="line">  }</span></div>
+<div class="tagx" data-cue="3" style="left:120px;top:720px;border-color:var(--muted);color:#cfdbe2">try_pop: the same, under the same lock</div>
+<div class="core" data-cue="4" style="left:1100px;top:260px;border-color:var(--green)">core 1<div class="s">producer</div></div>
+<div class="core" data-cue="4" style="left:1550px;top:260px;border-color:var(--amber)">core 2<div class="s">consumer</div></div>
+<svg class="full"><path id="mx-bounce" data-cue="4" data-anim="none" d="M 1355 320 L 1545 320" stroke="#33464f" stroke-width="3" fill="none"/></svg>
+<div class="pkt" data-cue="4" data-d="0.3" data-path="mx-bounce" data-dur="0.9" data-loop="1" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="lbl c-red" data-cue="4" data-d="0.3" style="left:1330px;top:400px;width:300px;text-align:center">m_: one cache line,<br>locked RMW each call</div>
+<div class="box red" data-cue="5" style="left:1100px;top:540px;width:700px;height:150px"><div class="t">contended: futex</div><div class="s">a waiter may sleep in the kernel, then be woken</div></div>
+</div>
+<div class="scene" id="s-layout">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The lock-free layout</div>
+<div class="code sm" data-cue="0"  style="left:120px;top:210px;width:960px"><span class="line"><span class="k">template</span> &lt;<span class="k">class</span> <span class="v">T</span>, <span class="v">size_t</span> N&gt;</span><span class="line"><span class="k">class</span> RingNoCache {</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">static_assert</span>(N &gt;= <span class="r">2</span> &amp;&amp; (N &amp; (N - <span class="r">1</span>)) == <span class="r">0</span>, <span class="g">&quot;power of two&quot;</span>);</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">static</span> <span class="k">constexpr</span> <span class="v">size_t</span> kMask = N - <span class="r">1</span>;</span><span class="line"> </span><span class="line" data-hl="3" data-hlend="4">  <span class="k">alignas</span>(<span class="r">64</span>) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; head_{<span class="r">0</span>};  <span class="c">// producer writes</span></span><span class="line" data-hl="3" data-hlend="4">  <span class="k">alignas</span>(<span class="r">64</span>) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; tail_{<span class="r">0</span>};  <span class="c">// consumer writes</span></span><span class="line" data-hl="4">  <span class="k">alignas</span>(<span class="r">64</span>) <span class="v">T</span> buf_[N];</span></div>
+<div class="box teal" data-cue="1" data-d="0.6" style="left:1150px;top:210px;width:650px;height:110px"><div class="t mono" style="font-size:30px">slot = 13 &amp; 7 = 5</div><div class="s">index &amp; (N − 1): no division</div></div>
+<div class="box amber" data-cue="2" data-d="0.4" style="left:1150px;top:345px;width:650px;height:110px"><div class="t mono" style="font-size:30px">full: head − tail == N</div><div class="s">64-bit counters that only grow</div></div>
+<div class="cl" data-cue="4" data-d="0.0" style="left:1150px;top:490px;width:650px;border-color:var(--green)"><div style="width:14px;background:var(--green)"></div><div style="padding:8px 14px;font:600 22px var(--mono);color:#dce8ee;width:620px">line A · head_ <span style="color:var(--muted)">· producer writes</span></div></div>
+<div class="cl" data-cue="4" data-d="0.3" style="left:1150px;top:546px;width:650px;border-color:var(--amber)"><div style="width:14px;background:var(--amber)"></div><div style="padding:8px 14px;font:600 22px var(--mono);color:#dce8ee;width:620px">line B · tail_ <span style="color:var(--muted)">· consumer writes</span></div></div>
+<div class="cl" data-cue="4" data-d="0.6" style="left:1150px;top:602px;width:650px;border-color:#8ea3b1"><div style="width:14px;background:#8ea3b1"></div><div style="padding:8px 14px;font:600 22px var(--mono);color:#dce8ee;width:620px">lines C… · buf_[N] <span style="color:var(--muted)">· the slots</span></div></div>
+<div class="slot" id="ly-s0" data-cue="2" data-d="0.00" style="left:160px;top:720px">0</div>
+<div class="slot" id="ly-s1" data-cue="2" data-d="0.05" style="left:260px;top:720px">1</div>
+<div class="slot" id="ly-s2" data-cue="2" data-d="0.10" style="left:360px;top:720px">2</div>
+<div class="slot" id="ly-s3" data-cue="2" data-d="0.15" style="left:460px;top:720px">3</div>
+<div class="slot" id="ly-s4" data-cue="2" data-d="0.20" style="left:560px;top:720px">4</div>
+<div class="slot" id="ly-s5" data-cue="2" data-d="0.25" style="left:660px;top:720px">5</div>
+<div class="slot" id="ly-s6" data-cue="2" data-d="0.30" style="left:760px;top:720px">6</div>
+<div class="slot" id="ly-s7" data-cue="2" data-d="0.35" style="left:860px;top:720px">7</div>
+<div class="ptr c-amber" id="ly-tail" data-cue="2" style="left:160px;top:820px">▲ tail</div>
+<div class="ptr c-green" id="ly-head" data-cue="2" style="left:160px;top:690px">▼ head</div>
+<div class="lbl" id="ly-cnt" data-cue="2" style="left:990px;top:745px"></div>
+</div>
+<div class="scene" id="s-push">
+<div class="h2" data-cue="0" style="left:120px;top:110px">try_push: write, then publish</div>
+<div class="code sm" data-cue="0"  style="left:120px;top:210px;width:930px"><span class="line"><span class="k">inline</span> <span class="k">constexpr</span> <span class="k">auto</span> relaxed = <span class="v">std</span>::memory_order_relaxed;</span><span class="line"><span class="k">inline</span> <span class="k">constexpr</span> <span class="k">auto</span> acquire = <span class="v">std</span>::memory_order_acquire;</span><span class="line"><span class="k">inline</span> <span class="k">constexpr</span> <span class="k">auto</span> release = <span class="v">std</span>::memory_order_release;</span><span class="line"> </span><span class="line">  <span class="k">bool</span> try_push(<span class="k">const</span> <span class="v">T</span>&amp; v) {</span><span class="line" data-hl="0" data-hlend="1">    <span class="k">const</span> <span class="v">size_t</span> h = head_.load(relaxed);</span><span class="line" data-hl="1" data-hlend="3">    <span class="k">if</span> (h - tail_.load(acquire) == N) <span class="k">return</span> <span class="k">false</span>;  <span class="c">// full</span></span><span class="line" data-hl="3" data-hlend="4">    buf_[h &amp; kMask] = v;</span><span class="line" data-hl="4">    head_.store(h + <span class="r">1</span>, release);  <span class="c">// publish the slot</span></span><span class="line">    <span class="k">return</span> <span class="k">true</span>;</span><span class="line">  }</span></div>
+<div class="lbl" data-cue="4" style="left:1160px;top:210px">producer</div><div class="lbl" data-cue="4" style="left:1520px;top:210px">consumer</div>
+<div class="flow" data-cue="3" style="left:1120px;top:250px;width:300px;border-color:var(--green)">write slot</div>
+<div class="flow" data-cue="4" style="left:1120px;top:400px;width:300px;border-color:var(--green);color:var(--green)">store head<br><span style="font-size:20px">release</span></div>
+<div class="flow" data-cue="5" data-d="0.3" style="left:1500px;top:400px;width:300px;border-color:var(--amber);color:var(--amber)">load head<br><span style="font-size:20px">acquire</span></div>
+<div class="flow" data-cue="5" data-d="0.9" style="left:1500px;top:580px;width:300px;border-color:var(--amber)">read slot</div>
+<svg class="full"><path class="draw" data-cue="4" d="M 1270 320 L 1270 390" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/><path class="draw" data-cue="5" data-d="0.4" d="M 1424 440 L 1494 440" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path class="draw" data-cue="5" data-d="1.0" d="M 1650 490 L 1650 570" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="lbl c-teal" data-cue="5" data-d="0.6" style="left:1300px;top:500px;width:200px;text-align:center">sees head,<br>sees data</div>
+<div class="tagx" data-cue="2" style="left:120px;top:690px;border-color:var(--amber);color:var(--amber)">full → return false: never blocks</div>
+</div>
+<div class="scene" id="s-pop">
+<div class="h2" data-cue="0" style="left:120px;top:110px">try_pop: the mirror image</div>
+<div class="code sm" data-cue="0"  style="left:120px;top:210px;width:880px"><span class="line">  <span class="k">bool</span> try_pop(<span class="v">T</span>&amp; out) {</span><span class="line">    <span class="k">const</span> <span class="v">size_t</span> t = tail_.load(relaxed);</span><span class="line" data-hl="1" data-hlend="3">    <span class="k">if</span> (t == head_.load(acquire)) <span class="k">return</span> <span class="k">false</span>;  <span class="c">// empty</span></span><span class="line" data-hl="3">    out = buf_[t &amp; kMask];</span><span class="line" data-hl="3">    tail_.store(t + <span class="r">1</span>, release);  <span class="c">// free the slot</span></span><span class="line">    <span class="k">return</span> <span class="k">true</span>;</span><span class="line">  }</span></div>
+<div class="box amber" data-cue="1" data-d="0.5" style="left:1080px;top:210px;width:720px;height:120px"><div class="t" style="font-size:28px">acquire pairs with push's release</div><div class="s">slot contents visible before we read them</div></div>
+<div class="box" data-cue="2" style="left:1080px;top:360px;width:720px;height:110px;border-color:var(--line)"><div class="t mono" style="font-size:28px">tail == head → empty</div></div>
+<div class="slot" id="pp-s0" data-cue="0" data-d="0.30" style="left:160px;top:650px">0</div>
+<div class="slot" id="pp-s1" data-cue="0" data-d="0.35" style="left:260px;top:650px">1</div>
+<div class="slot" id="pp-s2" data-cue="0" data-d="0.40" style="left:360px;top:650px">2</div>
+<div class="slot" id="pp-s3" data-cue="0" data-d="0.45" style="left:460px;top:650px">3</div>
+<div class="slot" id="pp-s4" data-cue="0" data-d="0.50" style="left:560px;top:650px">4</div>
+<div class="slot" id="pp-s5" data-cue="0" data-d="0.55" style="left:660px;top:650px">5</div>
+<div class="slot" id="pp-s6" data-cue="0" data-d="0.60" style="left:760px;top:650px">6</div>
+<div class="slot" id="pp-s7" data-cue="0" data-d="0.65" style="left:860px;top:650px">7</div>
+<div class="ptr c-amber" id="pp-tail" data-cue="0" style="left:160px;top:750px">▲ tail</div>
+<div class="ptr c-green" id="pp-head" data-cue="0" style="left:160px;top:620px">▼ head</div>
+<div class="lbl c-amber" data-cue="3" data-d="0.5" style="left:1000px;top:680px;width:780px">store tail + 1, release: the producer may now reuse the slot</div>
+</div>
+<div class="scene" id="s-cached">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Cache the other side's index</div>
+<div class="code sm" data-cue="2"  style="left:120px;top:200px;width:980px"><span class="line">  <span class="k">alignas</span>(<span class="r">64</span>) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; head_{<span class="r">0</span>};  <span class="c">// producer writes</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="v">size_t</span> cached_tail_ = <span class="r">0</span>;                    <span class="c">// producer&#x27;s copy</span></span><span class="line">  <span class="k">alignas</span>(<span class="r">64</span>) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; tail_{<span class="r">0</span>};  <span class="c">// consumer writes</span></span><span class="line" data-hl="2" data-hlend="3">  <span class="v">size_t</span> cached_head_ = <span class="r">0</span>;                    <span class="c">// consumer&#x27;s copy</span></span></div>
+<div class="code sm" data-cue="2" data-d="0.5"  style="left:120px;top:390px;width:980px"><span class="line">  <span class="k">bool</span> try_push(<span class="k">const</span> <span class="v">T</span>&amp; v) {</span><span class="line">    <span class="k">const</span> <span class="v">size_t</span> h = head_.load(relaxed);</span><span class="line" data-hl="3" data-hlend="4">    <span class="k">if</span> (h - cached_tail_ == N) {</span><span class="line" data-hl="3" data-hlend="4">      cached_tail_ = tail_.load(acquire);</span><span class="line" data-hl="3" data-hlend="4">      <span class="k">if</span> (h - cached_tail_ == N) <span class="k">return</span> <span class="k">false</span>;  <span class="c">// full</span></span><span class="line">    }</span><span class="line">    buf_[h &amp; kMask] = v;</span><span class="line">    head_.store(h + <span class="r">1</span>, release);  <span class="c">// publish the slot</span></span><span class="line">    <span class="k">return</span> <span class="k">true</span>;</span><span class="line">  }</span></div>
+<div class="core" data-cue="0" style="left:1170px;top:230px;border-color:var(--green)">producer<div class="s">core 1</div></div>
+<div class="core" data-cue="0" style="left:1550px;top:230px;border-color:var(--amber)">consumer<div class="s">core 2</div></div>
+<svg class="full"><path id="ca-b1" d="M 1425 270 L 1545 270" stroke="#33464f" stroke-width="2" fill="none"/><path id="ca-b2" d="M 1545 320 L 1425 320" stroke="#33464f" stroke-width="2" fill="none"/></svg>
+<div class="pkt" data-cue="1" data-out="2" data-path="ca-b1" data-dur="0.6" data-loop="1" style="background:var(--green)"></div>
+<div class="pkt" data-cue="1" data-out="2" data-path="ca-b2" data-dur="0.6" data-loop="1" data-phase="0.5" style="background:var(--amber)"></div>
+<div class="lbl c-red" data-cue="1" data-out="2" style="left:1170px;top:380px;width:630px">every call: head_ and tail_ lines move between cores</div>
+<div class="lbl c-teal" data-cue="2" data-d="0.4" style="left:1170px;top:380px;width:630px">usually: no read of the other line at all</div>
+<div class="box green" data-cue="3" style="left:1170px;top:470px;width:630px;height:120px"><div class="t" style="font-size:26px">producer rereads tail_</div><div class="s">only when cached_tail_ says full</div></div>
+<div class="box amber" data-cue="4" style="left:1170px;top:620px;width:630px;height:120px"><div class="t" style="font-size:26px">consumer rereads head_</div><div class="s">only when cached_head_ says empty</div></div>
+</div>
+<div class="scene" id="s-test">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Test it under pressure</div>
+<div class="code sm" data-cue="0"  style="left:120px;top:200px;width:900px"><span class="line">  <span class="k">static</span> Q q;</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">std</span>::thread prod([&amp;] {</span><span class="line" data-hl="1" data-hlend="2">    <span class="k">for</span> (<span class="v">std</span>::<span class="v">uint64_t</span> i = <span class="r">1</span>; i &lt;= n; ++i)</span><span class="line" data-hl="1" data-hlend="2">      <span class="k">while</span> (!q.try_push(i)) {}</span><span class="line">  });</span><span class="line">  <span class="v">std</span>::<span class="v">uint64_t</span> expect = <span class="r">1</span>, v;</span><span class="line">  <span class="k">bool</span> ok = <span class="k">true</span>;</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">while</span> (expect &lt;= n) {</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">if</span> (!q.try_pop(v)) <span class="k">continue</span>;</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">if</span> (v != expect) { ok = <span class="k">false</span>; <span class="k">break</span>; }</span><span class="line">    ++expect;</span><span class="line">  }</span><span class="line" data-hl="2" data-hlend="3">  prod.join();</span><span class="line">  ok = ok &amp;&amp; !q.try_pop(v);  <span class="c">// drained</span></span></div>
+<div class="tagx" data-cue="0" data-d="0.6" style="left:1080px;top:210px;border-color:var(--amber);color:var(--amber)">check&lt;Ring&lt;uint64_t, 8&gt;&gt;: wraps constantly</div>
+<div class="term" data-cue="3" style="position:absolute;left:1080px;top:300px;width:720px"><span class="c">$ chrt -f 10 ./test 10000000</span>
+Ring         ok: 10000000 values, in order, none lost
+RingNoCache  ok: 10000000 values, in order, none lost
+MutexQueue   ok: 1000000 values, in order, none lost
+all tests passed</div>
+<div class="term" data-cue="3" data-d="1.0" style="position:absolute;left:1080px;top:560px;width:720px"><span class="c">$ ./test_tsan 1000000   # -fsanitize=thread</span>
+all tests passed
+<span class="c">$ grep -c "WARNING: ThreadSanitizer" tsan.out</span>
+0</div>
+</div>
+<div class="scene" id="s-bench">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measured on this box</div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:210px">throughput · ns per message · 2 spinning threads · capacity 1024 · uint64_t</div>
+<div class="brow" data-cue="1" style="left:120px;top:260px"><div class="nm" style="width:280px">mutex queue</div><div class="b grow" data-cue="1" data-d="0.2" data-w="1131" style="background:var(--red)"></div><div class="v" style="color:var(--red)">240–435 ns</div></div>
+<div class="brow" data-cue="2" style="left:120px;top:330px"><div class="nm" style="width:280px">ring, no cache</div><div class="b grow" data-cue="2" data-d="0.2" data-w="80" style="background:var(--violet)"></div><div class="v" style="color:var(--violet)">17–31 ns</div></div>
+<div class="brow" data-cue="3" style="left:120px;top:400px"><div class="nm" style="width:280px">ring, cached</div><div class="b grow" data-cue="3" data-d="0.2" data-w="41" style="background:var(--teal)"></div><div class="v" style="color:var(--teal)">7–16 ns</div></div>
+<div class="lbl" data-cue="4" style="left:120px;top:520px">ping-pong round trip · 200k samples</div>
+<div class="brow" data-cue="4" data-d="0.3" style="left:120px;top:570px"><div class="nm" style="width:280px">ring</div><div class="v c-teal" style="font-size:34px">median 450–480 ns</div><div class="foot" style="margin-left:24px">p99 590–620 ns</div></div>
+<div class="brow" data-cue="4" data-d="0.8" style="left:120px;top:640px"><div class="nm" style="width:280px">mutex</div><div class="v c-red" style="font-size:34px">median 1,770–1,850 ns</div><div class="foot" style="margin-left:24px">p99 3,600–18,400 ns</div></div>
+<div class="foot" data-cue="4" data-d="1.2" style="left:120px;top:740px;width:1680px">g++ 13 -O2 · shared 4-vCPU cloud box (KVM), heavily loaded by other jobs · SCHED_FIFO threads on separate cores · ranges over 9 runs (3 for round trip) · 20M messages per run (2M for the mutex)</div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The lab's SpscRing</div>
+<div class="lbl" data-cue="0" style="left:120px;top:195px">libs/core/include/lab/core/spsc_ring.hpp</div>
+<div class="code sm" data-cue="0" data-d="0.3"  style="left:120px;top:235px;width:1060px;font-size:22px"><span class="line">  LAB_ALWAYS_INLINE <span class="v">T</span>* try_claim() <span class="k">noexcept</span> {</span><span class="line">    <span class="k">const</span> <span class="v">std</span>::<span class="v">uint64_t</span> head = head_.load(<span class="v">std</span>::memory_order_relaxed);</span><span class="line" data-hl="0" data-hlend="1">    <span class="k">if</span> (LAB_UNLIKELY(head - cached_tail_ == <span class="v">Capacity</span>)) {</span><span class="line" data-hl="0" data-hlend="1">      cached_tail_ = tail_.load(<span class="v">std</span>::memory_order_acquire);</span><span class="line" data-hl="0" data-hlend="1">      <span class="k">if</span> (head - cached_tail_ == <span class="v">Capacity</span>) <span class="k">return</span> <span class="k">nullptr</span>;</span><span class="line">    }</span><span class="line">    <span class="k">return</span> &amp;slots_[head &amp; kMask];</span><span class="line">  }</span></div>
+<div class="code sm" data-cue="2"  style="left:120px;top:580px;width:1240px;font-size:21px"><span class="line" data-hl="2" data-hlend="3">  <span class="k">static_assert</span>(<span class="v">std</span>::is_trivially_copyable_v&lt;<span class="v">T</span>&gt;, <span class="g">&quot;slots are copied with plain stores&quot;</span>);</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">static_assert</span>(<span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">std</span>::<span class="v">uint64_t</span>&gt;::is_always_lock_free,</span><span class="line" data-hl="2" data-hlend="3">                <span class="g">&quot;lock-free 64-bit atomics are required for cross-process use&quot;</span>);</span></div>
+<div class="box" data-cue="2" style="left:1230px;top:235px;width:570px;height:120px;border-color:var(--violet)"><div class="t" style="font-size:25px">64-bit, always lock-free · trivially copyable</div><div class="s">lives in shared memory, across processes</div></div>
+<div class="box" data-cue="3" style="left:1230px;top:380px;width:570px;height:120px;border-color:var(--teal)"><div class="t" style="font-size:25px">zero-copy API</div><div class="s">try_claim + commit · front + pop</div></div>
+<div class="box" data-cue="4" style="left:120px;top:760px;width:1240px;height:120px;border-color:var(--green)"><div class="t" style="font-size:25px">slots zeroed at construction</div><div class="s">pages faulted in before the hot path</div></div>
+<div class="tagx" data-cue="1" style="left:1230px;top:195px;border-color:var(--amber);color:var(--amber)">same design · three differences</div>
+</div>

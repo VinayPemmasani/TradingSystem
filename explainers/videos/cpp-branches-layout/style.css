@@ -1,0 +1,23 @@
+.ins{position:absolute;width:110px;height:64px;border-radius:10px;display:grid;place-items:center;font:600 22px var(--mono);color:#06141a;background:var(--teal)}
+.ins.br{background:var(--amber)} .ins.ld{background:var(--violet)} .ins.ok{background:var(--green)} .ins.gr{background:#2a3a45;color:#c9d6de}
+.card{position:absolute;padding:14px 22px;border-radius:12px;border:2px solid;background:#0b161e;font:600 26px var(--body)}
+.card .s{font:500 21px var(--mono);color:var(--muted);margin-top:4px}
+.flush{position:absolute;border:3px dashed var(--red);background:rgba(30,8,8,.82);border-radius:12px;display:grid;place-items:center;font:800 40px var(--display);color:var(--red);letter-spacing:.08em}
+.big{font:800 130px/1 var(--display);font-stretch:80%}
+.bit{position:absolute;width:30px;height:46px;border-radius:5px}
+.bit.k{background:var(--green)} .bit.n{background:#2a3a45}
+.brow{position:absolute;display:flex;align-items:center;gap:18px}
+.brow .nm{width:260px;font:600 25px var(--mono);color:#cfdbe2;text-align:right}
+.brow .b{height:46px;border-radius:8px}
+.brow .v{font:700 27px var(--mono)}
+.foot{font:500 20px var(--mono);color:var(--muted)}
+.cl{position:absolute;height:48px;display:flex;border-radius:6px;overflow:hidden;border:1px solid #33464f}
+.cl > div{height:100%}
+.cl .h{background:var(--amber)} .cl .c{background:#2a3a45}
+.node{position:absolute;width:92px;height:58px;border-radius:10px;border:2px solid var(--violet);background:#1b1530;display:grid;place-items:center;font:600 22px var(--mono);color:#d9ccff}
+.vc{position:absolute;width:58px;height:58px;border-radius:6px;background:var(--teal);color:#06141a;display:grid;place-items:center;font:600 20px var(--mono)}
+.chk{position:absolute;display:flex;align-items:center;gap:26px;font:500 38px var(--body)}
+.chk i{display:block;width:26px;height:26px;border-radius:6px;flex:none}
+.tagx{position:absolute;padding:6px 14px;border-radius:8px;font:600 22px var(--mono);background:#08121a;border:2px solid}
+.code .line.hl{background:rgba(255,179,71,.17)!important;box-shadow:inset 5px 0 0 var(--amber)!important}
+.code.sm{font-size:24px;padding:16px 22px}

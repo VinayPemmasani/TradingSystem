@@ -1,0 +1,22 @@
+:root{--eth:#6aa8ff;--ip:#a98bff;--udp:#ff8fc8;--mold:#e0c068;--len:#9fb3c0;--itch:#3fd0dc;
+--f-type:#e6edf2;--f-loc:#ffb347;--f-trk:#7f97a6;--f-ts:#6aa8ff;--f-ref:#4fd18b;--f-side:#ff8fc8;--f-sh:#a98bff;--f-stk:#8fb4c9;--f-px:#3fd0dc}
+.gc{position:absolute;border-radius:6px;background:#15242e;border:1px solid #243a47;display:grid;place-items:center;font:600 15px var(--mono);color:#56707f}
+.fc{position:absolute;border-radius:6px;display:grid;place-items:center;font:600 16px var(--mono);color:#06141a;text-align:center;line-height:1.15;border:1px solid rgba(0,0,0,.3)}
+.fc small{display:block;font:500 13px var(--mono);opacity:.75}
+.seg{position:absolute;border-radius:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;font:700 24px var(--mono);color:#06141a;text-align:center;line-height:1.1;border:2px solid rgba(0,0,0,.35)}
+.seg small{font:500 17px var(--mono);opacity:.8;margin-top:3px}
+.rl{position:absolute;font:600 22px var(--mono);color:var(--muted);text-align:right}
+.lane{position:absolute;font:600 17px var(--mono);color:var(--muted);text-align:center}
+.legend{display:flex;align-items:center;gap:16px;font:600 26px var(--mono)}
+.legend i{display:inline-block;width:26px;height:26px;border-radius:6px}
+.stage{border-radius:14px;background:var(--panel);border:2px solid var(--line);display:grid;place-items:center;text-align:center;font:700 26px var(--body);padding:8px}
+.stage small{display:block;font:500 18px var(--mono);color:var(--muted);margin-top:4px}
+.stage.teal{border-color:var(--teal)} .stage.blue{border-color:var(--blue)} .stage.green{border-color:var(--green)} .stage.violet{border-color:var(--violet)} .stage.amber{border-color:var(--amber)} .stage.red{border-color:var(--red)} .stage.pink{border-color:var(--pink)}
+.big{font:700 54px var(--mono)}
+.kv{font:600 26px var(--mono);color:#d4e0e7}
+.reg{position:absolute;height:74px;border-radius:10px;display:grid;place-items:center;font:700 26px var(--mono);border:2px solid var(--line);background:var(--panel)}
+.tl{position:absolute;height:3px;background:var(--line)}
+.tick{position:absolute;width:2px;height:16px;background:var(--muted)}
+.note{font:500 24px/1.35 var(--body);color:#b7c7d2}
+table.t td.n{color:var(--muted)}
+.blk{position:absolute;height:58px;border-radius:8px;display:grid;place-items:center;font:700 21px var(--mono);color:#06141a}

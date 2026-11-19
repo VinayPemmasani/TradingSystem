@@ -1,0 +1,48 @@
+[
+{
+"id": "title",
+"title": "Memory ordering",
+"text": "One thread writes a message and raises a flag. Another thread sees the flag and reads the message. Without the right ordering, it can read garbage."
+},
+{
+"id": "publish",
+"title": "Publish with a flag",
+"text": "Here is the naive version. The producer fills in price and quantity, then sets ready to true. The consumer spins until ready, then reads the price. The flag is a promise: if it is true, the data is there."
+},
+{
+"id": "reorder",
+"title": "What can reorder",
+"text": "Two layers can break that promise. First the compiler. A plain bool shared between threads is a data race, so it may assume no other thread writes it. Here GCC deleted the spin loop entirely. Then the CPU. Stores wait in a store buffer, and other cores may see them in a different order."
+},
+{
+"id": "tso",
+"title": "x86 versus ARM",
+"text": "x86 uses a strong model called total store order. Loads are not reordered with loads, and stores are not reordered with stores. The one exception: a later load may pass an earlier store still in the store buffer. ARM is weakly ordered. Accesses to different addresses may be reordered in almost any way."
+},
+{
+"id": "acqrel",
+"title": "Release and acquire",
+"text": "The fix is a matched pair. Store the flag with memory order release: no earlier access may move after it. Load it with memory order acquire: no later access may move before it. When the acquire load reads the released value, the store happens before the load. So everything written before the store is visible after the load."
+},
+{
+"id": "asm",
+"title": "The generated code",
+"text": "Here is what g++ -O2 emits for x86 on this box. The release store is a plain mov, the same as relaxed. The acquire load is a plain mov too, but now the spin loop stays. On x86, acquire and release mostly restrain the compiler. On ARM, they become stlr and ldar instructions."
+},
+{
+"id": "seqcst",
+"title": "seq_cst and relaxed",
+"text": "The default order, sequentially consistent, also forbids the store then load reordering. On x86 that store becomes an xchg, which drains the store buffer. In a loop on this box, a release store cost 0.7 nanoseconds and a seq_cst store 8.9. Relaxed keeps only atomicity, which suits a statistics counter that publishes nothing."
+},
+{
+"id": "ring",
+"title": "The lab's SPSC ring",
+"text": "The lab's SpscRing is this pattern. The producer writes a slot, then stores head with release. The consumer loads head with acquire, then reads the slot. Each side reads its own index relaxed, because only it writes that index. And each side caches the other's index, so it only pays for the acquire load when its copy runs out."
+},
+{
+"id": "aeron",
+"title": "Aeron's commit",
+"text": "Aeron uses the frame itself as the flag. The publisher first writes a negative frame length, then the header and payload. Then it stores the positive length with release ordering, and that store commits the frame. A subscriber loads the length with acquire. Positive means the whole frame is there.",
+"hold": 1.5
+}
+]

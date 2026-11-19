@@ -1,0 +1,73 @@
+[
+{
+"id": "hook",
+"title": "Signals",
+"text": "A market maker needs one number: where the price is about to be. This video builds it from the order book, one signal at a time."
+},
+{
+"id": "pipeline",
+"title": "How data arrives",
+"text": "In the lab's trader, the market data thread decodes ITCH and keeps every symbol's full book. When the top two levels or the trading state change, it pushes a 64-byte TopOfBook onto a ring. The trading thread drains the ring and requotes each changed instrument once. It sees two levels per side, so deeper and trade signals belong in the market data thread, next to the book."
+},
+{
+"id": "tob",
+"title": "Mid and spread",
+"text": "Prices are ITCH Price(4): integers with four implied decimals, so one cent is 100. The mid is bid plus ask, over two. The spread is ask minus bid, here two ticks. Both stay integers, as in the lab's market maker."
+},
+{
+"id": "micro",
+"title": "Microprice",
+"text": "Mid ignores size. Level-one imbalance is bid size over total size, from zero to one. The microprice weights each price by the size on the opposite side. That equals the mid, plus the spread times imbalance minus a half. As trades thin the ask, the microprice leans up toward it."
+},
+{
+"id": "depth",
+"title": "Full-book signals",
+"text": "The full book adds the levels behind the touch. Depth imbalance sums bid minus ask size over N levels, with weights that decay with depth. Orders five levels back rarely trade soon, so they count less. Book pressure does the same in price: a size-weighted price over N levels, minus the mid."
+},
+{
+"id": "ofi",
+"title": "Order flow imbalance",
+"text": "Imbalance is a snapshot. Order flow imbalance, from Cont, Kukanov and Stoikov in 2014, measures change. Each event at the best bid or ask contributes eₙ. Summed over an interval, that is OFI. Over the same interval, price change is roughly linear in it, with slope inversely proportional to depth."
+},
+{
+"id": "ofievents",
+"title": "OFI, event by event",
+"hold": 3,
+"text": "On the bid: if the price rose, add the new size. Unchanged, add the size change. If it fell, subtract the old size. The ask mirrors it, with signs flipped. Here, bid adds and trades eating the ask push OFI up, while a bid cancel pulls it down."
+},
+{
+"id": "trades",
+"title": "Trades and big orders",
+"text": "Trades carry information too. An ITCH execution names the resting order, so a resting sell means the buyer was the aggressor. Trade flow imbalance is buy volume minus sell volume, over total volume. Watch for adds many times the usual size. A level that refills at the same price right after trading may hide an iceberg."
+},
+{
+"id": "queue",
+"title": "Queue position",
+"text": "For your own order, the question is when it fills. In the lab, simex gives an order the same reference number in its OUCH accept and on ITCH. So the trader can count the shares queued ahead. Executions at that price come off the front. A cancel counts only if that order arrived before yours. Shares ahead over the recent execution rate gives an expected wait, a crude fill probability."
+},
+{
+"id": "ewma",
+"title": "Smoothing",
+"text": "Raw signals are noisy, so smooth them, decaying by time, not per update. Per update, a burst of a hundred messages in one microsecond can wipe out a second of history. Instead, set alpha to one minus e to the minus delta t over tau. Use ITCH timestamps, and blend in the value that held during the gap."
+},
+{
+"id": "fair",
+"title": "Fair value to quotes",
+"text": "Now combine them. Fair value is the microprice, plus weighted OFI, depth and trade flow terms, in ticks. Quotes sit half a spread either side, shifted by inventory skew. The lab's market maker already leans both quotes one tick per hundred shares held. Swap its anchor, the market's best prices, for fair value. Its hold rule still applies: within one tick an order stays, because a replace loses queue priority."
+},
+{
+"id": "engineering",
+"title": "Hot path rules",
+"text": "Each message costs constant work. OFI needs only the previous best levels; depth imbalance loops over a small, fixed N. Prices stay Price(4) integers; the microprice is bid plus spread times bid size over total, in 64-bit math. Ratios and averages are doubles, as in the lab's pairs strategy. Fair value rounds back to whole ticks. State lives in arrays sized at startup, so nothing allocates. And quotes are recomputed only when a book changed."
+},
+{
+"id": "pitfalls",
+"title": "Research pitfalls",
+"text": "Three research traps. Stale data: if the last update is old or trading halted, distrust the signal and reset its averages. Lookahead: a backtest may use only what the trader had at decision time, plus its latency. The 2014 fit is contemporaneous, so prediction needs lagged OFI. And never fit weights on the day you test them: fit on earlier days, test on later ones."
+},
+{
+"id": "close",
+"title": "Recap",
+"text": "So: top of book gives mid, spread, microprice and imbalance. The full book adds depth, flow and queues. Smooth by time, combine into fair value, and let the skew and hold rules turn it into orders."
+}
+]

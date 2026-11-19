@@ -1,0 +1,17 @@
+[
+["\\bg\\+\\+", "G plus plus"],
+["\\bO2\\b", "O two"],
+["\\bvptr\\b", "V pointer"],
+["\\bvtable\\b", "V table"],
+["\\bCRTP\\b", "C R T P"],
+["\\bABI\\b", "A B I"],
+["\\bL1\\b", "L one"],
+["std::variant", "standard variant"],
+["std::visit", "standard visit"],
+["\\b0\\.35\\b", "zero point three five"],
+["\\b0\\.75\\b", "zero point seven five"],
+["\\b1\\.4\\b", "one point four"],
+["\\b4\\.9\\b", "four point nine"],
+["\\bMarketMaker\\b", "market maker"],
+["\\bItanium\\b", "Itanium"]
+]

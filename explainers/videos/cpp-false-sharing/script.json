@@ -1,0 +1,43 @@
+[
+{
+"id": "title",
+"title": "False sharing",
+"text": "Two threads, two counters, and no shared data. Yet one memory layout runs much slower than the other. The reason is the cache line."
+},
+{
+"id": "line",
+"title": "64-byte lines",
+"text": "Caches never move single bytes. They move whole lines, and on x86 and most ARM cores, a line is 64 bytes. The low six bits of an address pick the byte inside its line. Read one byte, and the core fetches all 64. This box reports a 64 byte line."
+},
+{
+"id": "mesi",
+"title": "MESI",
+"text": "Each core has its own L1 cache, and every line in it carries a state. Modified: this core holds the only copy, and it is dirty. Exclusive: the only copy, still clean. Shared: other cores may hold read only copies. Invalid: the copy is gone. To write a line, a core must own it, so every other copy is invalidated first."
+},
+{
+"id": "pingpong",
+"title": "Ping-pong",
+"text": "Now put two 8 byte counters, a and b, in one line. Thread one, on core 1, increments a. Thread two, on core 2, increments b. Each write needs the line Modified in its own cache, which invalidates the other copy. So the line ping-pongs between the two caches, write after write. The threads share no data, only a line. That is false sharing."
+},
+{
+"id": "fix",
+"title": "alignas(64)",
+"text": "The fix is layout. Give each counter alignas 64, and each one starts its own line. The struct grows from 16 bytes to 128, and the static assert checks it. Now each core keeps its own line Modified, and writes it at L1 speed."
+},
+{
+"id": "hdi",
+"title": "The standard constant",
+"text": "C++17 names this number: hardware destructive interference size, in the new header. GCC only shipped it in version 12. On x86 it is 64, but it depends on the target and tuning flags. On AArch64, GCC says 256. So GCC warns when a header uses it, because a struct's layout could change between builds. Some code pads to 128 anyway, because Intel's spatial prefetcher fetches lines in pairs."
+},
+{
+"id": "lab",
+"title": "The lab's ring",
+"text": "The lab sidesteps that warning. Its core library fixes kCacheLine at 64, because rings live in shared memory and their layout must never change. In SpscRing, the producer's head index and its cached copy of tail share one line. The consumer's tail and cached head get the next line. The slots start on a third. Each core writes only lines it owns."
+},
+{
+"id": "measured",
+"title": "Measured",
+"text": "Here is a tiny benchmark on this 4 vCPU cloud box, built with g++ -O2 -pthread. Two threads, pinned and at real-time priority, each do 100 million relaxed atomic increments. Packed in one line, an increment took 33.5 nanoseconds at the median. Padded onto two lines, it took 6.2. That is 5.4 times faster, from layout alone. The box was shared and busy, so trust the ratio more than the exact numbers.",
+"hold": 1.5
+}
+]

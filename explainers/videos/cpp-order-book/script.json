@@ -1,0 +1,43 @@
+[
+{
+"id": "title",
+"title": "Order book, O(1) cancel",
+"text": "Here is a classic trading interview question. Build an order book driven by ITCH: add, cancel and execute orders by id, and read the best bid and ask. A busy feed sends millions of messages a second. Every operation should be constant time, with no allocation."
+},
+{
+"id": "naive",
+"title": "The first answer",
+"text": "The first answer is a map from price to a list of orders, one map per side. Best bid is the last key, best ask the first. But a cancel carries only the order id. So you walk every level and every list to find it. That is linear in resting orders, and every add allocates nodes."
+},
+{
+"id": "pool",
+"title": "Pool and id map",
+"text": "Fix memory first. At startup, allocate a pool of order slots, and keep the free slot numbers on a stack. A slot holds the id, price, quantity, side, and two links. A hash map takes the order id to its slot. It uses open addressing, sized up front, so the hot path never allocates."
+},
+{
+"id": "queue",
+"title": "Intrusive FIFO",
+"text": "Each price level is a FIFO queue in time priority, linked through the slots themselves. The level stores only a head, a tail and its total quantity. Add appends at the tail. Cancel finds the slot through the map, then splices it out. The previous slot skips forward, and the next slot points back. No search and no free, so cancel is O(1)."
+},
+{
+"id": "levels",
+"title": "Price levels",
+"text": "Where do the levels live? Prices are Price(4) integers, so a one cent tick is 100 units. The level index is the price minus a base, divided by the tick: a flat array, not a tree. Each side tracks its best index, and an add that improves it moves it. When the best level empties, walk to the next live one, usually a few ticks away."
+},
+{
+"id": "tests",
+"title": "Tests and complexity",
+"text": "The tests cover the edges: an empty book, duplicate ids, prices off the grid or out of range, and a full pool. Cancels hit the head, middle and tail of a queue. Then 200 thousand random operations run against the naive book, checking best prices after every step. Add, cancel, execute and best price are all O(1). Only emptying the best level walks."
+},
+{
+"id": "bench",
+"title": "Benchmark",
+"text": "Now measure, on a shared four vCPU cloud box that was busy with other jobs. Two million feed messages, ten thousand orders resting, best prices read after each one. The pool book took about 95 nanoseconds per message at the median. A map plus a hash of iterators took about 140. The naive search took about 90 microseconds, nearly a thousand times slower."
+},
+{
+"id": "lab",
+"title": "The lab's choice",
+"text": "What did the lab choose? Its feed handler book, libs/book, never needs queue position. Each level keeps only shares and an order count, in a vector sorted with the best price last. An open addressing map on the order reference holds each order's price and shares. Here it ran close to ours. The lab's matching engine does need time priority, so it uses pool slots and intrusive queues.",
+"hold": 1.0
+}
+]

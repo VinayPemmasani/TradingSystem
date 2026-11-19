@@ -1,0 +1,73 @@
+[
+ {
+  "id": "title",
+  "title": "REST API calls",
+  "text": "Your code sends one REST call: POST slash orders, with a JSON body. Before the answer comes back, six systems have touched it. Let's follow that call, then see how REST is designed."
+ },
+ {
+  "id": "cast",
+  "title": "The cast",
+  "text": "Here is the cast. The client, a DNS resolver, the venue's load balancer, an API server, a database, and the matching engine. Time runs downward, and every arrow between client and venue costs a network round trip."
+ },
+ {
+  "id": "connect",
+  "title": "DNS and TCP",
+  "text": "First the client needs an address, so it asks DNS, unless the answer is cached. Then TCP opens a connection with a three way handshake. The client can send data right after its ACK, so that costs one round trip."
+ },
+ {
+  "id": "tls",
+  "title": "TLS 1.3",
+  "text": "Next, TLS 1.3. The client hello carries a key share. The server answers with its own and its certificate, so keys are ready after one round trip. Resuming a session, zero RTT lets the client send early data in its first flight. But early data can be replayed by an attacker, so it must never carry an order."
+ },
+ {
+  "id": "request",
+  "title": "The request",
+  "text": "Now the request. A method, POST, and a path, slash v1 slash orders. Headers carry the host, the content type, an API key and a signature. Then the JSON body: symbol, side, quantity, price and a client order ID. Wire framing has its own video."
+ },
+ {
+  "id": "sign",
+  "title": "Signing",
+  "text": "Many crypto exchanges sign requests the same way. Join the timestamp, method, path and body into one string. Compute HMAC SHA256 over it with your secret key, and send the result as a header. The server recomputes it, and rejects a timestamp outside a short receive window. That stops an old request being replayed; some venues use an increasing nonce instead."
+ },
+ {
+  "id": "server",
+  "title": "Server side",
+  "text": "Inside the venue, the load balancer often terminates TLS and picks a healthy server. A router matches the method and path to a handler. Authentication checks the key and signature, and validation checks the body. The handler writes the order to the database and passes it to the matching engine. Then the response goes back: 201 created, with the order's ID."
+ },
+ {
+  "id": "verbs",
+  "title": "Resources and verbs",
+  "text": "Now the design. REST names resources with URIs: slash orders is a collection, slash orders slash 42 is one order. RFC 9110 calls GET and HEAD safe: they change nothing. PUT and DELETE are idempotent: sending one twice has the effect of sending it once. POST is neither, and neither is PATCH."
+ },
+ {
+  "id": "status",
+  "title": "Status codes",
+  "text": "The status code says what happened. The 200s succeed: OK, created, or accepted for later. The 400s are the client's fault: bad request, unauthenticated, forbidden, not found. Then 409, a conflict with current state, and 422, a valid body the rules reject. 429 means too many requests: wait for Retry-After. The 500s are the server's: an internal error, or unavailable."
+ },
+ {
+  "id": "idem",
+  "title": "Idempotency keys",
+  "text": "Now the classic problem. You POST an order, and the call times out. Did the order go in? Retrying blindly might buy twice. So the client sends an idempotency key, one unique ID per intent. The server stores the key with its result. A retry with the same key gets that result back, not a second order."
+ },
+ {
+  "id": "etag",
+  "title": "ETags",
+  "text": "ETags handle concurrent edits. A GET returns the resource with an ETag, a version tag. To change it, send If-Match with that tag. If someone changed it in between, the server answers 412, precondition failed, and you re-read. That's optimistic concurrency: no locks between calls."
+ },
+ {
+  "id": "rules",
+  "title": "Pages, limits, versions",
+  "text": "Long lists come in pages. An offset skips rows, but new rows shift everything, so you miss or repeat some. A cursor marks exactly where you stopped, so pages stay stable. Rate limits cap your requests, and some venues weight each endpoint by its cost. And a version in the path lets the API change without breaking you."
+ },
+ {
+  "id": "rtt",
+  "title": "Round trips",
+  "text": "Count the round trips. A cold call pays DNS, then TCP, TLS, and the request itself: three round trips plus the lookup. A warm keep-alive connection is already open, so the call takes one. At a typical 20 millisecond internet round trip, that's about 60 milliseconds cold, and 20 warm, plus server time."
+ },
+ {
+  "id": "trading",
+  "title": "REST in trading",
+  "text": "So trading firms use REST where speed matters less: accounts, reference data, and slow order entry. Market data and fast orders go elsewhere. In the lab, an OUCH Enter Order is 47 bytes, 50 inside SoupBinTCP, on a connection open all day. The signed JSON request is about 500 bytes of text. Colocated binary order entry typically answers in tens of microseconds, hundreds of times faster than REST over the internet.",
+  "hold": 0.5
+ }
+]
