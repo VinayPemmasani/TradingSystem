@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Smart order routing",
+"text": "A US stock trades on many exchanges at once, and the best price can be on any of them. A smart order router decides where each piece of an order goes, and when."
+},
+{
+"id": "why",
+"title": "Why route",
+"text": "Liquidity is split across venues. Each shows its own best bid and offer, its own depth, and its own fees. An order sent to one venue can miss a better price on another, or simply not fill. The router's job is to see all of them as one book, and take the best of it."
+},
+{
+"id": "rule",
+"title": "The trade-through rule",
+"text": "In US equities, Rule 611 of Regulation NMS shapes routing. Each exchange's best displayed, automated bid and offer is a protected quotation. A trading center must have policies to stop trades through those prices. The main way around it is the intermarket sweep order: you mark your order as an ISO, and at the same moment send orders to take every better protected quote. Only automated quotes are protected: a slow, manual quote can be traded through. In June 2026, the SEC proposed removing Rule 611; for now, it applies."
+},
+{
+"id": "example",
+"title": "A worked sweep",
+"text": "We want 1,000 shares, up to 187.26. Exchange A offers 300 at 187.25, B offers 200 at 187.25, and C offers 500 at 187.26. To buy at 187.26 on C, the better prices on A and B must be taken too. So the router fires three ISOs at once: 300 to A, 200 to B, and 500 to C. They leave together, so they arrive before the quotes can move."
+},
+{
+"id": "choose",
+"title": "What the router weighs",
+"text": "Beyond price, the router weighs the fee or rebate at each venue, the chance of a fill, and the time to reach it. Displayed size can vanish once the first child order lands, so a router may stagger its sends, timing the children to arrive together. And hidden liquidity may be worth probing before showing your hand."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab has a single venue, simex, so it needs no router. But the pieces are there. The OUCH Enter Order carries an intermarket sweep flag at byte 29. A replace carries the flag too, at byte 23, and Order Accepted echoes it back at byte 45. And the execution helpers in firm slash strategy split a parent order into child orders, capped in size, or at six percent of market volume."
+},
+{
+"id": "take",
+"title": "Takeaway",
+"text": "A router turns a fragmented market into one book, then sends many small orders where one big one would leak information or miss prices. Measure it by what it costs you: the price you paid, against the best you could have had. The lab's own cost analysis works that way, comparing each fill's price with the mid just before it. And that completes order entry: the bytes on the wire, the states behind them, and the safety nets around every order.",
+"hold": 1.0
+}
+]

@@ -1,0 +1,35 @@
+[
+ {
+  "id": "title",
+  "title": "Self-trade prevention",
+  "text": "Big firms run many strategies on the same market. Self-trade prevention stops their orders from trading with each other."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "Picture two strategies inside one firm. Strategy A rests a sell, and strategy B sends a buy at the same price. That trade changes nothing, because the same owner is on both sides. But it prints to the tape, pays fees on both sides, and can look like a wash trade, which CME Rule 534 prohibits. Self-trade prevention lets the exchange catch it before it happens."
+ },
+ {
+  "id": "modes",
+  "title": "The modes",
+  "text": "You tag your orders with an ID. When an incoming order would match a resting order with the same ID, the exchange applies a rule instead of trading. Cancel newest cancels the incoming order. Cancel oldest cancels the resting one. Cancel both removes both. Decrement shrinks both by the overlap, so the smaller one disappears. The choice matters: cancel newest protects your resting order's place in the queue, while cancel oldest lets the newer, more urgent order through. Venues offer different sets: Nasdaq and BX, Binance, and CME each list their own.",
+  "hold": 0.6
+ },
+ {
+  "id": "cme",
+  "title": "CME",
+  "text": "Here is how CME does it. The ID goes in FIX tag 2362. Tag 8000 picks the rule: N cancels the aggressing order, and O cancels the resting one. With no instruction, CME cancels the resting order. The cancel report says why: reason 103 for cancel oldest, 107 for cancel newest. Say B's buy carries ID 7, with tag 8000 set to N. The buy is cancelled, and A's sell keeps its place. It is optional, and the same ID can cover orders with common ownership."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's exchange, simex, has no self-trade prevention. Each order key does carry its owner in the top 16 bits, so the engine could check it. Instead, the firm prevents it on its own side. The market maker never bids at or above its own working ask, or offers at or below its own bid. The trader also counts any self-trade it sees: two fills with the same match number. If there is even one, the run fails its checks. OUCH already has a cancel reason for this: Q, for self-match prevention.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So what do pros do? They prevent, not just detect, and tag every order. They choose a mode per strategy: cancel newest keeps their resting queue place. They decide the scope of the ID: one strategy, one desk, or the whole firm. And they check each venue's default. They also log every prevented trade, because each one is a conflict between strategies worth fixing. Your orders should never trade with each other.",
+  "hold": 1.0
+ }
+]

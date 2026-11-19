@@ -1,0 +1,17 @@
+[
+["std::queue", "standard queue"],
+["\\bnotify_one\\b", "notify one"],
+["\\bfutex\\b", "few-tex"],
+["\\bsyscall\\b", "sys call"],
+["\\bVM\\b", "V M"],
+["\\b4-vCPU\\b", "four V C P U"],
+["\\b512-byte\\b", "five twelve byte"],
+["\\b64-byte\\b", "sixty four byte"],
+["\\bp50\\b", "P fifty"],
+["\\bp99\\b", "P ninety nine"],
+["\\b5\\.5\\b", "five point five"],
+["\\b0\\.9\\b", "zero point nine"],
+["\\b216\\b", "two hundred sixteen"],
+["\\bSPSC\\b", "S P S C"],
+["\\bdeque\\b", "deck"]
+]

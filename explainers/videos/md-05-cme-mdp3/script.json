@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "CME MDP 3.0",
+"text": "CME Globex market data is MDP 3.0. It is the Simple Binary Encoding from the last video, sent over UDP multicast. Let's follow one book update from the wire to the screen, and see how a client recovers when it falls behind."
+},
+{
+"id": "feeds",
+"title": "Three kinds of feed",
+"text": "Each channel has incremental feeds A and B, carrying the same data, and CME strongly recommends processing both. A market recovery feed loops snapshots of every book. And an instrument loop replays the instrument definitions, including each book's depth and the security ID that updates refer to. Detect loss with the packet sequence numbers."
+},
+{
+"id": "packet",
+"title": "The packet",
+"text": "Every packet starts with twelve bytes. A four byte message sequence number, and an eight byte sending time in nanoseconds since the Unix epoch. Then each message has a two byte size, and the eight byte SBE header: block length, template ID, schema ID and version. Unlike ITCH, everything is little-endian. In CME's own decoding example, the bytes A6 BB 0A 00 are sequence 703,398."
+},
+{
+"id": "book",
+"title": "Template 46: a book update",
+"text": "Book changes arrive in the incremental refresh book message, template 46. It has a transact time and a match event indicator, then a repeating group of entries. Each entry names a security ID, its own per-instrument sequence number called RptSeq, a price, a size, an order count, and a price level. Then an update action: new, change or delete. And an entry type: bid, offer, implied bid or implied offer. One message can update several instruments at once."
+},
+{
+"id": "example",
+"title": "Market by price",
+"text": "This is market by price: you maintain levels, not orders. Here is an illustrative five-deep bid side. A change at level one sets the size to 25; nothing else moves. A new entry at level two inserts a price and shifts the levels below it down, dropping the last. A delete at level one shifts everything below it up. The depth itself comes from tag 264 in the instrument definition."
+},
+{
+"id": "recovery",
+"title": "Snapshot recovery",
+"text": "Lose packets on both A and B, and your books may be wrong. To recover, queue the live incrementals, and join the snapshot loop. Each snapshot carries tag 369, the last incremental packet it already includes. Process one full loop. Drop queued packets below that number. Apply the rest, skipping entries whose RptSeq the snapshot already covers, and you are back in sync."
+},
+{
+"id": "take",
+"title": "Takeaway",
+"text": "Three habits make an MDP handler robust. Arbitrate A and B before anything else. Check RptSeq per instrument, not just packet numbers. And treat the snapshot loop as routine, because one day you will need it. MDP 3.0 is SBE plus sequence numbers plus a way home.",
+"hold": 1.0
+}
+]

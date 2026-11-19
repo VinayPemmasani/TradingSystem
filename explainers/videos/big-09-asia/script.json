@@ -1,0 +1,16 @@
+[
+ {"id": "title", "title": "HKEX, Shanghai and Shenzhen",
+  "text": "This one covers three exchanges: Hong Kong, Shanghai and Shenzhen. What ties them together is Stock Connect, a bridge that lets money cross between Hong Kong and mainland China."},
+ {"id": "history", "title": "History in six beats",
+  "text": "Six beats of history. In 1980, Hong Kong's stock exchanges were unified into one. In 1990, the Shanghai Stock Exchange was founded. In 2000, Hong Kong's exchanges and clearing houses came together as HKEX, which listed its own shares. In 2012, HKEX bought the London Metal Exchange. In 2014, Stock Connect linked Hong Kong with Shanghai, and in 2016 Shenzhen joined."},
+ {"id": "trades", "title": "What trades there",
+  "text": "What trades there? In 2025, Hong Kong's cash market averaged about 250 billion Hong Kong dollars a day, up 90 percent. It led the world in IPOs: 119 listings raised 287 billion Hong Kong dollars. The mainland markets are bigger still: at the end of 2025, Shanghai listed about 2,300 companies worth 65 trillion yuan, and Shenzhen about 2,900. By the World Federation of Exchanges' count, value traded grew 66 percent in Shenzhen and 61 percent in Shanghai."},
+ {"id": "tech", "title": "How Stock Connect works",
+  "text": "How does Stock Connect work? A Hong Kong investor's order for a Shanghai share goes to a Hong Kong exchange subsidiary, which routes it to Shanghai, where it is matched. For clearing, HKSCC, Hong Kong's clearing house, is a participant of ChinaClear, the mainland one, and settles for Hong Kong brokers on a net basis. Daily quotas cap net buying: 52 billion yuan northbound and 42 billion southbound, for each mainland market. In 2025, northbound trading averaged 212 billion yuan a day."},
+ {"id": "money", "title": "How HKEX makes money",
+  "text": "How does HKEX make money? Revenue in 2025 was 29.2 billion Hong Kong dollars, up 30 percent. The cash market segment brought in half of it. Derivatives were about a quarter, commodities, including the LME, 11 percent, and data and connectivity 8 percent."},
+ {"id": "why", "title": "Why they are big",
+  "text": "Why are they big? Shanghai and Shenzhen are where mainland shares trade, for a huge home investor base. Hong Kong's edge is the gate. Stock Connect orders in both directions are routed and cleared through HKEX's own subsidiaries, and that flow now sits beside one of the world's busiest IPO markets. One caution: quotas and home-market rules are set by policy, so the width of the bridge is not the exchange's to choose."},
+ {"id": "takeaway", "title": "Takeaway", "hold": 0.3,
+  "text": "Shanghai and Shenzhen hold the mainland's shares. Hong Kong holds the bridge, and its moat is being the gate."}
+]

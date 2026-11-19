@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "Cash equities",
+  "text": "Cash equities are company shares, traded on many venues and tied together by one national best price. This series profiles every asset class the same way, starting with stocks."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: shares and exchange traded funds. Who trades: retail investors through brokers, institutions, and market makers. Where: 29 SEC registered exchanges, for stocks and options, plus off-exchange venues. The data is public limit order books, with full depth on each exchange's own feed. It is fully electronic, down to microseconds. Trades settle on T+1, since May 28, 2024. The World Federation of Exchanges put listed shares worldwide at about 152 trillion dollars at the end of 2025."
+ },
+ {
+  "id": "venues",
+  "title": "Many venues, one price",
+  "text": "US stocks are fragmented. A broker can route one order to any exchange, a dark pool or a wholesaler. Each exchange sends its best bid and offer to a securities information processor. The processor publishes the national best bid and offer, the NBBO. Under Rule 611 of Regulation NMS, a venue must not trade through a better protected quote elsewhere. Fast traders also buy direct feeds, which skip the processor's extra hop."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Three exchanges quote one stock. A bids 100.00, B 100.01 and C 99.99, while they offer 100.04, 100.03 and 100.02. So the NBBO is 100.01 bid, 100.02 offered, a one cent spread. A buyer of 300 shares first takes the 100 that C offers at 100.02. The other 200 go to B at 100.03. A smart order router sends both at once."
+ },
+ {
+  "id": "day",
+  "title": "A day, then T+1",
+  "text": "A trading day has three phases. On Nasdaq, an opening auction at 9:30 matches overnight orders at one price. Continuous trading runs until the 4 PM closing auction. Then NSCC, the clearing house, becomes central counterparty and nets each member's trades per stock. DTCC reports a netting rate of 98.6 percent. On T+1, shares and cash swap at DTC by book entry."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab is built on stocks. It replays one real Nasdaq day, January 30, 2019. That one day, on one exchange, is 368 million ITCH messages. The feed handler rebuilds every book, and the simulated exchange matches lab orders over OUCH. A real desk does this for every exchange, then merges the books."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "A few traps. Off-exchange trades print only after they happen, so the lit book is partial. Splits and dividends change prices and symbols overnight. Halts and limit up limit down bands can freeze a stock in seconds. And each venue's fees and rebates move where liquidity sits."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 0.3,
+  "text": "Equities are many venues tied together by one national best price. The rest of this series is measured against that baseline."
+ }
+]

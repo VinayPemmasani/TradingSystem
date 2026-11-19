@@ -1,0 +1,78 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 08 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">L1 · L2 · L3</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Top of book vs price level vs order by order.</div>
+<div class="card" data-cue="1" style="left:140px;top:560px;width:480px;height:220px;border-color:var(--teal)"><div class="ct c-teal">Level 1</div><div class="cd">best bid · best offer</div></div>
+<div class="card" data-cue="2" style="left:660px;top:560px;width:480px;height:220px;border-color:var(--amber)"><div class="ct c-amber">Level 2</div><div class="cd">every price, summed</div></div>
+<div class="card" data-cue="3" style="left:1180px;top:560px;width:560px;height:220px;border-color:var(--violet)"><div class="ct c-violet">Level 3</div><div class="cd">every order</div></div>
+<div class="lbl" data-cue="4" style="left:140px;top:810px">more messages · more state · more information →</div>
+</div>
+
+<div class="scene" id="s-l1">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Level 1: top of book</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:240px;width:1000px;height:260px;border-color:var(--teal)">
+<div class="cs" style="font-size:40px"><span class="c-green">189.25 × 600</span>  ·  <span class="c-red">189.27 × 400</span></div>
+<div class="cs" style="font-size:30px;margin-top:24px">last 189.26 × 100</div>
+<div class="cd" style="margin-top:20px">illustrative quote</div></div>
+<div class="lbl" data-cue="1" style="left:1180px;top:260px;width:620px;line-height:1.6">changes only when the touch changes</div>
+<div class="tag" data-cue="2" style="left:1180px;top:340px;border-color:var(--teal)">screens</div>
+<div class="tag" data-cue="2" data-d="0.3" style="left:1330px;top:340px;border-color:var(--teal)">risk marks</div>
+<div class="tag" data-cue="2" data-d="0.6" style="left:1520px;top:340px;border-color:var(--teal)">router reference</div>
+<div id="l1-hidden" data-cue="3" data-anim="fade" style="left:120px;top:540px;width:1000px;height:200px"></div>
+<div class="lbl c-red" data-cue="3" data-d="0.4" style="left:1180px;top:600px;width:600px">hidden: everything behind the best</div>
+<div class="card" data-cue="4" style="left:120px;top:770px;width:1680px;border-color:var(--blue)"><div class="ct c-blue">US stocks: consolidated top of book from the SIPs</div><div class="cd">video 10</div></div>
+</div>
+
+<div class="scene" id="s-l2">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Level 2: price levels</div>
+<div id="l2-book" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:220px;width:1000px;height:560px"></div>
+<div class="card" data-cue="1" style="left:1180px;top:230px;width:620px;border-color:var(--amber)"><div class="ct c-amber">CME market by price</div><div class="cd">fixed depth · update by level (video 05)</div></div>
+<div class="tag c-green" data-cue="2" style="left:1180px;top:440px;border-color:var(--green);font-size:26px">✓ size 1, 2, 5 ticks away</div>
+<div class="tag c-red" data-cue="3" style="left:1180px;top:520px;border-color:var(--red);font-size:26px">✕ which order is first?</div>
+</div>
+
+<div class="scene" id="s-l3">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Level 3: order by order</div>
+<div id="l3-book" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:220px;width:1100px;height:560px"></div>
+<div class="tag c-violet" data-cue="1" style="left:1280px;top:240px;border-color:var(--violet);font-size:26px">ITCH (01) · PITCH (06)</div>
+<div class="tag c-violet" data-cue="1" data-d="0.4" style="left:1280px;top:310px;border-color:var(--violet);font-size:26px">CME market by order</div>
+<div class="tag c-green" data-cue="2" style="left:1280px;top:420px;border-color:var(--green);font-size:26px">queue in time order</div>
+<div class="tag c-amber" data-cue="3" style="left:1280px;top:500px;border-color:var(--amber);font-size:26px">most messages · most state</div>
+<div class="tag c-teal" data-cue="4" style="left:1280px;top:580px;border-color:var(--teal);font-size:26px">track each order to its end</div>
+<div class="tag c-red" data-cue="5" style="left:1280px;top:660px;border-color:var(--red);font-size:26px">one lost message → wrong book</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One bid at 189.25, three views</div>
+<div class="lbl c-violet" data-cue="1" style="left:120px;top:220px">LEVEL 3 · queue, front first</div>
+<div id="ex8-l3" data-cue="1" data-anim="fade" style="left:120px;top:260px;width:1100px;height:110px"></div>
+<div class="lbl c-amber" data-cue="2" style="left:120px;top:420px">LEVEL 2</div>
+<div class="card" data-cue="2" style="left:120px;top:460px;width:800px;border-color:var(--amber)"><div class="cs" style="font-size:34px" id="ex8-l2">189.25 × 600 · 3 orders</div></div>
+<div class="lbl c-teal" data-cue="3" style="left:120px;top:610px">LEVEL 1</div>
+<div class="card" data-cue="3" style="left:120px;top:650px;width:800px;border-color:var(--teal)"><div class="cs" style="font-size:34px" id="ex8-l1">bid 189.25 × 600</div></div>
+<div class="tag c-red" data-cue="4" style="left:1420px;top:290px;border-color:var(--red);font-size:26px">cancel: the 100</div>
+<div class="tag c-violet" data-cue="5" style="left:1420px;top:360px;border-color:var(--violet);font-size:24px">L3: exactly that order</div>
+<div class="tag c-amber" data-cue="6" style="left:1000px;top:480px;border-color:var(--amber);font-size:24px">L2: 600 → 500 · which one?</div>
+<div class="card" data-cue="7" style="left:1000px;top:640px;width:800px;border-color:var(--green)"><div class="ct c-green">your order behind it moved up</div><div class="cd">only level 3 shows it</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: deep to shallow</div>
+<div class="node" data-cue="0" data-d="0.3" style="left:120px;top:300px;width:300px;height:160px;border-color:var(--violet)">ITCH<small>order events · L3</small></div>
+<div class="node" data-cue="1" style="left:560px;top:300px;width:400px;height:160px;border-color:var(--amber)">BookBuilder<small>OrderMap + price levels · L2</small></div>
+<div class="node" data-cue="2" style="left:1100px;top:300px;width:400px;height:160px;border-color:var(--teal)">Consolidator<small>Level 1 record</small></div>
+<svg class="full"><path class="draw" data-cue="1" d="M 425 380 L 550 380" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="2" d="M 965 380 L 1090 380" stroke="var(--teal)" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="code" data-cue="1" data-d="0.5" style="left:120px;top:540px;width:840px;font-size:21px"><span class="line"><span class="c">// lab/book/order_book.hpp</span></span><span class="line"><span class="c">// Each side is a vector sorted so the best</span></span><span class="line"><span class="c">// price is at the back: almost all activity</span></span><span class="line"><span class="c">// happens near the touch.</span></span></div>
+<div class="code" data-cue="2" data-d="0.5" style="left:1000px;top:540px;width:800px;font-size:21px"><span class="line"><span class="k">struct</span> <span class="v">Record</span> {  <span class="c">// consolidator.hpp</span></span><span class="line">  bid, bid_size, ask, ask_size;</span><span class="line">  last, last_size, volume;</span><span class="line">  status, halt_reason; …</span><span class="line">};</span></div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Pick depth by the question</div>
+<table class="t" style="left:120px;top:240px;width:1680px">
+<tr data-cue="0" data-d="0.3"><th>question</th><th>depth</th></tr>
+<tr data-cue="1"><td>What is the price?</td><td class="c-teal">Level 1</td></tr>
+<tr data-cue="2"><td>How much can I trade, and at what cost?</td><td class="c-amber">Level 2</td></tr>
+<tr data-cue="3"><td>Where am I in the queue? Who cancelled?</td><td class="c-violet">Level 3</td></tr>
+</table>
+<div class="take" data-cue="4" style="left:120px;top:640px;width:1680px">Deep data derives the shallow views; <span class="c-violet">never the reverse.</span></div>
+</div>

@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Long/short equity",
+  "text": "Long/short equity is the original hedge fund. Own the stocks you like, short the ones you do not, and keep part of the market's swings out of the book. Factor investing is its systematic, rules-based form."
+ },
+ {
+  "id": "book",
+  "title": "Gross and net",
+  "text": "Say a manager holds 130 percent of capital in longs, and 70 percent in shorts. Gross exposure is 200 percent, and net exposure is 60. Returns then come from two places. The net 60 percent rides the market. The spread between the longs and the shorts is the stock picking, and that is the part the manager is paid for. Gross exposure, the longs plus the shorts, sets how much risk the book carries; net exposure sets how much the market moves it."
+ },
+ {
+  "id": "factors",
+  "title": "Factors as rules",
+  "text": "Factor investing turns stock picking into rules. Fama and French built the classic factors in 1993. Each June, stocks are split at the NYSE median size, and at the 30th and 70th percentiles of book-to-market. That gives six portfolios. SMB, small minus big, is the average of the three small portfolios minus the three big ones. HML, high minus low, is the two value portfolios minus the two growth ones. Jegadeesh and Titman added momentum: buy past winners and sell past losers, over three to twelve months."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Here is one month, with made-up returns for the six portfolios. Small value made 2 percent, small neutral 1.5, small growth 1. Big value made 1.2, big neutral 1, and big growth 0.8. SMB is 4.5 over 3, minus 3 over 3: half a percent. HML is the value average, 1.6, minus the growth average, 0.9: 0.7 percent. Each factor is itself a long/short portfolio."
+ },
+ {
+  "id": "lose",
+  "title": "How it loses",
+  "text": "These books lose in particular ways. In a short squeeze, a heavily shorted stock jumps, and shorts rush to buy it back, pushing it higher. Factors crash: Daniel and Moskowitz found momentum crashes come in panic states, after market declines, as the market rebounds. Crowding bites, as in August 2007, when similar quant books unwound together. And a stock-picking book can hide one large bet on a sector or a factor."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's thesis trader is one long position, built on a fundamental fair value. Execution.hpp's pov_child caps each child order at six percent of the market's recent volume, so its own buying does not push up the price it pays. A long/short book runs hundreds of these at once. It adds a risk model that measures its factor exposures, a borrow desk for the shorts, and daily checks that net exposure stays where it should."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Long/short equity harvests the spread between good and bad stocks, and factor investing harvests the same through rules. They lose in squeezes, factor crashes and crowded exits, so measuring hidden exposures matters as much as picking stocks."
+ }
+]

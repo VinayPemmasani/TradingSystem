@@ -1,0 +1,72 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 06 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Dark pools</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:410px;width:1500px">No quotes, only trades.</div>
+<div class="pool" data-cue="1" style="left:140px;top:540px;width:900px;height:300px"></div>
+<div class="ghost green" data-cue="1" data-d="0.4" style="left:200px;top:600px;width:300px">buy ?</div>
+<div class="ghost red" data-cue="1" data-d="0.6" style="left:600px;top:700px;width:300px">sell ?</div>
+<div class="tag c-amber" data-cue="2" style="left:1100px;top:660px">only the print is public</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why big orders hide</div>
+<div class="lbl" data-cue="1" style="left:160px;top:230px">lit book: everyone sees it</div>
+<div id="wy-lad" data-cue="1" data-anim="fade" style="left:160px;top:320px"></div>
+<div class="tag c-red" data-cue="2" style="left:160px;top:700px">others see 200,000 → the offer lifts away</div>
+<div class="pool" data-cue="3" style="left:1100px;top:250px;width:720px;height:380px"></div>
+<div class="lbl" data-cue="3" data-d="0.2" style="left:1130px;top:270px">dark pool</div>
+<div class="ghost green" data-cue="3" data-d="0.5" style="left:1160px;top:330px;width:360px">buy 200,000</div>
+<div class="ghost red" data-cue="3" data-d="0.9" style="left:1400px;top:470px;width:360px">sell 150,000</div>
+<div class="tag c-teal" data-cue="4" style="left:1100px;top:680px">price: NBBO midpoint, from the lit market</div>
+</div>
+
+<div class="scene" id="s-match">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A midpoint match</div>
+<div class="pool" data-cue="0" data-d="0.3" style="left:560px;top:230px;width:800px;height:520px"></div>
+<div class="ghost green" id="mt-buy" data-cue="1" style="left:620px;top:290px;width:680px">buy <span id="mt-bq">50,000</span> · peg mid · min 5,000</div>
+<div class="node red" data-cue="2" style="left:120px;top:440px;width:320px"><div class="t">sell 20,000</div><div class="s">arrives</div></div>
+<svg class="full"><path id="mt-s" d="M450 500 L640 500" fill="none" stroke="#ff6b5e" stroke-width="3" class="draw" data-cue="2" data-d="0.3" marker-end="url(#ah-red)"/>
+<path class="draw" data-cue="3" d="M1560 370 L1370 420" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/>
+<path class="draw" data-cue="6" d="M960 760 L960 850" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="node teal" data-cue="3" style="left:1450px;top:250px;width:370px"><div class="t">NBBO</div><div class="s">30.00 × 30.02 → mid 30.01</div></div>
+<div class="node amber" data-cue="3" data-d="0.8" style="left:700px;top:470px;width:520px"><div class="t c-amber">print 20,000 @ 30.01</div></div>
+<div class="fcard" data-cue="4" style="left:1450px;top:480px;width:370px"><div class="math" style="font-size:30px">1¢ × 20,000<br>= <span class="val c-amber">$200</span> each side</div></div>
+<div class="tag" data-cue="5" style="left:640px;top:640px">30,000 still resting, unseen</div>
+<div class="tag c-amber" data-cue="6" style="left:760px;top:870px">reported after the trade · FINRA TRF</div>
+</div>
+
+<div class="scene" id="s-size">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Where US stock volume traded</div>
+<div class="chip" data-cue="1" style="left:120px;top:210px;background:var(--blue)">NMS stocks · share volume · Q1 2022 · SEC</div>
+<div id="sz-bar" data-cue="1" data-anim="fade" style="left:120px;top:300px;width:1700px;height:120px"></div>
+<div class="card" data-cue="2" style="left:120px;top:480px;width:520px;border-color:#a7b8c4"><div class="ct">32 ATSs</div><div class="cs"><span class="stat c-violet" style="font-size:56px">10.2%</span></div></div>
+<div class="card" data-cue="3" style="left:690px;top:480px;width:520px;border-color:#a7b8c4"><div class="ct">16 exchanges</div><div class="cs"><span class="stat" style="font-size:56px">59.7%</span></div></div>
+<div class="card" data-cue="3" data-d="0.8" style="left:1260px;top:480px;width:560px;border-color:var(--teal)"><div class="ct c-teal">6 wholesalers</div><div class="cs"><span class="stat c-teal" style="font-size:56px">23.9%</span></div></div>
+<div class="tag" data-cue="4" style="left:120px;top:760px">2018 (SEC, Form ATS-N release): ATSs ≈ 11.4%</div>
+<div class="tag c-blue" data-cue="5" style="left:120px;top:830px">FINRA ATS transparency data: volume per ATS, per stock</div>
+</div>
+
+<div class="scene" id="s-risk">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The catches</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:560px;border-color:var(--pink)"><div class="ct c-pink">Fill uncertainty</div><div class="cs">Rest all day, match nothing.</div></div>
+<div class="card" data-cue="2" style="left:120px;top:460px;width:560px;border-color:var(--pink)"><div class="ct c-pink">Who is inside?</div><div class="cs">You cannot see the other side.</div></div>
+<div class="fcard" data-cue="3" style="left:760px;top:230px;width:1060px"><span class="lbl">SEC press release 2016-16 · settled Jan 31, 2016</span><div class="cs" style="font:400 30px/1.4 var(--body)">Barclays (LX) and Credit Suisse: ≈ <span class="c-amber">$154 million</span>, SEC + New York AG</div></div>
+<div class="tag c-pink" data-cue="4" style="left:760px;top:420px">Barclays: promised to police toxic flow; did not</div>
+<div id="rk-ch" data-cue="5" data-anim="fade" style="left:760px;top:490px;width:1060px;height:340px"></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Rules, and the lab</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1700px;border-color:var(--amber)"><div class="ct c-amber">Form ATS-N (since 2018)</div><div class="cs">public: order types · fees · market data used · the operator's conflicts of interest</div></div>
+<div class="code" data-cue="1" style="left:120px;top:450px;width:1700px;font-size:22px"><span class="c"># docs/specs/ouch50-layout.md</span>
+O Enter Order 47 ... Time In Force 26:1, <span class="line" data-hl="1" data-hlend="3">Display 27:1, Capacity 28:1 ...    <span class="c"># Y visible, N hidden. simex shows every order.</span></span></div>
+<div class="code" data-cue="3" style="left:120px;top:660px;width:1700px;font-size:22px"><span class="c"># docs/specs/itch50-layout.md · exchange/simex/liquidity.hpp</span>
+P Trade (non-cross) 44   <span class="c"># trades that never touched the visible book: ignored by the replay</span></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:820px;height:220px;border-color:var(--teal)"><div class="ct c-teal">Less leakage</div><div class="cs">Size stays hidden until it trades.</div></div>
+<div class="card" data-cue="0" data-d="1.4" style="left:980px;top:150px;width:820px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Less certainty</div><div class="cs">No guaranteed fill; borrowed prices.</div></div>
+<div class="big" data-cue="1" style="left:120px;top:470px;width:1700px">Dark pools <span class="c-teal">borrow</span> their price<br>from the lit market.</div>
+<div class="tag c-blue" data-cue="2" style="left:120px;top:740px">read Form ATS-N · measure markouts per pool</div>
+</div>

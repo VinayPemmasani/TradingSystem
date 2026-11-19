@@ -1,0 +1,121 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 02 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">MoldUDP64</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Framing, sequence numbers and gap requests.</div>
+<div id="t2-row" data-cue="0" data-d="0.8" data-anim="fade" style="left:0;top:600px;width:1920px;height:160px;overflow:hidden"></div>
+<div class="lbl c-red" data-cue="1" data-d="0.5" style="left:140px;top:780px">lost · duplicated · out of order</div>
+<div class="lbl c-green" data-cue="2" data-d="0.5" style="left:900px;top:780px">MoldUDP64: every message numbered</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One send, many receivers, no acks</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:400px;width:250px;height:150px;border-color:var(--blue)">Exchange<small>sends once</small></div>
+<div class="node" data-cue="0" data-d="0.5" style="left:640px;top:400px;width:230px;height:150px;border-color:var(--muted)">Switch<small>copies</small></div>
+<div class="node" data-cue="0" data-d="0.8" style="left:1300px;top:220px;width:300px;height:110px;border-color:var(--teal)">Firm 1</div>
+<div class="node" data-cue="0" data-d="0.9" style="left:1300px;top:360px;width:300px;height:110px;border-color:var(--teal)">Firm 2</div>
+<div class="node" data-cue="0" data-d="1.0" style="left:1300px;top:500px;width:300px;height:110px;border-color:var(--teal)" data-hl="3">Firm 3</div>
+<div class="node" data-cue="0" data-d="1.1" style="left:1300px;top:640px;width:300px;height:110px;border-color:var(--teal)">Firm 4</div>
+<svg class="full">
+<path id="w2-a" class="draw" data-cue="0" d="M 370 475 L 630 475" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="w2-1" class="draw" data-cue="0" data-d="0.8" d="M 870 450 C 1050 450 1100 275 1290 275" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="w2-2" class="draw" data-cue="0" data-d="0.9" d="M 870 465 C 1050 465 1100 415 1290 415" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="w2-3" class="draw" data-cue="0" data-d="1.0" d="M 870 485 C 1050 485 1100 555 1290 555" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="w2-4" class="draw" data-cue="0" data-d="1.1" d="M 870 500 C 1050 500 1100 695 1290 695" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+</svg>
+<div class="pkt" data-path="w2-a" data-cue="0" data-d="1.2" data-dur="1.6" data-loop="1"></div>
+<div class="pkt" data-path="w2-1" data-cue="0" data-d="1.2" data-dur="1.6" data-loop="1"></div>
+<div class="pkt" data-path="w2-2" data-cue="0" data-d="1.2" data-dur="1.6" data-loop="1"></div>
+<div class="pkt" data-path="w2-4" data-cue="0" data-d="1.2" data-dur="1.6" data-loop="1"></div>
+<div class="pkt" data-path="w2-3" data-cue="0" data-d="1.2" data-dur="1.6" data-loop="1" data-out="2"></div>
+<div class="big c-red" data-cue="2" style="left:1060px;top:470px">✕</div>
+<div class="lbl c-muted" data-cue="1" style="left:120px;top:600px;width:600px">no ACK, no NAK: the sender can't know</div>
+<div class="tag c-red" data-cue="3" style="left:1630px;top:540px;border-color:var(--red)">hole? ask!</div>
+<div class="card" data-cue="4" style="left:120px;top:780px;width:1480px;border-color:var(--teal)"><div class="ct c-teal">MoldUDP64 carries TotalView-ITCH (video 01)</div><div class="cd" data-cue="5">lab: one ITCH message per message block · the payload is opaque to Mold</div></div>
+</div>
+
+<div class="scene" id="s-header">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Downstream packet: 20-byte header + blocks</div>
+<div class="bytes" style="left:120px;top:330px">
+<div data-cue="1" style="width:600px;background:var(--teal)">session · 10</div>
+<div data-cue="2" style="width:480px;background:var(--amber)">sequence number · 8</div>
+<div data-cue="3" style="width:120px;background:var(--violet)">count 2</div>
+<div data-cue="4" style="width:120px;background:var(--pink)">len 2</div>
+<div data-cue="4" data-d="0.2" style="width:240px;background:#55697a">message</div>
+<div data-cue="4" data-d="0.4" style="width:120px;background:var(--pink)">len 2</div>
+<div data-cue="4" data-d="0.6" style="width:100px;background:#55697a">…</div>
+</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:120px;top:290px">0</div>
+<div class="olbl" data-cue="1" style="left:720px;top:290px">10</div>
+<div class="olbl" data-cue="2" style="left:1200px;top:290px">18</div>
+<div class="olbl" data-cue="3" style="left:1320px;top:290px">20</div>
+<div class="card" data-cue="1" data-d="0.3" style="left:120px;top:460px;width:560px;border-color:var(--teal)"><div class="ct c-teal">Session</div><div class="cs">"000012345 "</div><div class="cd">alphanumeric, space-padded</div></div>
+<div class="card" data-cue="2" data-d="0.3" style="left:720px;top:460px;width:560px;border-color:var(--amber)"><div class="ct c-amber">Sequence number</div><div class="cs">first message in packet</div><div class="cd">the rest count up from it</div></div>
+<div class="card" data-cue="3" data-d="0.3" style="left:1320px;top:460px;width:480px;border-color:var(--violet)"><div class="ct c-violet">Message count</div><div class="cs">0 = heartbeat</div><div class="cd">0xFFFF = end of session</div></div>
+<div class="card" data-cue="4" data-d="0.8" style="left:120px;top:700px;width:1160px;border-color:var(--pink)"><div class="ct c-pink">Message block</div><div class="cd">2-byte length, not counting itself · then the message data</div></div>
+<div class="tag c-green" data-cue="5" style="left:1320px;top:720px;font-size:26px;border-color:var(--green)">all integers big-endian</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: seq 1001, count 3</div>
+<div class="bytes" style="left:120px;top:300px">
+<div data-cue="0" data-d="0.3" style="width:300px;background:var(--amber)">hdr · seq 1001 · n=3</div>
+<div data-cue="1" style="width:60px;background:var(--pink)">00 24</div>
+<div data-cue="1" style="width:360px;background:var(--green)">A · Add Order · 36</div>
+<div data-cue="1" data-d="0.4" style="width:60px;background:var(--pink)">00 13</div>
+<div data-cue="1" data-d="0.4" style="width:190px;background:var(--red)">D · 19</div>
+<div data-cue="1" data-d="0.8" style="width:60px;background:var(--pink)">00 1F</div>
+<div data-cue="1" data-d="0.8" style="width:310px;background:var(--amber)">E · Executed · 31</div>
+</div>
+<div class="lbl c-green" data-cue="2" style="left:520px;top:390px">#1001</div>
+<div class="lbl c-red" data-cue="2" data-d="0.3" style="left:960px;top:390px">#1002</div>
+<div class="lbl c-amber" data-cue="2" data-d="0.6" style="left:1220px;top:390px">#1003</div>
+<div class="card" data-cue="2" data-d="0.8" style="left:120px;top:450px;width:780px;border-color:var(--amber)"><div class="ct">20 + (2+36) + (2+19) + (2+31)</div><div class="cs c-amber">= 112 bytes of UDP payload</div></div>
+<div class="card" data-cue="3" style="left:960px;top:450px;width:540px;border-color:var(--teal)"><div class="ct c-teal">next expected: 1004</div><div class="cd">1001 + 3</div></div>
+<div class="bytes" style="left:120px;top:680px">
+<div data-cue="4" style="width:420px;background:var(--violet)">heartbeat · seq 1004 · n=0</div>
+</div>
+<div class="lbl" data-cue="4" data-d="0.4" style="left:570px;top:700px">~1 s when idle: "nothing new, next is 1004"</div>
+<div class="bytes" style="left:120px;top:790px">
+<div data-cue="5" style="width:420px;background:var(--red)">seq 1004 · n=0xFFFF</div>
+</div>
+<div class="lbl" data-cue="5" data-d="0.4" style="left:570px;top:810px">end of session</div>
+</div>
+
+<div class="scene" id="s-gap">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A gap, and the re-request</div>
+<div id="g2-cells" data-cue="0" data-anim="fade" style="left:120px;top:250px;width:1680px;height:120px"></div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:385px"><span class="c-green">■ delivered</span>   <span class="c-red">□ missing</span>   <span class="c-amber">■ held</span></div>
+<div class="node" data-cue="2" style="left:120px;top:540px;width:320px;height:150px;border-color:var(--teal)">Feed handler</div>
+<div class="node" data-cue="2" data-d="0.4" style="left:1400px;top:540px;width:400px;height:150px;border-color:var(--blue)">Re-request server<small>unicast</small></div>
+<svg class="full"><path id="g2-req" class="draw" data-cue="2" data-d="0.6" d="M 445 580 L 1390 580" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="g2-ans" class="draw" data-cue="3" d="M 1390 660 L 445 660" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="g2-req" data-cue="2" data-d="1.0" data-dur="1.4" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="g2-ans" data-cue="3" data-d="0.3" data-dur="1.4" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="bytes" style="left:560px;top:490px">
+<div data-cue="2" data-d="1.0" style="width:250px;background:var(--teal);height:56px">session</div>
+<div data-cue="2" data-d="1.0" style="width:200px;background:var(--amber);height:56px">seq 1004</div>
+<div data-cue="2" data-d="1.0" style="width:150px;background:var(--violet);height:56px">count 6</div>
+</div>
+<div class="lbl c-green" data-cue="3" data-d="0.3" style="left:560px;top:690px">ordinary downstream packet: seq 1004 · count 6</div>
+<div class="card" data-cue="4" style="left:120px;top:770px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">Doesn't fit in one packet?</div><div class="cd">the server sends what fits; ask again for the rest</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: libs/mold + libs/feed</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:540px;border-color:var(--amber)"><div class="ct c-amber">window 2<sup>18</sup></div><div class="cs">262,144 messages</div><div class="cd">held ahead of a gap, preallocated</div></div>
+<div class="card" data-cue="1" style="left:700px;top:220px;width:1100px;border-color:var(--blue)"><div class="ct c-blue">RetransmitStore (sender)</div><div class="cs">fixed byte ring + index ring</div><div class="cd">oldest messages fall out as new ones arrive</div></div>
+<svg class="full"><path class="draw" data-cue="2" d="M 140 560 L 1780 560" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tag c-red" data-cue="2" style="left:120px;top:500px;border-color:var(--red)">gap opens</div>
+<div class="tag c-amber" data-cue="2" data-d="0.5" style="left:360px;top:590px;border-color:var(--amber)">+100 µs · 1st request</div>
+<div class="tag c-amber" data-cue="3" style="left:720px;top:500px;border-color:var(--amber)">+20 ms · retry</div>
+<div class="tag c-amber" data-cue="3" data-d="0.4" style="left:1000px;top:590px;border-color:var(--amber)">+20 ms · retry …</div>
+<div class="tag c-red" data-cue="3" data-d="0.8" style="left:1290px;top:500px;border-color:var(--red)">10 retries → given up, counted lost</div>
+<div class="card" data-cue="4" style="left:120px;top:680px;width:1680px;border-color:var(--green)"><div class="ct c-green">scripts/e2e-live-feed.sh</div><div class="cs">drop 0.5% · bursts of 20 · duplicate 0.5% · reorder 0.5%</div><div class="cd">itch-fh must lose nothing and end with itch-dump's book digest</div></div>
+</div>
+
+<div class="scene" id="s-pitfalls">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Three things to get right</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:240px;border-color:var(--violet)"><div class="ct c-violet">Heartbeats</div><div class="cd">tail loss: the last packet of a burst is lost and nothing follows; the heartbeat's next-seq shows it</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:240px;border-color:var(--amber)"><div class="ct c-amber">Duplicates</div><div class="cd">seq &lt; next expected → drop it</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:230px;width:540px;height:240px;border-color:var(--red)"><div class="ct c-red">Bounded window</div><div class="cd">too old to re-request → you need a snapshot (video 09)</div></div>
+<div class="take" data-cue="4" style="left:120px;top:600px;width:1680px">Every message has a number, <span class="c-teal">so a gap is always visible.</span></div>
+</div>

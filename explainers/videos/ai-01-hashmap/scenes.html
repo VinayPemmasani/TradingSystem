@@ -1,0 +1,115 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">PATTERN 01 / 16</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Quote lookup<br>by symbol</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1600px">unordered_map&lt;std::string, Quote&gt; on every tick, or one probe by integer id</div>
+<div class="tagx" data-cue="1" style="left:140px;top:680px;border-color:var(--line);color:#dce8ee">tick · S004211 · bid 100.25 · ask 100.26</div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.6" d="M760 703 H900" stroke="var(--muted)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tagx" data-cue="1" data-d="0.9" style="left:920px;top:680px;border-color:var(--amber);color:var(--amber)">quotes[S004211] = {100.25, 100.26}</div>
+<div class="vs l" data-cue="2" data-d="0.3" style="left:140px;top:800px">LEFT · general-purpose</div>
+<div class="vs r" data-cue="2" data-d="1.4" style="left:680px;top:800px">RIGHT · hot path</div>
+</div>
+
+<div class="scene" id="s-general">
+<div class="h2" style="left:100px;top:110px">The general-purpose version</div>
+<div class="vs l" data-cue="0" data-d="0.3" style="left:100px;top:205px">LEFT · general</div>
+<div class="code left" data-cue="0" data-d="0.6" style="left:100px;top:275px;width:880px;font-size:25px;"><span class="line"><span class="k">struct</span> <span class="v">Quote</span> { <span class="k">double</span> bid, ask; <span class="v">uint64_t</span> ts; };</span><span class="line"> </span><span class="line"><span class="k">class</span> <span class="v">QuoteCache</span> {</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">std::unordered_map</span>&lt;<span class="v">std::string</span>, <span class="v">Quote</span>&gt; q_;</span><span class="line"> <span class="k">public</span>:</span><span class="line">  <span class="k">void</span> on_tick(<span class="k">const</span> <span class="v">std::string</span>&amp; sym,</span><span class="line" data-hl="2" data-hlend="3">      <span class="k">double</span> bid, <span class="k">double</span> ask, <span class="v">uint64_t</span> ts) {</span><span class="line" data-hl="2" data-hlend="3">    q_[sym] = <span class="v">Quote</span>{bid, ask, ts};</span><span class="line" data-hl="2" data-hlend="3">  }</span><span class="line">  <span class="k">const</span> <span class="v">Quote</span>* find(<span class="k">const</span> <span class="v">std::string</span>&amp; sym) <span class="k">const</span> {</span><span class="line">    <span class="k">auto</span> it = q_.find(sym);</span><span class="line">    <span class="k">return</span> it == q_.end() ? <span class="k">nullptr</span> : &amp;it-&gt;second;</span><span class="line">  }</span><span class="line">};</span></div>
+<div class="box red" data-cue="2" style="left:1100px;top:290px;width:700px"><div class="t">every tick</div><div class="s">"S004211" → hash → bucket → node → Quote</div></div>
+<div class="chk" data-cue="3" style="left:1110px;top:470px"><i style="background:var(--green)"></i>correct</div>
+<div class="chk" data-cue="3" data-d="0.4" style="left:1110px;top:530px"><i style="background:var(--green)"></i>short and readable</div>
+<div class="chk" data-cue="3" data-d="0.8" style="left:1110px;top:590px"><i style="background:var(--green)"></i>fine in most programs</div>
+<div class="box amber" data-cue="4" style="left:1100px;top:700px;width:700px"><div class="t c-amber">but per lookup, on the CPU?</div><div class="s">hashing · division · pointers · cache misses</div></div>
+</div>
+
+<div class="scene" id="s-cost">
+<div class="h2" style="left:100px;top:110px">One lookup, step by step</div>
+<div class="box amber" data-cue="0" style="left:100px;top:200px;width:300px;height:112px"><div class="t" style="font-size:29px">hash bytes</div><div class="s">loop over chars</div></div><div class="box amber" data-cue="1" style="left:452px;top:200px;width:300px;height:112px"><div class="t" style="font-size:29px">% prime</div><div class="s">integer divide</div></div><svg class="full"><path class="draw" data-cue="1" data-d="-0.1" d="M404 256 H446" stroke="var(--muted)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg><div class="box red" data-cue="2" style="left:804px;top:200px;width:300px;height:112px"><div class="t" style="font-size:29px">bucket[i]</div><div class="s">load pointer</div></div><svg class="full"><path class="draw" data-cue="2" data-d="-0.1" d="M756 256 H798" stroke="var(--muted)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg><div class="box red" data-cue="2.5" style="left:1156px;top:200px;width:300px;height:112px"><div class="t" style="font-size:29px">heap node</div><div class="s">load node</div></div><svg class="full"><path class="draw" data-cue="2.5" data-d="-0.1" d="M1108 256 H1150" stroke="var(--muted)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg><div class="box red" data-cue="4" style="left:1508px;top:200px;width:300px;height:112px"><div class="t" style="font-size:29px">compare, write</div><div class="s">key ==, quote =</div></div><svg class="full"><path class="draw" data-cue="4" data-d="-0.1" d="M1460 256 H1502" stroke="var(--muted)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="lbl" data-cue="2" style="left:100px;top:395px">bucket array</div>
+<div class="cellrow" data-cue="2" style="left:100px;top:430px"><div style="">0</div><div style="">1</div><div style="">2</div><div style="">3</div><div style="">4</div><div style="border-color:var(--amber);color:var(--amber)">5</div><div style="">6</div><div style="">7</div><div style="">8</div><div style="">9</div></div>
+<div class="node" data-cue="3" data-d="0.00" style="left:820px;top:400px;opacity:.5;border-color:#6a3a38">node</div><div class="node" data-cue="3" data-d="0.15" style="left:1010px;top:650px;opacity:.5;border-color:#6a3a38">node</div><div class="node" data-cue="3" data-d="0.30" style="left:1400px;top:370px;opacity:.5;border-color:#6a3a38">node</div><div class="node" data-cue="3" data-d="0.45" style="left:1700px;top:690px;opacity:.5;border-color:#6a3a38">node</div><div class="node" data-cue="3" data-d="0.60" style="left:880px;top:580px;opacity:.5;border-color:#6a3a38">node</div><div class="node" data-cue="3" data-d="0.75" style="left:1180px;top:690px;opacity:.5;border-color:#6a3a38">node</div>
+<div class="node" data-cue="2" data-d="1.2" style="left:1060px;top:470px">next | "S004211" | hash | bid ask ts</div>
+<svg class="full">
+<path class="draw" data-cue="2" data-d="0.6" d="M408 488 C 470 600, 900 620, 1060 505" stroke="var(--red)" stroke-width="4" fill="none" marker-end="url(#ah-red)"/>
+<path class="draw" data-cue="7" data-d="0.5" d="M1250 520 C 1250 600, 1300 600, 1330 610" stroke="var(--red)" stroke-width="4" fill="none" marker-end="url(#ah-red)"/>
+</svg>
+<div class="lbl c-red" data-cue="3" data-d="0.5" style="left:1060px;top:430px">one malloc per symbol, anywhere in the heap</div>
+<div class="miss" data-cue="6" style="left:310px;top:500px">likely miss</div>
+<div class="miss" data-cue="6" data-d="0.8" style="left:1575px;top:478px">likely miss</div>
+<div class="node" data-cue="7" data-d="0.9" style="left:1340px;top:590px;border-color:var(--amber);color:var(--amber)">"AAPL  261218C00150000" (21 chars)</div>
+<div class="miss" data-cue="7" data-d="1.5" style="left:1640px;top:650px">+1 miss</div>
+<div class="lbl" data-cue="5" style="left:100px;top:760px;width:300px">L2 cache, this core</div>
+<div class="grow bar" data-cue="5" data-d="0.3" data-w="80" style="left:420px;top:752px;height:40px;background:var(--teal)"></div>
+<div class="bv mono c-teal" data-cue="5" data-d="0.8" style="left:520px;top:756px">2 MB</div>
+<div class="lbl" data-cue="5" data-d="0.6" style="left:100px;top:830px;width:300px">map nodes, 200k</div>
+<div class="grow bar" data-cue="5" data-d="0.9" data-w="800" style="left:420px;top:822px;height:40px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="5" data-d="1.6" style="left:1240px;top:826px">≈ 20 MB (measured 100 B each)</div>
+<div class="tagx" data-cue="6" data-d="1.5" style="left:1240px;top:740px;border-color:var(--amber);color:var(--amber)">dependent loads: no overlap</div>
+</div>
+
+<div class="scene" id="s-hot">
+<div class="h2" style="left:60px;top:105px">Same job, hot-path version</div>
+<div class="vs l" data-cue="0" style="left:60px;top:190px">LEFT · general</div>
+<div class="vs r" data-cue="0" data-d="0.4" style="left:980px;top:190px">RIGHT · hot path</div>
+<div class="code left dimc" data-cue="0" data-d="0.2" style="left:60px;top:255px;width:880px;font-size:22px;"><span class="line"><span class="k">struct</span> <span class="v">Quote</span> { <span class="k">double</span> bid, ask; <span class="v">uint64_t</span> ts; };</span><span class="line"> </span><span class="line"><span class="k">class</span> <span class="v">QuoteCache</span> {</span><span class="line">  <span class="v">std::unordered_map</span>&lt;<span class="v">std::string</span>, <span class="v">Quote</span>&gt; q_;</span><span class="line"> <span class="k">public</span>:</span><span class="line">  <span class="k">void</span> on_tick(<span class="k">const</span> <span class="v">std::string</span>&amp; sym,</span><span class="line">      <span class="k">double</span> bid, <span class="k">double</span> ask, <span class="v">uint64_t</span> ts) {</span><span class="line">    q_[sym] = <span class="v">Quote</span>{bid, ask, ts};</span><span class="line">  }</span><span class="line">  <span class="k">const</span> <span class="v">Quote</span>* find(<span class="k">const</span> <span class="v">std::string</span>&amp; sym) <span class="k">const</span> {</span><span class="line">    <span class="k">auto</span> it = q_.find(sym);</span><span class="line">    <span class="k">return</span> it == q_.end() ? <span class="k">nullptr</span> : &amp;it-&gt;second;</span><span class="line">  }</span><span class="line">};</span></div>
+<div class="code right" data-cue="0" data-d="0.6" style="left:980px;top:255px;width:880px;font-size:22px;"><span class="line" data-hl="3" data-hlend="4"><span class="k">struct</span> <span class="v">Slot</span> { <span class="v">uint32_t</span> id; <span class="v">Quote</span> q; };  <span class="c">// 32 B</span></span><span class="line"> </span><span class="line" data-hl="3" data-hlend="4"><span class="k">class</span> <span class="v">FlatQuotes</span> {          <span class="c">// sized at startup</span></span><span class="line" data-hl="3" data-hlend="4">  <span class="v">std::unique_ptr</span>&lt;<span class="v">Slot</span>[]&gt; s_;  <span class="v">uint32_t</span> mask_;</span><span class="line"> <span class="k">public</span>:</span><span class="line">  <span class="v">Quote</span>* find(<span class="v">uint32_t</span> id) {</span><span class="line" data-hl="4" data-hlend="5">    <span class="v">uint32_t</span> i = (id * <span class="r">0x9E3779B1u</span>) &amp; mask_;</span><span class="line" data-hl="5" data-hlend="6">    <span class="k">for</span> (;; i = (i + <span class="r">1</span>) &amp; mask_) {</span><span class="line" data-hl="5" data-hlend="6">      <span class="k">if</span> (s_[i].id == id) <span class="k">return</span> &amp;s_[i].q;</span><span class="line" data-hl="6" data-hlend="7">      <span class="k">if</span> (s_[i].id == <span class="r">0</span>)  <span class="k">return</span> <span class="k">nullptr</span>;</span><span class="line">    }</span><span class="line">  }</span><span class="line">};</span><span class="line" data-hl="1" data-hlend="3"><span class="c">// startup, once:  id = ids.intern("S004211");</span></span><span class="line" data-hl="2" data-hlend="3"><span class="c">// hot path:       quotes.find(msg.id)-&gt;bid ...</span></span></div>
+<div class="lbl" data-cue="3" data-d="0.6" style="left:980px;top:812px">one array · 32 B slots · two per cache line · load ≤ 0.8</div>
+<div class="cellrow" data-cue="3" data-d="0.9" style="left:980px;top:850px"><div style="width:62px;">0</div><div style="width:62px;">1</div><div style="width:62px;color:#4b6474">·</div><div style="width:62px;">3</div><div style="width:62px;">4</div><div style="width:62px;">5</div><div style="width:62px;color:#4b6474">·</div><div style="width:62px;">7</div><div style="width:62px;">8</div><div style="width:62px;border-color:var(--teal);background:#12343a;color:var(--teal)">9</div><div style="width:62px;">10</div><div style="width:62px;">11</div><div style="width:62px;color:#4b6474">·</div><div style="width:62px;">13</div></div>
+<div class="tagx" data-cue="4" data-d="0.3" style="left:60px;top:850px;border-color:var(--teal);color:var(--teal)">i = (4211 × 0x9E3779B1) &amp; mask</div>
+<div class="tagx" data-cue="5" data-d="0.3" style="left:60px;top:900px;border-color:var(--teal);color:var(--teal)">→ slot 9: id matches, quote in the same line</div>
+<div class="tagx" data-cue="7" style="left:60px;top:790px;border-color:var(--green);color:var(--green)">dense ids? quotes[id] — no hash at all</div>
+</div>
+
+<div class="scene" id="s-measured">
+<div class="h2" style="left:100px;top:110px">Measured: 200,000 instruments</div>
+<div class="lbl" data-cue="1" data-d="0.0" style="left:100px;top:210px;color:#dce8ee">ns per tick, back to back</div>
+<div class="lbl c-red" data-cue="1" data-d="0.0" style="left:100px;top:260px">map</div>
+<div class="grow bar" data-cue="1" data-d="0.2" data-w="577" style="left:190px;top:252px;height:40px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="1" data-d="0.9" style="left:781px;top:256px">77 ns</div>
+<div class="lbl c-teal" data-cue="1" data-d="0.4" style="left:100px;top:312px">flat</div>
+<div class="grow bar" data-cue="1" data-d="0.6" data-w="73" style="left:190px;top:304px;height:40px;background:var(--teal)"></div>
+<div class="bv mono c-teal" data-cue="1" data-d="1.3" style="left:277px;top:308px">9.8 ns</div>
+<div class="lbl" data-cue="2" data-d="0.0" style="left:100px;top:400px;color:#dce8ee">one tick at a time · p50</div>
+<div class="lbl c-red" data-cue="2" data-d="0.0" style="left:100px;top:450px">map</div>
+<div class="grow bar" data-cue="2" data-d="0.2" data-w="583" style="left:190px;top:442px;height:40px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="2" data-d="0.9" style="left:787px;top:446px">265 ns</div>
+<div class="lbl c-teal" data-cue="2" data-d="0.4" style="left:100px;top:502px">flat</div>
+<div class="grow bar" data-cue="2" data-d="0.6" data-w="134" style="left:190px;top:494px;height:40px;background:var(--teal)"></div>
+<div class="bv mono c-teal" data-cue="2" data-d="1.3" style="left:338px;top:498px">61 ns</div>
+<div class="lbl" data-cue="2" data-d="4.5" style="left:100px;top:590px;color:#dce8ee">one tick at a time · p99</div>
+<div class="lbl c-red" data-cue="2" data-d="4.5" style="left:100px;top:640px">map</div>
+<div class="grow bar" data-cue="2" data-d="4.7" data-w="583" style="left:190px;top:632px;height:40px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="2" data-d="5.4" style="left:787px;top:636px">711 ns</div>
+<div class="lbl c-teal" data-cue="2" data-d="4.9" style="left:100px;top:692px">flat</div>
+<div class="grow bar" data-cue="2" data-d="5.1" data-w="228" style="left:190px;top:684px;height:40px;background:var(--teal)"></div>
+<div class="bv mono c-teal" data-cue="2" data-d="5.8" style="left:432px;top:688px">279 ns</div>
+<div class="lbl" data-cue="3" data-d="0.0" style="left:1000px;top:210px;color:#dce8ee">1,000 symbols, all in cache · ns/tick</div>
+<div class="lbl c-red" data-cue="3" data-d="0.0" style="left:1000px;top:260px">map</div>
+<div class="grow bar" data-cue="3" data-d="0.2" data-w="570" style="left:1090px;top:252px;height:40px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="3" data-d="0.9" style="left:1674px;top:256px">30 ns</div>
+<div class="lbl c-teal" data-cue="3" data-d="0.4" style="left:1000px;top:312px">flat</div>
+<div class="grow bar" data-cue="3" data-d="0.6" data-w="95" style="left:1090px;top:304px;height:40px;background:var(--teal)"></div>
+<div class="bv mono c-teal" data-cue="3" data-d="1.3" style="left:1199px;top:308px">5 ns</div>
+<div class="box" data-cue="4" style="left:1000px;top:420px;width:820px"><div class="t">hot-path allocations per tick</div><div class="s"><span class="c-red">map 0</span> · <span class="c-teal">flat 0</span> — the gap is hashing + memory</div></div>
+<div class="lbl" data-cue="5" data-d="0.0" style="left:1000px;top:590px;color:#dce8ee">heap bytes per instrument</div>
+<div class="lbl c-red" data-cue="5" data-d="0.0" style="left:1000px;top:640px">map</div>
+<div class="grow bar" data-cue="5" data-d="0.2" data-w="570" style="left:1090px;top:632px;height:40px;background:var(--red)"></div>
+<div class="bv mono c-red" data-cue="5" data-d="0.9" style="left:1674px;top:636px">100 B</div>
+<div class="lbl c-teal" data-cue="5" data-d="0.4" style="left:1000px;top:692px">flat</div>
+<div class="grow bar" data-cue="5" data-d="0.6" data-w="239" style="left:1090px;top:684px;height:40px;background:var(--teal)"></div>
+<div class="bv mono c-teal" data-cue="5" data-d="1.3" style="left:1343px;top:688px">42 B</div>
+<div class="meas" data-cue="0" data-d="0.5" style="left:100px;top:800px;width:1720px">measured on a shared 4-vCPU cloud VM · g++ 13 -O2 · pinned with taskset · 1M uniform random ticks<br>medians of 6 runs (map 70–105, flat 9.5–11 ns/tick) · one-at-a-time timings use lfence/rdtscp, include ≈21 ns timer overhead</div>
+</div>
+
+<div class="scene" id="s-nuance">
+<div class="h2" style="left:100px;top:110px">When the map is the right call</div>
+<div class="box red" data-cue="1" style="left:100px;top:220px;width:800px;height:270px"><div class="t c-red">general: unordered_map</div>
+<div class="chk" style="position:static;margin-top:18px;font-size:30px"><i style="background:var(--red)"></i>any string key</div>
+<div class="chk" style="position:static;margin-top:10px;font-size:30px"><i style="background:var(--red)"></i>any count, grows on demand</div>
+<div class="chk" style="position:static;margin-top:10px;font-size:30px"><i style="background:var(--red)"></i>no setup step</div></div>
+<div class="box teal" data-cue="2" style="left:1000px;top:220px;width:820px;height:270px"><div class="t c-teal">hot path states constraints</div>
+<div class="chk" style="position:static;margin-top:18px;font-size:30px"><i style="background:var(--teal)"></i>instruments known at startup</div>
+<div class="chk" style="position:static;margin-top:10px;font-size:30px"><i style="background:var(--teal)"></i>small integer ids</div>
+<div class="chk" style="position:static;margin-top:10px;font-size:30px"><i style="background:var(--teal)"></i>fixed capacity, never grows</div></div>
+<div class="tagx" data-cue="3" style="left:100px;top:540px;border-color:var(--amber);color:var(--amber);font-size:28px">put the constraints in the prompt → then measure</div>
+<div class="note" data-cue="4" style="left:100px;top:630px;width:1700px">Map is fine for: reference data · configuration · startup · tools and tests</div>
+<div class="rule" data-cue="5" style="left:100px;top:740px">Intern strings at the edge. Key hot tables by integer.</div>
+</div>

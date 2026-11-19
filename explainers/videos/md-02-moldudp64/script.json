@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "MoldUDP64",
+"text": "UDP multicast is the fastest way to send one stream to hundreds of receivers. But UDP can lose, duplicate and reorder packets. MoldUDP64 adds just enough framing to notice, and to recover."
+},
+{
+"id": "why",
+"title": "Why multicast needs help",
+"text": "With multicast, the exchange sends each packet once, and the network copies it to every subscriber. Nobody acknowledges anything. So when one firm's copy is lost, the sender never knows. The receiver has to spot the hole itself, and ask for the missing data. Nasdaq uses MoldUDP64 to carry TotalView-ITCH, the feed from video one. In the lab, each message block carries one ITCH message, and Mold never looks inside it."
+},
+{
+"id": "header",
+"title": "The 20-byte header",
+"text": "Every downstream packet starts with a twenty byte header. Ten bytes of session name. Eight bytes of sequence number: the number of the first message in this packet. And two bytes of message count. Then come the messages, each with a two byte length in front. All integers are big-endian."
+},
+{
+"id": "example",
+"title": "Worked example",
+"text": "Say a packet carries sequence 1001 and count 3. It holds an add of 36 bytes, a delete of 19, and an execution of 31. Those are messages 1001, 1002 and 1003, and the whole payload is 112 bytes. The next packet should start at 1004. When the feed is idle, a heartbeat with count zero still carries that next number, about once a second. A count of hex FFFF means end of session."
+},
+{
+"id": "gap",
+"title": "Gap and re-request",
+"text": "Now a packet arrives starting at 1010. Messages 1004 to 1009 are missing. The receiver holds 1010 onwards, and sends a twenty byte request to the re-request server: same session, sequence 1004, count 6. The answer is an ordinary packet, unicast back. If the messages do not fit in one packet, the server sends what fits, and you ask again."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab's receiver holds up to 262,144 messages ahead of a gap. On the sending side, a fixed ring stores recent messages, so the oldest fall out as new ones arrive. The receiver waits 100 microseconds before the first request, in case a packet was only reordered. It re-requests every 20 milliseconds, and gives the gap up after 10 tries, counting the messages as lost. The live feed test drops, duplicates and reorders packets, and the book must still match the file, bit for bit."
+},
+{
+"id": "pitfalls",
+"title": "Pitfalls",
+"text": "Three things to get right. Use heartbeats: they reveal loss at the end of a burst, when nothing else would arrive. Drop duplicates by sequence number. And remember the re-request server keeps only a recent window; lose more than that, and you need a snapshot. MoldUDP64 numbers every message, so a gap is always visible.",
+"hold": 1.0
+}
+]

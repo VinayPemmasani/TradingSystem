@@ -1,0 +1,16 @@
+
+.code.left .line.hl{background:rgba(255,107,94,.16);box-shadow:inset 4px 0 0 var(--red)}
+.band{height:150px;border-radius:14px;background:rgba(19,33,43,.55);border:1px solid var(--line)}
+.stat{font:600 30px var(--mono);padding:18px 26px;border-radius:14px;border:2px solid;background:var(--panel)}
+.stat.red{border-color:var(--red)} .stat.teal{border-color:var(--teal);color:var(--teal)}
+.qbox{border:3px dashed var(--line);border-radius:14px;display:grid;place-items:center;font:600 28px var(--mono);color:var(--muted)}
+.brace{height:18px;border:3px solid;border-top:none;border-radius:0 0 10px 10px}
+.bytes > div{height:50px}
+.bar{height:56px}
+.bv{font:700 30px var(--mono);white-space:nowrap}
+.big{font:800 84px var(--display);font-stretch:80%}
+.pv{font:800 64px var(--display);font-stretch:80%;margin-top:4px}
+.cl{width:520px;height:60px;border-radius:10px;background:var(--amber);color:#06141a;font:700 26px var(--mono);display:grid;place-items:center}
+.cl.dimcl{background:#1a2a35;color:#6f8796}
+.x{font:700 34px var(--mono);color:var(--muted);text-decoration:line-through;text-decoration-color:var(--red)}
+.rule{font:800 72px/1.1 var(--display);font-stretch:80%}

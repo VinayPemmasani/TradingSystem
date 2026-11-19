@@ -1,0 +1,30 @@
+
+.brow{position:absolute;display:flex;align-items:center;gap:18px}
+.brow .nm{font:600 25px var(--mono);color:#cfdbe2;text-align:right}
+.brow .b{height:44px;border-radius:8px}
+.brow .v{font:700 27px var(--mono);white-space:nowrap}
+.foot{font:500 21px var(--mono);color:var(--muted)}
+.side{font:700 24px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.code .line.hl{background:rgba(255,179,71,.17)!important;box-shadow:inset 5px 0 0 var(--amber)!important}
+.code.left{border-color:rgba(255,107,94,.7)} .code.right{border-color:rgba(63,208,220,.8)}
+.code.dimc{opacity:.45}
+.tagx{position:absolute;padding:6px 14px;border-radius:8px;font:600 23px var(--mono);background:#08121a;border:2px solid;white-space:nowrap}
+.chk{position:absolute;display:flex;align-items:center;gap:22px;font:500 34px var(--body);color:#dce8ee}
+.chk i{display:block;width:24px;height:24px;border-radius:6px;flex:none}
+.stat{position:absolute;text-align:center}
+.stat .n{font:800 92px/1 var(--display);font-stretch:80%}
+.stat .l{font:600 22px var(--mono);color:var(--muted);margin-top:8px}
+.rule{position:absolute;padding:26px 40px;border-radius:18px;border:3px solid var(--teal);background:#08121a;font:700 46px var(--body);color:#e6eef2}
+
+.vs{position:absolute;font:700 26px var(--mono);letter-spacing:.14em;text-transform:uppercase;padding:8px 18px;border-radius:10px;border:2px solid}
+.vs.l{color:var(--red);border-color:var(--red);background:rgba(255,107,94,.08)} .vs.r{color:var(--teal);border-color:var(--teal);background:rgba(63,208,220,.08)}
+.miss{position:absolute;font:700 22px var(--mono);color:#06141a;background:var(--amber);border-radius:8px;padding:4px 12px;white-space:nowrap}
+.node{position:absolute;border:2px solid var(--red);border-radius:12px;background:#1e1517;padding:10px 14px;font:600 21px var(--mono);color:#f2d9d6;white-space:nowrap}
+.cellrow{position:absolute;display:flex} .cellrow > div{width:56px;height:56px;border:2px solid var(--line);margin-right:-2px;background:#0f1b23;display:grid;place-items:center;font:600 18px var(--mono);color:var(--muted)}
+.note{position:absolute;font:500 28px/1.35 var(--body);color:#d4e0e7}
+.meas{position:absolute;font:600 22px var(--mono);color:var(--muted);letter-spacing:.03em}
+
+.bv{font-size:26px;font-weight:700;white-space:nowrap}
+.bar{position:absolute;border-radius:6px}
+
+#s-hot .cellrow > div{font-size:17px}

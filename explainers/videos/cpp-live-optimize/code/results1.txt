@@ -1,0 +1,28 @@
+Thu Nov 19 10:42:22 UTC 2026
+ 10:42:22 up 22 min,  0 user,  load average: 17.06, 11.68, 6.05
+tsc 2.1000 ticks/ns, 2000000 msgs, 7 runs, median [min-max] over runs
+timer      p50   26.7 ns [ 26.7- 26.7]  p99    32.4 ns [  28.6-  35.2]  p99.9     36.2  max    177631  allocs/run        0  (sink 0)
+v0 naive   p50  228.6 ns [221.9-235.2]  p99   480.0 ns [ 433.3- 529.5]  p99.9   5917.1  max  34817649  allocs/run     6500  (sink 0)
+v1 ds      p50  101.9 ns [101.9-102.9]  p99   207.6 ns [ 201.0- 264.8]  p99.9   3701.9  max   6126211  allocs/run     6000  (sink 0)
+v1h table  p50  107.6 ns [107.6-107.6]  p99   216.2 ns [ 211.4- 223.8]  p99.9   3834.3  max     70351  allocs/run     6000  (sink 0)
+v2a ilp    p50   99.0 ns [ 96.2-100.0]  p99   181.9 ns [ 178.1- 198.1]  p99.9   1781.9  max    110329  allocs/run     6000  (sink 0)
+v2 pipe    p50   53.3 ns [ 53.3- 54.3]  p99   176.2 ns [ 173.3- 185.7]  p99.9   1733.3  max     64963  allocs/run     6000  (sink 0)
+v3 branch  p50   43.8 ns [ 43.8- 43.8]  p99   169.5 ns [ 157.1- 188.6]  p99.9   1656.2  max    628148  allocs/run     6000  (sink 0)
+v4 alloc   p50   43.8 ns [ 43.8- 50.5]  p99    72.4 ns [  68.6- 110.5]  p99.9    135.2  max    106114  allocs/run        0  (sink 0)
+loop: 1 chain 30.1 ns (63 cyc)  4 chains 18.6 ns (39 cyc)   signal: divide 16.3 ns (34 cyc)  cross-mul 4.6 ns (10 cyc)  [1 0 0]
+loop: 1 chain 23.5 ns (49 cyc)  4 chains 19.3 ns (41 cyc)   signal: divide 16.3 ns (34 cyc)  cross-mul 4.6 ns (10 cyc)  [1 0 0]
+loop: 1 chain 23.3 ns (49 cyc)  4 chains 19.6 ns (41 cyc)   signal: divide 16.2 ns (34 cyc)  cross-mul 4.6 ns (10 cyc)  [1 0 0]
+ns per increment: same line 32.4   own lines 6.3
+ns per increment: same line 38.8   own lines 6.9
+ns per increment: same line 33.4   own lines 6.2
+ns per increment: same line 34.2   own lines 6.5
+ns per increment: same line 37.8   own lines 7.1
+ns per increment: same line 26.2   own lines 6.4
+ns per increment: same line 36.4   own lines 7.2
+one-way median: cpu2->cpu1 167 ns   cpu1->cpu2 166 ns  (equal => TSCs in step)
+200000 msgs, one every 1000 ns (0 = flat out), 11 runs, median [min-max]
+mutex+cv     gap  1000  p50  21654.3 ns [11347.6-40365.7]  p99  227178.1 ns [ 61398.1-8629919.7]  p99.9  484024.9   wall 1002.0 ns/msg [1001.9-1002.1]
+ring packed  gap  1000  p50    492.4 ns [  387.6-  569.5]  p99   18380.0 ns [  1139.0-2344667.1]  p99.9  221905.8   wall 1001.9 ns/msg [1001.9-1001.9]
+ring padded  gap  1000  p50    423.8 ns [  368.6-  488.6]  p99   10029.5 ns [  2024.8-237297.2]  p99.9  149959.1   wall 1001.9 ns/msg [1001.8-1002.1]
+lab SpscRing gap  1000  p50    423.8 ns [  379.0-  488.6]  p99    5388.6 ns [  1256.2-1452806.0]  p99.9   48241.9   wall 1001.9 ns/msg [1001.8-1002.0]
+ 10:43:58 up 24 min,  0 user,  load average: 17.82, 13.06, 7.07

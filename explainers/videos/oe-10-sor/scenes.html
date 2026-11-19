@@ -1,0 +1,85 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 10 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Smart order routing</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">One order, many venues.</div>
+<div class="node" data-cue="1" style="left:140px;top:610px;width:300px;height:130px;border-color:var(--teal)">router</div>
+<div class="node" data-cue="1" data-d="0.3" style="left:1480px;top:520px;width:300px;height:90px;border-color:var(--blue)">exchange A</div>
+<div class="node" data-cue="1" data-d="0.45" style="left:1480px;top:630px;width:300px;height:90px;border-color:var(--blue)">exchange B</div>
+<div class="node" data-cue="1" data-d="0.6" style="left:1480px;top:740px;width:300px;height:90px;border-color:var(--blue)">exchange C</div>
+<svg class="full"><path id="s10-a" class="draw" data-cue="1" data-d="0.5" d="M 445 660 C 900 660, 1100 565, 1475 565" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="s10-b" class="draw" data-cue="1" data-d="0.6" d="M 445 675 L 1475 675" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="s10-c" class="draw" data-cue="1" data-d="0.7" d="M 445 690 C 900 690, 1100 785, 1475 785" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="pkt" data-path="s10-a" data-cue="1" data-d="1" data-dur="1.4" data-loop="1" style="background:var(--amber)"></div>
+<div class="pkt" data-path="s10-b" data-cue="1" data-d="1" data-dur="1.4" data-loop="1" style="background:var(--amber)"></div>
+<div class="pkt" data-path="s10-c" data-cue="1" data-d="1" data-dur="1.4" data-loop="1" style="background:var(--amber)"></div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Liquidity is split</div>
+<div class="venue" data-cue="1" style="left:120px;top:250px"><b>A</b><span>ask 187.25 × 300</span><i>fee or rebate · depth</i></div>
+<div class="venue" data-cue="1" data-d="0.2" style="left:720px;top:250px"><b>B</b><span>ask 187.25 × 200</span><i>fee or rebate · depth</i></div>
+<div class="venue" data-cue="1" data-d="0.4" style="left:1320px;top:250px"><b>C</b><span>ask 187.26 × 500</span><i>fee or rebate · depth</i></div>
+<div class="tag c-red" data-cue="2" style="left:120px;top:520px;border-color:var(--red);font-size:26px">send it all to C: miss better prices at A and B</div>
+<div class="card" data-cue="3" style="left:120px;top:640px;width:1680px;border-color:var(--teal)"><div class="ct c-teal">router: one consolidated book</div><div class="cs">187.25 × 500 (A 300, B 200) · 187.26 × 500 (C)</div></div>
+</div>
+
+<div class="scene" id="s-rule">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Reg NMS Rule 611 · order protection</div>
+<div class="card" data-cue="1" style="left:120px;top:240px;width:820px;height:230px;border-color:var(--blue)"><div class="ct c-blue">protected quotation</div><div class="cd">best bid or offer of an exchange · displayed, automated, in the consolidated data</div><div class="cd c-amber" data-cue="4">manual quotes: not protected</div></div>
+<div class="card" data-cue="2" style="left:980px;top:240px;width:820px;height:230px;border-color:var(--red)"><div class="ct c-red">no trade-throughs</div><div class="cd">trading centers keep policies to prevent trades at worse prices than a protected quote</div></div>
+<div class="card" data-cue="3" style="left:120px;top:510px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">intermarket sweep order (ISO)</div><div class="cs">marked ISO · and at the same time, orders sent to take the full displayed size of every better protected quote</div></div>
+<div class="card" data-cue="5" style="left:120px;top:740px;width:1680px;border-color:var(--violet)"><div class="ct c-violet">June 2026: SEC proposed rescinding Rule 611 (and 610(e))</div><div class="cd">a proposal: Rule 611 still applies</div></div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Buy 1,000 up to 187.26</div>
+<table class="t" data-cue="1" style="left:120px;top:230px;width:760px">
+<tr><th>venue</th><th>best ask</th><th>size</th></tr>
+<tr data-hl="2" data-hlend="3"><td class="c-blue">A</td><td>187.25</td><td>300</td></tr>
+<tr data-hl="2" data-hlend="3"><td class="c-blue">B</td><td>187.25</td><td>200</td></tr>
+<tr><td class="c-blue">C</td><td>187.26</td><td>500</td></tr>
+</table>
+<div class="tag c-red" data-cue="2" data-d="0.3" style="left:120px;top:520px;border-color:var(--red)">buying at 187.26 on C would trade through A and B</div>
+<div class="node" data-cue="3" style="left:120px;top:640px;width:300px;height:130px;border-color:var(--teal)">router</div>
+<div class="node" data-cue="1" data-d="0.2" style="left:1500px;top:230px;width:300px;height:100px;border-color:var(--blue)">A</div>
+<div class="node" data-cue="1" data-d="0.3" style="left:1500px;top:450px;width:300px;height:100px;border-color:var(--blue)">B</div>
+<div class="node" data-cue="1" data-d="0.4" style="left:1500px;top:670px;width:300px;height:100px;border-color:var(--blue)">C</div>
+<svg class="full"><path id="s10-x" class="draw" data-cue="3" data-d="0.3" d="M 425 690 C 900 690, 1100 280, 1495 280" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="s10-y" class="draw" data-cue="3" data-d="0.3" d="M 425 705 C 900 705, 1100 500, 1495 500" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="s10-z" class="draw" data-cue="3" data-d="0.3" d="M 425 720 L 1495 720" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="pkt" data-path="s10-x" data-cue="4" data-dur="1.2" style="background:var(--amber)"></div>
+<div class="pkt" data-path="s10-y" data-cue="4" data-dur="1.2" style="background:var(--amber)"></div>
+<div class="pkt" data-path="s10-z" data-cue="4" data-dur="1.2" style="background:var(--amber)"></div>
+<div class="msg c-amber" data-cue="3" data-d="0.6" style="left:1060px;top:300px;border-color:var(--amber)">ISO 300 @ 187.26</div>
+<div class="msg c-amber" data-cue="3" data-d="0.8" style="left:1060px;top:520px;border-color:var(--amber)">ISO 200 @ 187.26</div>
+<div class="msg c-amber" data-cue="3" data-d="1.0" style="left:1060px;top:740px;border-color:var(--amber)">ISO 500 @ 187.26</div>
+<div class="tag c-green" data-cue="4" data-d="0.8" style="left:120px;top:820px;border-color:var(--green)">sent together · arrive before quotes move</div>
+</div>
+
+<div class="scene" id="s-choose">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What the router weighs</div>
+<div class="card" data-cue="0" data-d="0.2" style="left:120px;top:240px;width:540px;height:200px;border-color:var(--green)"><div class="ct c-green">fees</div><div class="cd">fee or rebate per share</div></div>
+<div class="card" data-cue="0" data-d="0.5" style="left:690px;top:240px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">fill chance</div><div class="cd">is the size really there?</div></div>
+<div class="card" data-cue="0" data-d="0.8" style="left:1260px;top:240px;width:540px;height:200px;border-color:var(--violet)"><div class="ct c-violet">latency</div><div class="cd">time to reach each venue</div></div>
+<div class="lbl" data-cue="1" style="left:120px;top:500px">send times staggered by distance, so all children land together</div>
+<div class="lane" data-cue="1" style="left:120px;top:560px;width:1680px;height:3px"></div>
+<div class="msg c-amber" data-cue="1" data-d="0.2" style="left:120px;top:590px;border-color:var(--amber)">send C (far)</div>
+<div class="msg c-amber" data-cue="1" data-d="0.5" style="left:420px;top:650px;border-color:var(--amber)">send B</div>
+<div class="msg c-amber" data-cue="1" data-d="0.8" style="left:700px;top:710px;border-color:var(--amber)">send A (near)</div>
+<svg class="full"><path class="draw" data-cue="1" data-d="1.1" d="M 1400 560 L 1400 780" stroke="var(--green)" stroke-width="4" fill="none"/></svg>
+<div class="lbl c-green" data-cue="1" data-d="1.2" style="left:1420px;top:650px">all arrive</div>
+<div class="tag" data-cue="2" style="left:120px;top:820px;border-color:var(--line);font-size:26px">hidden liquidity: probe before showing your hand</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:240px;width:420px;height:130px;border-color:var(--blue)">simex<small>the only venue</small></div>
+<div class="bytes" style="left:120px;top:460px"><div data-cue="2" style="width:35px;background:var(--amber)">O</div><div data-cue="2" style="width:875px;background:#55697a;color:#eef4f7">bytes 1–28</div><div data-cue="2" data-d="0.3" data-hl="2" data-hlend="3" style="width:70px;background:var(--amber)">ISO</div><div data-cue="2" style="width:630px;background:#55697a;color:#eef4f7">30–46</div></div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:1030px;top:545px">OUCH Enter Order · byte 29 · intermarket sweep</div>
+<div class="code" data-cue="4" style="left:120px;top:620px;width:1680px;font-size:24px"><span class="line c">// firm/strategy/execution.hpp</span><span class="line">work_toward(target, position, open_buy, open_sell, <span class="r">max_child</span>, lot);  <span class="c">// one capped child</span></span><span class="line">pov_child(params, market_volume, remaining);  <span class="c">// ≤ 6% of market volume</span></span></div>
+<div class="lbl c-amber" data-cue="3" style="left:620px;top:280px">Replace Order: ISO at byte 23 · Order Accepted echoes it at byte 45</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Takeaway</div>
+<div class="take" data-cue="0" data-d="0.3" style="left:120px;top:300px;width:1680px">A router turns a fragmented market into <span class="c-teal">one book</span>, and one big order into many small ones.</div>
+<div class="tag c-teal" data-cue="2" style="left:120px;top:710px;border-color:var(--teal);font-size:26px">lab TCA: spread capture = side × (mid before − price) · then markouts</div>
+<div class="take" data-cue="1" style="left:120px;top:540px;width:1680px">Measure it by cost: <span class="c-amber">the price you paid, against the best you could have had.</span></div>
+<div class="take" data-cue="3" style="left:120px;top:850px;width:1680px;font-size:40px">Order entry: <span class="c-teal">the bytes, the states, the safety nets.</span></div>
+</div>

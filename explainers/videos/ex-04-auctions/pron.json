@@ -1,0 +1,126 @@
+[
+ [
+  "\\bOUCH\\b",
+  "ouch"
+ ],
+ [
+  "\\bITCH\\b",
+  "itch"
+ ],
+ [
+  "\\bsimex\\b",
+  "sim ex"
+ ],
+ [
+  "\\bSEC\\b",
+  "S E C"
+ ],
+ [
+  "\\bNYSE\\b",
+  "N Y S E"
+ ],
+ [
+  "\\bCME\\b",
+  "C M E"
+ ],
+ [
+  "\\bIOC\\b",
+  "I O C"
+ ],
+ [
+  "\\bFOK\\b",
+  "F O K"
+ ],
+ [
+  "\\bLULD\\b",
+  "L U L D"
+ ],
+ [
+  "\\bFIX\\b",
+  "fix"
+ ],
+ [
+  "\\bIEX\\b",
+  "I E X"
+ ],
+ [
+  "\\bFIFO\\b",
+  "fife-oh"
+ ],
+ [
+  "\\bAPI\\b",
+  "A P I"
+ ],
+ [
+  "\\bID\\b",
+  "I D"
+ ],
+ [
+  "\\bNBBO\\b",
+  "N B B O"
+ ],
+ [
+  "\\bS&P\\b",
+  "S and P"
+ ],
+ [
+  "\\bReg NMS\\b",
+  "Reg N M S"
+ ],
+ [
+  "\\bNMS\\b",
+  "N M S"
+ ],
+ [
+  "\\bMWCB\\b",
+  "M W C B"
+ ],
+ [
+  "\\bET\\b",
+  "Eastern"
+ ],
+ [
+  "\\$10\\.02",
+  "ten oh two"
+ ],
+ [
+  "\\$10\\.03",
+  "ten oh three"
+ ],
+ [
+  "\\b3:50\\b",
+  "three fifty"
+ ],
+ [
+  "\\b3:55\\b",
+  "three fifty five"
+ ],
+ [
+  "\\b3:58\\b",
+  "three fifty eight"
+ ],
+ [
+  "\\$10\\.05",
+  "ten oh five"
+ ],
+ [
+  "\\$10\\.00",
+  "ten dollars"
+ ],
+ [
+  "\\b9:25\\b",
+  "nine twenty five"
+ ],
+ [
+  "\\b9:28\\b",
+  "nine twenty eight"
+ ],
+ [
+  "\\bindicative\\b",
+  "indicative"
+ ],
+ [
+  "\\buncross\\b",
+  "un-cross"
+ ]
+]

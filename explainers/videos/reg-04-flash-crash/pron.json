@@ -1,0 +1,134 @@
+[
+[
+"\\b6 May 2010\\b",
+"the sixth of May, twenty ten"
+],
+[
+"\\b6 May\\b",
+"the sixth of May"
+],
+[
+"\\b30 September 2010\\b",
+"the thirtieth of September, twenty ten"
+],
+[
+"\\b2:32 p\\.m\\.",
+"two thirty two P M"
+],
+[
+"\\b2:45:13\\b",
+"two forty five and thirteen seconds"
+],
+[
+"\\b2:45:27\\b",
+"two forty five and twenty seven seconds"
+],
+[
+"\\b2:41\\b",
+"two forty one"
+],
+[
+"\\b2:44\\b",
+"two forty four"
+],
+[
+"\\b2:40\\b",
+"two forty"
+],
+[
+"\\b3:00\\b",
+"three o'clock"
+],
+[
+"\\b3:08\\b",
+"three oh eight"
+],
+[
+"\\b1056\\b",
+"ten fifty six"
+],
+[
+"S&P 500",
+"S and P five hundred"
+],
+[
+"E-mini",
+"E mini"
+],
+[
+"\\$4\\.1 billion",
+"four point one billion dollars"
+],
+[
+"\\$58 million",
+"fifty eight million dollars"
+],
+[
+"\\$100,000",
+"a hundred thousand dollars"
+],
+[
+"\\b75,000\\b",
+"seventy five thousand"
+],
+[
+"\\b27,000\\b",
+"twenty seven thousand"
+],
+[
+"\\b20,000\\b",
+"twenty thousand"
+],
+[
+"\\bCME's\\b",
+"C M E's"
+],
+[
+"\\bSEC\\b",
+"S E C"
+],
+[
+"\\bUS\\b",
+"U S"
+],
+[
+"\\bEU\\b",
+"E U"
+],
+[
+"\\bOUCH\\b",
+"ouch"
+],
+[
+"\\bITCH\\b",
+"itch"
+],
+[
+"\\bsimex\\b",
+"sim ex"
+],
+[
+"\\bPnL\\b",
+"P and L"
+],
+[
+"\\bFINRA\\b",
+"finra"
+],
+[
+"\\bCFTC\\b",
+"C F T C"
+],
+[
+"\\bCCP\\b",
+"C C P"
+],
+[
+"\\bRTS 6\\b",
+"R T S six"
+],
+[
+"\\bMiFID II\\b",
+"miffid two"
+]
+]

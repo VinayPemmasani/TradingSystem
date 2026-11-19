@@ -1,0 +1,87 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 01 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">What the spread<br>pays for</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">The price of trading right now.</div>
+<div class="node green" data-cue="1" style="left:140px;top:680px;width:330px"><div class="t">100.00</div><div class="s">best bid</div></div>
+<div class="node red" data-cue="1" data-d="0.3" style="left:760px;top:680px;width:330px"><div class="t">100.02</div><div class="s">best offer</div></div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.6" d="M480 740 L750 740" stroke="#ffb347" stroke-width="4" fill="none" marker-start="url(#ah-amber)" marker-end="url(#ah-amber)"/></svg>
+<div class="tag c-amber" data-cue="1" data-d="0.9" style="left:540px;top:680px">spread 2¢</div>
+<div class="tag" data-cue="2" style="left:1180px;top:700px">costs · inventory · information</div>
+</div>
+
+<div class="scene" id="s-cost">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Half the spread, every time you cross</div>
+<div class="node green" data-cue="0" data-d="0.3" style="left:220px;top:300px;width:340px"><div class="t">bid 100.00</div><div class="s">buyers waiting</div></div>
+<div class="node red" data-cue="0" data-d="0.5" style="left:1360px;top:300px;width:340px"><div class="t">ask 100.02</div><div class="s">sellers waiting</div></div>
+<div class="node teal" data-cue="1" style="left:810px;top:300px;width:300px"><div class="t">mid 100.01</div><div class="s">fair value guess</div></div>
+<svg class="full">
+<path class="draw" data-cue="1" data-d="0.5" d="M570 470 L1350 470" stroke="#ffb347" stroke-width="4" fill="none" marker-start="url(#ah-amber)" marker-end="url(#ah-amber)"/>
+<path id="co-buy" d="M960 640 C 1150 640 1400 600 1530 430" fill="none" stroke="none"/>
+<path class="draw" data-cue="2" d="M960 640 C 1150 640 1400 600 1530 430" stroke="#4fd18b" stroke-width="3" fill="none" marker-end="url(#ah-green)" stroke-dasharray="1 1"/>
+<path class="draw" data-cue="3" d="M1530 430 C 1300 760 700 760 390 430" stroke="#ff6b5e" stroke-width="3" fill="none" marker-end="url(#ah-red)"/>
+</svg>
+<div class="tag c-amber" data-cue="1" data-d="0.8" style="left:820px;top:490px">quoted spread 2¢</div>
+<div class="pkt" data-path="co-buy" data-cue="2" data-dur="1.4" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="tag c-green" data-cue="2" data-d="1.2" style="left:1440px;top:560px">buy: mid + 1¢ = ½ spread</div>
+<div class="tag c-red" data-cue="3" data-d="0.8" style="left:330px;top:620px">sell back at 100.00: round trip 2¢</div>
+<div class="fcard amber" data-cue="4" style="left:560px;top:790px;width:800px;text-align:center"><div class="math" style="font-size:40px">10 × 1,000 × $0.02 = <span class="val c-amber">$<span class="count" data-cue="4" data-d="0.3" data-from="0" data-to="200">0</span> a day</span></div></div>
+</div>
+
+<div class="scene" id="s-parts">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Three things inside the spread</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:160px;top:250px">one spread</div>
+<div class="grow bar" data-cue="0" data-d="0.4" data-w="1600" style="left:160px;top:290px;height:70px;background:var(--amber);opacity:.85"></div>
+<div class="grow bar" data-cue="1" data-w="760" style="left:160px;top:420px;height:70px;background:#6f8796"></div>
+<div class="grow bar" data-cue="2" data-w="380" style="left:930px;top:420px;height:70px;background:var(--teal)"></div>
+<div class="grow bar" data-cue="3" data-w="450" style="left:1320px;top:420px;height:70px;background:var(--violet)"></div>
+<div class="card" data-cue="1" data-d="0.3" style="left:160px;top:530px;width:740px;border-color:#6f8796"><div class="ct">Order processing</div><div class="cs">fees, systems, people: paid on every trade</div></div>
+<div class="card" data-cue="2" data-d="0.3" style="left:930px;top:530px;width:370px;border-color:var(--teal)"><div class="ct c-teal">Inventory</div><div class="cs">risk of a position the dealer did not choose</div></div>
+<div class="card" data-cue="3" data-d="0.3" style="left:1320px;top:530px;width:450px;border-color:var(--violet)"><div class="ct c-violet">Adverse selection</div><div class="cs">losses to better-informed traders · Glosten &amp; Milgrom 1985</div></div>
+<div class="note" data-cue="4" style="left:160px;top:820px;width:1600px">Huang &amp; Stoll, RFS 1997: order processing the largest part, adverse selection and inventory smaller.<br>Bar widths are illustrative, not their estimates.</div>
+</div>
+
+<div class="scene" id="s-measure">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Effective, realized, impact</div>
+<div id="me-ch" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:1000px;height:600px"></div>
+<div class="fcard" data-cue="1" style="left:1180px;top:220px;width:640px"><span class="lbl">effective spread (buy)</span><div class="math" style="font-size:36px">2 (<i>P</i> − <i>M</i><sub>0</sub>) = 2 × 0.01 = <span class="val c-amber">2¢</span></div></div>
+<div class="fcard green" data-cue="4" style="left:1180px;top:410px;width:640px"><span class="lbl">realized spread: dealer revenue</span><div class="math" style="font-size:36px">2 (<i>P</i> − <i>M</i><sub>5 min</sub>) = 2 × 0.005 = <span class="val c-green">1¢</span></div></div>
+<div class="fcard violet" data-cue="5" style="left:1180px;top:600px;width:640px"><span class="lbl">price impact: information</span><div class="math" style="font-size:36px">2¢ − 1¢ = <span class="val c-violet">1¢</span></div></div>
+<div class="src" data-cue="5" data-d="0.8" style="left:1180px;top:790px;width:640px">SEC Rule 605 reports these; 2024 amendments: horizons from &lt;100 µs to 5 min</div>
+</div>
+
+<div class="scene" id="s-roll">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Roll (1984): the spread from trades alone</div>
+<div id="ro-ch" data-cue="1" data-anim="fade" style="left:120px;top:220px;width:1000px;height:560px"></div>
+<div class="tag c-teal" data-cue="1" data-d="0.3" style="left:230px;top:225px">— value (random walk)</div>
+<div class="tag" data-cue="1" data-d="0.5" style="left:560px;top:225px"><span class="c-green">● at ask</span> <span class="c-red">● at bid</span></div>
+<div class="tag c-amber" data-cue="2" style="left:230px;top:790px">up, down, up, down: changes are negatively correlated</div>
+<div class="fcard amber" data-cue="3" style="left:1180px;top:220px;width:640px"><div class="math" style="font-size:36px">Cov(Δ<i>p</i><sub><i>t</i></sub>, Δ<i>p</i><sub><i>t</i>−1</sub>) = −<span class="frac"><span><i>s</i><sup>2</sup></span><span>4</span></span></div><div class="math" style="font-size:36px;margin-top:10px"><i>s</i> = 2 √(−Cov)</div></div>
+<div class="fcard" data-cue="4" style="left:1180px;top:500px;width:640px"><span class="lbl">my simulation · 100k trades · s = 2¢</span><div class="math" style="font-size:36px">Cov = −0.99 ¢<sup>2</sup></div></div>
+<div class="fcard green" data-cue="5" style="left:1180px;top:680px;width:640px"><div class="math" style="font-size:38px"><i>s</i> = 2 √0.99 = <span class="val c-green">1.99¢</span></div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: exchange/agents</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:1000px;font-size:23px"><span class="c">// exchange/agents/main.cpp, Agents::quote()</span>
+<span class="k">const</span> <span class="v">int64_t</span> skew = m.position / <span class="r">500</span>;
+<span class="k">const</span> <span class="v">int64_t</span> estimate =
+    s.value + (m.noise - skew) * kTick;
+px = estimate + (bid ? -m.half_spread
+                     :  m.half_spread) * kTick;</div>
+<div class="node teal" data-cue="1" data-d="0.4" style="left:1260px;top:230px;width:540px"><div class="t">makers</div><div class="s">half spread 1–4 ticks · noisy estimate</div></div>
+<div class="tag c-teal" data-cue="2" style="left:120px;top:540px">skew: a tick per 500 shares → inventory</div>
+<div class="node violet" data-cue="3" style="left:1260px;top:470px;width:540px"><div class="t">value traders</div><div class="s">know the value · act at a 3-tick gap</div></div>
+<svg class="full"><path class="draw" data-cue="3" data-d="0.4" d="M1530 470 L1530 350" stroke="#a98bff" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/></svg>
+<div class="tag c-violet" data-cue="3" data-d="0.8" style="left:1560px;top:390px">pick off stale quotes</div>
+<div class="code" data-cue="4" style="left:120px;top:630px;width:1000px;font-size:22px"><span class="c"># per population: orders, fills, inventory, PnL</span>
+Makers two-sided in …% of samples; touch spread ticks p50=… p99=…</div>
+<div class="tag c-blue" data-cue="5" style="left:1260px;top:660px">trades → Roll's 2√(−cov) vs p50</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Roll's traps</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Trends</div><div class="cs">Cov &gt; 0: no square root, no estimate.</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Tick grid</div><div class="cs">Prices snap to ticks, not to value.</div></div>
+<div class="card" data-cue="2" data-d="1.2" style="left:1260px;top:230px;width:540px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Quotes react</div><div class="cs">Trades move the quotes, so bounces are not independent.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:540px;width:1700px">The <span class="c-amber">spread</span> pays for costs,<br>inventory risk and <span class="c-violet">information</span>.</div>
+</div>

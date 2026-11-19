@@ -1,0 +1,95 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">NETWORK · 09 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Taps and<br>packet capture</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1100px">Measuring latency on the wire, not in your own code.</div>
+<svg class="full"><path id="tt-l" d="M1150 700 L1850 700" stroke="#6aa8ff" stroke-width="5" fill="none"/><path class="draw" data-cue="1" d="M1500 700 L1500 840" stroke="#ff8fc8" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="tt-l" data-cue="0" data-d="0.6" data-dur="2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="node" data-cue="1" data-d="0.3" style="left:1390px;top:840px;width:220px;height:70px;border-color:var(--pink);font-size:22px">capture</div>
+</div>
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Measure outside the system</div>
+<div class="node" data-cue="0" data-d="0.0" style="left:560px;top:280px;width:230px;height:90px;border-color:var(--amber);font-size:26px">card</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:820px;top:280px;width:230px;height:90px;border-color:var(--red);font-size:26px">kernel</div>
+<div class="node" data-cue="0" data-d="0.4" style="left:1080px;top:280px;width:230px;height:90px;border-color:var(--red);font-size:26px">queues</div>
+<div class="node" data-cue="0" data-d="0.6000000000000001" style="left:1340px;top:280px;width:230px;height:90px;border-color:var(--teal);font-size:26px">your code</div>
+<div class="bar" data-cue="0" data-d="1" data-anim="fade" style="left:1340px;top:390px;width:230px;height:8px;background:var(--teal)"></div>
+<div class="tl" data-cue="0" data-d="1.2" style="left:1300px;top:410px;color:var(--teal)">in-process stamps see this</div>
+<div class="node" data-cue="1" style="left:560px;top:520px;width:1010px;height:100px;border-color:var(--pink);font-size:28px">capture system: one precise clock<small>copies every packet off the wire</small></div>
+<svg class="full"><path class="draw" data-cue="1" d="M420 330 L560 330" stroke="#6aa8ff" stroke-width="5" fill="none"/><path class="draw" data-cue="1" d="M1570 330 L1720 330" stroke="#6aa8ff" stroke-width="5" fill="none"/>
+<path class="draw" data-cue="2" d="M480 330 L480 570 L560 570" stroke="#ff8fc8" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="2" d="M1650 330 L1650 570 L1570 570" stroke="#ff8fc8" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tl" data-cue="2" style="left:300px;top:290px;color:var(--blue)">in</div>
+<div class="tl" data-cue="2" style="left:1740px;top:290px;color:var(--blue)">out</div>
+</div>
+<div class="scene" id="s-span">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Mirror port or tap</div>
+<div class="panel" data-cue="1" data-anim="fade" style="left:120px;top:220px;width:820px;height:640px"></div>
+<div class="h3" data-cue="1" style="left:150px;top:240px">SPAN (mirror port)</div>
+<div class="node sw" data-cue="1" style="left:380px;top:360px;width:300px;height:110px">switch</div>
+<div class="node" data-cue="1" data-d="0.0" style="left:170px;top:560px;width:200px;height:70px;border-color:var(--amber);font-size:22px">source 1</div>
+<div class="node" data-cue="1" data-d="0.1" style="left:430px;top:560px;width:200px;height:70px;border-color:var(--amber);font-size:22px">source 2</div>
+<div class="node" data-cue="1" data-d="0.2" style="left:690px;top:560px;width:200px;height:70px;border-color:var(--amber);font-size:22px">source 3</div>
+<div class="node" data-cue="2" style="left:380px;top:730px;width:300px;height:80px;border-color:var(--pink);font-size:22px">mirror port</div>
+<svg class="full"><path class="draw" data-cue="2" d="M530 470 L530 730" stroke="#ff8fc8" stroke-width="3" fill="none"/></svg>
+<div class="tag" data-cue="2" data-d="0.6" style="left:150px;top:660px;color:var(--red)">sources &gt; mirror capacity → drops at egress buffer</div>
+<div class="src" data-cue="2" data-d="1" style="left:150px;top:820px">Cisco SPAN configuration guide</div>
+<div class="panel" data-cue="3" data-anim="fade" style="left:980px;top:220px;width:820px;height:640px"></div>
+<div class="h3" data-cue="3" style="left:1010px;top:240px">Passive optical tap</div>
+<svg class="full"><path id="tp-l" class="draw" data-cue="3" d="M1020 420 L1760 420" stroke="#6aa8ff" stroke-width="6" fill="none"/><path id="tp-c" class="draw" data-cue="3" data-d="0.4" d="M1390 420 C1390 520 1390 560 1390 640" stroke="#ff8fc8" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="tp-l" data-cue="3" data-d="0.5" data-dur="2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="tp-c" data-cue="3" data-d="1.4" data-dur="1.2" data-loop="1" style="width:14px;height:14px;margin:-7px 0 0 -7px;background:var(--pink)"></div>
+<div class="node" data-cue="3" data-d="0.6" style="left:1280px;top:650px;width:220px;height:80px;border-color:var(--pink);font-size:22px">capture</div>
+<div class="tag" data-cue="3" data-d="0.8" style="left:1010px;top:460px;color:var(--green)">splits part of the light: every packet, in order</div>
+<div class="src" data-cue="3" data-d="1" style="left:1010px;top:820px">Gigamon, “Tap vs SPAN” (vendor white paper)</div>
+</div>
+<div class="scene" id="s-pcap">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The pcap file format</div>
+<div class="lbl" data-cue="1" style="left:140px;top:230px">FILE HEADER · 24 BYTES</div>
+<div class="bit" data-cue="1" data-d="0" data-anim="fade"  style="left:140px;top:270px;width:160px;height:74px;background:#ffb347">magic 4</div>
+<div class="bit" data-cue="1" data-d="0.1" data-anim="fade"  style="left:300px;top:270px;width:160px;height:74px;background:#5c7381">ver 2+2</div>
+<div class="bit" data-cue="1" data-d="0.2" data-anim="fade"  style="left:460px;top:270px;width:240px;height:74px;background:#5c7381">reserved 4+4</div>
+<div class="bit" data-cue="1" data-d="0.3" data-anim="fade" data-hl="4" style="left:700px;top:270px;width:160px;height:74px;background:#ff8fc8">SnapLen 4</div>
+<div class="bit" data-cue="1" data-d="0.4" data-anim="fade"  style="left:860px;top:270px;width:200px;height:74px;background:#5c7381">LinkType 4</div>
+<div class="bit" data-cue="2" data-anim="fade" data-hl="2" data-hlend="3" style="left:140px;top:270px;width:160px;height:74px;background:transparent;border:0"></div>
+<div class="kv" data-cue="2" style="left:1100px;top:250px;font-size:24px">0xA1B2C3D4 → µs<br>0xA1B23C4D → ns</div>
+<div class="lbl" data-cue="3" style="left:140px;top:430px">EACH PACKET RECORD · 16-BYTE HEADER + DATA</div>
+<div class="bit" data-cue="3" data-d="0" data-anim="fade" style="left:140px;top:470px;width:220px;height:74px;background:#ff8fc8;font-size:22px;">seconds 4</div>
+<div class="bit" data-cue="3" data-d="0.15" data-anim="fade" style="left:360px;top:470px;width:260px;height:74px;background:#ff8fc8;font-size:22px;">µs or ns 4</div>
+<div class="bit" data-cue="3" data-d="0.3" data-anim="fade" style="left:620px;top:470px;width:240px;height:74px;background:#3fd0dc;font-size:22px;">captured len 4</div>
+<div class="bit" data-cue="3" data-d="0.45" data-anim="fade" style="left:860px;top:470px;width:240px;height:74px;background:#3fd0dc;font-size:22px;">original len 4</div>
+<div class="bit" data-cue="3" data-d="0.6" data-anim="fade" style="left:1100px;top:470px;width:520px;height:74px;background:#4fd18b;font-size:22px;">packet bytes …</div>
+<div class="tag" data-cue="4" style="left:140px;top:600px;color:var(--pink)">SnapLen: keep only the first N bytes of each packet</div>
+<div class="src" data-cue="1" data-d="0.6" style="left:140px;top:370px">IETF draft-ietf-opsawg-pcap</div>
+</div>
+<div class="scene" id="s-wire">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Wire to wire: tick to order</div>
+<div class="node sv" data-cue="1" style="left:780px;top:240px;width:360px;height:140px;font-size:32px">your server<small>card · kernel · code</small></div>
+<svg class="full"><path id="ww-in" class="draw" data-cue="1" d="M200 310 L780 310" stroke="#ffb347" stroke-width="5" fill="none" marker-end="url(#ah-amber)"/><path id="ww-out" class="draw" data-cue="1" data-d="0.3" d="M1140 310 L1720 310" stroke="#ff8fc8" stroke-width="5" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="1" data-d="0.6" d="M450 310 L450 460" stroke="#8ea3b1" stroke-width="2" stroke-dasharray="6 6" fill="none"/><path class="draw" data-cue="1" data-d="0.6" d="M1450 310 L1450 460" stroke="#8ea3b1" stroke-width="2" stroke-dasharray="6 6" fill="none"/></svg>
+<div class="tl" data-cue="1" style="left:240px;top:260px;color:var(--amber)">market data in</div>
+<div class="tl" data-cue="1" data-d="0.3" style="left:1240px;top:260px;color:var(--pink)">order out</div>
+<div class="node" data-cue="1" data-d="0.6" style="left:350px;top:460px;width:1200px;height:80px;border-color:var(--pink);font-size:24px">capture: both taps, one clock</div>
+<div class="bar" data-cue="3" data-anim="fade" style="left:350px;top:640px;width:1200px;height:4px;background:var(--line)"></div>
+<div class="tick" data-cue="3" style="left:350px;top:610px;height:64px"></div><div class="tl" data-cue="3" style="left:300px;top:690px;color:var(--amber)">quote last bit: 0</div>
+<div class="grow bar" data-cue="3" data-d="0.4" data-w="1000" style="left:350px;top:620px;height:44px;background:linear-gradient(90deg,rgba(255,179,71,.6),rgba(255,143,200,.8))"></div>
+<div class="tick" data-cue="3" data-d="1.2" style="left:1350px;top:610px;height:64px"></div><div class="tl" data-cue="3" data-d="1.2" style="left:1250px;top:690px;color:var(--pink)">order first bit: 4.1 µs</div>
+<div class="tag" data-cue="3" data-d="1.4" style="left:1560px;top:625px;color:var(--muted)">example</div>
+<div class="tag" data-cue="5" style="left:350px;top:790px;color:var(--teal)">every order → a distribution: read p50 / p99 / p99.9</div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab</div>
+<div class="code" data-cue="1" style="left:140px;top:230px;font-size:24px"><span class="c">// libs/feed/src/receiver.cpp</span>
+n = batch.receive(feed_);
+tsc = rdtsc();          <span class="c">// one stamp per batch</span>
+slot-&gt;rx_tsc = tsc;    <span class="c">// travels with the packet</span></div>
+<div class="lbl" data-cue="1" data-d="0.8" style="left:1100px;top:230px">AERON FRAME HEADER, OFFSET 24</div>
+<div class="bit" data-cue="1" data-d="1" data-anim="fade" style="left:1100px;top:270px;width:680px;height:74px;background:#4fd18b">reserved_value 8 bytes = rx rdtsc</div>
+<div class="node lab" data-cue="2" style="left:140px;top:520px;width:800px;height:110px">LatencyHistogram<small>prints p50 … p99.99 and max</small></div>
+<div class="code" data-cue="3" style="left:1100px;top:520px;font-size:24px"><span class="c"># scripts/wsl-setup.sh installs</span>
+tcpdump  tshark</div>
+</div>
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Takeaway</div>
+<div class="take" data-cue="0" style="left:140px;top:280px;width:1640px">Software stamps: what your code saw.</div>
+<div class="take" data-cue="1" style="left:140px;top:420px;width:1640px"><span class="c-pink">A tap and a good clock: what happened.</span></div>
+<div class="take" data-cue="2" style="left:140px;top:560px;width:1640px;font-size:46px;color:var(--muted)">When they disagree, trust the tap.</div>
+</div>

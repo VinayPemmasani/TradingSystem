@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "NYSE",
+  "text": "The New York Stock Exchange is the oldest name in this series, and still where many of the largest companies list. This series profiles ten exchange groups the same way, then asks why liquidity gathers in so few places."
+ },
+ {
+  "id": "history",
+  "title": "History in five beats",
+  "text": "Start with history. In May 1792, 24 brokers signed the Buttonwood Agreement, fixing rules and commissions. In 1817 they adopted a constitution, the forerunner of today's exchange. In 2006 the NYSE merged with Archipelago, an electronic market, and went public. In 2013, Intercontinental Exchange bought it. By 2019, its markets ran on one trading platform, called Pillar."
+ },
+ {
+  "id": "trades",
+  "title": "What it lists and trades",
+  "text": "What does it trade? Shares of the companies it lists, ETFs on NYSE Arca, and equity options. In 2025, ICE reported record NYSE stock volume of 3.35 billion shares a day. Its options markets averaged 10.5 million contracts a day. But the flagship product is the listing itself, and the closing auction that comes with it."
+ },
+ {
+  "id": "model",
+  "title": "Floor, DMM, closing auction",
+  "text": "The NYSE is the only US stock exchange that still runs a trading floor. Each listed stock has one designated market maker, obliged to keep a fair and orderly market. Floor brokers work client orders in person. At 4 PM, the closing auction matches buy and sell interest at one price. Index funds track that official close, so volume piles in. In 2025, one closing auction set a record of over 205 billion dollars."
+ },
+ {
+  "id": "tech",
+  "title": "Pillar and the Integrated Feed",
+  "text": "Under the hood, Pillar runs all five NYSE equity markets. Market data leaves as one binary stream, the Integrated Feed. It carries every visible order, every trade and the auction imbalances, in one sequence. Add Order is message type 100, Delete is 102, and Execution is 103. That is the same shape as the Nasdaq ITCH feed the lab replays."
+ },
+ {
+  "id": "money",
+  "title": "How it makes money",
+  "text": "How does it make money? The NYSE is one part of ICE, which reported 9.9 billion dollars of net revenue in 2025. Cash equities and equity options trading brought in about 470 million. Listing fees brought in about 500 million, a bit more than trading. Data and connectivity, across all of ICE's exchanges, brought in about a billion."
+ },
+ {
+  "id": "why",
+  "title": "Why it is big",
+  "text": "Why is it big? Listings, the close and liquidity feed each other. A company lists where investors and index funds already trade. The closing auction gathers the day's deepest liquidity at one price. That depth draws the next issuer and the next trader. One caution: US stocks trade on many venues, so much of the daytime volume in NYSE stocks happens elsewhere."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 0.3,
+  "text": "The NYSE is a listings brand, a floor and an auction on modern electronic plumbing. Its moat is the close."
+ }
+]

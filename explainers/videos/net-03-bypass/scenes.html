@@ -1,0 +1,132 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">NETWORK · 03 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Kernel<br>bypass</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:880px">Onload, ef_vi, TCPDirect and DPDK: talking to the network card directly.</div>
+<div class="node sv" data-cue="0" data-d="0.6" style="left:1300px;top:200px;width:420px;height:100px">Application</div>
+<div class="node" data-cue="0" data-d="0.8" style="left:1300px;top:420px;width:420px;height:100px;border-color:var(--red)">Kernel<small>IRQ · stack · copy · wake</small></div>
+<div class="node" data-cue="0" data-d="1.0" style="left:1300px;top:640px;width:420px;height:100px;border-color:var(--amber)">Network card</div>
+<svg class="full"><path id="tt-k" class="draw" data-cue="0" data-d="1.2" d="M1450 640 L1450 520 M1450 420 L1450 300" stroke="#ff6b5e" stroke-width="4" fill="none"/>
+<path id="tt-b" class="draw" data-cue="1" d="M1720 690 C1830 690 1830 250 1720 250" stroke="#4fd18b" stroke-width="5" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="tt-b" data-cue="1" data-d="0.8" data-dur="1.4" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="tag" data-cue="1" data-d="0.5" style="left:1560px;top:455px;color:var(--green)">bypass</div>
+</div>
+<div class="scene" id="s-kernel">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The ordinary receive path</div>
+<div class="node" data-cue="0" data-d="0.0" style="left:160px;top:760px;width:600px;height:96px;border-color:var(--amber);font-size:27px">NIC writes packet, raises IRQ</div>
+<div class="node" data-cue="0" data-d="0.5" style="left:160px;top:635px;width:600px;height:96px;border-color:var(--red);font-size:27px">Kernel: driver + TCP/IP stack</div>
+<div class="node" data-cue="1" data-d="0.0" style="left:160px;top:510px;width:600px;height:96px;border-color:var(--red);font-size:27px">Kernel wakes your thread</div>
+<div class="node" data-cue="1" data-d="0.5" style="left:160px;top:385px;width:600px;height:96px;border-color:var(--red);font-size:27px">recv() copies into your buffer</div>
+<div class="node" data-cue="1" data-d="1.0" style="left:160px;top:260px;width:600px;height:96px;border-color:var(--teal);font-size:27px">Your code runs</div>
+<svg class="full"><path id="kp" class="draw" data-cue="1" data-d="1.5" d="M460 760 L460 260" stroke="#3a5260" stroke-width="3" fill="none"/></svg>
+<div class="pkt" data-path="kp" data-cue="1" data-d="1.6" data-dur="2.5" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="fcard" data-cue="2" style="left:900px;top:280px;width:880px;background:rgba(19,33,43,.9);border:2px solid var(--red);border-radius:16px;padding:22px 28px"><div class="lbl">EACH KERNEL TRANSITION</div><div class="h3" style="margin-top:8px">hundreds or thousands of instructions</div></div>
+<div class="fcard" data-cue="3" style="left:900px;top:500px;width:880px;background:rgba(19,33,43,.9);border:2px solid var(--red);border-radius:16px;padding:22px 28px"><div class="lbl">INTERRUPT + THREAD SWITCH</div><div class="h3" style="margin-top:8px">on the order of a microsecond</div></div>
+<div class="src" data-cue="2" data-d="0.6" style="left:900px;top:720px">AMD Onload User Guide (UG1586)</div>
+</div>
+<div class="scene" id="s-onload">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Onload: same sockets, stack in your process</div>
+<div class="panel" data-cue="0" data-anim="fade" style="left:140px;top:230px;width:900px;height:430px;border-color:var(--teal)"></div>
+<div class="h3 c-teal" data-cue="0" style="left:170px;top:250px">Your process</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:170px;top:320px;font-size:24px">socket()  bind()  recv()  send()   <span class="c">// unchanged</span></div>
+<div class="node lab" data-cue="1" data-d="0.4" style="left:170px;top:420px;width:400px;height:90px;font-size:24px">libonload<small>LD_PRELOAD intercepts calls</small></div>
+<div class="node lab" data-cue="2" style="left:610px;top:420px;width:400px;height:90px;font-size:24px">TCP/IP stack<small>user level</small></div>
+<div class="node off" data-cue="2" style="left:1200px;top:300px;width:520px;height:110px">Kernel<small>off the data path</small></div>
+<div class="node ex" data-cue="2" data-d="0.4" style="left:140px;top:760px;width:900px;height:100px">Adapter<small>protected virtual NIC for this process</small></div>
+<svg class="full"><path id="ol-p" class="draw" data-cue="2" data-d="0.4" d="M810 760 L810 510" stroke="#4fd18b" stroke-width="5" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="ol-p" data-cue="2" data-d="1" data-dur="1" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="code" data-cue="1" style="left:1200px;top:470px;font-size:25px">$ onload ./feed-handler</div>
+<div class="code" data-cue="3" style="left:1200px;top:580px;font-size:25px">$ export <span class="r">EF_POLL_USEC</span>=100000
+<span class="c"># spin up to 100 ms before blocking</span></div>
+</div>
+<div class="scene" id="s-efvi">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Lower still: ef_vi and TCPDirect</div>
+<div class="node" data-cue="0" style="left:140px;top:250px;width:620px;height:120px;border-color:var(--teal);font-size:30px">Sockets via Onload<small>your code unchanged</small></div>
+<div class="node" data-cue="2" style="left:140px;top:400px;width:620px;height:120px;border-color:var(--violet);font-size:30px">TCPDirect<small>small TCP/UDP stack, own API</small></div>
+<div class="node" data-cue="0" style="left:140px;top:550px;width:620px;height:120px;border-color:var(--amber);font-size:30px">ef_vi<small>layer 2: raw frames, rings</small></div>
+<div class="lbl" data-cue="0" style="left:140px;top:710px">↓ closer to the hardware</div>
+<div class="lbl" data-cue="1" style="left:900px;top:240px">RX RING: BUFFERS YOU POSTED</div>
+<div class="node" data-cue="1" data-d="0.0" data-anim="scale" style="left:900px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.08" data-anim="scale" style="left:986px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.16" data-anim="scale" style="left:1072px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.24" data-anim="scale" style="left:1158px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.32" data-anim="scale" style="left:1244px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.4" data-anim="scale" style="left:1330px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.48" data-anim="scale" style="left:1416px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.56" data-anim="scale" style="left:1502px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.64" data-anim="scale" style="left:1588px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="node" data-cue="1" data-d="0.72" data-anim="scale" style="left:1674px;top:285px;width:74px;height:74px;border-color:var(--amber);font-size:18px">buf</div>
+<div class="lbl" data-cue="1" data-d="2" style="left:900px;top:430px">WHAT YOU GET BACK: ONE RAW FRAME</div>
+<div class="bit" data-cue="1" data-d="2.2" data-anim="fade" style="left:900px;top:475px;width:240px;height:74px;background:#5c7381;font-size:22px;">Ethernet 14</div>
+<div class="bit" data-cue="1" data-d="2.4000000000000004" data-anim="fade" style="left:1140px;top:475px;width:240px;height:74px;background:#6aa8ff;font-size:22px;">IPv4 20</div>
+<div class="bit" data-cue="1" data-d="2.6" data-anim="fade" style="left:1380px;top:475px;width:140px;height:74px;background:#ffb347;font-size:22px;">UDP 8</div>
+<div class="bit" data-cue="1" data-d="2.8000000000000003" data-anim="fade" style="left:1520px;top:475px;width:240px;height:74px;background:#4fd18b;font-size:22px;">payload</div>
+<div class="tl" data-cue="1" data-d="3.4" style="left:900px;top:565px;color:var(--amber)">you parse every header yourself</div>
+<div class="src" data-cue="1" data-d="4" style="left:900px;top:700px">AMD Onload User Guide (UG1586): “ef_vi is a network layer 2 API”</div>
+</div>
+<div class="scene" id="s-dpdk">
+<div class="h2" data-cue="0" style="left:120px;top:110px">DPDK: the port leaves Linux</div>
+<div class="tl" data-cue="0" data-d="0.4" style="left:124px;top:195px;color:var(--green)">Data Plane Development Kit · open source · poll mode drivers for many vendors’ NICs</div>
+<div class="node" data-cue="1" data-out="1.6" style="left:160px;top:260px;width:420px;height:100px;border-color:var(--red)">kernel driver<small>eth0 visible to Linux</small></div>
+<div class="node lab" data-cue="1" data-d="1.4" style="left:160px;top:260px;width:420px;height:100px">vfio-pci<small>Linux ignores the port</small></div>
+<div class="node ex" data-cue="1" style="left:160px;top:480px;width:420px;height:100px">NIC port</div>
+<svg class="full"><path class="draw" data-cue="1" d="M370 480 L370 360" stroke="#8ea3b1" stroke-width="3" fill="none"/></svg>
+<div class="lbl" data-cue="2" style="left:760px;top:240px">RX DESCRIPTOR RING</div>
+<div class="node" data-cue="2" data-d="0.0" data-anim="scale" style="left:760px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.05" data-anim="scale" style="left:842px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.1" data-anim="scale" style="left:924px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.15000000000000002" data-anim="scale" style="left:1006px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.2" data-anim="scale" style="left:1088px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.25" data-anim="scale" style="left:1170px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.30000000000000004" data-anim="scale" style="left:1252px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.35000000000000003" data-anim="scale" style="left:1334px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.4" data-anim="scale" style="left:1416px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.45" data-anim="scale" style="left:1498px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.5" data-anim="scale" style="left:1580px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="node" data-cue="2" data-d="0.55" data-anim="scale" style="left:1662px;top:285px;width:70px;height:70px;border-color:var(--amber)"></div>
+<div class="pkt" data-path="dp-burst" data-cue="2" data-d="1.0" data-dur="1.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="dp-burst" data-cue="2" data-d="1.12" data-dur="1.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="dp-burst" data-cue="2" data-d="1.24" data-dur="1.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="dp-burst" data-cue="2" data-d="1.3599999999999999" data-dur="1.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<svg class="full"><path id="dp-burst" d="M1000 360 C1000 470 1150 520 1250 560" stroke="none" fill="none"/></svg>
+<div class="node sv" data-cue="2" data-d="0.5" style="left:1150px;top:560px;width:520px;height:120px">Poll mode driver<small>user space · no interrupts · bursts</small></div>
+<div class="code" data-cue="2" data-d="1.2" style="left:760px;top:740px;font-size:25px"><span class="k">for</span> (;;) {  n = rx_burst(port, queue, pkts, N);  handle(pkts, n);  }</div>
+<div class="src" data-cue="1" data-d="1.6" style="left:160px;top:610px">DPDK docs: Linux Drivers; Poll Mode Driver</div>
+</div>
+<div class="scene" id="s-numbers">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Vendor figures: ½ round trip, 32 byte UDP</div>
+<div class="src" data-cue="0" data-d="0.4" style="left:124px;top:190px">AMD Onload User Guide UG1586, X2 Low Latency Quickstart · X2522 adapters, back to back, 25 Gb · median</div>
+<div class="h3" data-cue="1" data-d="0" style="left:140px;top:298px">Kernel</div>
+<div class="grow bar" data-cue="1" data-d="0" data-w="1275" style="left:420px;top:290px;height:70px;background:var(--red)"></div>
+<div class="h3" data-cue="1" data-d="0.8" style="left:1715px;top:298px;white-space:nowrap">2,658 ns</div>
+<div class="h3" data-cue="2" data-d="0" style="left:140px;top:428px">Onload</div>
+<div class="grow bar" data-cue="2" data-d="0" data-w="490" style="left:420px;top:420px;height:70px;background:var(--teal)"></div>
+<div class="h3" data-cue="2" data-d="0.8" style="left:930px;top:428px;white-space:nowrap">≈1,030 ns</div>
+<div class="h3" data-cue="2" data-d="0.5" style="left:140px;top:558px">TCPDirect</div>
+<div class="grow bar" data-cue="2" data-d="0.5" data-w="375" style="left:420px;top:550px;height:70px;background:var(--violet)"></div>
+<div class="h3" data-cue="2" data-d="1.3" style="left:815px;top:558px;white-space:nowrap">783 ns</div>
+<div class="h3" data-cue="2" data-d="1.0" style="left:140px;top:688px">ef_vi</div>
+<div class="grow bar" data-cue="2" data-d="1.0" data-w="360" style="left:420px;top:680px;height:70px;background:var(--amber)"></div>
+<div class="h3" data-cue="2" data-d="1.8" style="left:800px;top:688px;white-space:nowrap">750 ns</div>
+<div class="tag" data-cue="3" style="left:420px;top:830px;color:var(--amber)">vendor figures from one test bench; measure on your own hardware</div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: syscalls on one thread</div>
+<div class="node" data-cue="0" style="left:140px;top:300px;width:300px;height:110px;border-color:var(--amber)">UDP socket<small>kernel</small></div>
+<div class="node lab" data-cue="1" style="left:560px;top:300px;width:380px;height:110px">rx thread · CPU 2<small>recvmmsg, up to 32</small></div>
+<div class="node" data-cue="2" style="left:1060px;top:315px;width:230px;height:80px;border-color:var(--violet);font-size:24px">SPSC ring</div>
+<div class="node lab" data-cue="2" data-d="0.3" style="left:1410px;top:300px;width:380px;height:110px">book thread · CPU 3<small>no syscalls</small></div>
+<svg class="full"><path id="lb1" class="draw" data-cue="1" d="M440 355 L560 355" stroke="#ff6b5e" stroke-width="4" fill="none" marker-end="url(#ah-red)"/><path id="lb2" class="draw" data-cue="2" d="M940 355 L1060 355 M1290 355 L1410 355" stroke="#4fd18b" stroke-width="4" fill="none"/>
+<path id="lb3" class="draw" data-cue="3" d="M1600 410 L1600 560" stroke="#4fd18b" stroke-width="4" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="tag" data-cue="1" data-d="0.4" style="left:440px;top:440px;color:var(--red)">every syscall happens here</div>
+<div class="node" data-cue="3" style="left:1250px;top:560px;width:540px;height:100px;border-color:var(--violet)">Aeron IPC · /dev/shm<small>itch-fh republishes the clean feed</small></div>
+<div class="node sv" data-cue="3" data-d="0.4" style="left:1250px;top:740px;width:250px;height:80px;font-size:24px">trader A</div>
+<div class="node sv" data-cue="3" data-d="0.5" style="left:1540px;top:740px;width:250px;height:80px;font-size:24px">trader B</div>
+<div class="src" data-cue="1" data-d="1" style="left:140px;top:500px">libs/feed/src/receiver.cpp · docs/core-plan.md · docs/aeron.md</div>
+</div>
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The price of bypass</div>
+<div class="warn" data-cue="1" data-d="0" style="left:120px;top:250px;width:540px;height:230px"><div class="wt">A core per spinner</div><div class="ws">A busy-polling thread uses 100% of its core, all day.</div></div>
+<div class="warn" data-cue="2" data-d="0" style="left:690px;top:250px;width:540px;height:230px"><div class="wt">Vendor lock-in</div><div class="ws">ef_vi and TCPDirect need AMD Solarflare adapters. Onload can also run over AF_XDP, with less speed-up.</div></div>
+<div class="warn" data-cue="2" data-d="1.6" style="left:1260px;top:250px;width:540px;height:230px"><div class="wt">Tools go blind</div><div class="ws">tcpdump does not see accelerated packets; use onload_tcpdump.</div></div>
+<div class="take" data-cue="3" style="left:120px;top:600px;width:1680px">Pay it where microseconds matter:<br><span class="c-green">the feed and the order path.</span></div>
+</div>

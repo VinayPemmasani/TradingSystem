@@ -1,0 +1,12 @@
+[
+["\\bitch-fh\\b","itch F H"],
+["\\bITCH\\b","itch"],
+["\\brx\\b","R X"],
+["\\brecvmmsg\\b","recv M message"],
+["\\b182\\.50\\b","one eighty two fifty"],
+["\\b182 dollars 50\\b","one hundred eighty two dollars fifty"],
+["\\b1000\\b","one thousand"],
+["\\b64 byte\\b","sixty four byte"],
+["\\bpoll\\b","poll"],
+["\\bCPU's\\b","C P U's"]
+]

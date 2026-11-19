@@ -1,0 +1,106 @@
+[
+ [
+  "std::map",
+  "standard map"
+ ],
+ [
+  "std::string",
+  "standard string"
+ ],
+ [
+  "\\bp99\\.9\\b",
+  "P ninety nine point nine"
+ ],
+ [
+  "\\bp99\\b",
+  "P ninety nine"
+ ],
+ [
+  "\\bp50\\b",
+  "P fifty"
+ ],
+ [
+  "\\brdtsc\\b",
+  "R D T S C"
+ ],
+ [
+  "\\bVWAP\\b",
+  "vee wap"
+ ],
+ [
+  "\\bvCPU\\b",
+  "V C P U"
+ ],
+ [
+  "\\bVM\\b",
+  "V M"
+ ],
+ [
+  "g\\+\\+ -O2",
+  "G plus plus, O two,"
+ ],
+ [
+  "g\\+\\+ -S",
+  "G plus plus, dash S"
+ ],
+ [
+  "\\bx86\\b",
+  "x eighty six"
+ ],
+ [
+  "\\bITCH\\b",
+  "itch"
+ ],
+ [
+  "\\bSpscRing\\b",
+  "S P S C ring"
+ ],
+ [
+  "\\balignas\\b",
+  "align as"
+ ],
+ [
+  "\\bstlrb\\b",
+  "S T L R B"
+ ],
+ [
+  "\\bldarb\\b",
+  "L D A R B"
+ ],
+ [
+  "\\bsete\\b",
+  "set E"
+ ],
+ [
+  "\\bsetg\\b",
+  "set G"
+ ],
+ [
+  "\\bmov\\b",
+  "move"
+ ],
+ [
+  "\\bARM\\b",
+  "arm"
+ ],
+ [
+  "\\bCPU\\b",
+  "C P U"
+ ],
+ [
+  "\\b6,500\\b",
+  "six thousand five hundred"
+ ],
+ [
+  "\\b6,000\\b",
+  "six thousand"
+ ],
+ [
+  "\\bmalloc\\b",
+  "malloc"
+ ],
+ [
+  "\\bclang\\b",
+  "clang"
+ ]
+]

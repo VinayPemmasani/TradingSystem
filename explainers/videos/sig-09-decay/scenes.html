@@ -1,0 +1,57 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 09 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Signal horizon<br>and decay</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">Where a signal peaks, and what latency takes.</div>
+<div id="ti-ch" data-cue="1" data-anim="fade" style="left:140px;top:640px;width:1100px;height:260px"></div>
+</div>
+
+<div class="scene" id="s-ic">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Information coefficient by horizon</div>
+<div class="fcard amber" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:900px"><div class="math">IC(<i>h</i>) = corr( <i>s</i><sub><i>t</i></sub> , <i>m</i><sub><i>t</i>+<i>h</i></sub> − <i>m</i><sub><i>t</i></sub> )</div><div class="note">s signal · m mid · h steps ahead</div></div>
+<div class="tag c-muted" data-cue="2" style="left:120px;top:420px">no edge → IC ≈ 0 at every h</div>
+<div id="ic-ch" data-cue="3" data-anim="fade" style="left:120px;top:480px;width:1700px;height:360px"></div>
+<div class="tag c-amber" data-cue="4" style="left:1300px;top:240px">predicted move: builds, then stops</div>
+<div class="tag c-pink" data-cue="4" data-d="1.5" style="left:1300px;top:300px">noise: grows like √h</div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:640px"><div class="math" style="font-size:36px"><i>s</i><sub><i>t</i></sub> = 0.9 <i>s</i><sub><i>t</i>−1</sub> + <i>ε</i><sub><i>t</i></sub></div><div class="note">half-life ln ½ / ln 0.9 = 6.6 steps</div></div>
+<div class="fcard" data-cue="1" style="left:120px;top:420px;width:640px"><div class="math" style="font-size:36px"><i>r</i><sub><i>t</i>+1</sub> = 0.1 <i>s</i><sub><i>t</i></sub> + <i>e</i><sub><i>t</i>+1</sub></div><div class="note">unit-variance signal and noise</div></div>
+<div id="wk-ch" data-cue="2" data-anim="fade" style="left:860px;top:220px;width:960px;height:560px"></div>
+<div class="fcard amber" data-cue="4" style="left:120px;top:620px;width:640px"><div class="math" style="font-size:36px">1 − 0.9<sup>10</sup> = <span class="val c-amber">65%</span> of the move</div></div>
+<div class="src" data-cue="2" style="left:860px;top:800px">computed exactly from the model, not simulated</div>
+</div>
+
+<div class="scene" id="s-latency">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Latency eats the front</div>
+<div id="lt-ch" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:220px;width:1100px;height:560px"></div>
+<div class="fcard amber" data-cue="1" style="left:1300px;top:240px;width:520px"><div class="math" style="font-size:38px">0.9² = <span class="val c-amber">81%</span> left</div></div>
+<div class="fcard pink" data-cue="2" style="left:1300px;top:420px;width:520px"><div class="math" style="font-size:38px"><span class="val c-pink">19%</span> gone</div></div>
+<div class="tag c-blue" data-cue="3" style="left:1300px;top:600px">backtest clock: decision + latency</div>
+</div>
+
+<div class="scene" id="s-markout">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Markouts: decay seen from a fill</div>
+<div class="code" data-cue="1" style="left:120px;top:210px;width:900px;font-size:22px"><span class="c"># research/lab_research/tca.py</span>
+capture   = s * (m0 - price)        <span class="c"># mid just before</span>
+markout_h = s * (m(t + h) - price)  <span class="c"># h = 1, 10, 100, 1000 ms</span></div>
+<div class="fcard" data-cue="2" style="left:120px;top:440px;width:900px"><div class="body">buy at <span class="c-green">50.00</span> · mid before <span class="c-teal">50.005</span> → capture <span class="c-amber">+0.5¢</span></div></div>
+<div id="mk-ch" data-cue="2" data-d="0.4" data-anim="fade" style="left:1080px;top:210px;width:740px;height:560px"></div>
+<div class="tag c-pink" data-cue="4" style="left:120px;top:620px">capture − markout = adverse selection</div>
+<div class="src" data-cue="3" style="left:1080px;top:790px">illustrative mids</div>
+</div>
+
+<div class="scene" id="s-match">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Match the horizon to the strategy</div>
+<div id="mt-ax" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:300px;width:1700px;height:200px"></div>
+<div class="fcard" data-cue="3" style="left:120px;top:600px;width:1100px"><span class="lbl">Cont, Cucuringu &amp; Zhang · Quantitative Finance 2023</span><div class="body">lagged cross-asset order flow improves forecasts, mainly at short horizons, and decays rapidly</div></div>
+<div class="tag c-amber" data-cue="4" style="left:1280px;top:640px">IC peak inside your holding time</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Overlap</div><div class="cs">Overlapping horizons look surer than they are.</div></div>
+<div class="card" data-cue="1" style="left:690px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Out of sample</div><div class="cs">Fit on one period, test on another.</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Drift</div><div class="cs">Decay changes: measure it again.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:480px;width:1700px">Find the <span class="c-amber">peak</span>, subtract your <span class="c-blue">latency</span>,<br>trade inside the <span class="c-violet">half-life</span>.</div>
+</div>

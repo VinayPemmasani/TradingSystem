@@ -1,0 +1,36 @@
+[
+ {
+  "id": "title",
+  "title": "Quote lookup",
+  "text": "Pattern one: the quote cache. Every market data tick names an instrument, and the handler updates the latest quote for it. Here is the general-purpose version, the hot-path version, and what each one costs."
+ },
+ {
+  "id": "general",
+  "title": "The general version",
+  "text": "Ask for a quote cache with no latency budget, and you typically get this. An unordered map from std::string to Quote. On every tick, look up the symbol and overwrite its quote. It is correct, short, and fine in most programs. The question is what one lookup does to the machine."
+ },
+ {
+  "id": "cost",
+  "title": "What one lookup costs",
+  "text": "First, hash the string: a loop over its bytes. Then reduce the hash modulo a prime bucket count, which compiles to an integer division. Load the bucket, which holds a pointer, and follow it to a heap node. Every symbol got its own node, allocated separately. Only then can it compare the key and write the quote. With two hundred thousand instruments the nodes take twenty megabytes, ten times this core's L2 cache. So each pointer is likely a cache miss, and each load waits for the one before it. Symbols longer than fifteen characters, like option symbols, add one more pointer, to the key itself.",
+  "hold": 0.8
+ },
+ {
+  "id": "hot",
+  "title": "The hot-path version",
+  "text": "The hot-path version moves the string work to startup. Each symbol is interned once to a small integer id. Many feeds send one already, like the stock locate code in ITCH. The table is one flat array of 32 byte slots, sized at startup and never grown. The hash is a multiply and a mask. One probe lands on the slot, and the quote sits right next to the id, in the same cache line. An empty slot means not found. If ids are dense, from zero to N, a plain array indexed by id is simpler still.",
+  "hold": 0.8
+ },
+ {
+  "id": "measured",
+  "title": "Measured",
+  "text": "Measured on a shared cloud VM, pinned to one core: one million random ticks over two hundred thousand instruments. Back to back, the map took about 77 nanoseconds per tick, and the flat table under 10. Timing one tick at a time, the median was 265 versus 61 nanoseconds, and p99 was about 710 versus 280. Even with a thousand symbols, all in cache, it was 30 versus 5. Neither version allocated on the hot path, so the gap is hashing and memory. Memory per instrument: 100 bytes versus 42.",
+  "hold": 1.0
+ },
+ {
+  "id": "nuance",
+  "title": "When the map is fine",
+  "text": "The map is not wrong. It is general: any string, any count, growth on demand. The flat table is fast because it states constraints: instruments are known at startup, ids are small, and the table never grows. Put those constraints in the prompt, then measure. For reference data, configuration and tools, the map is the right choice. The rule: intern strings at the edge, and key hot tables by integer.",
+  "hold": 1.0
+ }
+]

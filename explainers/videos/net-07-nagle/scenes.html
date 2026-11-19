@@ -1,0 +1,82 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">NETWORK · 07 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Nagle, delayed<br>ACK, TCP_NODELAY</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1100px">Two sensible rules that stall an order path.</div>
+<div class="node sv" data-cue="1" style="left:1300px;top:650px;width:220px;height:100px">order</div>
+<div class="node bad" data-cue="1" data-d="0.4" style="left:1560px;top:650px;width:220px;height:100px;color:var(--red)">⏳ 40 ms</div>
+</div>
+<div class="scene" id="s-nagle">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Nagle, RFC 896 (1984)</div>
+<div class="lbl" data-cue="1" style="left:140px;top:240px">ONE KEYSTROKE OVER TCP/IP</div>
+<div class="bit" data-cue="1" data-d="0.2" data-anim="fade" style="left:140px;top:280px;width:800px;height:80px;background:#5c7381;font-size:22px;">IP + TCP headers: 40 bytes</div>
+<div class="bit" data-cue="1" data-d="0.5" data-anim="fade" style="left:940px;top:280px;width:40px;height:80px;background:#ff8fc8;font-size:22px;">1</div>
+<div class="tl" data-cue="1" data-d="0.8" style="left:1000px;top:300px;color:var(--red);font-size:26px">41 bytes, 4000% overhead</div>
+<div class="fcard" data-cue="2" style="left:140px;top:450px;width:1640px;background:rgba(19,33,43,.9);border:2px solid var(--pink);border-radius:16px;padding:24px 30px"><div class="lbl">THE RULE (RFC 1122 4.2.3.4 wording)</div><div class="body" style="margin-top:8px">If there is unacknowledged data, buffer new data until the outstanding data is acknowledged, or until a full-sized segment can be sent.</div></div>
+<svg class="full"><path id="ng-p" d="M260 780 L1500 780" stroke="#2c4351" stroke-width="4" fill="none"/></svg>
+<div class="node sv" data-cue="3" style="left:120px;top:730px;width:140px;height:100px">send</div>
+<div class="node" data-cue="3" style="left:1500px;top:730px;width:200px;height:100px;border-color:var(--amber)">peer</div>
+<div class="node" data-cue="3" data-d="0.0" data-anim="scale" style="left:330px;top:740px;width:50px;height:80px;border-color:var(--pink);font-size:20px">w1</div>
+<div class="node" data-cue="3" data-d="0.3" data-anim="scale" style="left:390px;top:740px;width:50px;height:80px;border-color:var(--pink);font-size:20px">w2</div>
+<div class="node" data-cue="3" data-d="0.6" data-anim="scale" style="left:450px;top:740px;width:50px;height:80px;border-color:var(--pink);font-size:20px">w3</div>
+<div class="tag" data-cue="3" data-d="1" style="left:330px;top:850px;color:var(--pink)">held until the ACK, then sent as one segment</div>
+</div>
+<div class="scene" id="s-delack">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Delayed ACK, RFC 1122 4.2.3.2</div>
+<div class="kv" data-cue="1" style="left:140px;top:240px">delay the ACK → send fewer ACKs</div>
+<div class="kv" data-cue="2" style="left:140px;top:320px">MUST be <b>&lt; 0.5 s</b> · ACK at least <b>every 2nd</b> full-sized segment</div>
+<div class="lbl" data-cue="3" style="left:140px;top:420px">LINUX DELAYED-ACK TIMER (include/net/tcp.h)</div>
+<div class="bar" data-cue="3" data-anim="fade" style="left:140px;top:560px;width:1600px;height:4px;background:var(--line)"></div>
+<div class="bar" data-cue="3" data-d="0.4" data-anim="fade" style="left:460px;top:530px;width:1280px;height:64px;background:rgba(255,179,71,.35);border:2px solid var(--amber)"></div>
+<div class="tick" data-cue="3" style="left:140px;top:520px;height:84px"></div>
+<div class="tl" data-cue="3" style="left:130px;top:620px">0</div>
+<div class="tick" data-cue="3" style="left:460px;top:520px;height:84px"></div>
+<div class="tl" data-cue="3" style="left:450px;top:485px">40 ms  TCP_DELACK_MIN = HZ/25</div>
+<div class="tick" data-cue="3" style="left:1740px;top:520px;height:84px"></div>
+<div class="tl" data-cue="3" style="left:1350px;top:620px">200 ms  TCP_DELACK_MAX = HZ/5</div>
+</div>
+<div class="scene" id="s-collide">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The collision</div>
+<div class="node sv" data-cue="0" style="left:300px;top:200px;width:300px;height:80px">Your gateway</div>
+<div class="node ex" data-cue="0" style="left:1240px;top:200px;width:300px;height:80px">Peer</div>
+<svg class="full"><path d="M450 280 L450 900" stroke="#3fd0dc" stroke-width="3" fill="none"/><path d="M1390 280 L1390 900" stroke="#ffb347" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="1" d="M450 330 L1390 400" stroke="#ff8fc8" stroke-width="4" fill="none" marker-end="url(#ah)"/>
+<path class="draw" data-cue="4" data-d="0.8" d="M1390 790 L450 850" stroke="#ffb347" stroke-width="3" stroke-dasharray="10 8" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="4" data-d="1.6" d="M450 860 L1390 900" stroke="#ff8fc8" stroke-width="4" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tag" data-cue="1" data-d="0.3" style="left:780px;top:310px;color:var(--pink)">order 1</div>
+<div class="node" data-cue="2" style="left:150px;top:440px;width:280px;height:80px;border-color:var(--red);font-size:22px">order 2 held<small>Nagle: 1 unACKed</small></div>
+<div class="node" data-cue="3" style="left:1410px;top:440px;width:300px;height:80px;border-color:var(--red);font-size:22px">ACK delayed<small>nothing to send back</small></div>
+<div class="bar" data-cue="3" data-d="0.5" data-anim="fade" style="left:438px;top:530px;width:24px;height:300px;background:repeating-linear-gradient(180deg,rgba(255,107,94,.8) 0 10px,transparent 10px 18px)"></div>
+<div class="tag" data-cue="4" style="left:700px;top:620px;color:var(--red)">timer fires: tens of milliseconds later</div>
+<div class="tag" data-cue="4" data-d="0.8" style="left:820px;top:770px;color:var(--amber)">ACK</div>
+<div class="tag" data-cue="4" data-d="1.6" style="left:780px;top:890px;color:var(--pink)">order 2, finally</div>
+</div>
+<div class="scene" id="s-nodelay">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The fix: TCP_NODELAY</div>
+<div class="code" data-cue="0" style="left:140px;top:230px;font-size:28px"><span class="k">int</span> one = <span class="r">1</span>;
+setsockopt(fd, IPPROTO_TCP, <span class="r">TCP_NODELAY</span>, &amp;one, <span class="k">sizeof</span> one);</div>
+<div class="fcard" data-cue="1" style="left:140px;top:420px;width:1640px;background:rgba(19,33,43,.9);border:2px solid var(--line);border-radius:16px;padding:22px 28px"><div class="body">“there MUST be a way for an application to disable the Nagle algorithm on an individual connection”</div><div class="src" style="margin-top:6px">RFC 1122, 4.2.3.4</div></div>
+<div class="kv" data-cue="2" style="left:140px;top:600px">segments go out <b>as soon as possible</b>, even small ones <span class="src">(tcp(7))</span></div>
+<div class="kv" data-cue="3" style="left:140px;top:690px">TCP_QUICKACK: receive side, but <b style="color:var(--red)">“not permanent”</b> <span class="src">(tcp(7))</span></div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: libs/net/src/tcp.cpp</div>
+<div class="code" data-cue="0" style="left:140px;top:220px;font-size:25px"><span class="line" data-hl="0" data-hlend="1">TcpStream::TcpStream(<span class="v">int</span> fd) : fd_{fd} {</span><span class="line">  out_.reserve(<span class="r">1 &lt;&lt; 16</span>);</span><span class="line" data-hl="0" data-hlend="1">  set_nodelay(fd_);</span><span class="line">}</span><span class="line" data-hl="1" data-hlend="3">bool TcpStream::send(data) {</span><span class="line" data-hl="1" data-hlend="3">  n = ::send(fd_, data, MSG_NOSIGNAL | <span class="r">MSG_DONTWAIT</span>);</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">if</span> (sent &lt; size) out_.insert(...);  <span class="c">// queue the rest</span></span><span class="line">}</span><span class="line" data-hl="2" data-hld="1.5">bool TcpStream::flush();  <span class="c">// drains out_ later</span></span></div>
+<div class="node lab" data-cue="0" data-d="0.6" style="left:1360px;top:250px;width:420px;height:110px">accept() and connect()<small>both build a TcpStream</small></div>
+</div>
+<div class="scene" id="s-pitfall">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The flip side: write whole messages</div>
+<div class="lbl" data-cue="1" style="left:140px;top:240px">TWO WRITES → TWO SEGMENTS</div>
+<div class="bit" data-cue="1" data-d="0.2" data-anim="fade" style="left:140px;top:280px;width:400px;height:70px;background:#5c7381;font-size:22px;">hdrs ≥ 40</div>
+<div class="bit" data-cue="1" data-d="0.3" data-anim="fade" style="left:540px;top:280px;width:160px;height:70px;background:#ff8fc8;font-size:22px;">header</div>
+<div class="bit" data-cue="1" data-d="0.6" data-anim="fade" style="left:140px;top:370px;width:400px;height:70px;background:#5c7381;font-size:22px;">hdrs ≥ 40</div>
+<div class="bit" data-cue="1" data-d="0.7" data-anim="fade" style="left:540px;top:370px;width:320px;height:70px;background:#ff8fc8;font-size:22px;">body</div>
+<div class="lbl" data-cue="2" style="left:1000px;top:240px">ONE BUFFER, ONE WRITE</div>
+<div class="bit" data-cue="2" data-d="0.2" data-anim="fade" style="left:1000px;top:280px;width:400px;height:70px;background:#5c7381;font-size:22px;">hdrs ≥ 40</div>
+<div class="bit" data-cue="2" data-d="0.3" data-anim="fade" style="left:1400px;top:280px;width:160px;height:70px;background:#4fd18b;font-size:22px;">header</div>
+<div class="bit" data-cue="2" data-d="0.4" data-anim="fade" style="left:1560px;top:280px;width:320px;height:70px;background:#4fd18b;font-size:22px;">body</div>
+</div>
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Takeaway</div>
+<div class="take" data-cue="0" style="left:140px;top:300px;width:1640px">Nagle saves bandwidth by waiting.</div>
+<div class="take" data-cue="1" style="left:140px;top:460px;width:1640px"><span class="c-pink">On an order path: TCP_NODELAY,</span><br>and write whole messages.</div>
+</div>

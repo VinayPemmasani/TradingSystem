@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Cboe",
+  "text": "Cboe invented the listed options exchange. Its biggest asset today is a set of options that only it is allowed to list."
+ },
+ {
+  "id": "history",
+  "title": "History in five beats",
+  "text": "Five beats of history. On April 26, 1973, Cboe opened in Chicago as the world's first exchange for listed options. In 2004 it launched futures on VIX, its volatility index, and in 2006, VIX options. In February 2017 it bought Bats, an electronic stock exchange operator in the US and Europe. By 2023, S&P 500 index options expired on every weekday."
+ },
+ {
+  "id": "trades",
+  "title": "What it trades",
+  "text": "What does it trade? Options, US and European stocks, futures and currencies. In 2025, its four US options exchanges traded 4.6 billion contracts, a record 18.4 million a day. S&P 500 index options, ticker SPX, averaged a record 3.9 million a day. 59 percent of that was zero days to expiry: options that expire the same day. In the fourth quarter, Cboe had about 29 percent of US options and 9 percent of US stocks."
+ },
+ {
+  "id": "tech",
+  "title": "Titanium, PITCH and OCC",
+  "text": "One in-house platform, Cboe Titanium, runs its equities, options and futures markets. Market data leaves on PITCH, a binary order by order feed covered in the market data series. Every US option it trades is cleared by OCC, the clearing house shared by all US options exchanges. In Europe it owns Cboe Clear Europe, which netted away 73 percent of its cleared value in 2025."
+ },
+ {
+  "id": "money",
+  "title": "How it makes money",
+  "text": "How does it make money? Net revenue in 2025 was 2.4 billion dollars, up 17 percent. Before rebates and other costs, derivatives markets brought in 2.2 billion, cash and spot markets 1.8 billion, and data, sold as Data Vantage, 0.6 billion. After those costs the picture changes. In the fourth quarter, the options segment alone earned about two thirds of net revenue."
+ },
+ {
+  "id": "why",
+  "title": "Why it is big",
+  "text": "Why is it big? Cboe has exclusive US rights to list options on the S&P 500 index, through 2032. Multi-listed options trade on many exchanges, so there Cboe must compete on fees and speed. But SPX trades only at Cboe, so its liquidity cannot split. And VIX is calculated from SPX option prices, so the two proprietary products feed each other. One caution: that exclusivity is a licence with an end date, not a law of nature."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 0.3,
+  "text": "Cboe competes hard in shared markets, but its moat is the products only it can list. SPX and VIX are the franchise."
+ }
+]

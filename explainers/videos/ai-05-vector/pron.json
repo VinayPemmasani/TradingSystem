@@ -1,0 +1,14 @@
+[
+["\\bstd::vector\\b", "standard vector"],
+["\\bstd::array\\b", "standard array"],
+["\\bpush_back\\b", "push back"],
+["\\bglibc's\\b", "G lib C's"],
+["\\bmalloc\\b", "malloc"],
+["\\bmallocs\\b", "mallocs"],
+["\\bL1\\b", "L one"],
+["\\bp99\\b", "P ninety nine"],
+["\\b5\\.08\\b", "five point oh eight"],
+["\\b144\\b", "a hundred and forty four"],
+["\\b257\\b", "two hundred and fifty seven"],
+["\\b136\\b", "a hundred and thirty six"]
+]

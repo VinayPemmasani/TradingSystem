@@ -1,0 +1,67 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 10 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Volume curves<br>and the close</div>
+<div id="ti-ch" data-cue="1" data-anim="fade" style="left:140px;top:540px;width:1300px;height:340px"></div>
+<div class="tag c-amber" data-cue="2" style="left:1480px;top:560px">closing auction</div>
+<div class="note" data-cue="1" data-d="0.5" style="left:1480px;top:820px">illustrative shape</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Why volume bunches</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1700px"><span class="lbl">Admati &amp; Pfleiderer, Review of Financial Studies 1(1), 1988</span><div class="cs" style="font:400 30px/1.4 var(--body)">"concentrated-trading patterns arise endogenously" from liquidity traders and informed traders acting strategically</div></div>
+<div id="wy-d" data-cue="1" data-anim="fade" style="left:120px;top:440px;width:1700px;height:380px"></div>
+<div class="tag c-green" data-cue="1" data-d="0.6" style="left:120px;top:830px">flexible traders: trade together → cheaper</div>
+<div class="tag c-violet" data-cue="2" style="left:900px;top:830px">informed traders: come to the crowd</div>
+</div>
+
+<div class="scene" id="s-close">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The closing auction</div>
+<div class="node teal" data-cue="1" style="left:120px;top:240px;width:460px"><div class="t">index funds</div><div class="s">benchmarked to the close</div></div>
+<svg class="full"><path class="draw" data-cue="2" d="M160 520 L1760 520" stroke="#2c4351" stroke-width="6" fill="none"/></svg>
+<div class="tag" data-cue="2" style="left:160px;top:470px">afternoon: close orders gather</div>
+<div class="tag c-amber" data-cue="2" data-d="0.6" style="left:900px;top:470px">imbalance published</div>
+<div class="node amber" data-cue="2" data-d="1.2" style="left:1460px;top:430px;width:320px"><div class="t c-amber">one uncross</div><div class="s">= official close</div></div>
+<div id="cl-d" data-cue="2" data-anim="fade" style="left:160px;top:540px;width:1300px;height:60px"></div>
+<div class="card" data-cue="3" style="left:120px;top:660px;width:1100px;border-color:var(--amber)"><div class="cs">NYSE, Q2 2024: closing auctions, share of all US equity value traded</div><div class="stat c-amber">9.44% · a record</div></div>
+</div>
+
+<div class="scene" id="s-record">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Russell reconstitution, Nasdaq Closing Cross</div>
+<div class="card" data-cue="1" style="left:120px;top:240px;width:540px;border-color:var(--amber)"><div class="cs">June 26, 2026 · shares</div><div class="stat c-amber">≈ 4.6 billion</div></div>
+<div class="card" data-cue="2" style="left:690px;top:240px;width:540px;border-color:var(--amber)"><div class="cs">value</div><div class="stat c-amber">$334 billion</div></div>
+<div class="card" data-cue="2" data-d="1" style="left:1260px;top:240px;width:540px;border-color:var(--teal)"><div class="cs">matched in</div><div class="stat c-teal">1.63 s</div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:560px">2025</div>
+<div class="grow bar" data-cue="3" data-d="0.2" data-w="680" style="left:240px;top:552px;background:#3a5566"></div>
+<div class="lbl" data-cue="3" data-d="0.8" style="left:940px;top:560px">2.5 billion shares</div>
+<div class="lbl" data-cue="3" data-d="0.4" style="left:120px;top:640px">2026</div>
+<div class="grow bar" data-cue="3" data-d="0.5" data-w="1250" style="left:240px;top:632px;background:var(--amber)"></div>
+<div class="lbl" data-cue="3" data-d="1.2" style="left:1510px;top:640px">4.6 billion</div>
+<div class="src" data-cue="1" data-d="0.5" style="left:120px;top:760px">Nasdaq press release, June 26, 2026</div>
+</div>
+
+<div class="scene" id="s-vwap">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A VWAP schedule for 100,000 shares</div>
+<div id="vw-ch" data-cue="1" data-anim="fade" style="left:120px;top:210px;width:1700px;height:560px"></div>
+<div class="tag c-pink" data-cue="1" data-d="0.4" style="left:1500px;top:220px">made-up profile</div>
+<div class="tag c-teal" data-cue="5" style="left:120px;top:800px">same share of every period → even impact</div>
+<div class="tag c-blue" data-cue="6" style="left:900px;top:800px">POV (lab: 6%) follows the curve, but cannot reserve the close</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1000px;font-size:22px"><span class="c">// tools/quant-lab/main.cpp</span>
+<span class="v">std::array</span>&lt;<span class="v">uint64_t</span>, <span class="r">13</span>&gt; fund_mkt{}, fund_us{};
+<span class="k">const</span> size_t bucket = minute / <span class="r">30</span>;
+<span class="line" data-hl="1" data-hlend="2"><span class="k">constexpr int</span> kEventsPerMinute[] = {<span class="r">0, 60, 20, 20, 15, 30</span>};</span></div>
+<div id="lb-ch" data-cue="1" data-anim="fade" style="left:1200px;top:220px;width:620px;height:300px"></div>
+<div class="tag c-pink" data-cue="1" data-d="0.6" style="left:1200px;top:540px">constant rate → flat curve</div>
+<div class="code" data-cue="2" style="left:120px;top:600px;width:1700px;font-size:22px">simex --close-at T --close-auction S      <span class="c"># orders rest, NOII imbalance messages, one uncross</span>
+<span class="line" data-hl="4">ITCH:  I (cross type C) ... Q (cross type C)  <span class="c"># imbalance, then the cross trade</span></span></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Traps</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Event days</div><div class="cs">Index changes break the average curve.</div></div>
+<div class="card" data-cue="2" style="left:980px;top:230px;width:820px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Your own close</div><div class="cs">A big close order moves its own benchmark.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:540px;width:1700px">Volume follows a <span class="c-amber">U</span>, and the close<br>is one of the day's biggest trades.</div>
+</div>

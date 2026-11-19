@@ -1,0 +1,35 @@
+[
+ {
+  "id": "title",
+  "title": "Dispatch per call",
+  "text": "Pattern eight: dispatch the compiler cannot see through. A pluggable strategy is the natural design: a virtual interface, or a std::function callback. The call itself costs only a few nanoseconds, because it is predicted. The real cost is what the compiler cannot do across it."
+ },
+ {
+  "id": "general",
+  "title": "The general version",
+  "text": "Here is the general version. Quoter is an abstract interface, and the strategy is chosen at run time, from config. quote_all asks it for a quote for each of sixty four instruments, every tick. Clamp is one implementation: subtract the edge, then clamp to a band. The callback flavour is the same idea: a std::function holding a lambda. Both are flexible, testable, and easy to extend.",
+  "hold": 0.6
+ },
+ {
+  "id": "machine",
+  "title": "What the call hides",
+  "text": "A virtual call loads the object's vtable pointer, loads the function address from it, and calls through it. When the target never changes, the branch predictor guesses it, so that part is cheap. The cost is that the compiler cannot see the body, so it must make one call per instrument, in order. With the type known, quote inlines, and g++ at O2 turns the loop into SIMD code, four prices per instruction. One twist: when g++ can see the only implementation, it speculates and inlines a guarded copy. That removes the call, but the loop still handles one price at a time."
+ },
+ {
+  "id": "hot",
+  "title": "The hot-path version",
+  "text": "The hot-path version fixes the strategy type when the program is built. Clamp has no base class and no vtable: it is a plain struct. quote_all is a template, so each strategy gets its own copy, where the call is direct and inlines. The strategy is passed by value, so the compiler knows the output array cannot overwrite its fields, which is what lets it vectorize. With a few strategies, choose one at startup and run a loop specialised for it; CRTP gives shared base code the same effect."
+ },
+ {
+  "id": "measured",
+  "title": "Measured",
+  "text": "Measured on this box: sixty four quotes per tick, best of fifteen passes, pinned, five runs. Through std::function, each quote took about three nanoseconds. Through the virtual interface, compiled without seeing the strategy, two to three. When g++ could see it and speculate, 0.85. The template took 0.27: about ten times faster than the callback, and three times faster than the best virtual case. But in a serial loop, where each quote feeds the next, nothing vectorizes. There, both took four to eight nanoseconds: no difference beyond the noise.",
+  "hold": 1.0
+ },
+ {
+  "id": "nuance",
+  "title": "When it's fine",
+  "text": "So a virtual call is not slow in itself: a predicted call costs a nanosecond or two. What it blocks is inlining, and everything inlining unlocks: constant folding, hoisting, and SIMD. The missing constraint is that the strategy is known at build time, or chosen once at startup. Interfaces are fine for plugins, tests, and calls that do real work once per tick. The rule: fix the type at build time, and let the compiler see the body.",
+  "hold": 1.5
+ }
+]

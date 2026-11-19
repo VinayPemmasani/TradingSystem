@@ -1,0 +1,86 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">HFT &amp; HEDGE FUND STRATEGIES · 04 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Latency arbitrage</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Not a bet on value. A race to stale quotes.</div>
+<div class="node blue" data-cue="1" style="left:140px;top:580px;width:360px"><div class="t">Chicago</div><div class="s">futures move first</div></div>
+<div class="node teal" data-cue="1" data-d="0.3" style="left:1400px;top:580px;width:380px"><div class="t">New York</div><div class="s">quotes not yet updated</div></div>
+<svg class="full"><path id="ti-l" d="M500 640 C 800 560 1100 560 1400 640" stroke="#6aa8ff" stroke-width="3" fill="none" class="draw" data-cue="1" data-d="0.3" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="ti-l" data-cue="2" data-dur="1.0" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="tag c-amber" data-cue="2" data-d="0.3" style="left:820px;top:520px">first to arrive wins</div>
+</div>
+
+<div class="scene" id="s-corr">
+<div class="h2" data-cue="0" style="left:120px;top:110px">ES vs SPY: correlation by interval</div>
+<div class="src" data-cue="0" style="left:120px;top:190px">Budish, Cramton &amp; Shim, QJE 130(4), 2015 · median, 2011, equal-weighted midpoints</div>
+<div id="co-rows" data-cue="0" data-anim="fade" style="left:120px;top:260px;width:1680px;height:560px"></div>
+<div class="tag c-pink" data-cue="3" style="left:1180px;top:290px">one moved, the other hasn't</div>
+<div class="tag c-amber" data-cue="4" style="left:1180px;top:350px">mechanical arbitrage, no forecast</div>
+</div>
+
+<div class="scene" id="s-race">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The race for a stale offer</div>
+<div class="node blue" data-cue="1" style="left:120px;top:220px;width:330px"><div class="t">ES ticks up</div><div class="s">Chicago</div></div>
+<div class="node amber" data-cue="2" style="left:120px;top:430px;width:330px"><div class="t">SPY maker</div><div class="s">sends cancel</div></div>
+<div class="node red" data-cue="3" style="left:120px;top:640px;width:330px"><div class="t">snipers × N</div><div class="s">send buy</div></div>
+<div class="node teal" data-cue="4" style="left:1380px;top:430px;width:420px"><div class="t">SPY order book</div><div class="s">one message at a time</div></div>
+<svg class="full">
+<path d="M285 300 L285 430" stroke="#6aa8ff" stroke-width="3" fill="none" class="draw" data-cue="2" marker-end="url(#ah)"/>
+<path d="M450 260 C 560 260 560 690 450 690" stroke="#6aa8ff" stroke-width="3" fill="none" class="draw" data-cue="3"/>
+<path id="ra-m" d="M450 480 C 800 480 1000 480 1380 480" stroke="#ffb347" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="0.3" marker-end="url(#ah-amber)"/>
+<path id="ra-s" d="M450 690 C 800 690 1000 530 1380 520" stroke="#ff6b5e" stroke-width="3" fill="none" class="draw" data-cue="3" marker-end="url(#ah-red)"/>
+</svg>
+<div class="pkt" data-path="ra-m" data-cue="3" data-dur="2.2" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="ra-s" data-cue="3" data-dur="1.6" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="fcard" data-cue="4" data-d="0.4" style="left:1380px;top:590px;width:420px"><div class="body" style="font-size:26px"><span class="c-red">1. buy → filled</span><br><span class="c-amber">2. cancel → too late</span></div></div>
+<div class="fcard violet" data-cue="5" style="left:640px;top:250px;width:620px"><span class="lbl">model: each sniper wins with</span><div class="math">P<span class="eq">=</span>1 / <i>N</i></div></div>
+<div class="tag c-pink" data-cue="6" style="left:640px;top:760px">expected sniping cost → wider spread for everyone</div>
+<div class="tag c-blue" data-cue="7" style="left:640px;top:820px">so makers watch the other market's feed</div>
+</div>
+
+<div class="scene" id="s-speed">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The race moved to the links</div>
+<div class="lbl" data-cue="1" style="left:120px;top:210px">CHICAGO ↔ NEW YORK, ROUND TRIP (ms)</div>
+<div class="lbl" data-cue="2" style="left:120px;top:270px;width:300px">fibre, before</div><div class="grow bar" data-cue="2" data-w="960" style="left:430px;top:262px;background:var(--blue)"></div><div class="tag" data-cue="2" data-d="0.8" style="left:1410px;top:266px">16</div>
+<div class="lbl" data-cue="2" style="left:120px;top:330px;width:300px">fibre route</div><div class="grow bar" data-cue="2" data-d="0.3" data-w="780" style="left:430px;top:322px;background:var(--blue)"></div><div class="tag" data-cue="2" data-d="1.0" style="left:1230px;top:326px">13</div>
+<div class="lbl" data-cue="2" style="left:120px;top:390px;width:300px">microwave</div><div class="grow bar" data-cue="2" data-d="0.6" data-w="510" style="left:430px;top:382px;background:var(--violet)"></div><div class="tag" data-cue="2" data-d="1.3" style="left:960px;top:386px">10 → 9 → 8.5</div>
+<div class="lbl" data-cue="1" style="left:120px;top:450px;width:300px">light, ~4 ms each way</div><div class="grow bar" data-cue="1" data-w="480" style="left:430px;top:442px;background:rgba(255,179,71,.3);border:2px dashed var(--amber)"></div><div class="tag c-amber" data-cue="1" data-d="0.8" style="left:930px;top:446px">≈ 8 floor</div>
+<div class="lbl" data-cue="3" style="left:120px;top:570px">MEDIAN LIFE OF AN ES–SPY ARBITRAGE (ms)</div>
+<div class="lbl" data-cue="3" style="left:120px;top:630px;width:300px">2005</div><div class="grow bar" data-cue="3" data-w="970" style="left:430px;top:622px;background:var(--teal)"></div><div class="tag" data-cue="3" data-d="0.8" style="left:1420px;top:626px">97</div>
+<div class="lbl" data-cue="3" style="left:120px;top:690px;width:300px">2011</div><div class="grow bar" data-cue="3" data-d="0.4" data-w="70" style="left:430px;top:682px;background:var(--pink)"></div><div class="tag" data-cue="3" data-d="1.0" style="left:520px;top:686px">7</div>
+<div class="card amber" data-cue="4" style="left:720px;top:740px;width:1080px;padding:14px 26px"><div class="cs" style="margin:0">opportunities stayed; the speed needed to win them rose</div></div>
+<div class="src" data-cue="1" style="left:1240px;top:210px">Budish, Cramton &amp; Shim 2015</div>
+</div>
+
+<div class="scene" id="s-lose">
+<div class="h2" data-cue="0" style="left:120px;top:110px">How it loses</div>
+<div class="card pink" data-cue="0" data-d="0.8" style="left:120px;top:230px;width:800px"><div class="ct c-pink">second place</div><div class="cs">fees + spread, price already moved</div></div>
+<div class="card pink" data-cue="2" style="left:120px;top:400px;width:800px"><div class="ct c-pink">hedge leg misses</div><div class="cs">the other venue doesn't fill</div></div>
+<div class="card pink" data-cue="3" style="left:120px;top:570px;width:800px"><div class="ct c-pink">a rival's new link</div><div class="cs">edge gone overnight</div></div>
+<div class="lbl" data-cue="4" style="left:1020px;top:240px">FREQUENT BATCH AUCTION, e.g. every 100 ms</div>
+<div id="lo-ba" data-cue="4" data-anim="fade" style="left:1020px;top:290px;width:780px;height:420px"></div>
+<div class="tag c-teal" data-cue="4" data-d="1.5" style="left:1020px;top:730px">same batch → compete on price, not speed</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: tick to wire</div>
+<div class="node blue" data-cue="0" data-d="1.5" style="left:120px;top:230px;width:250px"><div class="t">rx</div><div class="s">rdtsc stamp</div></div>
+<div class="node" data-cue="2" style="left:480px;top:230px;width:250px"><div class="t">book</div></div>
+<div class="node violet" data-cue="2" data-d="0.2" style="left:840px;top:230px;width:250px"><div class="t">trader</div></div>
+<div class="node amber" data-cue="2" data-d="0.4" style="left:1200px;top:230px;width:250px"><div class="t">order entry</div><div class="s">send, rdtsc</div></div>
+<div class="node teal" data-cue="2" data-d="0.6" style="left:1560px;top:230px;width:240px"><div class="t">wire</div></div>
+<svg class="full">
+<path id="lt-p" d="M370 290 L1560 290" stroke="#2c4351" stroke-width="3" fill="none" class="draw" data-cue="1"/>
+</svg>
+<div class="pkt" data-path="lt-p" data-cue="2" data-dur="1.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="code" data-cue="2" style="left:120px;top:440px;width:1680px;font-size:25px"><span class="line">sock_.send({pkt.data(), len});</span><span class="line" data-hl="2" data-hlend="3"><span class="v">const std::uint64_t</span> now = lab::rdtsc();</span><span class="line" data-hl="2" data-hlend="3"><span class="k">if</span> (r.tick_tsc != <span class="r">0</span>) stats_.tick_to_wire.record(now - r.tick_tsc);</span><span class="line">stats_.decide_to_wire.record(now - r.decide_tsc);</span></div>
+<div class="src" data-cue="2" style="left:120px;top:660px">firm/trader/order_entry.cpp</div>
+<div class="tag c-blue" data-cue="3" style="left:120px;top:720px">pinned threads · busy polling · lock-free rings</div>
+<div class="card amber" data-cue="4" style="left:900px;top:710px;width:900px;padding:14px 26px"><div class="cs" style="margin:0">your tick-to-wire vs every rival's = the edge</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:250px;width:1640px">Harvest stale quotes after public news.<br><span class="c-pink">Lose to anyone a microsecond faster.</span></div>
+<div class="chip" data-cue="1" style="left:140px;top:640px;background:var(--blue)">colocation</div>
+<div class="chip" data-cue="1" data-d="0.3" style="left:330px;top:640px;background:var(--violet)">fastest links</div>
+<div class="chip" data-cue="1" data-d="0.6" style="left:550px;top:640px;background:var(--amber)">lean code</div>
+</div>

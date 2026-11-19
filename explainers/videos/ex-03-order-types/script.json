@@ -1,0 +1,39 @@
+[
+ {
+  "id": "title",
+  "title": "Order types",
+  "text": "An order type is a set of instructions the engine follows before, during and after matching. Six of them cover most of what a trading firm sends."
+ },
+ {
+  "id": "tif",
+  "title": "Limit, IOC, FOK",
+  "text": "A limit order sets the worst price you will accept. Here, a buyer wants 500 shares, at $10.02 or better. Only 300 are offered at or below that price. As a day order, it takes the 300, and the other 200 rest as a bid. Immediate or cancel takes the 300, and cancels the rest. Fill or kill does nothing at all, because the whole 500 cannot trade at once. In FIX, time in force is tag 59: zero is day, three is IOC, and four is FOK."
+ },
+ {
+  "id": "post",
+  "title": "Post-only",
+  "text": "A post-only order must add liquidity, never take it. This buy at $10.02 would hit the resting ask the moment it arrived. Nasdaq lets the firm choose: reject the order, or adjust its price so it can post. It also executes anyway when that gives at least a cent of price improvement, for stocks at a dollar or more. Market makers use it to make sure they are charged as makers, not takers."
+ },
+ {
+  "id": "hidden",
+  "title": "Hidden and reserve",
+  "text": "A hidden order rests in the book, but the public feed does not show it. At the same price, it waits behind every displayed order. A reserve order, sometimes called an iceberg, shows part of its size and hides the rest. In FIX, the shown part is MaxFloor, tag 111. When hidden size trades, ITCH sends a Trade message for an order the book never showed."
+ },
+ {
+  "id": "peg",
+  "title": "Pegged",
+  "text": "A pegged order has no fixed price; it follows a reference. A primary peg follows the same side of the national best bid and offer. A market peg follows the opposite side. A midpoint peg sits in the middle. When the quote moves up a cent, the exchange reprices all three for you. That saves the firm a cancel and a new order every time the market moves. In FIX these are ExecInst R, P and M."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab speaks OUCH, where the time in force and display flags are single bytes in the Enter Order message. simex supports day and IOC, and treats the other time in force codes as day orders. It shows every order, even one marked hidden. A market order arrives with the special price 214,748.3647. The gateway turns it into an IOC at the engine's extreme price, so it can never rest.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "Every order type answers three questions: what price, how long, and who sees it. A wrong flag can turn a resting quote into a taker order, or hide size behind every displayed order at its price. Check what your venue supports before your strategy depends on it.",
+  "hold": 1.0
+ }
+]

@@ -1,0 +1,18 @@
+== run 1 cpu 1 load 30.21
+4096 lines like "ESZ6,5083.42,229", 3 fields each
+  stringstream+getline+stod    p50   293.7 ns/line =   97.9 ns/field  min   289.6  max  9106.4  allocs/line 0.80
+  std::regex + stod/stoi       p50  1720.3 ns/line =  573.4 ns/field  min   730.3  max  3148.7  allocs/line 3.00
+  from_chars (double px)       p50    26.4 ns/line =    8.8 ns/field  min    24.2  max    34.1  allocs/line 0.00
+  hot: digit loop + from_chars p50    19.2 ns/line =    6.4 ns/field  min    18.7  max  1003.4  allocs/line 0.00
+== run 2 cpu 1 load 30.36
+4096 lines like "ESZ6,5083.42,229", 3 fields each
+  stringstream+getline+stod    p50   306.4 ns/line =  102.1 ns/field  min   284.1  max 10082.1  allocs/line 0.80
+  std::regex + stod/stoi       p50  1767.8 ns/line =  589.3 ns/field  min   733.6  max  3733.2  allocs/line 3.00
+  from_chars (double px)       p50    27.4 ns/line =    9.1 ns/field  min    25.0  max  1991.7  allocs/line 0.00
+  hot: digit loop + from_chars p50    19.5 ns/line =    6.5 ns/field  min    18.8  max    24.6  allocs/line 0.00
+== run 3 cpu 1 load 30.36
+4096 lines like "ESZ6,5083.42,229", 3 fields each
+  stringstream+getline+stod    p50   301.4 ns/line =  100.5 ns/field  min   286.6  max  3503.8  allocs/line 0.80
+  std::regex + stod/stoi       p50  1721.2 ns/line =  573.7 ns/field  min   731.6  max  3216.4  allocs/line 3.00
+  from_chars (double px)       p50    28.0 ns/line =    9.3 ns/field  min    25.4  max  1009.5  allocs/line 0.00
+  hot: digit loop + from_chars p50    19.2 ns/line =    6.4 ns/field  min    18.8  max  1979.5  allocs/line 0.00

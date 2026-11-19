@@ -1,0 +1,103 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">RISK &amp; REGULATION · 03 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px;width:1700px">Knight Capital,<br>1 August 2012</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:510px;width:1600px">How one deployment lost a firm over $460 million.</div>
+<div class="stat" data-cue="1" style="left:140px;top:620px;width:520px;text-align:left"><div class="n c-red"><span class="count" data-cue="1" data-from="0" data-to="460" data-dur="2" data-pre="$" data-post="M+">$0</span></div><div class="l">loss · SEC order ¶1</div></div>
+<div class="stat" data-cue="1" data-d="0.6" style="left:720px;top:620px;width:420px;text-align:left"><div class="n c-amber">≈45 min</div><div class="l">of erroneous orders</div></div>
+<div class="tagx" data-cue="3" style="left:1220px;top:650px;border-color:var(--violet);color:var(--violet);font-size:30px">cause: a deployment</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">The SEC's account</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:210px;width:760px"><div class="ct c-pink">In re Knight Capital Americas LLC</div><div class="cs">Release 34-70694 · Oct 16, 2013</div></div>
+<div class="tagx" data-cue="1" style="left:120px;top:380px;border-color:var(--pink);color:var(--pink)">first SEC case under the market access rule</div>
+<div class="box pink" data-cue="1" data-d="0.5" style="left:960px;top:210px;width:840px;height:130px"><div class="t">Rule 15c3-5 (adopted Nov 3, 2010)</div><div class="s">brokers with market access</div></div>
+<div class="box" data-cue="2" style="left:960px;top:380px;width:840px;height:110px"><div class="t" style="font-size:28px">automated, pre-trade controls</div></div>
+<div class="chk" data-cue="3" style="left:980px;top:520px"><i style="background:var(--red)"></i>block erroneous orders</div>
+<div class="chk" data-cue="3" data-d="0.6" style="left:980px;top:590px"><i style="background:var(--red)"></i>block orders over credit or capital limits</div>
+<div class="stat" data-cue="4" style="left:120px;top:500px;width:500px;text-align:left"><div class="n c-amber">$12M</div><div class="l">civil penalty</div></div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">SEC Release 34-70694 · press release 2013-222 · Release 34-63241 (Rule 15c3-5)</div>
+</div>
+
+<div class="scene" id="s-code">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">Dead code and a reused flag</div>
+<svg class="full"><path class="draw" data-cue="0" data-dur="1.4" d="M 140 300 L 1780 300" stroke="var(--line)" stroke-width="4" fill="none"/></svg>
+<div class="dot" data-cue="0" data-d="0.4" style="left:260px;top:300px;background:var(--violet)"></div>
+<div class="ev" data-cue="0" data-d="0.4" style="left:200px;top:200px;width:360px"><div class="d c-violet">2003</div><div class="e">Power Peg no longer used</div></div>
+<div class="dot" data-cue="1" style="left:760px;top:300px;background:var(--amber)"></div>
+<div class="ev" data-cue="1" style="left:700px;top:325px;width:440px"><div class="d c-amber">2005</div><div class="e">fill counting moved; Power Peg not retested</div></div>
+<div class="dot" data-cue="2" style="left:1400px;top:300px;background:var(--teal)"></div>
+<div class="ev" data-cue="2" style="left:1340px;top:200px;width:440px"><div class="d c-teal">late Jul 2012</div><div class="e">RLP code reuses the old Power Peg flag</div></div>
+<div class="lbl" data-cue="3" style="left:140px;top:470px">SMARS · 8 servers</div>
+<div class="box green" data-cue="3" data-d="0.10" style="left:140px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">1</div><div class="s">RLP</div></div>
+<div class="box green" data-cue="3" data-d="0.20" style="left:350px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">2</div><div class="s">RLP</div></div>
+<div class="box green" data-cue="3" data-d="0.30" style="left:560px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">3</div><div class="s">RLP</div></div>
+<div class="box green" data-cue="3" data-d="0.40" style="left:770px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">4</div><div class="s">RLP</div></div>
+<div class="box green" data-cue="3" data-d="0.50" style="left:980px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">5</div><div class="s">RLP</div></div>
+<div class="box green" data-cue="3" data-d="0.60" style="left:1190px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">6</div><div class="s">RLP</div></div>
+<div class="box green" data-cue="3" data-d="0.70" style="left:1400px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">7</div><div class="s">RLP</div></div>
+<div class="box red" data-cue="3" data-d="1.2" data-hl="3" data-hld="1.6" style="left:1610px;top:520px;width:190px;height:110px"><div class="t" style="font-size:26px">8</div><div class="s">old code</div></div>
+<div class="tagx" data-cue="3" data-d="1.8" style="left:1440px;top:660px;border-color:var(--red);color:var(--red)">new code never copied</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">SEC Release 34-70694 ¶¶ 12–16 · RLP = NYSE Retail Liquidity Program</div>
+</div>
+
+<div class="scene" id="s-day">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">1 August: 45 minutes</div>
+<div class="box red" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:260px;height:120px"><div class="t">server 8</div><div class="s">Power Peg</div></div>
+<div class="box teal" data-cue="1" style="left:900px;top:230px;width:300px;height:120px"><div class="t">exchanges</div><div class="s">child orders</div></div>
+<svg class="full"><path id="p03loop" class="draw" data-cue="1" d="M 385 290 L 890 290" stroke="var(--red)" stroke-width="3" fill="none" marker-end="url(#ah-red)"/></svg>
+<div class="pkt" data-path="p03loop" data-cue="1" data-dur="0.6" data-loop="1" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="pkt" data-path="p03loop" data-cue="1" data-dur="0.6" data-loop="1" data-phase="0.33" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="pkt" data-path="p03loop" data-cue="1" data-dur="0.6" data-loop="1" data-phase="0.66" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="tagx" data-cue="1" data-d="0.5" style="left:420px;top:200px;border-color:var(--red);color:var(--red)">212 parent orders · fills never seen</div>
+<div class="stat" data-cue="2" style="left:1300px;top:200px;width:480px"><div class="n c-amber"><span class="count" data-cue="2" data-from="0" data-to="4000000" data-dur="1.6">0</span></div><div class="l">executions</div></div>
+<div class="stat" data-cue="2" data-d="0.8" style="left:1300px;top:340px;width:230px"><div class="n c-amber" style="font-size:64px">154</div><div class="l">stocks</div></div>
+<div class="stat" data-cue="2" data-d="1.2" style="left:1550px;top:340px;width:230px"><div class="n c-amber" style="font-size:64px">397M+</div><div class="l">shares</div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:470px;color:var(--green)">net long · 80 stocks</div>
+<div class="grow bar" data-cue="3" data-w="700" data-dur="1.2" style="left:120px;top:505px;height:56px;background:var(--green)"></div>
+<div class="lbl" data-cue="3" data-d="0.3" style="left:840px;top:518px;color:var(--green)">≈ $3.5 billion</div>
+<div class="lbl" data-cue="3" data-d="0.6" style="left:120px;top:590px;color:var(--red)">net short · 74 stocks</div>
+<div class="grow bar" data-cue="3" data-d="0.6" data-w="630" data-dur="1.2" style="left:120px;top:625px;height:56px;background:var(--red)"></div>
+<div class="lbl" data-cue="3" data-d="0.9" style="left:770px;top:638px;color:var(--red)">≈ $3.15 billion</div>
+<div class="box amber" data-cue="4" style="left:1150px;top:520px;width:650px;height:160px"><div class="t">"fix": new code pulled from 1–7</div><div class="s">now they ran Power Peg too</div></div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">SEC Release 34-70694 ¶¶ 1, 17, 27 · bars to scale</div>
+</div>
+
+<div class="scene" id="s-controls">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">Warnings and missing controls</div>
+<div class="card" data-cue="1" style="left:120px;top:210px;width:820px;height:200px"><div class="ct c-amber">97 emails from 8:01 a.m.</div><div class="cs">"Power Peg disabled" · not acted on before the 9:30 open</div></div>
+<div class="card" data-cue="2" style="left:980px;top:210px;width:820px;height:200px"><div class="ct c-amber">PMON position monitor</div><div class="cs">relied on people watching · no automated alerts</div></div>
+<div class="card" data-cue="3" style="left:120px;top:450px;width:820px;height:200px"><div class="ct c-amber">$2 million gross limit</div><div class="cs">on one account · not linked to any automated control</div></div>
+<div class="card" data-cue="4" style="left:980px;top:450px;width:820px;height:200px"><div class="ct c-amber">no halt procedure</div><div class="cs">for SMARS's own aberrant activity</div></div>
+<div class="xmark" data-cue="1" data-d="0.6" style="left:860px;top:220px;font-size:60px">✕</div>
+<div class="xmark" data-cue="2" data-d="0.6" style="left:1720px;top:220px;font-size:60px">✕</div>
+<div class="xmark" data-cue="3" data-d="0.6" style="left:860px;top:460px;font-size:60px">✕</div>
+<div class="xmark" data-cue="4" data-d="0.6" style="left:1720px;top:460px;font-size:60px">✕</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">SEC Release 34-70694 ¶¶ 19, 21–25</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">In the lab: where a runaway loop stops</div>
+<div class="box amber" data-cue="1" style="left:120px;top:220px;width:300px;height:120px"><div class="t">strategy</div><div class="s">order after order</div></div>
+<div class="box pink" data-cue="1" data-d="0.3" style="left:600px;top:200px;width:520px;height:160px"><div class="t">pre-trade risk</div><div class="s">every new order and replace</div></div>
+<div class="box teal" data-cue="1" data-d="0.6" style="left:1300px;top:220px;width:300px;height:120px"><div class="t">simex</div></div>
+<svg class="full"><path id="p03a" class="draw" data-cue="1" data-d="0.3" d="M 425 280 L 590 280" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="p03b" class="draw" data-cue="1" data-d="0.6" d="M 1125 280 L 1290 280" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="pkt" data-path="p03a" data-cue="1" data-d="0.8" data-dur="0.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="code" data-cue="2" style="left:120px;top:420px;width:1100px;font-size:25px"><span class="c">// worst case: position + every working buy + this order</span>
+<span class="k">if</span> (p.shares + p.open_buy + added &gt; max_position)  <span class="c">// 2,000</span>
+  <span class="k">return</span> <span class="x">Verdict::kPosition</span>;</div>
+<div class="tagx" data-cue="3" style="left:1280px;top:430px;border-color:var(--pink);color:var(--pink)">≤ 2,000 orders/s · token bucket</div>
+<div class="tagx" data-cue="4" style="left:1280px;top:500px;border-color:var(--red);color:var(--red)">kill(): block all new · cancels pass</div>
+<div class="box green" data-cue="5" style="left:120px;top:650px;width:1100px;height:110px"><div class="t">drop copy: an independent record of every fill</div></div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">firm/risk/include/lab/risk/risk.hpp · firm/oms (open_buy, open_sell) · docs/specs/dropcopy-layout.md</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">What pros take from Knight</div>
+<div class="chk" data-cue="1" style="left:160px;top:220px"><i style="background:var(--violet)"></i>delete dead code; never reuse a flag</div>
+<div class="chk" data-cue="2" style="left:160px;top:300px"><i style="background:var(--green)"></i>automate deploys; verify every server's build</div>
+<div class="chk" data-cue="3" style="left:160px;top:380px"><i style="background:var(--amber)"></i>alerts that reach a person, not unread email</div>
+<div class="chk" data-cue="4" style="left:160px;top:460px"><i style="background:var(--red)"></i>hard automated limits, and a practised stop</div>
+<div class="rule" data-cue="4" data-d="2.0" style="left:120px;top:580px;width:1680px;text-align:center">Controls must act faster than people can.</div>
+<div class="foot" data-cue="5" style="left:120px;top:780px;width:1680px">Education, not legal advice.</div>
+</div>

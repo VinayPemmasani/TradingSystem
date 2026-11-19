@@ -1,0 +1,42 @@
+[
+ {
+  "id": "title",
+  "title": "Three depths",
+  "text": "Market data comes in three depths. Level one is just the best bid and offer. Level two is every price level, added up. Level three is every individual order. Each step down costs more, and tells you more."
+ },
+ {
+  "id": "l1",
+  "title": "Level 1: top of book",
+  "text": "Top of book is the best bid, the best offer, their sizes, and the last trade. It is small, and it changes only when the touch changes. That is enough for a price on a screen, a mark for risk, or a reference for an order router. But it hides everything behind the best price. For US stocks, a consolidated top of book across all exchanges comes from the SIPs, the subject of video ten.",
+  "hold": 0.8
+ },
+ {
+  "id": "l2",
+  "title": "Level 2: price levels",
+  "text": "A price level feed shows each price with its total size, and often an order count. CME's market by price, from video five, works this way, to a fixed depth. Now you can see how much sits one, two, five ticks away. But you still cannot see the orders inside a level, or which one is first in line.",
+  "hold": 0.8
+ },
+ {
+  "id": "l3",
+  "title": "Level 3: order by order",
+  "text": "An order by order feed reports every order on its own: adds, executions, cancels and deletes, each by reference number. ITCH and PITCH work this way, and CME offers market by order too. You can rebuild the queue at each price, in time order. It is also the most messages, and the most state to keep. Every order must be tracked until it executes or is cancelled. Lose one message, and your book stays wrong until you recover."
+ },
+ {
+  "id": "example",
+  "title": "One book, three views",
+  "text": "Here is one illustrative bid at 189.25 holding three orders: 300 shares, then 100, then 200. Level three shows all three in queue order. Level two shows 600 shares from three orders. Level one shows a bid of 189.25 for 600. Now the order of 100 is cancelled. Level three tells you exactly which one left. Level two only shows 500 from two orders. If your order sits behind it, only level three tells you that you moved up.",
+  "hold": 0.8
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab builds every depth from one source. The book builder applies ITCH order events to an order map, and keeps price-level sides with the best price at the back, because nearly all activity is near the touch. The vendor consolidator then reads those books and keeps one level one record per instrument: bid, ask, sizes, last trade and status.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "So choose depth by the question you are asking. For a price, level one. For how much you can trade, level two. For queue position and who cancelled, level three. Deeper data means more messages and more state to keep, but you can always derive the shallow views from the deep one.",
+  "hold": 1.0
+ }
+]

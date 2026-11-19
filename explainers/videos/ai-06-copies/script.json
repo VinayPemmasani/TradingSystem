@@ -1,0 +1,36 @@
+[
+ {
+  "id": "title",
+  "title": "Copies you didn't ask for",
+  "text": "Pattern six: copies you did not ask for. A general-purpose handler takes its arguments by value, and builds strings with plus and to_string. Each line looks harmless. Together, on this box, they cost 2.3 allocations and three times the time per message."
+ },
+ {
+  "id": "general",
+  "title": "The general version",
+  "text": "Here is the task: check an order against its symbol limit, then build a tag for the outgoing message. on_order takes the order by value, so every call copies it, including the vector of fills inside. limit_for takes the symbol as a std::string: another copy. make_tag takes the whole order by value, again. Then it joins five pieces with plus, and two calls to to_string. It is all correct, and it reads well.",
+  "hold": 0.8
+ },
+ {
+  "id": "bytes",
+  "title": "Where the bytes go",
+  "text": "An Order here is a hundred and four bytes: two strings, a price, a quantity, and a vector. Strings up to fifteen characters live inside the string object, so copying a short symbol is just a memcpy. But the vector's elements live on the heap. So each copy of the order calls malloc, and its destructor calls free. The tag is around thirty characters, too long for the inline buffer. So building it allocates too, sometimes twice as the string grows. Averaged over all messages: 2.3 allocations per order.",
+  "hold": 0.8
+ },
+ {
+  "id": "hot",
+  "title": "The hot-path version",
+  "text": "The hot-path version borrows instead of copying. The order comes in by const reference: no copy, no malloc, no free. Strings are passed as std::string_view, a pointer and a length, made from a std::string for free. For a vector argument, the same idea is std::span. The tag goes into a fixed, sixty four byte buffer that the caller owns. Each piece is copied straight in, and std::to_chars writes the digits in place, without allocating. The bound is a stated constraint: accounts up to sixteen characters, symbols up to eight, checked at entry."
+ },
+ {
+  "id": "measured",
+  "title": "Measured",
+  "text": "Measured on this box: four hundred thousand orders, pinned to one core, five runs. The general version took 162 nanoseconds per message at the median, with 2.3 allocations. Switching to const reference alone cut that to 102, and 0.7 allocations. Formatting into the fixed buffer brought it to 52, with none. That is three times faster. At p99, it was 248 against 100 nanoseconds. And the two functions shrank from over a thousand instructions to 220.",
+  "hold": 1.0
+ },
+ {
+  "id": "nuance",
+  "title": "When it's fine",
+  "text": "None of this is wrong in general code. Pass by value is right when the function keeps a copy, and std::string is right when the text outlives the call. The missing constraint is ownership: on the hot path, a handler borrows and never keeps. State that in the prompt, give the size bounds, then measure. The rule: borrow on the hot path, and format into memory you already own.",
+  "hold": 1.5
+ }
+]

@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "Listed options",
+  "text": "Equity options are standardised contracts on a stock, traded on exchanges and cleared centrally. One stock does not have one order book. It has hundreds."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: calls and puts on stocks, funds and indexes. One standard equity option covers 100 shares. Who trades: retail, hedgers, and market makers, who post most quotes. Where: about 20 US exchanges, all cleared by the OCC. Data comes through one consolidated feed, OPRA, and it is mostly quotes. It is fully electronic, with quotes repriced in bulk. Exercise delivers the shares one business day later. In 2025, OCC cleared 15.3 billion contracts, about 61 million a day."
+ },
+ {
+  "id": "chain",
+  "title": "The chain",
+  "text": "The distinctive thing is the chain. Each stock lists many strikes and expiries, with a call and a put at each. Every series has its own quotes, on many exchanges. Most trade rarely, so market makers price them with a model. They quote implied volatility, then convert to prices. When the stock ticks, the whole chain moves."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "An illustrative example. A stock is at 200 dollars, and a one month 200 call is quoted 4.10 bid, 4.30 offered. Its delta is about one half, so it moves half as much as the stock. The stock rises one dollar. The market maker lifts both sides fifty cents, to 4.60 and 4.80. Repeat that for every strike, expiry and exchange. OPRA projected about 13.6 billion messages a day for July 2026, on one of its two streams."
+ },
+ {
+  "id": "life",
+  "title": "After the trade",
+  "text": "OCC becomes buyer to every seller and seller to every buyer. Equity options are American style, exercisable any business day. Exercise delivers 100 shares per contract the next business day. SPX index options differ. They are European style and cash settled, at 100 dollars per point. SPX expires every weekday, and Cboe says zero day options were 59 percent of its 2025 volume."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab trades only stocks, but its tools carry over. The OPRA video in this library covers the feed's layout. The lab's vendor server conflates updates per subscription, which most options users need. A real desk adds a volatility surface, fitted live between feed and quoter."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. Early assignment: a short call can be exercised against you, often before a dividend. Pin risk: at expiry, a stock sitting on your strike leaves assignment uncertain. Thin series have wide quotes, so the mid is not a real price. And quotes vastly outnumber trades, so storage grows fast."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Options turn one stock into a chain of hundreds of instruments. The job is pricing that chain with a model, and keeping up with its quotes."
+ }
+]

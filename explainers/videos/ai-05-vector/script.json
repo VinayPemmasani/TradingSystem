@@ -1,0 +1,36 @@
+[
+ {
+  "id": "title",
+  "title": "A fresh vector every tick",
+  "text": "Pattern five: a fresh vector on every tick. Ask for a function that collects price levels, and you get the textbook answer. Build a std::vector, push back into it, return it. It is correct, and on a hot path it is about five trips to the allocator per call."
+ },
+ {
+  "id": "general",
+  "title": "The general version",
+  "text": "Here is that version. Each tick, it walks the book and keeps the levels whose price falls inside a band. It starts with an empty vector and calls push_back for each match. Then it returns the vector by value, so the caller owns it and frees it. Nothing here is wrong. It is what you write when nobody said how fast it must be.",
+  "hold": 1.0
+ },
+ {
+  "id": "growth",
+  "title": "What push_back does",
+  "text": "Without reserve, the vector grows by doubling. Its capacity goes one, two, four, eight, sixteen. Each growth calls malloc for a bigger block, copies the elements across, and frees the old block. For a band of fourteen levels, that is five mallocs, four frees and fifteen element copies. The caller frees the last block when it is done. glibc's per-thread cache makes this cheap here: about eighteen nanoseconds per growth step. But it is not a fixed cost: a cache miss takes a lock, and a growing heap means system calls and page faults.",
+  "hold": 0.8
+ },
+ {
+  "id": "hot",
+  "title": "The hot-path version",
+  "text": "The hot-path version starts from the constraints. The book never holds more than thirty two levels, so the answer never holds more either. So the caller owns a Band: a std::array of thirty two levels and a count, passed in by reference. The function writes into it and sets the count. The index can never pass thirty two, because the book cannot. No malloc, no free, no copies on growth, and the same memory every tick, so it stays in L1 cache. If you prefer a vector, reserve it once at startup and clear it each tick. clear keeps the capacity."
+ },
+ {
+  "id": "measured",
+  "title": "Measured",
+  "text": "Measured on this box: four hundred thousand calls, pinned to one core, five runs. The fresh vector made 5.08 allocations per call, the fixed buffer none. The median call took 144 nanoseconds, against 53. At p99 it was 257 against 84, about three times slower. A vector reserved once matched the array. So the win is not the array itself; it is never allocating on the hot path. And the compiled function shrank from 136 instructions to 29.",
+  "hold": 1.0
+ },
+ {
+  "id": "nuance",
+  "title": "When it's fine",
+  "text": "The bloat did not come from bad C++. It came from missing constraints: a bounded size, and no allocation on the hot thread. In trading, most sizes are bounded like this: book depth, legs per order, fills per message. State those up front, then measure. Returning a vector is fine at startup, in tools, and on cold paths, where clarity wins. The rule: size it once, and reuse it every tick.",
+  "hold": 1.5
+ }
+]

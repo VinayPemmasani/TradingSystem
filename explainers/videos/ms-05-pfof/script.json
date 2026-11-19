@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Payment for order flow",
+  "text": "Buy a hundred shares in a zero-commission app, and your order usually never reaches an exchange. A wholesaler fills it, and pays your broker for the chance. Here is why that works for the wholesaler, and what regulators tried to change."
+ },
+ {
+  "id": "flow",
+  "title": "Where orders go",
+  "text": "In 2022 the SEC wrote that brokers send more than 90 percent of individual investors' marketable orders to six off-exchange dealers: the wholesalers. The wholesaler fills the order itself, at the national best price or better. It then pays the broker a small fee for each share. That fee is payment for order flow."
+ },
+ {
+  "id": "why",
+  "title": "Why pay?",
+  "text": "Why pay for orders? Recall the last two videos. Retail orders are small, scattered, and mostly uninformed, so the price rarely runs away after the fill. In Glosten and Milgrom's terms, the adverse selection part of the spread is small. A dealer that sees only this flow can fill inside the spread, and still keep part of it."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Here are my own numbers. The best bid is 50.00 and the best offer 50.04. A retail buy of 100 shares is filled at 50.03, a cent better than the offer: one dollar of price improvement. Sent to an exchange, it would have paid the 50.04 offer. The wholesaler sold a cent above the mid, and pays the broker 0.73 cents a share. If the price does not move against it, it keeps 0.27 cents a share: 27 cents on the order."
+ },
+ {
+  "id": "data",
+  "title": "Rule 606 data",
+  "text": "Rule 606 makes brokers publish where they route orders, and what they are paid. Take Robinhood Financial's report for October 2025, in S&P 500 stocks. It lists six wholesalers, and Virtu took 46 percent of the orders. Payments for market orders ran from about 43 cents to about a dollar per hundred shares, depending on the wholesaler."
+ },
+ {
+  "id": "rules",
+  "title": "The 2022 proposals",
+  "text": "In December 2022, the SEC proposed an order competition rule. Most individual investors' orders would first go to an open auction, where anyone could compete to fill them. It would have covered accounts averaging fewer than 40 trades a day, with an exception for fills at the midpoint or better. The SEC put the competitive shortfall at about 1.5 billion dollars a year. That rule, and a best execution rule proposed alongside it, were withdrawn in June 2025. Separate amendments to Rule 605, on execution quality reports, were adopted in March 2024."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "The argument is about what the investor would have got elsewhere. Supporters point to price improvement. Critics point to the broker's conflict, and to retail orders that never meet other investors. Payment for order flow exists because uninformed flow is cheap to fill, and someone gets to keep the difference. To judge a broker, read its 605 and 606 reports."
+ }
+]

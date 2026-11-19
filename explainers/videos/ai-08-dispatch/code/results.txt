@@ -1,0 +1,10 @@
+spec batch: virtual 0.848  std::function 2.671  template 0.264 ns/call   serial: virtual 3.610  template 5.761 ns/call   allocs 0
+opaque batch: virtual 3.030  std::function 3.309  template 0.270 ns/call   serial: virtual 7.689  template 8.004 ns/call   allocs 0
+spec batch: virtual 0.848  std::function 2.687  template 0.272 ns/call   serial: virtual 7.533  template 7.359 ns/call   allocs 0
+opaque batch: virtual 3.047  std::function 3.025  template 0.267 ns/call   serial: virtual 4.634  template 7.243 ns/call   allocs 0
+spec batch: virtual 0.817  std::function 2.676  template 0.268 ns/call   serial: virtual 6.893  template 6.722 ns/call   allocs 0
+opaque batch: virtual 1.796  std::function 4.269  template 0.267 ns/call   serial: virtual 5.727  template 6.133 ns/call   allocs 0
+spec batch: virtual 0.848  std::function 2.670  template 0.268 ns/call   serial: virtual 7.372  template 5.127 ns/call   allocs 0
+opaque batch: virtual 1.884  std::function 3.003  template 0.269 ns/call   serial: virtual 6.121  template 6.123 ns/call   allocs 0
+spec batch: virtual 0.819  std::function 2.673  template 0.268 ns/call   serial: virtual 7.298  template 6.106 ns/call   allocs 0
+opaque batch: virtual 3.023  std::function 4.238  template 0.268 ns/call   serial: virtual 5.268  template 7.358 ns/call   allocs 0

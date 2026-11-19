@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Volume and the close",
+  "text": "Trading is not spread evenly across the day. Volume bunches at the open, sags at lunch, and climbs into the close. There, a single auction can be the biggest trade of the day. Here is why, and how execution algorithms use the shape."
+ },
+ {
+  "id": "why",
+  "title": "Why volume bunches",
+  "text": "Admati and Pfleiderer showed in 1988 that bunching can arise on its own. Traders who can choose when to trade prefer to trade together, because a crowd makes trading cheaper for each of them. Informed traders then come when the crowd is there too. So volume and price moves concentrate in the same few periods of the day."
+ },
+ {
+  "id": "close",
+  "title": "The closing auction",
+  "text": "The close matters most. Index funds are measured against the closing price, so many of them trade at it. Orders gather during the afternoon, the exchange publishes the imbalance, and one uncross sets the official close. NYSE reported that in the second quarter of 2024, closing auctions took a record 9.44 percent of all US equity value traded."
+ },
+ {
+  "id": "record",
+  "title": "Record days",
+  "text": "Index changes make it extreme. On June 26, 2026, the day of the Russell reconstitution, Nasdaq's closing cross matched about 4.6 billion shares. They were worth 334 billion dollars, and matched in 1.63 seconds. A year earlier, the same event crossed 2.5 billion shares."
+ },
+ {
+  "id": "vwap",
+  "title": "A VWAP schedule",
+  "text": "Execution algorithms copy the curve. Here is a made-up profile, in half hours. Twelve percent trades in the first, about five at lunch, eleven and a half in the last, and nine and a half in the closing auction. To buy 100,000 shares at the day's volume-weighted average price, buy 12,000 in the first half hour. Buy about 5,000 per half hour at midday, and send 9,500 to the close. Your share of each period stays the same, which keeps impact even. A participation algorithm, like the lab's six percent, follows the curve without a forecast. But it only reacts, so it cannot reserve shares for the close in advance."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The quant-lab records its fundamental strategy's volume, and the market's, in thirteen half-hour buckets. Its simulated day has a constant event rate, so that curve comes out flat: a known simplification. simex does run a real closing auction. From the close-at time, orders rest unmatched, imbalance messages go out, and one cross sets the close. On the ITCH feed, that appears as imbalance messages, then a cross trade."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Watch the traps. An average curve misses event days, like index changes, so forecast it per stock and per type of day. A large order at the close can move the very price it is measured against. Volume follows a U, and the close has become one of the biggest trades of the day."
+ }
+]

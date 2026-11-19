@@ -1,0 +1,16 @@
+[
+ {"id": "title", "title": "ICE",
+  "text": "Intercontinental Exchange began in 2000 as an online energy market. Today it owns the main oil benchmark, the New York Stock Exchange, and a large data and software business."},
+ {"id": "history", "title": "History in six beats",
+  "text": "Six beats of history. On May 10, 2000, ICE launched in Atlanta as an online energy market. In 2001 it bought the International Petroleum Exchange in London, home of Brent crude futures. It went public in 2005, and in 2007 bought the New York Board of Trade. In 2013 it brought the New York Stock Exchange under its roof. And in 2015 it bought the data company IDC for 5.2 billion dollars."},
+ {"id": "trades", "title": "What it trades",
+  "text": "What trades on ICE? Energy above all. Brent crude, which ICE calls the global barometer for oil pricing, and TTF, the European gas hub with the most market participants. In 2025 its futures and options markets traded a record 2.4 billion contracts, 9.3 million a day. Brent averaged 1.5 million a day, and TTF volume rose 22 percent. Open interest across its markets hit a record 113 million contracts in December. FIA, which also counts NYSE options, ranked ICE fifth in the world."},
+ {"id": "tech", "title": "iMpact, order entry, clearing",
+  "text": "Prices leave on iMpact, a multicast feed with live updates, plus snapshots for recovery. It offers books aggregated into the top five price levels, a different view from the order by order ITCH feed the lab replays. Orders come in over FIX or a binary SBE interface. And ICE runs its own clearing houses, so, as at CME, a futures position opens and closes in one place."},
+ {"id": "money", "title": "How it makes money",
+  "text": "How does it make money? Net revenue in 2025 was 9.9 billion dollars, in three segments. Exchanges earned 5.4 billion, and energy alone was 2.2 billion of that. Fixed income and data services earned 2.4 billion. Mortgage technology, software for US home loans, earned 2.1 billion. About half of all revenue is recurring."},
+ {"id": "why", "title": "Why it is big",
+  "text": "Why is it big? Benchmarks the world prices off, clearing houses that hold the positions, and data sold back to everyone who trades. Brent is the lock: 6 million contracts of open interest at the end of 2025, and they can only close on ICE. Recurring data and software revenue smooths out the quieter years. It is the Nasdaq recipe, with oil and gas where the Nasdaq-100 would be."},
+ {"id": "takeaway", "title": "Takeaway", "hold": 0.3,
+  "text": "ICE is energy benchmarks plus clearing, wrapped in data and software, with the NYSE on top. Brent is its lock."}
+]

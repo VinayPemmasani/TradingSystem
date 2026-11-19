@@ -1,0 +1,120 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 01 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">TotalView-ITCH 5.0</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Nasdaq's order-by-order feed, message by message.</div>
+<div id="t-stream" data-cue="1" data-anim="fade" style="left:0;top:600px;width:1920px;height:120px;overflow:hidden"></div>
+<div class="lbl" data-cue="2" style="left:140px;top:760px">A add · E execute · X cancel · U replace · D delete · P trade</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">ITCH sends events, not a book</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:330px;width:260px;height:180px;border-color:var(--blue)">Nasdaq<small>matching engine</small></div>
+<svg class="full"><path id="why-p" class="draw" data-cue="1" d="M 390 420 L 1180 420" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="why-p" data-cue="1" data-dur="2.4" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="pkt" data-path="why-p" data-cue="1" data-dur="2.4" data-loop="1" data-phase="0.33" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="why-p" data-cue="1" data-dur="2.4" data-loop="1" data-phase="0.66" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="chip" data-cue="2" style="left:460px;top:300px;background:var(--green)">A</div>
+<div class="chip" data-cue="2" data-d="0.3" style="left:560px;top:300px;background:var(--amber)">E</div>
+<div class="chip" data-cue="2" data-d="0.6" style="left:660px;top:300px;background:var(--pink)">X</div>
+<div class="chip" data-cue="2" data-d="0.9" style="left:760px;top:300px;background:var(--red)">D</div>
+<div class="lbl" data-cue="2" data-d="1.2" style="left:460px;top:460px;width:600px">each one names a single order: ref 1234…</div>
+<div class="node" data-cue="3" style="left:1200px;top:330px;width:280px;height:180px;border-color:var(--teal)">Feed handler<small>apply in sequence</small></div>
+<div id="why-book" data-cue="3" data-d="0.6" style="left:1530px;top:250px;width:300px;height:360px"></div>
+<div class="lbl" data-cue="3" data-d="0.8" style="left:1540px;top:620px">your book</div>
+<div class="card" data-cue="4" style="left:120px;top:700px;width:560px;border-color:var(--teal)"><div class="ct c-teal">MoldUDP64</div><div class="cd">UDP multicast · video 02</div></div>
+<div class="card" data-cue="4" data-d="0.4" style="left:720px;top:700px;width:560px;border-color:var(--violet)"><div class="ct c-violet">SoupBinTCP</div><div class="cd">TCP, plain or compressed · video 03</div></div>
+</div>
+
+<div class="scene" id="s-header">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Every message: the same 11-byte header</div>
+<div class="bytes" style="left:150px;top:330px">
+<div data-cue="1" style="width:140px;background:var(--amber)">type</div>
+<div data-cue="2" style="width:280px;background:var(--teal)">stock locate</div>
+<div data-cue="3" style="width:280px;background:#8ea3b1">tracking</div>
+<div data-cue="4" style="width:840px;background:var(--violet)">timestamp · ns since midnight</div>
+</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:150px;top:290px">0</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:290px;top:290px">1</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:570px;top:290px">3</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:850px;top:290px">5</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:1690px;top:290px">11</div>
+<div class="card" data-cue="1" data-d="0.3" style="left:150px;top:460px;width:330px;border-color:var(--amber)"><div class="ct c-amber">1 byte</div><div class="cs">'A' = 0x41</div><div class="cd">ASCII letter</div></div>
+<div class="card" data-cue="2" data-d="0.3" style="left:510px;top:460px;width:400px;border-color:var(--teal)"><div class="ct c-teal">2 bytes</div><div class="cs">locate 1, 2, 3 …</div><div class="cd">assigned daily, from 1</div></div>
+<div class="card" data-cue="3" data-d="0.3" style="left:940px;top:460px;width:330px"><div class="ct">2 bytes</div><div class="cs">tracking no.</div><div class="cd">Nasdaq internal</div></div>
+<div class="card" data-cue="4" data-d="0.3" style="left:1300px;top:460px;width:490px;border-color:var(--violet)"><div class="ct c-violet">6 bytes</div><div class="cs">34,200,000,000,000</div><div class="cd">= 09:30:00.000000000</div></div>
+<div class="tag c-green" data-cue="5" style="left:150px;top:720px;font-size:28px;border-color:var(--green)">big-endian: most significant byte first</div>
+</div>
+
+<div class="scene" id="s-add">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Add Order · type A · 36 bytes</div>
+<div class="bytes" style="left:100px;top:330px">
+<div data-cue="0" data-d="0.3" style="width:495px;background:#55697a">header · 11</div>
+<div data-cue="1" style="width:360px;background:var(--blue)">order ref · 8</div>
+<div data-cue="2" style="width:45px;background:var(--green)">B</div>
+<div data-cue="3" style="width:180px;background:var(--amber)">shares 4</div>
+<div data-cue="4" style="width:360px;background:var(--teal)">stock · 8</div>
+<div data-cue="5" style="width:180px;background:var(--pink)">price 4</div>
+</div>
+<div class="olbl" data-cue="0" data-d="0.3" style="left:595px;top:290px">11</div>
+<div class="olbl" data-cue="1" style="left:955px;top:290px">19</div>
+<div class="olbl" data-cue="2" style="left:1000px;top:290px">20</div>
+<div class="olbl" data-cue="3" style="left:1180px;top:290px">24</div>
+<div class="olbl" data-cue="4" style="left:1540px;top:290px">32</div>
+<div class="olbl" data-cue="5" style="left:1710px;top:290px">36</div>
+<div class="card" data-cue="1" data-d="0.3" style="left:100px;top:460px;width:500px;border-color:var(--blue)"><div class="ct c-blue">Order Reference Number</div><div class="cd">unique for the day; every later message uses it</div></div>
+<div class="card" data-cue="3" data-d="0.3" style="left:640px;top:460px;width:520px;border-color:var(--amber)"><div class="ct c-amber">Side + Shares</div><div class="cd">'B' buy or 'S' sell · uint32</div></div>
+<div class="card" data-cue="4" data-d="0.3" style="left:1200px;top:460px;width:600px;border-color:var(--teal)"><div class="ct c-teal">Stock</div><div class="cd">"AAPL    " left-aligned, space-padded</div></div>
+<div class="card" data-cue="5" data-d="0.3" style="left:640px;top:640px;width:1160px;border-color:var(--pink)"><div class="ct c-pink">Price(4)</div><div class="cs">uint32 with 4 implied decimals: 1892500 → 189.2500</div></div>
+<div class="bytes" style="left:100px;top:820px">
+<div data-cue="6" style="width:1620px;background:#55697a">type F · same 36 bytes</div>
+<div data-cue="6" data-d="0.4" style="width:180px;background:var(--violet)">MPID 4</div>
+</div>
+</div>
+
+<div class="scene" id="s-life">
+<div class="h2" data-cue="0" style="left:120px;top:110px">An order's life, by reference number</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:520px;border-color:var(--blue)"><div class="ct c-blue">ref 1234</div><div class="cs">the only key after the add</div></div>
+<table class="t" style="left:720px;top:220px;width:1080px">
+<tr data-cue="0" data-d="0.3"><th>type</th><th>message</th><th>bytes</th><th>effect on the book</th></tr>
+<tr data-cue="1"><td class="c-amber">E</td><td>Order Executed</td><td>31</td><td>shares − executed · match no.</td></tr>
+<tr data-cue="2"><td class="c-pink">X</td><td>Order Cancel</td><td>23</td><td>shares − cancelled</td></tr>
+<tr data-cue="3"><td class="c-violet">U</td><td>Order Replace</td><td>35</td><td>old ref out, new ref in</td></tr>
+<tr data-cue="4"><td class="c-red">D</td><td>Order Delete</td><td>19</td><td>remove the order</td></tr>
+<tr data-cue="5"><td class="c-muted">P</td><td>Trade (non-cross)</td><td>44</td><td>hidden order: no book change</td></tr>
+</table>
+<div id="life-bar" data-cue="1" data-anim="fade" style="left:120px;top:420px;width:520px;height:300px"></div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example (illustrative order)</div>
+<div class="hex" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1720px;line-height:1.7;font-size:23px;white-space:nowrap"><span class="c-amber">41</span> <span class="c-teal">00 0E</span> <span class="c-muted">00 00</span> <span class="c-violet" data-hl="1" data-hlend="2">1F 1A CE D9 F0 00</span> <span class="c-blue">00 00 00 00 00 00 04 D2</span> <span class="c-green">42</span> <span class="c-amber">00 00 00 64</span> <span class="c-teal">41 41 50 4C 20 20 20 20</span> <span class="c-pink" id="ex-price">00 1C E0 94</span></div>
+<div class="card" data-cue="1" style="left:120px;top:360px;width:520px;border-color:var(--violet)"><div class="ct c-violet">09:30:00.000</div><div class="cd">34,200,000,000,000 ns</div></div>
+<div class="card" data-cue="2" style="left:680px;top:360px;width:520px;border-color:var(--blue)"><div class="ct c-blue">ref 1234 · B · 100</div><div class="cd">AAPL, locate 14 (illustrative)</div></div>
+<div class="card" data-cue="3" style="left:1240px;top:360px;width:560px;border-color:var(--pink)"><div class="ct c-pink">0x1CE094 = 1,892,500</div><div class="cd">÷ 10,000 = $189.25</div></div>
+<div class="lbl" data-cue="4" style="left:120px;top:580px">shares resting on the book</div>
+<div class="bar" data-cue="4" data-anim="fade" style="left:120px;top:625px;width:1500px;height:70px;background:#0f1b23;border:2px solid var(--line)"></div>
+<div class="bar" id="ex-bar" data-cue="2" data-anim="fade" style="left:120px;top:625px;width:1500px;height:70px;background:var(--blue)"></div>
+<div class="big c-blue" id="ex-n" data-cue="2" style="left:1650px;top:620px">100</div>
+<div class="tag c-amber" data-cue="4" style="left:120px;top:730px;border-color:var(--amber)">E · executed 40 → 60</div>
+<div class="tag c-pink" data-cue="5" style="left:520px;top:730px;border-color:var(--pink)">X · cancelled 10 → 50</div>
+<div class="tag c-red" data-cue="6" style="left:920px;top:730px;border-color:var(--red)">D · deleted → 0</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: libs/itch</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1000px;font-size:24px"><span class="line"><span class="c">// lab/itch/messages.hpp</span></span><span class="line"><span class="k">struct</span> <span class="v">AddOrder</span> {</span><span class="line">  LAB_ITCH_MESSAGE(<span class="g">'A'</span>, <span class="r">36</span>);</span><span class="line"> …</span><span class="line" data-hl="0" data-hlend="1">  <span class="k">static constexpr void</span> visit(S&amp; m, F&amp;&amp; f) {</span><span class="line" data-hl="0" data-hlend="1">    f(<span class="r">11</span>, m.order_reference_number);</span><span class="line" data-hl="0" data-hlend="1">    f(<span class="r">19</span>, m.buy_sell_indicator);</span><span class="line" data-hl="0" data-hlend="1">    f(<span class="r">20</span>, m.shares);</span><span class="line" data-hl="0" data-hlend="1">    f(<span class="r">24</span>, m.stock);</span><span class="line" data-hl="0" data-hlend="1">    f(<span class="r">32</span>, m.price);</span><span class="line">  }</span><span class="line">};</span></div>
+<div class="node" data-cue="1" style="left:1240px;top:230px;width:240px;height:110px;border-color:var(--teal)">decode()</div>
+<div class="node" data-cue="1" data-d="0.3" style="left:1540px;top:230px;width:240px;height:110px;border-color:var(--teal)">encode()</div>
+<svg class="full"><path class="draw" data-cue="1" d="M 1130 330 C 1200 330 1250 360 1340 345" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path class="draw" data-cue="1" data-d="0.3" d="M 1130 340 C 1300 420 1560 400 1650 345" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="code" data-cue="2" style="left:1240px;top:440px;width:560px;font-size:20px"><span class="line"><span class="k">static_assert</span>(</span><span class="line">  layout_end&lt;M&gt;() == M::kSize,</span><span class="line">  <span class="g">"field list does not</span></span><span class="line"><span class="g">   match spec length"</span>);</span></div>
+<div class="card" data-cue="3" style="left:120px;top:770px;width:1680px;border-color:var(--green)"><div class="ct c-green">itch-dump FILE → BookBuilder</div><div class="cd">a full day must report zero integrity errors: unknown refs, over-executions, duplicates …</div></div>
+</div>
+
+<div class="scene" id="s-pitfalls">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Four traps</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;height:190px;border-color:var(--amber)"><div class="ct c-amber">Messages may grow</div><div class="cd">len ≥ spec length is fine; skip the extra bytes</div></div>
+<div class="card" data-cue="2" style="left:980px;top:230px;width:820px;height:190px;border-color:var(--red)"><div class="ct c-red">Executed to zero = dead</div><div class="cd">no D follows; remove it yourself</div></div>
+<div class="card" data-cue="3" style="left:120px;top:450px;width:820px;height:190px;border-color:var(--teal)"><div class="ct c-teal">Locate changes daily</div><div class="cd">map it from the R (stock directory) message</div></div>
+<div class="card" data-cue="4" style="left:980px;top:450px;width:820px;height:190px;border-color:var(--pink)"><div class="ct c-pink">Prices are integers</div><div class="cd">Price(4): 4 implied decimals, never a double</div></div>
+<div class="take" data-cue="5" style="left:120px;top:720px;width:1680px">ITCH is a log of order events. <span class="c-teal">The book is yours to build.</span></div>
+</div>

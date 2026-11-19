@@ -1,0 +1,92 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">PATTERN 10 / 16 · AI CODE VS HOT PATH</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:205px">The queue between<br>two threads</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">Mutex and condition variable, or a spinning SPSC ring?</div>
+<div class="box blue" data-cue="1" style="left:140px;top:650px;width:380px;height:130px;text-align:center"><div class="t">Feed thread</div><div class="s">decode ITCH</div></div>
+<div class="qbox" data-cue="1" data-d="0.4" style="left:720px;top:670px;width:480px;height:90px">queue</div>
+<div class="box violet" data-cue="1" data-d="0.8" style="left:1400px;top:650px;width:380px;height:130px;text-align:center"><div class="t">Strategy thread</div><div class="s">decide · send order</div></div>
+<svg class="full"><path id="ti-p" d="M 520 715 L 1400 715" stroke="none" fill="none"/></svg>
+<div class="pkt" data-cue="1.5" data-path="ti-p" data-dur="1.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 16px var(--amber)"></div>
+<div class="lbl c-amber" data-cue="2" style="left:720px;top:790px;width:480px;text-align:center">every ns here is before the order</div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The general version</div>
+<div class="tag c-red" data-cue="0" style="left:120px;top:200px;border-color:var(--red)">GENERAL · ai.hpp · template &lt;class T&gt;</div>
+<div class="code left" data-cue="0" data-d="0.2"  style="left:120px;top:250px;width:900px;font-size:23px;"><span class="line"><span class="k">class</span> BlockingQueue {</span><span class="line" data-hl="0" data-hlend="1">  <span class="v">std</span>::<span class="v">mutex</span> m_;</span><span class="line" data-hl="0" data-hlend="1">  <span class="v">std</span>::<span class="v">condition_variable</span> cv_;</span><span class="line" data-hl="0" data-hlend="1">  <span class="v">std</span>::<span class="v">queue</span>&lt;T&gt; q_;</span><span class="line"> <span class="k">public</span>:</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">void</span> push(<span class="k">const</span> T&amp; v) {</span><span class="line" data-hl="1" data-hlend="2">    { <span class="v">std</span>::<span class="v">lock_guard</span> lk(m_); q_.push(v); }</span><span class="line" data-hl="1" data-hlend="2">    cv_.notify_one();</span><span class="line">  }</span><span class="line" data-hl="2" data-hlend="3">  T pop() {</span><span class="line" data-hl="2" data-hlend="3">    <span class="v">std</span>::<span class="v">unique_lock</span> lk(m_);</span><span class="line" data-hl="2" data-hlend="3">    cv_.wait(lk, [&amp;] { <span class="k">return</span> !q_.empty(); });</span><span class="line" data-hl="2" data-hlend="3">    T v = q_.front(); q_.pop();</span><span class="line">    <span class="k">return</span> v;</span><span class="line">  }</span><span class="line">};</span></div>
+<div class="box green" data-cue="3" data-d="0.0" style="left:1120px;top:260px;width:680px;height:115px"><div class="t c-green" style="font-size:30px">✓ correct</div><div class="s">every message, in order</div></div>
+<div class="box green" data-cue="3" data-d="0.6" style="left:1120px;top:400px;width:680px;height:115px"><div class="t c-green" style="font-size:30px">✓ unbounded</div><div class="s">never full, never drops</div></div>
+<div class="box green" data-cue="3" data-d="1.2" style="left:1120px;top:540px;width:680px;height:115px"><div class="t c-green" style="font-size:30px">✓ idle consumer sleeps</div><div class="s">no core burned while waiting</div></div>
+<div class="lbl" data-cue="4" style="left:1120px;top:700px;width:680px;font-size:26px;line-height:1.5">For most programs, exactly right.</div>
+</div>
+<div class="scene" id="s-cost">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One message, one wake-up</div>
+<div class="band" data-cue="0" data-d="0.2" style="left:120px;top:210px;width:1690px"></div>
+<div class="lbl c-blue" data-cue="0" data-d="0.2" style="left:140px;top:272px;width:270px">FEED · CPU 1</div>
+<div class="band" data-cue="0" data-d="0.35" style="left:120px;top:390px;width:1690px"></div>
+<div class="lbl c-muted" data-cue="0" data-d="0.35" style="left:140px;top:452px;width:270px">KERNEL · HYPERVISOR</div>
+<div class="band" data-cue="0" data-d="0.5" style="left:120px;top:570px;width:1690px"></div>
+<div class="lbl c-violet" data-cue="0" data-d="0.5" style="left:140px;top:632px;width:270px">STRATEGY · CPU 0</div>
+<div class="box violet" data-cue="1" style="left:440px;top:590px;width:240px;height:110px;padding:10px 16px;text-align:center"><div class="t" style="font-size:28px">asleep</div><div class="s" style="font-size:20px">futex wait</div></div>
+<div class="box blue" data-cue="2" style="left:440px;top:230px;width:240px;height:110px;padding:10px 16px;text-align:center"><div class="t" style="font-size:28px">lock · push</div><div class="s" style="font-size:20px">· unlock</div></div>
+<div class="box blue" data-cue="2.4" style="left:720px;top:230px;width:240px;height:110px;padding:10px 16px;text-align:center"><div class="t" style="font-size:28px">notify_one</div><div class="s" style="font-size:20px">cv → futex</div></div>
+<div class="box amber" data-cue="2.8" style="left:720px;top:410px;width:240px;height:110px;padding:10px 16px;text-align:center"><div class="t" style="font-size:28px">futex wake</div><div class="s" style="font-size:20px">syscall</div></div>
+<div class="box amber" data-cue="3" style="left:1000px;top:410px;width:240px;height:110px;padding:10px 16px;text-align:center"><div class="t" style="font-size:28px">scheduler</div><div class="s" style="font-size:20px">wake sleeper</div></div>
+<div class="box amber" data-cue="4" style="left:1280px;top:410px;width:240px;height:110px;padding:10px 16px;text-align:center"><div class="t" style="font-size:28px">hypervisor</div><div class="s" style="font-size:20px">wake idle vCPU</div></div>
+<div class="box violet" data-cue="5" style="left:1560px;top:590px;width:240px;height:110px;padding:10px 16px;text-align:center"><div class="t" style="font-size:28px">runs again</div><div class="s" style="font-size:20px">lock · pop</div></div>
+<svg class="full"><path class="draw" data-cue="2.6" data-dur="0.5" d="M 840 342 L 840 404" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="3" data-dur="0.5" d="M 962 465 L 996 465" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="4" data-dur="0.5" d="M 1242 465 L 1276 465" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="5" data-dur="0.6" d="M 1520 465 Q 1600 470 1640 584" stroke="#ffb347" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="brace" data-cue="5" data-d="0.4" style="left:440px;top:722px;width:1360px;border-color:var(--amber)"></div>
+<div class="lbl c-amber" data-cue="5" data-d="0.6" style="left:440px;top:748px;width:1360px;text-align:center;font-size:26px">microseconds of wake-up, while later messages queue behind it</div>
+<div class="bytes" data-cue="6" style="left:120px;top:815px"><div style="width:40px;background:#ffb347"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div><div style="width:40px;background:#2c4351"></div></div>
+<div class="lbl" data-cue="6" data-d="0.3" style="left:800px;top:822px;width:1000px;font-size:25px;line-height:1.4">std::deque chunk: 512 B = 16 messages of 32 B<br><span class="c-amber">→ 1 malloc + 1 free per 16 messages</span></div>
+</div>
+<div class="scene" id="s-fast">
+<div class="h2" data-cue="0" style="left:100px;top:110px">Same hand-off, two budgets</div>
+<div class="tag c-red" data-cue="0" style="left:100px;top:200px;border-color:var(--red)">GENERAL</div>
+<div class="tag c-teal" data-cue="0" data-d="0.3" style="left:980px;top:200px;border-color:var(--teal)">HOT PATH · fast.hpp · SpscRing&lt;T, N&gt;</div>
+<div class="code left" data-cue="0" data-d="0" data-dim="1" style="left:100px;top:250px;width:840px;font-size:22px;"><span class="line"><span class="k">void</span> push(<span class="k">const</span> T&amp; v) {</span><span class="line">  { <span class="v">std</span>::<span class="v">lock_guard</span> lk(m_); q_.push(v); }</span><span class="line">  cv_.notify_one();</span><span class="line">}</span><span class="line">T pop() {</span><span class="line">  <span class="v">std</span>::<span class="v">unique_lock</span> lk(m_);</span><span class="line">  cv_.wait(lk, [&amp;] { <span class="k">return</span> !q_.empty(); });</span><span class="line">  T v = q_.front(); q_.pop();</span><span class="line">  <span class="k">return</span> v;</span><span class="line">}</span></div>
+<div class="code right" data-cue="0" data-d="0.3"  style="left:980px;top:250px;width:840px;font-size:22px;"><span class="line" data-hl="4" data-hlend="5"><span class="k">alignas</span>(<span class="r">64</span>) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; head_{<span class="r">0</span>};</span><span class="line" data-hl="3" data-hlend="4"><span class="v">size_t</span> cached_tail_ = <span class="r">0</span>;</span><span class="line" data-hl="4" data-hlend="5"><span class="k">alignas</span>(<span class="r">64</span>) <span class="v">std</span>::<span class="v">atomic</span>&lt;<span class="v">size_t</span>&gt; tail_{<span class="r">0</span>};</span><span class="line" data-hl="3" data-hlend="4"><span class="v">size_t</span> cached_head_ = <span class="r">0</span>;</span><span class="line"><span class="k">bool</span> try_push(<span class="k">const</span> T&amp; v) {</span><span class="line">  <span class="v">size_t</span> h = head_.load(relaxed);</span><span class="line" data-hl="3" data-hlend="4">  <span class="k">if</span> (h - cached_tail_ == N) {</span><span class="line" data-hl="3" data-hlend="4">    cached_tail_ = tail_.load(acquire);</span><span class="line" data-hl="3" data-hlend="4">    <span class="k">if</span> (h - cached_tail_ == N) <span class="k">return</span> <span class="k">false</span>;</span><span class="line">  }</span><span class="line" data-hl="1" data-hlend="2">  buf_[h &amp; (N - <span class="r">1</span>)] = v;</span><span class="line" data-hl="1" data-hlend="2">  head_.store(h + <span class="r">1</span>, release);</span><span class="line">  <span class="k">return</span> <span class="k">true</span>;</span><span class="line">}</span><span class="line" data-hl="2" data-hlend="3"><span class="c">// try_pop: mirror image (tail_, cached_head_)</span></span><span class="line" data-hl="5" data-hlend="6"><span class="k">while</span> (!q.try_pop(v)) _mm_pause();  <span class="c">// consumer</span></span></div>
+<div class="lbl c-teal" data-cue="0" data-d="0.8" style="left:100px;top:640px;width:840px;line-height:1.6;font-size:24px">bounded: N fixed, power of two<br>one writer per index: head_ ← feed, tail_ ← strategy</div>
+<div class="stat red" data-cue="5" data-d="1.2" style="left:100px;top:845px;width:840px">push+pop: 268 instr · 21 calls</div>
+<div class="stat teal" data-cue="5" data-d="1.6" style="left:980px;top:845px;width:840px">try_push+try_pop: 48 instr · 0 calls</div>
+</div>
+<div class="scene" id="s-handoff">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The hand-off is cache coherence</div>
+<div class="box blue" data-cue="0" style="left:160px;top:240px;width:600px;height:330px"><div class="t">CPU 1 · feed</div><div class="s">its own L1 / L2</div></div>
+<div class="box violet" data-cue="0" data-d="0.3" style="left:1160px;top:240px;width:600px;height:330px"><div class="t">CPU 0 · strategy</div><div class="s">its own L1 / L2 · polling</div></div>
+<div class="cl" data-cue="1" style="left:200px;top:390px">slot line · M</div>
+<div class="cl" data-cue="1" data-d="0.5" style="left:200px;top:470px">head_ line · M</div>
+<div class="cl dimcl" data-cue="0" data-d="0.5" style="left:1200px;top:390px">slot line · I</div>
+<div class="cl dimcl" data-cue="0" data-d="0.6" style="left:1200px;top:470px">head_ line · I</div>
+<div class="cl" data-cue="2" data-d="1.4" style="left:1200px;top:390px">slot line · S</div>
+<div class="cl" data-cue="2" data-d="1.4" style="left:200px;top:390px">slot line · S</div>
+<div class="cl" data-cue="2" data-d="1.6" style="left:200px;top:470px">head_ line · S</div>
+<div class="cl" data-cue="2" data-d="1.6" style="left:1200px;top:470px">head_ line · S</div>
+<svg class="full"><path id="ho-p" d="M 760 450 L 1160 450" stroke="none" fill="none"/><path class="draw" data-cue="2" data-dur="1" d="M 770 520 L 1150 520" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="pkt" data-cue="2" data-path="ho-p" data-dur="1.3" style="background:var(--amber);box-shadow:0 0 16px var(--amber);width:30px;height:30px;margin:-15px 0 0 -15px"></div>
+<div class="lbl c-amber" data-cue="2" data-d="0.3" style="left:760px;top:540px;width:400px;text-align:center">poll misses → lines move</div>
+<div class="x" data-cue="3" data-d="0.0" style="left:160px;top:660px">✗ no syscall</div>
+<div class="x" data-cue="3" data-d="0.4" style="left:580px;top:660px">✗ no scheduler</div>
+<div class="x" data-cue="3" data-d="0.8" style="left:1000px;top:660px">✗ no allocation</div>
+<div class="stat teal" data-cue="4" style="left:160px;top:780px;width:1600px">≈ 2 cache-line transfers per message, ~100s of ns on this VM</div>
+</div>
+<div class="scene" id="s-measured">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One-way latency, feed → strategy</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:195px;width:1680px">shared 4-vCPU cloud VM · g++ -O2 · 2 threads pinned, chrt -f 10 · 1 msg per 2 µs · median of 5 runs</div>
+<div class="rowlbl" data-cue="2" style="left:120px;top:270px;width:400px;font:700 30px var(--body);color:var(--red)">mutex + cv</div>
+<div class="bar grow" data-cue="2" data-d="0.2" data-w="1100" style="left:470px;top:266px;background:var(--red)"></div>
+<div class="bv" data-cue="2" data-d="1.1" style="left:1586px;top:268px">p50 5,455 ns</div>
+<div class="rowlbl" data-cue="3" style="left:120px;top:370px;width:400px;font:700 30px var(--body);color:var(--teal)">SPSC ring</div>
+<div class="bar grow" data-cue="3" data-d="0.2" data-w="44" style="left:470px;top:366px;background:var(--teal)"></div>
+<div class="bv" data-cue="3" data-d="1.1" style="left:530px;top:368px">p50 216 ns</div>
+<div class="big c-teal" data-cue="3" data-d="1.5" style="left:1250px;top:350px">25× at p50</div>
+<div class="box red" data-cue="4" style="left:120px;top:500px;width:820px;height:170px"><div class="lbl">mutex + cv · p99</div><div class="pv c-red">1.16 ms</div><div class="s">runs ranged 32 µs to 2.2 ms</div></div>
+<div class="box teal" data-cue="4" data-d="0.8" style="left:980px;top:500px;width:820px;height:170px"><div class="lbl">SPSC ring · p99</div><div class="pv c-teal">0.9 µs</div><div class="s">runs ranged 0.34 µs to 12.8 µs</div></div>
+<div class="stat" data-cue="5" style="left:120px;top:710px;width:1680px;border-color:var(--line);font-size:26px;line-height:1.55">context switches / msg: <span class="c-red">0.2</span> vs <span class="c-teal">0</span> · mallocs / msg: <span class="c-red">1/16</span> vs <span class="c-teal">0</span><br>busy VM: tails swing between runs · trust the ratio, not the digits</div>
+</div>
+<div class="scene" id="s-nuance">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Not wrong. Missing constraints.</div>
+<div class="box amber" data-cue="1" style="left:120px;top:230px;width:820px;height:250px"><div class="t c-amber">The constraints nobody stated</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:14px">exactly one producer, one consumer<br>a fixed bound (what happens when full?)<br>a core you can afford to burn</div></div>
+<div class="box red" data-cue="2" style="left:980px;top:230px;width:820px;height:250px"><div class="t c-red">The price of spinning</div><div class="s" style="font-size:25px;line-height:1.6;margin-top:14px">100% of a core, all day<br>needs isolated, pinned cores<br>useless if threads outnumber cores</div></div>
+<div class="box green" data-cue="3" style="left:120px;top:520px;width:1680px;height:130px"><div class="t c-green">The condition variable is the better choice</div><div class="s" style="font-size:25px">thread pools · background work · many producers · anything without a latency budget</div></div>
+<div class="rule" data-cue="4" style="left:120px;top:710px;width:1680px;font-size:58px">Hot path: a bounded <span class="c-teal">SPSC ring</span>, a <span class="c-teal">spinning</span> consumer on its own core.</div>
+</div>

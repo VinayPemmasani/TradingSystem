@@ -1,0 +1,81 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">FEED HANDLERS · 10 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Testing with<br>replay</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">Recorded traffic, controlled speed, faults you choose.</div>
+<div class="node" data-cue="1" style="left:140px;top:700px;width:300px;padding:12px;border-color:#cfd8de"><div class="t" style="font-size:26px">recorded day</div></div>
+<svg class="full"><path id="t10a" class="draw" data-cue="1" data-d="0.3" d="M440 735 L760 735" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/><path id="t10b" class="draw" data-cue="1" data-d="0.6" d="M1060 735 L1380 735" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/></svg>
+<div class="node pink" data-cue="1" data-d="0.4" style="left:770px;top:700px;width:290px;padding:12px"><div class="t" style="font-size:26px">replay + faults</div></div>
+<div class="node violet" data-cue="1" data-d="0.7" style="left:1390px;top:700px;width:300px;padding:12px"><div class="t" style="font-size:26px">handler</div></div>
+<div class="pkt" data-path="t10a" data-cue="1" data-d="0.8" data-dur="1.0" data-loop="1" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+<div class="pkt" data-path="t10b" data-cue="1" data-d="1.0" data-dur="1.0" data-loop="1" data-phase="0.5" style="background:var(--blue);box-shadow:0 0 14px var(--blue)"></div>
+</div>
+
+<div class="scene" id="s-pcap">
+<div class="h2" data-cue="0" style="left:120px;top:110px">pcap: every packet, with its time</div>
+<div class="lbl" data-cue="1" style="left:120px;top:230px">file header 24 B, then per packet: 16-byte record header + data</div>
+<div class="bytes" data-cue="1" data-d="0.2" style="left:120px;top:270px">
+<div style="width:200px;background:#cfd8de">file hdr<br>24</div>
+<div style="width:180px;background:var(--blue)">ts sec<br>4</div>
+<div style="width:220px;background:#8fc0ff">ts µs/ns<br>4</div>
+<div style="width:180px;background:#b9d6ff">caplen<br>4</div>
+<div style="width:180px;background:#dbe9ff">orig len<br>4</div>
+<div style="width:520px;background:#2c4351;color:#cfd8de">Ethernet · IP · UDP · MoldUDP64 · ITCH</div>
+</div>
+<div class="note" data-cue="1" data-d="0.4" style="left:120px;top:360px">pcap-savefile(5), libpcap</div>
+<div id="pc-tl" data-cue="2" style="left:120px;top:470px;width:1680px;height:140px"></div>
+<div class="lbl" data-cue="2" data-d="0.3" style="left:120px;top:630px">same bytes · same packet boundaries · same gaps between them</div>
+<div class="tag c-amber" data-cue="3" style="left:120px;top:720px">the 09:30 bug, rerun at 14:00 on your desk</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">itch-replay</div>
+<div class="node" data-cue="1" style="left:120px;top:260px;width:420px;text-align:left;border-color:#cfd8de"><div class="t" style="font-size:26px">ITCH day file</div><div class="s">gzip BinaryFILE<br>2-byte length + message</div></div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.4" d="M540 330 L640 330" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="1" data-d="0.8" d="M1140 330 L1240 330" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/></svg>
+<div class="node blue" data-cue="1" data-d="0.5" style="left:650px;top:240px;width:490px;text-align:left"><div class="t" style="font-size:26px">MoldPublisher</div><div class="s">packets ≤ 1400 B · heartbeats<br>End of Session · re-request server</div></div>
+<div class="node violet" data-cue="1" data-d="0.9" style="left:1250px;top:260px;width:550px;text-align:left"><div class="t" style="font-size:26px">itch-fh under test</div><div class="s">multicast or unicast</div></div>
+<table class="t" data-cue="2" style="left:120px;top:520px;font-size:27px"><tr><th>flag</th><th>pacing</th></tr><tr><td class="c-amber">--rate 1000000</td><td>messages per second (default)</td></tr><tr><td class="c-amber">--rate 0</td><td>as fast as possible</td></tr><tr><td class="c-amber">--speed 1</td><td>original timing, from ITCH timestamps</td></tr></table>
+<div class="note" data-cue="0" data-d="0.4" style="left:120px;top:830px">tools/itch-replay/main.cpp · libs/feed/include/lab/feed/publisher.hpp</div>
+<div class="tag c-blue" data-cue="3" style="left:120px;top:770px">same MoldPublisher as simex's market data thread</div>
+</div>
+
+<div class="scene" id="s-faults">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Seeded faults</div>
+<div id="fl-row" data-cue="1" style="left:120px;top:240px;width:1680px;height:120px"></div>
+<div class="tag c-red" data-cue="1" data-d="0.6" style="left:120px;top:390px">drop</div>
+<div class="tag c-red" data-cue="1" data-d="0.9" style="left:240px;top:390px">burst of drops</div>
+<div class="tag c-pink" data-cue="1" data-d="1.2" style="left:470px;top:390px">duplicate</div>
+<div class="tag c-amber" data-cue="1" data-d="1.5" style="left:650px;top:390px">reorder: hold, send after next</div>
+<div class="code" data-cue="2" style="left:120px;top:480px;width:1400px;font-size:22px"><span class="line"><span class="c">// libs/mold/include/lab/mold/fault_injector.hpp</span></span><span class="line"><span class="c">// Seeded and deterministic, so a failing run can be replayed exactly.</span></span><span class="line" data-hl="2"><span class="c">// xorshift64*: fast, good enough for fault decisions.</span></span><span class="line"> </span><span class="line"><span class="c"># scripts/e2e-live-feed.sh default</span></span><span class="line" data-hl="2">--drop <span class="r">0.005</span> --burst <span class="r">0.0005</span> --burst-len <span class="r">20</span> --dup <span class="r">0.005</span> --reorder <span class="r">0.005</span> --seed <span class="r">42</span></span></div>
+</div>
+
+<div class="scene" id="s-oracle">
+<div class="h2" data-cue="0" style="left:120px;top:110px">An oracle that never touched the network</div>
+<div class="node" data-cue="1" style="left:120px;top:240px;width:380px;border-color:#cfd8de"><div class="t" style="font-size:26px">day file</div></div>
+<svg class="full"><path class="draw" data-cue="1" d="M500 280 L620 280" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="2" d="M310 320 L310 480 L620 480" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="node green" data-cue="1" data-d="0.3" style="left:630px;top:230px;width:520px"><div class="t" style="font-size:26px">itch-dump</div><div class="s">file → books, no network</div></div>
+<div class="node violet" data-cue="2" data-d="0.3" style="left:630px;top:430px;width:520px"><div class="t" style="font-size:26px">itch-replay → itch-fh</div><div class="s">faulty live feed → books</div></div>
+<div class="code" data-cue="3" style="left:1220px;top:230px;width:580px;font-size:20px"><span class="line"><span class="c">// BookBuilder::digest()</span></span><span class="line">h = FNV-1a offset basis</span><span class="line"><span class="k">for</span> each listed locate:</span><span class="line">  mix(locate, state, volume)</span><span class="line">  <span class="k">for</span> each level, both sides:</span><span class="line">    mix(price, shares, orders)</span><span class="line">mix(live order count)</span></div>
+<div class="big" data-cue="4" style="left:120px;top:650px;font-size:64px"><span class="c-green">digest == digest</span> → identical books</div>
+<div class="tag c-red" data-cue="5" style="left:120px;top:770px">and: messages lost == 0, integrity errors == 0</div>
+</div>
+
+<div class="scene" id="s-runs">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two runs on this box, 19 Nov 2026</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;height:470px;border-color:var(--green)"><div class="ct c-green">no faults · PASS</div><div class="cs" style="font-family:var(--mono);font-size:23px">1,000,406 messages<br>0 gaps<br>file    0f90093c8381dcfd<br>live    0f90093c8381dcfd</div></div>
+<div class="card" data-cue="2" style="left:980px;top:230px;width:820px;height:470px;border-color:var(--red)"><div class="ct c-red">default faults · FAIL</div><div class="cs" style="font-family:var(--mono);font-size:23px">40 gaps opened, 40 given up<br>291,049 messages lost<br><span data-cue="3">440 unknown order references<br>file    0f90093c8381dcfd<br>live    <span class="c-red">f1fc5eb1df292a54</span></span></div></div>
+<div class="note" data-cue="0" data-d="0.4" style="left:120px;top:740px">shared 4-vCPU box, heavily loaded by other jobs · synthetic day, 100 symbols · RATE 50000 and 25000</div>
+<div class="tag c-amber" data-cue="4" style="left:120px;top:790px">one proves the pipeline · one shows where it breaks</div>
+</div>
+
+<div class="scene" id="s-pros">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Make replay honest</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;height:220px;border-color:var(--red)"><div class="ct c-red">Bursts of loss</div><div class="cs">--burst, --burst-len: not only single drops</div></div>
+<div class="card" data-cue="2" style="left:980px;top:230px;width:820px;height:220px;border-color:var(--amber)"><div class="ct c-amber">Faster than real time</div><div class="cs">--rate 0: find where you break</div></div>
+<div class="card" data-cue="3" style="left:120px;top:480px;width:820px;height:220px;border-color:var(--violet)"><div class="ct c-violet">Timing, not only correctness</div><div class="cs">Rx-to-book percentiles in every report</div></div>
+<div class="card" data-cue="4" style="left:980px;top:480px;width:820px;height:220px;border-color:var(--green)"><div class="ct c-green">Every change</div><div class="cs">CLAUDE.md: after any feed, sequencing or book change · CI runs it</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:120px;top:180px">Record. <span class="c-pink">Break.</span> <span class="c-green">Compare.</span></div>
+<div class="sub" data-cue="0" data-d="0.6" style="left:120px;top:320px;width:1600px">Seeded faults, and an oracle that never touched the network.</div>
+</div>

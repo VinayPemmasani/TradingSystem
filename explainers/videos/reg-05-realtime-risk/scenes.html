@@ -1,0 +1,81 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">RISK &amp; REGULATION · 05 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px;width:1700px">Real-time position<br>and PnL risk</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:510px;width:1600px">What you own, what you could own, what it is worth.</div>
+<div class="box green" data-cue="0" data-d="1.0" style="left:140px;top:630px;width:360px;height:110px"><div class="t" style="font-size:28px">own</div><div class="s">filled shares</div></div>
+<div class="box amber" data-cue="0" data-d="1.6" style="left:540px;top:630px;width:360px;height:110px"><div class="t" style="font-size:28px">could own</div><div class="s">+ working orders</div></div>
+<div class="box teal" data-cue="0" data-d="2.2" style="left:940px;top:630px;width:360px;height:110px"><div class="t" style="font-size:28px">worth</div><div class="s">marked to the mid</div></div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">One order vs the whole book</div>
+<div class="box pink" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:520px;height:130px"><div class="t">pre-trade check</div><div class="s">this one order</div></div>
+<div class="box teal" data-cue="1" style="left:760px;top:220px;width:1040px;height:130px"><div class="t">real-time risk</div><div class="s">positions · working orders · PnL — on every fill and every tick</div></div>
+<div class="pkt" data-cue="1" data-d="0.5" data-path="p05tick" data-dur="1.4" data-loop="1" style="background:var(--teal)"></div>
+<svg class="full"><path id="p05tick" class="draw" data-cue="1" data-d="0.3" d="M 780 400 L 1780 400" stroke="var(--teal)" stroke-width="2" stroke-dasharray="6 8" fill="none"/></svg>
+<div class="card" data-cue="3" style="left:120px;top:480px;width:820px"><div class="ct c-pink">EU · RTS 6 Art. 16</div><div class="cs">real-time alerts within 5 seconds</div></div>
+<div class="card" data-cue="3" data-d="0.8" style="left:980px;top:480px;width:820px"><div class="ct c-pink">US · Rule 15c3-5</div><div class="cs">controls on credit and capital exposure</div></div>
+<div class="foot" data-cue="2" style="left:120px;top:880px;width:1680px">Delegated Regulation (EU) 2017/589 Art. 16 · 17 CFR 240.15c3-5</div>
+</div>
+
+<div class="scene" id="s-model">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">The position record</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:200px;width:900px;font-size:30px"><span class="k">struct</span> <span class="v">Position</span> {
+<span class="line" data-hl="1" data-hlend="2">  shares;     <span class="c">// long +, short −</span></span><span class="line" data-hl="2" data-hlend="3">  cash;       <span class="c">// sells add, buys subtract</span></span><span class="line" data-hl="3" data-hlend="4">  open_buy;   <span class="c">// working buys</span></span><span class="line" data-hl="3" data-hlend="4">  open_sell;  <span class="c">// working sells</span></span>};</div>
+<div class="box teal" data-cue="4" style="left:1080px;top:200px;width:720px;height:140px"><div class="t">PnL = cash + shares × price</div><div class="s">marked to market</div></div>
+<div class="box amber" data-cue="5" style="left:1080px;top:380px;width:720px;height:180px"><div class="t">worst-case long</div><div class="s">shares + open_buy<br>as if every buy filled</div></div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">firm/oms/include/lab/oms/oms.hpp (Position, pnl)</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">Worked example</div>
+<table class="t" data-cue="0" data-d="0.3" style="left:120px;top:200px;width:900px">
+<tr><th>event</th><th>shares</th><th>cash</th></tr>
+<tr data-cue="0" data-d="0.6" data-anim="fade"><td>buy 300 @ 50.00</td><td>+300</td><td>−15,000</td></tr>
+<tr data-cue="0" data-d="1.8" data-anim="fade"><td>sell 100 @ 50.10</td><td>+200</td><td>−9,990</td></tr>
+</table>
+<div class="box teal" data-cue="2" style="left:120px;top:420px;width:900px;height:170px"><div class="t">mid 50.05: PnL = −9,990 + 200 × 50.05 = <span class="c-green">+$20</span></div><div class="s">$10 realised (100 × 0.10) + $10 open (200 × 0.05)</div></div>
+<div class="lbl" data-cue="3" style="left:1100px;top:200px">worst-case long, shares</div>
+<div class="bar" data-cue="3" data-anim="fade" style="left:1100px;top:250px;width:80px;height:440px;background:transparent;border:2px solid var(--line)"></div>
+<div class="bar" data-cue="3" data-anim="fade" style="left:1100px;top:646px;width:80px;height:44px;background:var(--green)"></div>
+<div class="lbl" data-cue="3" style="left:1200px;top:656px;color:var(--green)">200 filled</div>
+<div class="bar" data-cue="3" data-d="0.5" data-anim="fade" style="left:1100px;top:426px;width:80px;height:220px;background:var(--amber)"></div>
+<div class="lbl" data-cue="3" data-d="0.5" style="left:1200px;top:520px;color:var(--amber)">+1,000 working bid</div>
+<svg class="full"><path class="draw" data-cue="3" data-d="0.8" d="M 1080 250 L 1500 250" stroke="var(--pink)" stroke-width="3" stroke-dasharray="10 6" fill="none"/></svg>
+<div class="lbl" data-cue="3" data-d="0.8" style="left:1520px;top:236px;color:var(--pink)">limit 2,000</div>
+<div class="bar" data-cue="4" data-anim="fade" style="left:1100px;top:228px;width:80px;height:198px;background:rgba(255,107,94,.5);border:2px solid var(--red)"></div>
+<div class="lbl" data-cue="4" data-d="0.3" style="left:1200px;top:320px;color:var(--red)">+900 new → 2,100</div>
+<div class="tagx" data-cue="4" data-d="0.8" style="left:1200px;top:380px;border-color:var(--red);color:var(--red)">blocked: kPosition</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">illustrative prices · bar to scale: 220 px = 1,000 shares</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">In the lab</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:200px;width:1680px;font-size:26px"><span class="line" data-hl="1" data-hlend="2"><span class="v">int64</span> shares; <span class="v">int64</span> cash;  <span class="c">// Price(4) × shares</span></span><span class="line" data-hl="1" data-hlend="2"><span class="v">uint64</span> open_buy, open_sell;</span><span class="line" data-hl="2" data-hlend="3"><span class="k">int64</span> pnl(price) { <span class="k">return</span> cash + shares * price; }   <span class="c">// trader marks at last_mid</span></span><span class="line" data-hl="3" data-hlend="4"><span class="k">if</span> (shares + open_buy + added &gt; max_position) <span class="k">return</span> <span class="x">kPosition</span>;</span><span class="line" data-hl="4" data-hlend="5">added = open &gt; old.open ? open - old.open : <span class="r">0</span>;   <span class="c">// replace: only the growth</span></span></div>
+<div class="tagx" data-cue="5" style="left:120px;top:520px;border-color:var(--green);color:var(--green)">no allocation · a few integer compares · trading thread</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">firm/oms/include/lab/oms/oms.hpp · firm/risk/include/lab/risk/risk.hpp (check, check_replace) · firm/trader/trading.cpp</div>
+</div>
+
+<div class="scene" id="s-recon">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">Check against an independent record</div>
+<div class="box amber" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:440px;height:130px"><div class="t">firm's fills</div><div class="s">trader fill log</div></div>
+<div class="box teal" data-cue="1" style="left:120px;top:420px;width:440px;height:130px"><div class="t">drop copy</div><div class="s">exchange's record</div></div>
+<svg class="full"><path class="draw" data-cue="2" d="M 565 295 L 800 360" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="2" d="M 565 485 L 800 420" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="box green" data-cue="2" style="left:810px;top:320px;width:520px;height:140px"><div class="t">join on (match, user_ref)</div><div class="s">side · qty · price · symbol</div></div>
+<div class="tagx" data-cue="2" data-d="0.6" style="left:1380px;top:300px;border-color:var(--red);color:var(--red)">only_firm</div>
+<div class="tagx" data-cue="2" data-d="0.8" style="left:1380px;top:360px;border-color:var(--red);color:var(--red)">only_exchange</div>
+<div class="tagx" data-cue="2" data-d="1.0" style="left:1380px;top:420px;border-color:var(--red);color:var(--red)">mismatched</div>
+<div class="tagx" data-cue="3" style="left:810px;top:500px;border-color:var(--pink);color:var(--pink)">report.py exits 1 on any break</div>
+<div class="tagx" data-cue="4" style="left:120px;top:620px;border-color:var(--muted);color:var(--muted)">not yet in the lab: an automatic loss limit</div>
+<div class="foot" data-cue="0" style="left:120px;top:880px;width:1680px">research/lab_research/pnl.py (positions, reconcile) · research/report.py</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:108px;width:1700px">What pros do</div>
+<div class="chk" data-cue="1" style="left:160px;top:220px"><i style="background:var(--amber)"></i>count working orders, not just fills</div>
+<div class="chk" data-cue="2" style="left:160px;top:300px"><i style="background:var(--teal)"></i>mark at a fair price, such as the mid</div>
+<div class="chk" data-cue="3" style="left:160px;top:380px"><i style="background:var(--green)"></i>reconcile against an independent record</div>
+<div class="chk" data-cue="4" style="left:160px;top:460px"><i style="background:var(--red)"></i>loss limits that pull quotes on their own</div>
+<div class="rule" data-cue="5" style="left:120px;top:580px;width:1680px;text-align:center">Know what you own, and what you could own.</div>
+<div class="foot" data-cue="6" style="left:120px;top:740px;width:1680px">Education, not legal advice.</div>
+</div>

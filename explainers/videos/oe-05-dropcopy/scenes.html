@@ -1,0 +1,94 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 05 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Drop copy</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">A second, independent record of every fill.</div>
+<div class="node" data-cue="0" data-d="0.8" style="left:140px;top:580px;width:380px;height:140px;border-color:var(--teal)">trading system<small>"bought 300"</small></div>
+<div class="node" data-cue="1" style="left:770px;top:580px;width:380px;height:140px;border-color:var(--amber)">?</div>
+<div class="node" data-cue="2" style="left:1400px;top:580px;width:380px;height:140px;border-color:var(--pink)">drop copy<small>from the exchange</small></div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Don't let the trader count alone</div>
+<div class="tag c-red" data-cue="0" data-d="0.3" style="left:120px;top:230px;border-color:var(--red)">a bug</div>
+<div class="tag c-red" data-cue="0" data-d="0.5" style="left:270px;top:230px;border-color:var(--red)">a dropped message</div>
+<div class="tag c-red" data-cue="0" data-d="0.7" style="left:540px;top:230px;border-color:var(--red)">a crash and restart</div>
+<div class="node" data-cue="1" style="left:120px;top:360px;width:420px;height:150px;border-color:var(--teal)">trading system<small>order session</small></div>
+<div class="node" data-cue="2" style="left:750px;top:360px;width:420px;height:150px;border-color:var(--blue)">exchange</div>
+<div class="node" data-cue="2" data-d="0.4" style="left:1380px;top:360px;width:420px;height:150px;border-color:var(--pink)">back office, risk<small>drop copy session</small></div>
+<svg class="full"><path class="draw" data-cue="2" d="M 745 420 L 545 420" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/><path id="d5-a" class="draw" data-cue="2" data-d="0.3" d="M 1175 420 L 1375 420" stroke="var(--pink)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="d5-a" data-cue="2" data-d="0.6" data-dur="1.2" data-loop="1" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+<div class="card" data-cue="3" style="left:120px;top:620px;width:1680px;border-color:var(--violet)"><div class="ct c-violet">SEC Rule 15c3-5 (c)(2)(iv)</div><div class="cs">"assure that appropriate surveillance personnel receive immediate post-trade execution reports"</div></div>
+</div>
+
+<div class="scene" id="s-flow">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One trade, three messages</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:440px;width:380px;height:180px;border-color:var(--blue)">matching engine<small>match 9001</small></div>
+<svg class="full"><path id="d5-1" class="draw" data-cue="1" d="M 505 500 C 800 300, 1000 290, 1270 290" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/><path id="d5-2" class="draw" data-cue="2" d="M 505 530 L 1270 530" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/><path id="d5-3" class="draw" data-cue="3" d="M 505 560 C 800 760, 1000 770, 1270 770" stroke="var(--pink)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="d5-1" data-cue="1" data-d="0.3" data-dur="1.4" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="pkt" data-path="d5-2" data-cue="2" data-d="0.3" data-dur="1.4" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="d5-3" data-cue="3" data-d="0.3" data-dur="1.4" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+<div class="card" data-cue="1" style="left:1290px;top:220px;width:510px;border-color:var(--green)"><div class="ct c-green">OUCH E · our session</div><div class="cs">UserRefNum · <span data-hl="4">match 9001</span></div></div>
+<div class="card" data-cue="2" style="left:1290px;top:460px;width:510px;border-color:var(--violet)"><div class="ct c-violet">ITCH E · public, anonymous</div><div class="cs">order number · <span data-hl="4">match 9001</span></div></div>
+<div class="card" data-cue="3" style="left:1290px;top:700px;width:510px;border-color:var(--pink)"><div class="ct c-pink">drop copy · per account</div><div class="cs">account · <span data-hl="4">match 9001</span></div></div>
+<div class="tag c-violet" data-cue="5" style="left:120px;top:860px;border-color:var(--violet)">ITCH: no account · only the firm's copies say whose trade</div>
+</div>
+
+<div class="scene" id="s-layout">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Execution Report <span class="c-pink">· 57 bytes</span> <span class="c-muted">· lab-defined</span></div>
+<div class="tag" data-cue="0" data-d="0.4" style="left:120px;top:200px;border-color:var(--line)">carried in SoupBinTCP sequenced packets, like OUCH</div>
+<div class="bytes" style="left:133px;top:300px">
+<div data-cue="2" style="width:29px;background:var(--pink)">D</div>
+<div data-cue="2" data-d="0.3" style="width:232px;background:#9fb6c4">timestamp 8</div>
+<div data-cue="3" style="width:174px;background:var(--teal)">account 6</div>
+<div data-cue="3" data-d="0.3" style="width:116px;background:var(--teal)">UserRef 4</div>
+<div data-cue="4" style="width:29px;background:var(--pink)">S</div>
+<div data-cue="4" data-d="0.2" style="width:116px;background:var(--green)">qty 4</div>
+<div data-cue="4" data-d="0.4" style="width:232px;background:var(--violet)">symbol 8</div>
+<div data-cue="4" data-d="0.6" style="width:232px;background:var(--amber)">price 8</div>
+<div data-cue="5" style="width:232px;background:var(--blue)">match no. 8</div>
+<div data-cue="5" data-d="0.2" style="width:29px;background:#9fb6c4">L</div>
+<div data-cue="5" data-d="0.4" style="width:232px;background:var(--violet)">ITCH order ref 8</div>
+</div>
+<div class="lbl" data-cue="2" style="left:133px;top:385px">0</div><div class="lbl" data-cue="2" style="left:162px;top:385px">1</div><div class="lbl" data-cue="3" style="left:394px;top:385px">9</div><div class="lbl" data-cue="3" style="left:568px;top:385px">15</div><div class="lbl" data-cue="4" style="left:684px;top:385px">19</div><div class="lbl" data-cue="4" style="left:829px;top:385px">24</div><div class="lbl" data-cue="4" style="left:1061px;top:385px">32</div><div class="lbl" data-cue="5" style="left:1293px;top:385px">40</div><div class="lbl" data-cue="5" style="left:1554px;top:385px">49</div>
+<div class="card" data-cue="3" style="left:120px;top:480px;width:540px;height:170px;border-color:var(--teal)"><div class="ct c-teal">who</div><div class="cd">the Soup username the order came from · the firm's UserRefNum</div></div>
+<div class="card" data-cue="4" style="left:690px;top:480px;width:540px;height:170px;border-color:var(--amber)"><div class="ct c-amber">what</div><div class="cd">B or S · shares · symbol · price (4 decimals)</div></div>
+<div class="card" data-cue="5" style="left:1260px;top:480px;width:540px;height:170px;border-color:var(--blue)"><div class="ct c-blue">join keys</div><div class="cd">match no. = OUCH and ITCH · ITCH order ref · A added / R removed</div></div>
+<div class="tag" data-cue="6" style="left:120px;top:720px;border-color:var(--line)">prices: 4 implied decimals, as in OUCH · integers big-endian</div>
+</div>
+
+<div class="scene" id="s-recon">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Reconcile: outer join on (match, UserRefNum)</div>
+<table class="t" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:1680px">
+<tr><th>match</th><th>ref</th><th>trader fill log</th><th>drop copy</th><th>result</th></tr>
+<tr data-cue="1"><td>9001</td><td>7</td><td>B 100 @ 187.25</td><td>B 100 @ 187.25</td><td class="c-green">agree</td></tr>
+<tr data-cue="1" data-d="0.3"><td>9002</td><td>9</td><td>S 40 @ 187.30</td><td>S 40 @ 187.30</td><td class="c-green">agree</td></tr>
+<tr data-cue="2" data-hl="2" data-hlend="3"><td>9003</td><td>12</td><td class="c-muted">—</td><td>B 60 @ 187.20</td><td class="c-red">break: only the exchange</td></tr>
+<tr data-cue="2" data-d="0.5" data-hl="2" data-hlend="3"><td>9004</td><td>13</td><td>S 50 @ 187.35</td><td class="c-muted">—</td><td class="c-red">break: only the trader</td></tr>
+</table>
+<div class="card" data-cue="1" data-d="0.6" style="left:120px;top:600px;width:820px;border-color:var(--green)"><div class="ct c-green">both sides</div><div class="cd">side · qty · price · symbol must match</div></div>
+<div class="card" data-cue="3" style="left:980px;top:600px;width:820px;border-color:var(--red)"><div class="ct c-red">any break → test fails</div><div class="cd">scripts/e2e-posttrade.sh · research/report.py</div></div>
+<div class="tag c-violet" data-cue="4" style="left:120px;top:800px;border-color:var(--violet)">+ ITCH order ref → join each fill to the public feed</div>
+<div class="tag c-amber" data-cue="5" style="left:120px;top:870px;border-color:var(--amber)">why both keys: match alone fails only on a self-trade (two firm orders, one match)</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: simex drop copy</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:760px;top:250px;width:400px;height:150px;border-color:var(--blue)">simex<small>order entry port</small></div>
+<div class="node" data-cue="0" data-d="0.4" style="left:120px;top:600px;width:400px;height:130px;border-color:var(--teal)">FIRM01<small>OUCH orders</small></div>
+<div class="node" data-cue="0" data-d="0.4" style="left:760px;top:600px;width:400px;height:130px;border-color:var(--teal)">FIRM02<small>OUCH orders</small></div>
+<div class="node" data-cue="0" data-d="0.6" style="left:1400px;top:600px;width:400px;height:130px;border-color:var(--pink)">DROP01<small>listens only</small></div>
+<svg class="full"><path class="draw" data-cue="0" data-d="0.5" d="M 320 595 L 820 405" stroke="var(--teal)" stroke-width="3" fill="none"/><path class="draw" data-cue="0" data-d="0.5" d="M 960 595 L 960 405" stroke="var(--teal)" stroke-width="3" fill="none"/><path id="d5-l" class="draw" data-cue="2" d="M 1100 405 L 1600 595" stroke="var(--pink)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="d5-l" data-cue="2" data-d="0.4" data-dur="1.2" data-loop="1" style="background:var(--pink);box-shadow:0 0 14px var(--pink)"></div>
+<div class="tag c-red" data-cue="1" style="left:1400px;top:760px;border-color:var(--red)">sends anything but R or O → ignored</div>
+<div class="tag c-pink" data-cue="2" data-d="0.3" style="left:1330px;top:430px;border-color:var(--pink)">every firm execution, in engine order</div>
+<div class="tag c-green" data-cue="3" style="left:120px;top:850px;border-color:var(--green)">disconnect → log in with count + 1 → replay (md-03)</div>
+<div class="tag c-muted" data-cue="4" style="left:1180px;top:850px;border-color:var(--line)">historical liquidity: owner 0 → not reported</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Takeaway</div>
+<div class="tag" data-cue="0" data-d="0.4" style="left:120px;top:200px;border-color:var(--line)">real venues: each defines its own drop copy format</div>
+<div class="take" data-cue="1" style="left:120px;top:300px;width:1680px">Never let the system that trades be the only one that counts.</div>
+<div class="tag c-red" data-cue="3" style="left:120px;top:760px;border-color:var(--red);font-size:28px">reconcile daily · every break is an incident</div>
+<div class="take" data-cue="2" style="left:120px;top:520px;width:1680px">Positions come from <span class="c-pink">the exchange's record</span>, and the trading system has to agree with it.</div>
+</div>

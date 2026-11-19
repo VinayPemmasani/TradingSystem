@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+/* strategy series colours: green = buys / long, red = sells / short, teal = market price,
+   amber = the edge / fair value, violet = model or signal, blue = lab code, pink = how it loses */
+.math{font-family:"STIX Two Text","Times New Roman",serif;font-size:42px;line-height:1.25;color:#eef4f7;white-space:nowrap}
+.math i{font-style:italic}
+.math sub,.math sup{font-size:.62em;line-height:0}
+.math .eq{margin:0 .3em}
+.math .val{font-family:var(--mono);font-size:.78em;font-weight:600}
+.fcard{background:rgba(19,33,43,.86);border:2px solid var(--line);border-radius:16px;padding:18px 26px}
+.fcard .lbl{display:block;margin-bottom:6px}
+.fcard.amber{border-color:var(--amber)} .fcard.violet{border-color:var(--violet)} .fcard.teal{border-color:var(--teal)} .fcard.pink{border-color:var(--pink)} .fcard.blue{border-color:var(--blue)} .fcard.green{border-color:var(--green)} .fcard.red{border-color:var(--red)}
+.node{border-radius:18px;background:var(--panel);border:3px solid var(--line);padding:18px 22px;text-align:center}
+.node .t{font:700 32px var(--body)} .node .s{font:500 21px/1.35 var(--mono);color:var(--muted);margin-top:6px}
+.node.blue{border-color:var(--blue)} .node.teal{border-color:var(--teal)} .node.violet{border-color:var(--violet)} .node.green{border-color:var(--green)} .node.amber{border-color:var(--amber)} .node.pink{border-color:var(--pink)} .node.red{border-color:var(--red)}
+.card{border-radius:18px;border:3px solid var(--line);background:var(--panel);padding:22px 26px}
+.card .ct{font:700 34px var(--body)} .card .cs{font:400 26px/1.4 var(--body);color:#cfdde5;margin-top:10px}
+.card.pink{border-color:var(--pink)} .card.amber{border-color:var(--amber)} .card.teal{border-color:var(--teal)} .card.violet{border-color:var(--violet)} .card.green{border-color:var(--green)} .card.blue{border-color:var(--blue)} .card.red{border-color:var(--red)}
+.big{font:800 84px/1.05 var(--display);font-stretch:80%}
+.stat{font:800 64px var(--display);font-stretch:85%}
+.note{font:500 22px/1.45 var(--mono);color:var(--muted)}
+.src{font:500 19px var(--mono);color:#6f8796}
+.chip{display:inline-block;padding:6px 12px;border-radius:8px;font:700 22px var(--mono);color:#06141a}
+.chart text{font:500 20px var(--mono);fill:#8ea3b1}
+.chart .ax{stroke:#2c4351;stroke-width:2}
+.chart .grid{stroke:#1d303b;stroke-width:1}
+.lvl{position:absolute;height:54px;display:flex;align-items:center;font:600 26px var(--mono);border-radius:8px;padding:0 16px}
+.lvl.bid{background:rgba(79,209,139,.18);border:2px solid var(--green);color:#bff3d6}
+.lvl.ask{background:rgba(255,107,94,.18);border:2px solid var(--red);color:#ffd3ce}
+.lvl.me{box-shadow:0 0 0 3px var(--amber)}

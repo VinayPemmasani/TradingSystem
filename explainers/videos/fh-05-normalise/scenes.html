@@ -1,0 +1,101 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">FEED HANDLERS · 05 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Normalising many<br>venues into one</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">Venue-specific adapters in, one small fixed format out.</div>
+<div class="tag c-blue" data-cue="1" data-d="0.0" style="left:140px;top:680px">ITCH 5.0</div>
+<div class="tag c-blue" data-cue="1" data-d="0.2" style="left:140px;top:740px">SBE</div>
+<div class="tag c-blue" data-cue="1" data-d="0.4" style="left:140px;top:800px">PITCH</div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.6" d="M300 695 C500 695 500 755 700 755" stroke="#6aa8ff" stroke-width="4" fill="none"/><path class="draw" data-cue="1" data-d="0.6" d="M300 755 L700 755" stroke="#6aa8ff" stroke-width="4" fill="none"/><path class="draw" data-cue="1" data-d="0.6" d="M300 815 C500 815 500 755 700 755" stroke="#6aa8ff" stroke-width="4" fill="none"/><path class="draw" data-cue="1" data-d="1.2" d="M960 755 L1200 755" stroke="#ffb347" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="node violet" data-cue="1" data-d="0.8" style="left:700px;top:715px;width:260px;padding:12px"><div class="t" style="font-size:28px">normalise</div></div>
+<div class="node amber" data-cue="1" data-d="1.4" style="left:1210px;top:715px;width:300px;padding:12px"><div class="t" style="font-size:28px">strategies</div></div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">N venues × M strategies</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:230px">without</div>
+<div class="node blue" data-cue="0" data-d="0.3" style="left:120px;top:290px;width:200px;padding:10px"><div class="t" style="font-size:24px">venue 1</div></div>
+<div class="node blue" data-cue="0" data-d="0.4" style="left:120px;top:420px;width:200px;padding:10px"><div class="t" style="font-size:24px">venue 2</div></div>
+<div class="node blue" data-cue="0" data-d="0.5" style="left:120px;top:550px;width:200px;padding:10px"><div class="t" style="font-size:24px">venue 3</div></div>
+<div class="node amber" data-cue="0" data-d="0.3" style="left:620px;top:290px;width:200px;padding:10px"><div class="t" style="font-size:24px">strat A</div></div>
+<div class="node amber" data-cue="0" data-d="0.4" style="left:620px;top:420px;width:200px;padding:10px"><div class="t" style="font-size:24px">strat B</div></div>
+<div class="node amber" data-cue="0" data-d="0.5" style="left:620px;top:550px;width:200px;padding:10px"><div class="t" style="font-size:24px">strat C</div></div>
+<svg class="full">
+<path class="draw" data-cue="0" data-d="0.8" d="M320 320 L620 320 M320 320 L620 450 M320 320 L620 580 M320 450 L620 320 M320 450 L620 450 M320 450 L620 580 M320 580 L620 320 M320 580 L620 450 M320 580 L620 580" stroke="#ff6b5e" stroke-width="2.5" fill="none"/>
+<path class="draw" data-cue="2" d="M1300 320 L1450 445 M1300 450 L1450 450 M1300 580 L1450 455" stroke="#6aa8ff" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="2" data-d="0.5" d="M1650 450 L1720 320 M1650 450 L1720 450 M1650 450 L1720 580" stroke="#ffb347" stroke-width="3" fill="none"/>
+</svg>
+<div class="lbl c-red" data-cue="1" style="left:120px;top:660px">9 decoders · a new venue touches every strategy</div>
+<div class="lbl" data-cue="2" style="left:1100px;top:230px">with</div>
+<div class="node blue" data-cue="2" style="left:1100px;top:290px;width:200px;padding:10px"><div class="t" style="font-size:24px">venue 1</div></div>
+<div class="node blue" data-cue="2" style="left:1100px;top:420px;width:200px;padding:10px"><div class="t" style="font-size:24px">venue 2</div></div>
+<div class="node blue" data-cue="2" style="left:1100px;top:550px;width:200px;padding:10px"><div class="t" style="font-size:24px">venue 3</div></div>
+<div class="node violet" data-cue="2" data-d="0.3" style="left:1450px;top:410px;width:200px;padding:10px"><div class="t" style="font-size:24px">one struct</div></div>
+<div class="node amber" data-cue="2" data-d="0.6" style="left:1720px;top:290px;width:120px;padding:10px"><div class="t" style="font-size:24px">A</div></div>
+<div class="node amber" data-cue="2" data-d="0.6" style="left:1720px;top:420px;width:120px;padding:10px"><div class="t" style="font-size:24px">B</div></div>
+<div class="node amber" data-cue="2" data-d="0.6" style="left:1720px;top:550px;width:120px;padding:10px"><div class="t" style="font-size:24px">C</div></div>
+<div class="lbl c-green" data-cue="2" data-d="0.9" style="left:1100px;top:660px">3 adapters · strategies untouched</div>
+</div>
+
+<div class="scene" id="s-shape">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One adapter per venue</div>
+<div class="node blue" data-cue="1" style="left:120px;top:250px;width:640px;text-align:left"><div class="t" style="font-size:28px">venue adapter</div><div class="s">session · decode · book, in the venue's own terms<br>(sequence numbers, price scale, symbol ids)</div></div>
+<svg class="full"><path class="draw" data-cue="2" d="M770 320 L900 320" stroke="#a98bff" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/></svg>
+<div class="lbl" data-cue="2" style="left:910px;top:220px">a small, fixed format (typical fields)</div>
+<div class="bytes" data-cue="2" data-d="0.2" style="left:910px;top:260px;flex-wrap:wrap;width:900px">
+<div style="width:180px;background:var(--violet)">instrument</div>
+<div style="width:180px;background:var(--green)">bid px/qty</div>
+<div style="width:180px;background:var(--red)">ask px/qty</div>
+<div style="width:180px;background:var(--amber)">last trade</div>
+<div style="width:180px;background:#cfd8de">status</div>
+</div>
+<div class="bytes" data-cue="3" style="left:910px;top:340px">
+<div style="width:300px;background:var(--blue)">exchange time</div>
+<div style="width:300px;background:var(--teal)">receive time</div>
+</div>
+<div class="lbl c-muted" data-cue="3" data-d="0.3" style="left:910px;top:430px;width:900px">two clocks: what the venue says, and what you saw</div>
+<div class="tag c-blue" data-cue="4" style="left:120px;top:480px">venue changes its protocol → one adapter changes</div>
+</div>
+
+<div class="scene" id="s-top">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The lab: TopOfBook, 64 bytes</div>
+<div class="code" data-cue="1" style="left:120px;top:210px;width:1060px;font-size:24px"><span class="line"><span class="c">// firm/oms/include/lab/oms/messages.hpp</span></span><span class="line"><span class="k">struct alignas</span>(<span class="r">64</span>) <span class="v">TopOfBook</span> {</span><span class="line" data-hl="2" data-hlend="3">  std::uint64_t rx_tsc;     <span class="c">// when the packet arrived</span></span><span class="line" data-hl="2" data-hlend="3">  std::uint64_t feed_ns;    <span class="c">// ITCH timestamp</span></span><span class="line" data-hl="2" data-hlend="3">  std::uint32_t bid_px[<span class="r">2</span>];</span><span class="line" data-hl="2" data-hlend="3">  std::uint32_t bid_qty[<span class="r">2</span>];</span><span class="line" data-hl="2" data-hlend="3">  std::uint32_t ask_px[<span class="r">2</span>];</span><span class="line" data-hl="2" data-hlend="3">  std::uint32_t ask_qty[<span class="r">2</span>];</span><span class="line" data-hl="2" data-hlend="3">  std::uint16_t instrument; std::uint16_t locate;</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">char</span> trading_state;       <span class="c">// T H P Q</span></span><span class="line">  std::uint8_t reserved[<span class="r">11</span>];</span><span class="line">};</span><span class="line" data-hl="3"><span class="k">static_assert</span>(<span class="k">sizeof</span>(TopOfBook) == <span class="r">64</span>);</span><span class="line" data-hl="3"><span class="k">static_assert</span>(std::is_trivially_copyable_v&lt;TopOfBook&gt;);</span></div>
+<div id="tb-bar" data-cue="1" data-d="0.3" style="left:1260px;top:220px;width:540px;height:560px"></div>
+<div class="lbl" data-cue="1" data-d="0.3" style="left:1260px;top:790px">one cache line, byte by byte</div>
+<div class="tag c-green" data-cue="5" style="left:120px;top:800px">two levels: see the market without your own order in it</div>
+</div>
+
+<div class="scene" id="s-record">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Vendor plant: Record + change mask</div>
+<div class="node violet" data-cue="1" style="left:120px;top:230px;width:520px;text-align:left"><div class="t" style="font-size:28px">Consolidator</div><div class="s">one Level 1 Record per locate<br>preallocated · apply() never allocates</div></div>
+<div class="lbl" data-cue="2" style="left:120px;top:440px">changed fields · std::uint32_t mask</div>
+<div id="rc-bits" data-cue="2" data-d="0.2" style="left:120px;top:480px;width:1100px;height:80px"></div>
+<div class="node pink" data-cue="3" style="left:1330px;top:220px;width:470px"><div class="t" style="font-size:26px">ICF look-alike</div><div class="s">SoupBinTCP</div></div>
+<div class="node pink" data-cue="3" data-d="0.2" style="left:1330px;top:360px;width:470px"><div class="t" style="font-size:26px">OMM JSON</div><div class="s">WebSocket</div></div>
+<div class="node pink" data-cue="3" data-d="0.4" style="left:1330px;top:500px;width:470px"><div class="t" style="font-size:26px">B-PIPE look-alike</div><div class="s">BLPAPI event model</div></div>
+<div class="tag" data-cue="3" data-d="0.7" style="left:1330px;top:650px">image · update with those fields · nothing</div>
+<div class="note" data-cue="1" data-d="0.4" style="left:120px;top:830px">libs/vendor/include/lab/vendor/consolidator.hpp</div>
+<div class="tag c-green" data-cue="4" style="left:120px;top:610px">quotes only? if (mask &amp; kQuote) … else skip</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One message, one mask</div>
+<div class="msg" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:760px;background:var(--amber);justify-content:flex-start">E  Order Executed · 100 sh · order at 182.50</div>
+<div class="node green" data-cue="1" style="left:120px;top:340px;width:760px;text-align:left"><div class="t" style="font-size:26px">BookBuilder: reduce order</div><div class="s">matched volume +100 · last trade 1825000</div></div>
+<div id="ex-bits" data-cue="2" style="left:120px;top:520px;width:1100px;height:80px"></div>
+<div class="lbl" data-cue="2" style="left:120px;top:480px">mask after this message</div>
+<div class="code" data-cue="2" data-d="0.3" style="left:1000px;top:230px;width:800px;font-size:21px"><span class="line"><span class="k">if</span> (volume != r.volume) {</span><span class="line">  mask |= kLastSize | kVolume | kTrades;</span><span class="line">  <span class="k">if</span> (px != r.last) mask |= kLast;</span><span class="line">  ...</span><span class="line">}</span><span class="line" data-hl="3"><span class="k">if</span> (bid != r.bid) mask |= kBid;</span><span class="line" data-hl="3"><span class="k">if</span> (bsz != r.bid_size) mask |= kBidSize;</span></div>
+<div class="tag c-green" data-cue="4" style="left:120px;top:660px">1 message in → 1 record → 1 mask out</div>
+</div>
+
+<div class="scene" id="s-pitfalls">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Choose what you keep</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;height:240px;border-color:var(--amber)"><div class="ct c-amber">Fixed point, known scale</div><div class="cs">Price(4): 1825000 = 182.5000<br>MWCB levels: Price(8)</div></div>
+<div class="card" data-cue="3" style="left:980px;top:230px;width:820px;height:240px;border-color:var(--blue)"><div class="ct c-blue">Both timestamps</div><div class="cs">exchange time beside your receive time</div></div>
+<div class="card" data-cue="4" style="left:120px;top:500px;width:820px;height:240px;border-color:var(--violet)"><div class="ct c-violet">Venue fields survive</div><div class="cs">halt reason T1, LUDP, MWC1 … not just "halted"</div></div>
+<div class="card" data-cue="5" style="left:980px;top:500px;width:820px;height:240px;border-color:var(--green)"><div class="ct c-green">Fit the fastest consumer</div><div class="cs">market maker: every change<br>screen: conflated updates</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:120px;top:180px"><span class="c-blue">One adapter per venue.</span><br><span class="c-violet">One format out.</span></div>
+<div class="sub" data-cue="0" data-d="0.8" style="left:120px;top:420px;width:1600px">A change mask, so consumers see only what moved.</div>
+</div>

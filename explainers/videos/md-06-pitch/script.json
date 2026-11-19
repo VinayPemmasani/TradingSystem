@@ -1,0 +1,41 @@
+[
+ {
+  "id": "title",
+  "title": "Cboe PITCH",
+  "text": "Cboe's depth feed is called PITCH. Like ITCH, it reports every order. But it splits the market into units, compresses its timestamps, and offers two ways home after a loss: gap requests, and spin."
+ },
+ {
+  "id": "units",
+  "title": "Units",
+  "text": "Cboe divides symbols into units, by a published alphabetical distribution that does not change during the day. Each unit has its own sequence numbers, starting at one each day, and units are mapped onto multicast addresses. So a gap in one unit says nothing about the others. Your handler keeps one sequencer per unit, not one per feed."
+ },
+ {
+  "id": "header",
+  "title": "Sequenced unit header",
+  "text": "Every frame starts with an eight byte sequenced unit header. Two bytes of length for the whole frame, one byte of message count, one byte of unit, and four bytes of sequence: the number of the first message. The next frame should start at sequence plus count. A count of zero is a heartbeat, sent after a second with no data. And every binary field is little-endian."
+ },
+ {
+  "id": "add",
+  "title": "Add Order, long and short",
+  "text": "Each message then starts with its own one byte length and one byte type. Add Order long is type hex 21, thirty four bytes. An eight byte order ID, a side, four bytes of quantity, six of symbol, and an eight byte price with four implied decimals. Add Order short is twenty six bytes: a two byte quantity, and a two byte price with two decimals. Small orders at low prices fit in the short form.",
+  "hold": 0.8
+ },
+ {
+  "id": "time",
+  "title": "Time and offsets",
+  "text": "Timestamps are split in two. A Time message carries whole seconds since midnight, Eastern time. Every other message carries only a four byte offset, in nanoseconds since that last Time message. Here is an illustrative frame: unit 3, sequence 1001, two messages. A Time of 34,200 seconds, that is 9:30. Then an add, offset 1,250 nanoseconds, buy 100 at 189.25.",
+  "hold": 0.8
+ },
+ {
+  "id": "recovery",
+  "title": "Gap request or spin",
+  "text": "For a small loss, log in to the gap request proxy over TCP. Ask for a unit, a sequence and a count, and the missing messages come back on a separate multicast channel. Requests are rationed, per second, per minute and per day. For a big loss, use the spin server. It announces a spin image every second. Request one, buffer the live feed meanwhile, receive every open order, then apply the buffered messages after the spin's sequence.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "Compared with Mold and ITCH, the habits change in three ways. Sequence per unit. Rebuild full timestamps from Time messages. And arbitrate the A and B feeds by unit and sequence, because their framing can differ. PITCH is a book feed built for many units at once.",
+  "hold": 1.0
+ }
+]

@@ -1,0 +1,35 @@
+[
+ {
+  "id": "title",
+  "title": "Interest rate swaps",
+  "text": "An interest rate swap exchanges fixed interest payments for floating ones. Rate derivatives make up most of the over-the-counter derivatives market, and since the financial crisis many of them trade on regulated platforms and clear centrally."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: swaps of a fixed rate for a floating one, such as SOFR in dollars or €STR in euros. Who trades: dealer banks, asset managers, pension funds, insurers, hedge funds and companies hedging their debt. Where: over the counter, but in the US many standard swaps must trade on a swap execution facility, or SEF. Trades go to swap data repositories, which publish them as soon as technologically practicable. Execution is by request for quote or order book, in seconds rather than microseconds. Standard swaps clear through central counterparties such as LCH and CME. The BIS measured 7.9 trillion dollars a day of OTC rate derivatives in April 2025, and they were 79 percent of all OTC derivatives notional in June 2025."
+ },
+ {
+  "id": "sef",
+  "title": "SEF, clear, report",
+  "text": "The distinctive structure comes from the Dodd-Frank Act. Once a swap is made available to trade, it must be executed on a SEF or an exchange. A SEF must offer an order book, and a request for quote must go to at least three participants. After execution the swap goes to a clearing house, which becomes the counterparty to both sides. Then it is reported, and the public sees price and size within moments, with large blocks delayed.",
+  "hold": 1.5
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Here is an illustrative trade. A pension fund receives 3.80 percent fixed for 10 years on 100 million dollars, and pays compounded SOFR. If 10 year swap rates fall by one basis point, the fixed leg it receives gains value. With an annuity factor of about 8.2, that is about 82 thousand dollars per basis point. So the swap behaves like a long 10 year bond, without buying one.",
+  "hold": 2.0
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. Swaps are quoted as rates, not prices, so every risk number goes through a curve. The notional never changes hands, so headline notional overstates the risk. Each currency and index has its own conventions for day counts, payment dates and fixings. And cleared swaps are marked to market every day, so a fast move in rates can mean a large cash call."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.2,
+  "text": "Swaps trade fixed for floating, mostly by request for quote on SEFs, and clear centrally. Think in DV01 and curves, not in notional."
+ }
+]

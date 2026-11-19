@@ -1,0 +1,107 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">NETWORK · 05 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Cut-through<br>switches</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1000px">Per-hop latency, from store-and-forward to layer 1.</div>
+<svg class="full"><path id="ti-p" d="M1150 700 L1850 700" stroke="#2c4351" stroke-width="4" fill="none"/></svg>
+<div class="node sw" data-cue="0" data-d="0.6" style="left:1400px;top:640px;width:200px;height:120px">switch</div>
+<div class="pkt" data-path="ti-p" data-cue="1" data-d="0.0" data-dur="2.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="ti-p" data-cue="1" data-d="0.5" data-dur="2.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="ti-p" data-cue="1" data-d="1.0" data-dur="2.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+</div>
+<div class="scene" id="s-sf">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Store and forward: wait for the whole frame</div>
+<div class="lbl" data-cue="0" style="left:140px;top:268px;color:var(--muted)">IN PORT</div>
+<div class="bar" data-cue="0" data-anim="fade" style="left:330px;top:284px;width:1480px;height:3px;background:var(--line)"></div>
+<div class="grow bar" data-cue="0" data-d="0.4" data-dur="1.6" data-w="700" style="left:330px;top:258px;height:56px;background:var(--amber)"></div>
+<div class="tl" data-cue="0" data-d="1" style="left:340px;top:330px">frame arrives</div>
+<div class="lbl" data-cue="0" style="left:140px;top:438px;color:var(--muted)">OUT PORT</div>
+<div class="bar" data-cue="0" data-anim="fade" style="left:330px;top:454px;width:1480px;height:3px;background:var(--line)"></div>
+<div class="grow bar" data-cue="1" data-d="0.2" data-dur="1.6" data-w="700" style="left:1030px;top:428px;height:56px;background:var(--amber)"></div>
+<div class="bar" data-cue="1" data-anim="fade" style="left:1030px;top:230px;width:3px;height:270px;background:var(--red)"></div>
+<div class="tl" data-cue="1" data-d="0.4" style="left:1045px;top:505px;color:var(--red)">sending starts only after the last byte + check</div>
+<table class="t" data-cue="2" style="left:330px;top:620px"><tr><th>frame at 10 Gb/s</th><th>time to clock in</th></tr><tr><td>64 bytes</td><td class="c-amber">51 ns</td></tr><tr><td>1,518 bytes</td><td class="c-amber">1.21 µs</td></tr></table>
+<div class="src" data-cue="2" data-d="0.6" style="left:1100px;top:660px">bytes × 8 ÷ 10 Gb/s</div>
+</div>
+<div class="scene" id="s-ct">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Cut-through: send once the address is read</div>
+<div class="lbl" data-cue="0" style="left:140px;top:268px;color:var(--muted)">IN PORT</div>
+<div class="bar" data-cue="0" data-anim="fade" style="left:330px;top:284px;width:1480px;height:3px;background:var(--line)"></div>
+<div class="grow bar" data-cue="0" data-d="0.3" data-dur="1.6" data-w="700" style="left:330px;top:258px;height:56px;background:var(--amber)"></div>
+<div class="bar" data-cue="0" data-d="0.3" data-anim="fade" style="left:330px;top:258px;width:40px;height:56px;background:#fff3"></div>
+<div class="tl" data-cue="0" data-d="0.6" style="left:330px;top:200px">dest MAC</div>
+<div class="lbl" data-cue="0" style="left:140px;top:438px;color:var(--muted)">OUT PORT</div>
+<div class="bar" data-cue="0" data-anim="fade" style="left:330px;top:454px;width:1480px;height:3px;background:var(--line)"></div>
+<div class="grow bar" data-cue="1" data-dur="1.6" data-w="700" style="left:390px;top:428px;height:56px;background:var(--amber)"></div>
+<div class="tl" data-cue="1" data-d="0.5" style="left:400px;top:505px;color:var(--green)">front leaves while the tail still arrives: no frame-size penalty</div>
+<div class="bar" data-cue="2" data-anim="fade" style="left:990px;top:258px;width:40px;height:56px;background:var(--red)"></div>
+<div class="tl" data-cue="2" data-d="0.3" style="left:1050px;top:268px;color:var(--red)">checksum comes last</div>
+<div class="tag" data-cue="3" style="left:1050px;top:440px;color:var(--red)">bad frame already forwarded</div>
+<div class="node bad" data-cue="4" style="left:330px;top:640px;width:1480px;height:110px;font-size:28px">output busy, or slower than input → the switch buffers anyway</div>
+</div>
+<div class="scene" id="s-vendor">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Vendor figures</div>
+<div class="panel" data-cue="1" data-anim="fade" style="left:140px;top:230px;width:800px;height:470px;border-color:var(--violet)"></div>
+<div class="h3" data-cue="1" style="left:180px;top:260px">Cisco Nexus 3548</div>
+<div class="stat c-violet" data-cue="1" data-d="0.3" style="left:180px;top:330px;font-size:80px">250 ns</div>
+<div class="body" data-cue="1" data-d="0.3" style="left:500px;top:350px">normal mode, as low as</div>
+<div class="stat c-violet" data-cue="1" data-d="1.0" style="left:180px;top:450px;font-size:80px">200 ns</div>
+<div class="body" data-cue="1" data-d="1.0" style="left:500px;top:470px">warp mode</div>
+<div class="stat c-violet" data-cue="1" data-d="1.8" style="left:180px;top:570px;font-size:80px">50 ns</div>
+<div class="body" data-cue="1" data-d="1.8" style="left:500px;top:590px">Warp SPAN, 1 → many</div>
+<div class="panel" data-cue="2" data-anim="fade" style="left:1000px;top:230px;width:800px;height:470px;border-color:var(--green)"></div>
+<div class="h3" data-cue="2" style="left:1040px;top:260px">Arista 7130 series</div>
+<div class="stat c-green" data-cue="2" data-d="0.3" style="left:1040px;top:330px;font-size:120px">5 ns</div>
+<div class="body" data-cue="2" data-d="0.6" style="left:1040px;top:470px;width:720px">layer 1 switching between front-panel ports, “equivalent to a single metre of fiber”</div>
+<div class="tag" data-cue="3" style="left:1040px;top:600px;color:var(--green)">patch · tap · replicate</div>
+<div class="src" data-cue="1" data-d="2" style="left:140px;top:730px">Cisco Nexus 3548-X data sheet; Arista 7130L product page. Vendor figures, best case.</div>
+</div>
+<div class="scene" id="s-budget">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Budget: 3 hops, 30 m fibre, 1,518 byte frame, 10 Gb/s</div>
+<div class="h3" data-cue="1" style="left:140px;top:290px">fibre</div>
+<div class="bit" data-cue="1" data-d="0.2" data-anim="fade" style="left:480px;top:280px;width:48px;height:70px;background:#8ea3b1;font-size:20px"></div>
+<div class="tl" data-cue="1" data-d="0.4" style="left:550px;top:302px">≈150 ns (4.9 ns/m)</div>
+<div class="h3" data-cue="2" style="left:140px;top:420px">store & fwd</div>
+<div class="bit" data-cue="2" data-d="0" data-anim="fade" style="left:480px;top:410px;width:48px;height:70px;background:#8ea3b1;font-size:20px"></div>
+<div class="bit" data-cue="2" data-d="0.3" data-anim="fade" style="left:528px;top:410px;width:400px;height:70px;background:#ff6b5e;font-size:20px">hop 1: 1.21 µs</div>
+<div class="bit" data-cue="2" data-d="0.6" data-anim="fade" style="left:928px;top:410px;width:400px;height:70px;background:#ff6b5e;font-size:20px">hop 2: 1.21 µs</div>
+<div class="bit" data-cue="2" data-d="0.8999999999999999" data-anim="fade" style="left:1328px;top:410px;width:400px;height:70px;background:#ff6b5e;font-size:20px">hop 3: 1.21 µs</div>
+<div class="h3" data-cue="2" data-d="1.4" style="left:1748px;top:420px;color:var(--red);white-space:nowrap">≈3.8 µs</div>
+<div class="h3" data-cue="3" style="left:140px;top:550px">cut-through</div>
+<div class="bit" data-cue="3" data-d="0" data-anim="fade" style="left:480px;top:540px;width:48px;height:70px;background:#8ea3b1;font-size:20px"></div>
+<div class="bit" data-cue="3" data-d="0.2" data-anim="fade" style="left:528px;top:540px;width:82px;height:70px;background:#a98bff;font-size:20px"></div>
+<div class="bit" data-cue="3" data-d="0.4" data-anim="fade" style="left:610px;top:540px;width:82px;height:70px;background:#a98bff;font-size:20px"></div>
+<div class="bit" data-cue="3" data-d="0.6000000000000001" data-anim="fade" style="left:692px;top:540px;width:82px;height:70px;background:#a98bff;font-size:20px"></div>
+<div class="h3" data-cue="3" data-d="0.9" style="left:794px;top:550px;color:var(--violet);white-space:nowrap">≈0.9 µs</div>
+<div class="tl" data-cue="3" data-d="0.9" style="left:480px;top:625px">3 × 250 ns (vendor best case)</div>
+<div class="take" data-cue="4" style="left:140px;top:740px;font-size:50px">The switch choice outweighs the cable.</div>
+</div>
+<div class="scene" id="s-queue">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Queueing: two inputs, one output</div>
+<svg class="full"><path id="q-a" d="M300 300 C600 300 700 480 900 480 L1500 480" stroke="#2c4351" stroke-width="4" fill="none"/><path id="q-b" d="M300 660 C600 660 700 480 900 480 L1500 480" stroke="#2c4351" stroke-width="4" fill="none"/></svg>
+<div class="node ex" data-cue="1" style="left:120px;top:250px;width:180px;height:100px">port A</div>
+<div class="node" data-cue="1" style="left:120px;top:610px;width:180px;height:100px;border-color:var(--teal)">port B</div>
+<div class="node sw" data-cue="1" style="left:850px;top:420px;width:200px;height:120px">out port</div>
+<div class="node sv" data-cue="0" style="left:1500px;top:420px;width:300px;height:120px">your server</div>
+<div class="pkt" data-path="q-a" data-cue="1" data-d="0.3" data-dur="2.4" data-loop="1" style="width:60px;border-radius:8px;margin-left:-30px;background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="q-b" data-cue="1" data-d="1.0" data-dur="2.4" data-loop="1" style="background:var(--teal)"></div>
+<div class="tag" data-cue="2" style="left:850px;top:580px;color:var(--red)">yours waits behind a 1,518 byte frame: +1.21 µs</div>
+<div class="tag" data-cue="3" style="left:850px;top:640px;color:var(--amber)">open: bursts fill the queue</div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: every feed packet fits one frame</div>
+<div class="bit" data-cue="0" data-d="0" data-anim="fade" style="left:140px;top:260px;width:150px;height:80px;background:#6aa8ff;font-size:22px;">IP 20</div>
+<div class="bit" data-cue="0" data-d="0.15" data-anim="fade" style="left:290px;top:260px;width:120px;height:80px;background:#ffb347;font-size:22px;">UDP 8</div>
+<div class="bit" data-cue="0" data-d="0.3" data-anim="fade" style="left:410px;top:260px;width:200px;height:80px;background:#ffb347;font-size:22px;">Mold hdr 20</div>
+<div class="bit" data-cue="0" data-d="0.45" data-anim="fade" style="left:610px;top:260px;width:1000px;height:80px;background:#4fd18b;font-size:22px;">message blocks</div>
+<div class="tl" data-cue="0" data-d="0.8" style="left:140px;top:360px">Mold header + blocks ≤ 1,400 (lab default) · + UDP + IP ≤ 1,428 &lt; 1,500 MTU · libs/mold/mold.hpp</div>
+<div class="stat c-amber" data-cue="1" style="left:140px;top:470px">&lt; 1.2 µs</div>
+<div class="body" data-cue="1" data-d="0.3" style="left:140px;top:580px">to clock any lab feed frame onto a 10 Gb/s link</div>
+<div class="node lab" data-cue="2" style="left:1150px;top:470px;width:620px;height:130px">loopback (lo)<small>no switch in the lab path</small></div>
+</div>
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Takeaway</div>
+<div class="node" data-cue="0" data-d="0.0" style="left:140px;top:300px;width:520px;height:140px;border-color:var(--violet);font-size:34px">Count hops</div>
+<div class="node" data-cue="0" data-d="0.6" style="left:720px;top:300px;width:520px;height:140px;border-color:var(--amber);font-size:34px">Keep frames small</div>
+<div class="node" data-cue="0" data-d="1.2" style="left:1300px;top:300px;width:520px;height:140px;border-color:var(--red);font-size:34px">Watch the queues</div>
+<div class="take" data-cue="1" style="left:140px;top:560px;width:1640px">That is where<br><span class="c-violet">the nanoseconds go.</span></div>
+</div>

@@ -1,0 +1,39 @@
+[
+ {
+  "id": "title",
+  "title": "Thread hand-off",
+  "text": "Pattern ten: the queue between two threads. The feed thread decodes a market data message, and hands it to the strategy thread. Every nanosecond of that hand-off is latency before the order."
+ },
+ {
+  "id": "general",
+  "title": "The general version",
+  "text": "Here is the general version: a mutex, a condition variable, and a std::queue. Push takes the lock, appends, and notifies. Pop waits on the condition variable until the queue is not empty. It is correct, unbounded, and an idle consumer sleeps instead of burning a core. For most programs, that is exactly right."
+ },
+ {
+  "id": "cost",
+  "title": "Where the time goes",
+  "text": "Now follow one message. The strategy thread is asleep in the kernel, waiting on a futex. The feed thread locks, appends, unlocks, and notify_one makes a futex wake syscall. The scheduler must put the sleeper back on a core. On a VM, waking an idle virtual CPU also goes through the hypervisor. That wake-up costs microseconds, and messages queue up behind it. And std::queue is a deque, which allocates a new 512-byte chunk every 16 messages."
+ },
+ {
+  "id": "fast",
+  "title": "The hot-path version",
+  "text": "The hot-path version is a bounded ring, with exactly one writer per index. Push writes the slot, then publishes the head with a release store. Pop is the mirror image: it reads the head with acquire, copies the slot, and advances the tail. Each side keeps a cached copy of the other's index, and reloads it only when the ring looks full or empty. Head and tail sit on separate 64-byte cache lines. And the consumer never sleeps: it spins, with a pause instruction."
+ },
+ {
+  "id": "handoff",
+  "title": "The hand-off",
+  "text": "So the hand-off is pure cache coherence. The feed core writes the slot and the head into its own cache. The strategy core's next poll misses, and pulls those lines across from the other core. No syscall, no scheduler, and no allocation. Just a couple of cache-line transfers."
+ },
+ {
+  "id": "measured",
+  "title": "Measured",
+  "text": "Measured on a shared 4-vCPU cloud VM: two threads pinned at real-time priority, one message every two microseconds. Median of five runs. The mutex and condition variable took 5.5 microseconds at p50. The ring took 216 nanoseconds: 25 times faster. At p99, the sleeping consumer fell behind, past a millisecond, against 0.9 microseconds for the ring. Tails on this busy VM swing widely between runs, so trust the ratio, not the digits.",
+  "hold": 0.8
+ },
+ {
+  "id": "nuance",
+  "title": "The honest nuance",
+  "text": "The general queue is not wrong. The prompt left out the constraints: one producer, one consumer, a fixed bound, and a core you can afford to burn. Busy polling costs a whole core, all the time. For thread pools, background work, or anything without a latency budget, the condition variable is the better choice. Rule: on the hot path, a bounded SPSC ring, and a spinning consumer on its own core.",
+  "hold": 1.5
+ }
+]

@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Adverse selection",
+  "text": "Every market maker trades with people who know more than it does. It cannot tell who they are, so it charges everyone. That charge is adverse selection, and Glosten and Milgrom turned it into arithmetic."
+ },
+ {
+  "id": "model",
+  "title": "The model",
+  "text": "Their 1985 model has one dealer and a stream of traders, arriving one at a time. Some are insiders, who know the true value. The rest trade for their own reasons, buying or selling at random. Competition means the dealer expects zero profit on each trade. So the ask is the value it expects, given that the next trader buys. The bid is the same, given a sell."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Here are numbers I worked out. The value is either 99 or 101, equally likely. One trader in five is an insider. A buy comes from an insider who knows it is 101, or from a random buyer. That raises the odds of 101 to 60 percent. So the ask is 100.20, the bid is 99.80, and the spread is 40 cents. In this setup, the spread is simply the insider share times the gap between the two values. With one insider in two, the spread widens to a full dollar."
+ },
+ {
+  "id": "pays",
+  "title": "Who pays",
+  "text": "So who pays? Each random trader pays 20 cents against the expected value of 100. Each insider gains 80 cents. With four random traders for every insider, those cancel, and the dealer breaks even. The spread is a transfer from uninformed traders to informed ones, and the dealer only passes it along. It is also why brokers can sell retail orders: flow that is mostly uninformed is cheap to fill. That is video five."
+ },
+ {
+  "id": "learn",
+  "title": "Prices learn",
+  "text": "Trades also move the quotes. After one buy, the dealer's belief in 101 rises to 60 percent. The next quotes are 100.00 bid and 100.38 offered. Each trade leaks a little of the insiders' knowledge into the price. The paper shows that trade prices then form a martingale, so Roll's bounce misses this part. With too many insiders, no spread breaks even, and the market shuts."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's agents program has both kinds of trader. Noise traders send marketable orders on random sides. Value traders know the hidden value, and trade when the last price is three ticks or more away from it. Makers only see their own noisy estimate, so value traders hit the quotes that are stale. It prints each population's fills and profit, marked at the final value. Raise the value rate option, so the value moves faster, and compare the makers' profit."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Real makers fight back. They measure markouts: how the price moves after each fill, by counterparty and venue. They cancel fast when related prices move, because a stale quote is a free option. They widen or step back when the flow turns one-sided. Adverse selection is why a spread exists even when trading costs nothing."
+ }
+]

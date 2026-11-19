@@ -1,0 +1,154 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:160px">PATTERN 14 / 16</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:215px">Hot fields,<br>cold fields</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:520px;width:1600px">a vector of fat structs vs struct-of-arrays and a hot/cold split</div>
+<div class="cell" data-cue="1" data-d="0.00" data-anim="fade" style="left:140px;top:700px;width:448px;background:#3a4f5c;color:#9fb3c0">symbol</div>
+<div class="cell" data-cue="1" data-d="0.05" data-anim="fade" style="left:588px;top:700px;width:448px;background:#3a4f5c;color:#9fb3c0">account</div>
+<div class="cell" data-cue="1" data-d="0.10" data-anim="fade" style="left:1036px;top:700px;width:112px;background:#3a4f5c;color:#9fb3c0">id</div>
+<div class="cell" data-cue="1" data-d="0.15" data-anim="fade" style="left:1148px;top:700px;width:112px;background:#3a4f5c;color:#9fb3c0">created</div>
+<div class="cell" data-cue="1" data-d="0.20" data-anim="fade" style="left:1260px;top:700px;width:112px;background:#3a4f5c;color:#9fb3c0">updated</div>
+<div class="cell" data-cue="1" data-d="0.25" data-anim="fade" style="left:1372px;top:700px;width:112px;background:var(--green);color:#06141a">price</div>
+<div class="cell" data-cue="1" data-d="0.30" data-anim="fade" style="left:1484px;top:700px;width:112px;background:var(--green);color:#06141a">qty</div>
+<div class="cell" data-cue="1" data-d="0.35" data-anim="fade" style="left:1596px;top:700px;width:14px;background:var(--green);color:#06141a"></div>
+<div class="cell" data-cue="1" data-d="0.40" data-anim="fade" style="left:1610px;top:700px;width:14px;background:var(--green);color:#06141a"></div>
+<div class="cell" data-cue="1" data-d="0.45" data-anim="fade" style="left:1624px;top:700px;width:84px;background:#3a4f5c;color:#9fb3c0"></div>
+<div class="lbl" data-cue="1" data-d="0.6" style="left:140px;top:780px">one Order = 112 bytes · <span class="c-green">the scan needs 18</span></div>
+</div>
+<div class="scene" id="s-general">
+<div class="h2" data-cue="0" style="left:70px;top:110px">Open bid quantity at or above a price</div>
+<div class="side c-red" data-cue="1" style="left:70px;top:200px">GENERAL-PURPOSE</div>
+<div class="code sm left" data-cue="1" style="left:70px;top:240px;width:880px"><span class="line" data-hl="1" data-hlend="2"><span class="k">struct</span> <span class="v">Order</span> {                       <span class="c">// 112 bytes</span></span><span class="line" data-hl="1" data-hlend="2">  std::<span class="v">string</span> symbol, account;       <span class="c">// 2 x 32</span></span><span class="line" data-hl="1" data-hlend="2">  <span class="v">uint64_t</span> id;</span><span class="line" data-hl="1" data-hlend="2">  sys_clock::time_point created, updated;</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">double</span> price; <span class="v">int64_t</span> qty;</span><span class="line" data-hl="1" data-hlend="2">  <span class="v">Side</span> side; <span class="k">bool</span> active, ioc, post_only;</span><span class="line">};</span><span class="line"><span class="v">int64_t</span> bid_depth(<span class="k">const</span> std::<span class="v">vector</span>&lt;<span class="v">Order</span>&gt;&amp; book,</span><span class="line">                  <span class="k">double</span> px) {</span><span class="line">  <span class="v">int64_t</span> total = <span class="r">0</span>;</span><span class="line" data-hl="2" data-hlend="3">  <span class="k">for</span> (<span class="k">const</span> <span class="v">Order</span>&amp; o : book)</span><span class="line" data-hl="2" data-hlend="3">    <span class="k">if</span> (o.active &amp;&amp; o.side == <span class="v">Side</span>::Buy &amp;&amp;</span><span class="line" data-hl="2" data-hlend="3">        o.price &gt;= px) total += o.qty;</span><span class="line">  <span class="k">return</span> total;</span><span class="line">}</span></div>
+<div class="box red" data-cue="1" data-d="0.6" style="left:1040px;top:250px;width:760px;height:120px"><div class="t">std::vector&lt;Order&gt;</div><div class="s">one rich struct per resting order</div></div>
+<div class="note" data-cue="1.5" style="left:1040px;top:400px;width:760px">2 strings · id · 2 timestamps · price · qty · 4 flags</div>
+<div class="chip red" data-cue="1.7" style="left:1040px;top:460px">sizeof(Order) = 112</div>
+<div class="chip teal" data-cue="3" style="left:1040px;top:560px">a good design for an order store</div>
+</div>
+<div class="scene" id="s-cost">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What the scan pulls through the cache</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:205px">4 ORDERS IN A std::vector&lt;Order&gt; · 448 bytes</div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:120.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:240.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:360.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:390.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:420.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:450.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:480.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:510.0px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:513.8px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.30" data-anim="fade" style="left:517.5px;top:250px;width:22.5px;background:#3a4f5c;height:60px"></div>
+<div class="lbl" data-cue="0" data-d="0.30" style="left:126px;top:318px;font-size:19px">order 0</div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:540.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:660.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:780.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:810.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:840.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:870.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:900.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:930.0px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:933.8px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.40" data-anim="fade" style="left:937.5px;top:250px;width:22.5px;background:#3a4f5c;height:60px"></div>
+<div class="lbl" data-cue="0" data-d="0.40" style="left:546px;top:318px;font-size:19px">order 1</div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:960.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1080.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1200.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1230.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1260.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1290.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1320.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1350.0px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1353.8px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.50" data-anim="fade" style="left:1357.5px;top:250px;width:22.5px;background:#3a4f5c;height:60px"></div>
+<div class="lbl" data-cue="0" data-d="0.50" style="left:966px;top:318px;font-size:19px">order 2</div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1380.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1500.0px;top:250px;width:120.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1620.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1650.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1680.0px;top:250px;width:30.0px;background:#3a4f5c;height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1710.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1740.0px;top:250px;width:30.0px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1770.0px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1773.8px;top:250px;width:3.8px;background:var(--green);height:60px"></div>
+<div class="cell" data-cue="0" data-d="0.60" data-anim="fade" style="left:1777.5px;top:250px;width:22.5px;background:#3a4f5c;height:60px"></div>
+<div class="lbl" data-cue="0" data-d="0.60" style="left:1386px;top:318px;font-size:19px">order 3</div>
+<div class="cline" data-cue="1" data-d="0.00" data-anim="fade" style="left:119.0px;top:236px"></div>
+<div class="cline" data-cue="1" data-d="0.05" data-anim="fade" style="left:359.0px;top:236px"></div>
+<div class="cline" data-cue="1" data-d="0.10" data-anim="fade" style="left:599.0px;top:236px"></div>
+<div class="cline" data-cue="1" data-d="0.15" data-anim="fade" style="left:839.0px;top:236px"></div>
+<div class="cline" data-cue="1" data-d="0.20" data-anim="fade" style="left:1079.0px;top:236px"></div>
+<div class="cline" data-cue="1" data-d="0.25" data-anim="fade" style="left:1319.0px;top:236px"></div>
+<div class="cline" data-cue="1" data-d="0.30" data-anim="fade" style="left:1559.0px;top:236px"></div>
+<div class="cline" data-cue="1" data-d="0.35" data-anim="fade" style="left:1799.0px;top:236px"></div>
+<div class="lbl c-amber" data-cue="1" data-d="0.4" style="left:120px;top:360px">| = 64-byte cache line boundary · the core loads whole lines</div>
+<div class="lnbox pref" data-cue="2" data-d="0.00" data-anim="fade" style="left:123.0px;top:420px;width:234.0px">prefetched</div>
+<div class="lnbox used" data-cue="2" data-d="0.12" data-anim="fade" style="left:363.0px;top:420px;width:234.0px">read</div>
+<div class="lnbox pref" data-cue="2" data-d="0.24" data-anim="fade" style="left:603.0px;top:420px;width:234.0px">prefetched</div>
+<div class="lnbox used" data-cue="2" data-d="0.36" data-anim="fade" style="left:843.0px;top:420px;width:234.0px">read</div>
+<div class="lnbox used" data-cue="2" data-d="0.48" data-anim="fade" style="left:1083.0px;top:420px;width:234.0px">read</div>
+<div class="lnbox used" data-cue="2" data-d="0.60" data-anim="fade" style="left:1323.0px;top:420px;width:234.0px">read</div>
+<div class="lnbox used" data-cue="2" data-d="0.72" data-anim="fade" style="left:1563.0px;top:420px;width:234.0px">read</div>
+<div class="chip amber" data-cue="2" data-d="1.0" style="left:120px;top:500px">18 bytes used · 80 bytes of lines read · ~112 moved per order</div>
+<div class="box amber" data-cue="3" style="left:120px;top:600px;width:820px;height:190px"><div class="t c-amber">1 M orders = 117 MB per scan</div><div class="s">L2 here is 2 MiB per core</div><div class="s">most lines come from far away</div></div>
+<div class="box" data-cue="4" style="left:980px;top:600px;width:820px;height:190px"><div class="t">cold bytes ride along</div><div class="s">strings, timestamps, unused flags</div><div class="s">evict the lines you need next</div></div>
+</div>
+<div class="scene" id="s-hot">
+<div class="h2" data-cue="0" style="left:60px;top:110px">Lay data out by how it is read</div>
+<div class="side c-red" data-cue="0" style="left:60px;top:200px">GENERAL</div>
+<div class="side c-teal" data-cue="0" data-d="0.3" style="left:980px;top:200px">HOT PATH</div>
+<div class="code sm left" data-cue="0" style="left:60px;top:240px;width:880px" data-dim="1"><span class="line"><span class="k">struct</span> <span class="v">Order</span> {                       <span class="c">// 112 bytes</span></span><span class="line">  std::<span class="v">string</span> symbol, account;       <span class="c">// 2 x 32</span></span><span class="line">  <span class="v">uint64_t</span> id;</span><span class="line">  sys_clock::time_point created, updated;</span><span class="line">  <span class="k">double</span> price; <span class="v">int64_t</span> qty;</span><span class="line">  <span class="v">Side</span> side; <span class="k">bool</span> active, ioc, post_only;</span><span class="line">};</span><span class="line"><span class="v">int64_t</span> bid_depth(<span class="k">const</span> std::<span class="v">vector</span>&lt;<span class="v">Order</span>&gt;&amp; book,</span><span class="line">                  <span class="k">double</span> px) {</span><span class="line">  <span class="v">int64_t</span> total = <span class="r">0</span>;</span><span class="line">  <span class="k">for</span> (<span class="k">const</span> <span class="v">Order</span>&amp; o : book)</span><span class="line">    <span class="k">if</span> (o.active &amp;&amp; o.side == <span class="v">Side</span>::Buy &amp;&amp;</span><span class="line">        o.price &gt;= px) total += o.qty;</span><span class="line">  <span class="k">return</span> total;</span><span class="line">}</span></div>
+<div class="code sm right" data-cue="0" style="left:980px;top:240px;width:880px" data-d="0.3"><span class="line" data-hl="2" data-hlend="3"><span class="c">// hot fields: one array each.</span></span><span class="line" data-hl="2" data-hlend="3"><span class="c">// cold fields live elsewhere, same index.</span></span><span class="line"><span class="k">struct</span> BookHot {</span><span class="line" data-hl="1" data-hlend="2">  std::<span class="v">vector</span>&lt;<span class="k">double</span>&gt;   px;</span><span class="line" data-hl="1" data-hlend="2">  std::<span class="v">vector</span>&lt;<span class="v">int64_t</span>&gt;  qty;</span><span class="line" data-hl="1" data-hlend="2">  std::<span class="v">vector</span>&lt;<span class="v">uint8_t</span>&gt;  live_bid;  <span class="c">// active &amp;&amp; Buy</span></span><span class="line">};</span><span class="line"><span class="v">int64_t</span> bid_depth(<span class="k">const</span> BookHot&amp; b, <span class="k">double</span> px) {</span><span class="line">  <span class="v">int64_t</span> total = <span class="r">0</span>;</span><span class="line">  <span class="k">for</span> (<span class="v">size_t</span> i = <span class="r">0</span>; i &lt; b.px.size(); ++i) {</span><span class="line" data-hl="3" data-hlend="4">    <span class="k">const</span> <span class="v">int64_t</span> take =</span><span class="line" data-hl="3" data-hlend="4">        b.live_bid[i] &amp; (b.px[i] &gt;= px);</span><span class="line" data-hl="4" data-hlend="5">    total += b.qty[i] &amp; -take;   <span class="c">// 0 or all ones</span></span><span class="line">  }</span><span class="line">  <span class="k">return</span> total;</span><span class="line">}</span></div>
+<div class="lbl" data-cue="3" style="left:980px;top:770px">same 4 orders, hot arrays: 68 bytes</div>
+<div class="cell" data-cue="3" data-d="0.00" data-anim="fade" style="left:980px;top:810px;width:64px;height:44px;background:var(--green)">px</div>
+<div class="cell" data-cue="3" data-d="0.30" data-anim="fade" style="left:1244px;top:810px;width:64px;height:44px;background:#2fae6f">qty</div>
+<div class="cell" data-cue="3" data-d="0.08" data-anim="fade" style="left:1046px;top:810px;width:64px;height:44px;background:var(--green)">px</div>
+<div class="cell" data-cue="3" data-d="0.38" data-anim="fade" style="left:1310px;top:810px;width:64px;height:44px;background:#2fae6f">qty</div>
+<div class="cell" data-cue="3" data-d="0.16" data-anim="fade" style="left:1112px;top:810px;width:64px;height:44px;background:var(--green)">px</div>
+<div class="cell" data-cue="3" data-d="0.46" data-anim="fade" style="left:1376px;top:810px;width:64px;height:44px;background:#2fae6f">qty</div>
+<div class="cell" data-cue="3" data-d="0.24" data-anim="fade" style="left:1178px;top:810px;width:64px;height:44px;background:var(--green)">px</div>
+<div class="cell" data-cue="3" data-d="0.54" data-anim="fade" style="left:1442px;top:810px;width:64px;height:44px;background:#2fae6f">qty</div>
+<div class="cell" data-cue="3" data-d="0.6" data-anim="fade" style="left:1508px;top:810px;width:31px;height:44px;background:#7fe0ad;font-size:15px">lb</div>
+<div class="chip red" data-cue="5" style="left:60px;top:800px">keep live_bid in sync on fill / cancel</div>
+</div>
+<div class="scene" id="s-numbers">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Bytes per order, and ns per order</div>
+<div class="note" data-cue="0" data-d="0.3" style="left:120px;top:190px;width:1700px">measured on a shared 4-vCPU cloud VM · g++ 13 -O2 · pinned · p50 of 21 scans, median of 5 runs</div>
+<div class="gl" data-cue="1" style="left:120px;top:255px">bytes moved per order</div>
+<div class="blab" data-cue="1" data-d="0.0" style="left:130px;top:305px;width:360px">fat struct (AoS)</div>
+<div class="bar grow" data-cue="1" data-d="0.0" data-w="358" data-anim="fade" style="left:520px;top:303px;background:var(--red)"></div>
+<div class="bv" data-cue="1" data-d="0.7" style="left:892px;top:302px;color:var(--red)">112 B</div>
+<div class="blab" data-cue="1" data-d="0.4" style="left:130px;top:347px;width:360px">hot/cold split</div>
+<div class="bar grow" data-cue="1" data-d="0.4" data-w="77" data-anim="fade" style="left:520px;top:345px;background:var(--violet)"></div>
+<div class="bv" data-cue="1" data-d="1.1" style="left:611px;top:344px;color:var(--violet)">24 B</div>
+<div class="blab" data-cue="1" data-d="0.8" style="left:130px;top:389px;width:360px">struct of arrays</div>
+<div class="bar grow" data-cue="1" data-d="0.8" data-w="54" data-anim="fade" style="left:520px;top:387px;background:var(--teal)"></div>
+<div class="bv" data-cue="1" data-d="1.5" style="left:588px;top:386px;color:var(--teal)">17 B</div>
+<div class="gl" data-cue="2" style="left:120px;top:460px">ns per order · 1 M orders (AoS 117 MB, SoA 18 MB)</div>
+<div class="blab" data-cue="2" data-d="0.0" style="left:130px;top:510px;width:360px">general (AoS, if)</div>
+<div class="bar grow" data-cue="2" data-d="0.0" data-w="826" data-anim="fade" style="left:520px;top:508px;background:var(--red)"></div>
+<div class="bv" data-cue="2" data-d="0.7" style="left:1360px;top:507px;color:var(--red)">24</div>
+<div class="blab" data-cue="3" data-d="0.0" style="left:130px;top:552px;width:360px">AoS, same branchless body</div>
+<div class="bar grow" data-cue="3" data-d="0.0" data-w="578" data-anim="fade" style="left:520px;top:550px;background:#c95a50"></div>
+<div class="bv" data-cue="3" data-d="0.7" style="left:1112px;top:549px;color:#c95a50">17</div>
+<div class="blab" data-cue="4" data-d="0.0" style="left:130px;top:594px;width:360px">hot/cold split</div>
+<div class="bar grow" data-cue="4" data-d="0.0" data-w="38" data-anim="fade" style="left:520px;top:592px;background:var(--violet)"></div>
+<div class="bv" data-cue="4" data-d="0.7" style="left:572px;top:591px;color:var(--violet)">1.1</div>
+<div class="blab" data-cue="2" data-d="0.6" style="left:130px;top:636px;width:360px">struct of arrays</div>
+<div class="bar grow" data-cue="2" data-d="0.6" data-w="26" data-anim="fade" style="left:520px;top:634px;background:var(--teal)"></div>
+<div class="bv" data-cue="2" data-d="1.2999999999999998" style="left:560px;top:633px;color:var(--teal)">0.77</div>
+<div class="gl" data-cue="5" style="left:120px;top:705px">ns per order · 8 M orders (AoS 940 MB, SoA 143 MB)</div>
+<div class="blab" data-cue="5" data-d="0.3" style="left:130px;top:755px;width:360px">AoS, same branchless body</div>
+<div class="bar grow" data-cue="5" data-d="0.3" data-w="700" data-anim="fade" style="left:520px;top:753px;background:#c95a50"></div>
+<div class="bv" data-cue="5" data-d="1.0" style="left:1234px;top:752px;color:#c95a50">21</div>
+<div class="blab" data-cue="5" data-d="0.6" style="left:130px;top:797px;width:360px">struct of arrays</div>
+<div class="bar grow" data-cue="5" data-d="0.6" data-w="96" data-anim="fade" style="left:520px;top:795px;background:var(--teal)"></div>
+<div class="bv" data-cue="5" data-d="1.2999999999999998" style="left:630px;top:794px;color:var(--teal)">2.8</div>
+<div class="chip amber" data-cue="5" data-d="1.4" style="left:1320px;top:790px">7.3x · byte ratio 112 / 17 = 6.6x</div>
+<div class="chip teal" data-cue="6" data-d="0.5" style="left:1240px;top:610px">1 M: 18 MB of hot arrays stay in cache</div>
+</div>
+<div class="scene" id="s-close">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Layout follows access</div>
+<div class="card2" data-cue="1" style="left:120px;top:220px;width:810px;height:160px;border-color:var(--muted)"><div class="ct">Whole-order work: one struct</div><div class="cs">new order · amend · fill report · audit</div></div>
+<div class="card2" data-cue="2" style="left:970px;top:220px;width:810px;height:160px;border-color:var(--teal)"><div class="ct">Scans: split the hot fields</div><div class="cs">arrays, or a small hot struct + cold store</div></div>
+<div class="card2" data-cue="3" style="left:120px;top:410px;width:810px;height:160px;border-color:var(--amber)"><div class="ct">Cost: keep them in sync</div><div class="cs">one index, updated on every state change</div></div>
+<div class="card2" data-cue="4" style="left:970px;top:410px;width:810px;height:160px;border-color:var(--amber)"><div class="ct">Measure bytes per element</div><div class="cs">and the working set against L1 / L2</div></div>
+<div class="rule" data-cue="5" style="left:120px;top:640px;width:1660px">Lay data out by how the hot loop reads it, <span class="c-amber">not by what it is called.</span></div>
+</div>

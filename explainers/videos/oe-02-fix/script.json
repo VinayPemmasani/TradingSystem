@@ -1,0 +1,33 @@
+[
+{
+"id": "title",
+"title": "FIX 4.4",
+"text": "FIX is the common language of order entry: brokers, buy-side desks and many venues speak it. Let's follow one order, from NewOrderSingle to its final fill."
+},
+{
+"id": "frame",
+"title": "Tag equals value",
+"text": "FIX is text: a run of tag equals value fields, each ended by the SOH byte, hex 01. Tag 8, BeginString, always comes first. Tag 9, BodyLength, counts the characters from the message type up to the checksum. Tag 35 says what the message is. Then the header: sender, target, sequence number and sending time. Tag 10 ends it: the sum of every byte before it, modulo 256, as three digits."
+},
+{
+"id": "order",
+"title": "NewOrderSingle",
+"text": "Here is a limit order to buy 100 shares at 187.25. Thirty five equals D, NewOrderSingle. ClOrdID is our id for the order, and must be unique. Side 1 means buy, and OrdType 2 means limit, with the price in tag 44 as a decimal string. TimeInForce zero is a day order. The body is 127 characters, and the checksum 245. The whole message is 150 bytes, against 47 for the same order in OUCH."
+},
+{
+"id": "reports",
+"title": "Execution reports",
+"text": "Every answer is an ExecutionReport, 35 equals 8. ExecType says what just happened; OrdStatus says where the order stands now. First, New: accepted, nothing filled. Then a trade of 40 shares at 187.25, so the order is partially filled. Then 60 more at 187.20, and it is filled. All along, LeavesQty equals OrderQty minus CumQty, and AvgPx tracks the average price, here 187.22."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "In the lab, fixgw speaks this subset of FIX 4.4, and maps it onto OUCH for simex. A NewOrderSingle becomes an Enter Order, with a UserRefNum that fixgw assigns, while fixgw keeps the ClOrdID. The decimal price becomes an integer with four implied decimals; more decimal places are rejected. Each OUCH answer comes back as an ExecutionReport: Accepted as New, Executed as a Trade. And the lab's fix-client checks the arithmetic on every report: CumQty grows by LastQty, and LeavesQty always equals OrderQty minus CumQty."
+},
+{
+"id": "take",
+"title": "FIX or native?",
+"text": "So why do the fastest firms use OUCH? FIX is parsed character by character, and here it is three times the size. But one FIX engine reaches many brokers and venues. So many firms speak FIX for reach, and a native binary protocol where every microsecond counts. The lab has both: the trader speaks OUCH directly, and fix-client goes through fixgw.",
+"hold": 1.0
+}
+]

@@ -1,0 +1,11 @@
+# ex-02-priority: Price-time vs pro-rata allocation
+
+## Key facts and sources
+- Nasdaq's book processing works in this order: a better price first, then "Equally priced Orders with a Display Attribute will be ranked in time priority", then non-displayed orders in time priority. The same rule also sets out the anti-internalization options. Source: Nasdaq rulebook, BX Equity 4, Rule 4757(a), https://listingcenter.nasdaqomx.com/rulebook/bx/rules/BX%20Equity%204. The Nasdaq Stock Market's own Rule 4757 has the same structure, but I read only the BX text.
+- CME's pro-rata worked example: a 50-lot aggressor against resting quantities of 5, 9, 57, 4, 28 and 300 (403 in total). Each order's share is rounded down. Allocations below the 2-lot PR Min become 0, so 47 lots are allocated and 3 are left over. Source: CME Client Systems Wiki, "CME Globex Matching Algorithm Steps", https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457218521. On that page the 3 leftover lots go to the K algorithm's leveling step. For plain pro-rata (C), the leftover goes to FIFO. The video says "the last 3 go out in time order", which matches C and A.
+- There are nine algorithms (A, F, T, S, C, K, O, Q, V). Allocation (A) runs a top order, then pro-rata with a 2-lot minimum, then FIFO. SOFR Pro Rata has a top order and a 2-contract minimum. Source: CME Client Systems Wiki, "Supported Matching Algorithms", https://cmegroupclientsite.atlassian.net/wiki/spaces/EPICSANDBOX/pages/457218479. The SOFR futures contract specifications list "A Algorithm" with top order allocation: https://www.cmegroup.com/content/dam/cmegroup/education/files/sofr-futures-contract-specifications.pdf
+- Lab: the engine is price-time only. `cancel()` reduces an order in place and keeps its priority. `replace()` "loses time priority". Source: `libs/match/include/lab/match/engine.hpp`. `MakerParams::hold_ticks = 1` and its comment come from `firm/strategy/include/lab/strategy/market_maker.hpp`.
+
+## Unsure / left out
+- I did not say which algorithm ES, ZN and other products use. The only per-product list I found was a Databento blog post, which is not a primary source.
+- The title-card example (A, B and C at $10.00) is illustrative.

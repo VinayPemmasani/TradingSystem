@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Volatility",
+  "text": "Volatility sets spreads, position limits, and how far a signal must move before it matters. It cannot be observed, only estimated. Here are the classic estimators, from daily bars down to ticks."
+ },
+ {
+  "id": "close",
+  "title": "Close to close",
+  "text": "The simplest uses closes: square the log return from one close to the next, and average over days. It ignores everything in between, so twenty days give just twenty noisy numbers. Take a day that opened at 50.00, traded up to 50.60 and down to 49.70, and closed at 50.20, after a previous close of 49.90. Its close-to-close return is 0.6 percent, though the day's range was almost 1.8 percent."
+ },
+ {
+  "id": "range",
+  "title": "Range estimators",
+  "text": "Parkinson, in 1980, used the high and the low: variance is the squared log range, over four log two. Garman and Klass, the same year, also used the open and close. For our day, Parkinson gives 1.08 percent, and Garman-Klass 1.25 percent. Under ideal assumptions they are about 4.9 and 7.4 times as efficient as squared close-to-close returns."
+ },
+ {
+  "id": "realised",
+  "title": "Realised variance",
+  "text": "With intraday data, add up squared intraday returns. A six-and-a-half-hour session has seventy-eight five-minute returns, so one day gives seventy-eight squares instead of one. Andersen and Bollerslev showed in 1998 that this realised measure makes a far sharper yardstick than one squared daily return. In theory, sampling more often only makes it more accurate."
+ },
+ {
+  "id": "noise",
+  "title": "Microstructure noise",
+  "text": "In practice, trade prices bounce between bid and ask. I simulated forty days with a true daily volatility of 1.5 percent, trading at a one-cent half spread. Sampled every five minutes, realised volatility comes out at 1.54 percent. Sampled every second, it says 4.7 percent, mostly bounce. Zhang, Mykland and Aït-Sahalia showed why the all-tick estimator fails, and fixed it by combining two time scales."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab has its own yardsticks. The agents' summary prints the hidden value's volatility per step, in ticks. The quant lab draws its trend stock with 1.2 percent daily volatility while trending, and 1.6 percent while ranging. So an estimate from its simulated prices can be checked against the truth. For quoting, estimate from mids, not trades, to keep bounce out."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pitfalls: overnight gaps fall outside the day's range, so add them separately. Range estimators assume no drift and continuous trading. To annualize, multiply daily variance by 252, the usual count of trading days. Use ranges for bars, five-minute sums or noise-robust estimators for ticks, and check the scale against a known truth."
+ }
+]

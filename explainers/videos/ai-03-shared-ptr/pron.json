@@ -1,0 +1,8 @@
+[
+["std::shared_ptr", "standard shared pointer"],
+["shared_ptr", "shared pointer"],
+["\\blibstdc\\+\\+", "lib standard C plus plus"],
+["\\bVM\\b", "V M"],
+["\\b5\\.9\\b", "five point nine"],
+["lock-prefixed", "lock prefixed"]
+]

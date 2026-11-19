@@ -1,0 +1,134 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 01 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">OUCH 5.0</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Nasdaq's binary order entry protocol, byte by byte.</div>
+<div class="node" data-cue="1" style="left:140px;top:580px;width:300px;height:130px;border-color:var(--teal)">Firm</div>
+<div class="node" data-cue="1" style="left:1480px;top:580px;width:300px;height:130px;border-color:var(--blue)">Exchange</div>
+<svg class="full"><path id="o1-a" class="draw" data-cue="1" data-d="0.3" d="M 450 620 L 1470 620" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="o1-b" class="draw" data-cue="2" d="M 1470 670 L 450 670" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="o1-a" data-cue="1" data-d="0.8" data-dur="1.6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="o1-b" data-cue="2" data-d="0.6" data-dur="1.6" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="lbl c-amber" data-cue="1" data-d="0.6" style="left:760px;top:570px">O · enter order</div>
+<div class="lbl c-green" data-cue="2" data-d="0.6" style="left:760px;top:690px">A · accepted · E · executed</div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Two pipes to the exchange</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:330px;width:300px;height:150px;border-color:var(--teal)">Our firm</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:1500px;top:330px;width:300px;height:340px;border-color:var(--blue)">Nasdaq</div>
+<div class="node" data-cue="1" style="left:120px;top:560px;width:300px;height:110px;border-color:var(--line);color:var(--muted)">everyone else</div>
+<svg class="full">
+<path id="o1-itch" class="draw" data-cue="1" d="M 1490 360 C 1000 250, 700 250, 430 360" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="o1-itch2" class="draw" data-cue="1" data-d="0.3" d="M 1490 640 C 1000 700, 700 700, 430 620" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path id="o1-up" class="draw" data-cue="2" d="M 430 410 L 1490 410" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/>
+<path id="o1-dn" class="draw" data-cue="2" data-d="0.3" d="M 1490 460 L 430 460" stroke="var(--green)" stroke-width="4" fill="none" marker-end="url(#ah-green)"/>
+</svg>
+<div class="tag c-violet" data-cue="1" style="left:840px;top:240px;border-color:var(--violet)">ITCH · to everyone</div>
+<div class="pkt" data-path="o1-itch" data-cue="1" data-d="0.5" data-dur="1.4" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="pkt" data-path="o1-itch2" data-cue="1" data-d="0.8" data-dur="1.4" data-loop="1" style="background:var(--violet);box-shadow:0 0 14px var(--violet)"></div>
+<div class="tag c-amber" data-cue="2" data-d="0.3" style="left:860px;top:350px;border-color:var(--amber)">OUCH · private</div>
+<div class="pkt" data-path="o1-up" data-cue="3" data-dur="1.3" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="o1-dn" data-cue="4" data-dur="1.3" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="card" data-cue="3" style="left:120px;top:770px;width:820px;border-color:var(--amber)"><div class="ct c-amber">up: Soup U · unsequenced</div><div class="cd">Enter, Replace, Cancel, Query</div></div>
+<div class="card" data-cue="4" style="left:980px;top:770px;width:820px;border-color:var(--green)"><div class="ct c-green">down: Soup S · sequenced</div><div class="cd">replayable after a reconnect (md-03)</div></div>
+</div>
+
+<div class="scene" id="s-enter">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Enter Order <span class="c-amber">· 47 bytes</span></div>
+<div class="bytes" style="left:137px;top:290px">
+<div data-cue="0" data-d="0.3" style="width:35px;background:var(--amber)">O</div>
+<div data-cue="1" style="width:140px;background:var(--teal)" data-hl="1" data-hlend="2">UserRefNum</div>
+<div data-cue="2" style="width:35px;background:var(--pink)">S</div>
+<div data-cue="2" data-d="0.3" style="width:140px;background:var(--green)">Quantity</div>
+<div data-cue="3" style="width:280px;background:var(--violet)">Symbol</div>
+<div data-cue="3" data-d="0.3" style="width:280px;background:var(--amber)">Price</div>
+<div data-cue="4" style="width:35px;background:#9fb6c4">T</div>
+<div data-cue="4" data-d="0.15" style="width:35px;background:#9fb6c4">D</div>
+<div data-cue="4" data-d="0.3" style="width:35px;background:#9fb6c4">C</div>
+<div data-cue="4" data-d="0.45" style="width:35px;background:#9fb6c4">I</div>
+<div data-cue="4" data-d="0.6" style="width:35px;background:#9fb6c4">X</div>
+<div data-cue="5" style="width:490px;background:var(--blue)">ClOrdID</div>
+<div data-cue="6" style="width:70px;background:#55697a;color:#eef4f7">App</div>
+</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:137px;top:372px">0</div>
+<div class="lbl" data-cue="1" style="left:172px;top:372px">1</div>
+<div class="lbl" data-cue="2" style="left:312px;top:372px">5</div>
+<div class="lbl" data-cue="2" style="left:347px;top:372px">6</div>
+<div class="lbl" data-cue="3" style="left:487px;top:372px">10</div>
+<div class="lbl" data-cue="3" style="left:767px;top:372px">18</div>
+<div class="lbl" data-cue="4" style="left:1047px;top:372px">26</div>
+<div class="lbl" data-cue="5" style="left:1222px;top:372px">31</div>
+<div class="lbl" data-cue="6" style="left:1712px;top:372px">45</div>
+<div class="card" data-cue="1" style="left:120px;top:470px;width:540px;height:170px;border-color:var(--teal)"><div class="ct c-teal">UserRefNum · u32</div><div class="cd">our number for the order</div></div>
+<div class="card" data-cue="2" style="left:690px;top:470px;width:540px;height:170px;border-color:var(--green)"><div class="ct"><span class="c-pink">Side</span> · <span class="c-green">Qty u32</span></div><div class="cd">B buy · S sell · T short · E exempt</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:470px;width:540px;height:170px;border-color:var(--violet)"><div class="ct"><span class="c-violet">Symbol 8</span> · <span class="c-amber">Price 8</span></div><div class="cd">alpha · integer, 4 decimals</div></div>
+<div class="card" data-cue="4" style="left:120px;top:700px;width:540px;height:170px;border-color:#9fb6c4"><div class="ct">five 1-byte flags</div><div class="cd">TIF · Display · Capacity<br>ISO · Cross type</div></div>
+<div class="card" data-cue="5" style="left:690px;top:700px;width:540px;height:170px;border-color:var(--blue)"><div class="ct c-blue">ClOrdID · 14</div><div class="cd">free text, for our records</div></div>
+<div class="card" data-cue="6" style="left:1260px;top:700px;width:540px;height:170px;border-color:#55697a"><div class="ct">Appendage Length · 2</div><div class="cd">bytes of optional fields after it</div></div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Buy 100 at $187.25</div>
+<table class="t" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1000px">
+<tr><th>field</th><th>wire bytes (hex)</th><th>means</th></tr>
+<tr><td class="c-amber">type</td><td>4F</td><td>O</td></tr>
+<tr><td class="c-teal">UserRefNum</td><td>00 00 00 07</td><td>7</td></tr>
+<tr><td class="c-pink">side</td><td>42</td><td>B</td></tr>
+<tr><td class="c-green">quantity</td><td>00 00 00 64</td><td>100</td></tr>
+<tr data-hl="2" data-hlend="3"><td class="c-violet">symbol</td><td>41 41 50 4C 20 20 20 20</td><td>AAPL····</td></tr>
+<tr data-hl="1" data-hlend="2"><td class="c-amber">price</td><td>00 00 00 00 00 1C 92 74</td><td>1,872,500</td></tr>
+<tr data-hl="3" data-hlend="4"><td>TIF</td><td>30</td><td>0 · day</td></tr>
+</table>
+<div class="tag c-amber" data-cue="1" data-d="0.4" style="left:120px;top:770px;border-color:var(--amber);font-size:24px">187.25 × 10,000 = 1,872,500 = 0x1C9274</div>
+<div class="lbl" data-cue="2" data-d="0.3" style="left:120px;top:830px">· = space (0x20)</div>
+<div class="lbl c-teal" data-cue="0" style="left:1240px;top:220px">firm</div>
+<div class="lbl c-blue" data-cue="0" style="left:1690px;top:220px">exchange</div>
+<svg class="full"><path class="draw" data-cue="0" d="M 1270 260 L 1270 900" stroke="#3c5463" stroke-width="3" fill="none"/><path class="draw" data-cue="0" d="M 1740 260 L 1740 900" stroke="#3c5463" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="0" data-d="0.6" d="M 1275 300 L 1730 340" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="4" d="M 1735 460 L 1280 500" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="5" d="M 1735 680 L 1280 720" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="msg c-amber" data-cue="0" data-d="0.8" style="left:1360px;top:260px;border-color:var(--amber)">O · 47 B</div>
+<div class="msg c-green" data-cue="4" data-d="0.3" style="left:1300px;top:510px;border-color:var(--green)">A Order Accepted · 64 B</div>
+<div class="lbl" data-cue="4" data-d="0.8" style="left:1300px;top:565px">+ Order Reference Number</div>
+<div class="msg c-green" data-cue="5" data-d="0.3" style="left:1300px;top:730px;border-color:var(--green)">E Order Executed · 36 B</div>
+<div class="lbl" data-cue="5" data-d="0.8" style="left:1300px;top:785px">qty · price · liquidity · match no.</div>
+</div>
+
+<div class="scene" id="s-ref">
+<div class="h2" data-cue="0" style="left:120px;top:110px">UserRefNum only goes up</div>
+<div class="lbl" data-cue="1" style="left:120px;top:250px">account FIRM01, today</div>
+<div class="chip" data-cue="1" data-d="0.0" style="left:120px;top:300px;background:var(--teal)">1</div>
+<div class="chip" data-cue="1" data-d="0.25" style="left:210px;top:300px;background:var(--teal)">2</div>
+<div class="chip" data-cue="1" data-d="0.5" style="left:300px;top:300px;background:var(--teal)">3</div>
+<div class="chip" data-cue="1" data-d="0.75" style="left:390px;top:300px;background:var(--teal)">4</div>
+<div class="chip" data-cue="1" data-d="1.0" style="left:480px;top:300px;background:var(--teal)">5</div>
+<div class="chip" data-cue="1" data-d="1.25" style="left:570px;top:300px;background:var(--teal)">6</div>
+<div class="chip" data-cue="1" data-d="1.5" style="left:660px;top:300px;background:var(--teal)" data-hl="4">7</div>
+<div class="tag c-green" data-cue="1" data-d="1.8" style="left:770px;top:315px;border-color:var(--green)">each one new → processed</div>
+<div class="chip" data-cue="2" style="left:120px;top:450px;background:var(--red)">5</div>
+<div class="tag c-red" data-cue="2" data-d="0.3" style="left:210px;top:465px;border-color:var(--red)">5 ≤ 7 → ignored, a retransmission · no reject</div>
+<div class="card" data-cue="3" style="left:120px;top:580px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">reconnect → resend orders 6 and 7 to be safe</div><div class="cd">if they arrived the first time, the resend is ignored · never a duplicate order</div></div>
+<div class="msg c-amber" data-cue="4" style="left:120px;top:790px;border-color:var(--amber)">Q Account Query · 3 B</div>
+<svg class="full"><path class="draw" data-cue="4" data-d="0.3" d="M 470 810 L 820 810" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="msg c-green" data-cue="4" data-d="0.7" style="left:840px;top:790px;border-color:var(--green)">Q Response · NextUserRefNum = 8</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: libs/ouch</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:900px;font-size:23px"><span class="line c">// lab/ouch/messages.hpp</span><span class="line">struct EnterOrder {</span><span class="line">  LAB_OUCH_MESSAGE(<span class="g">'O'</span>, <span class="r">47</span>);</span><span class="line" data-hl="0" data-hlend="1">  f(<span class="r">1</span>,  m.user_ref_num);</span><span class="line" data-hl="0" data-hlend="1">  f(<span class="r">5</span>,  m.side);</span><span class="line" data-hl="0" data-hlend="1">  f(<span class="r">6</span>,  m.quantity);</span><span class="line" data-hl="0" data-hlend="1">  f(<span class="r">10</span>, m.symbol);</span><span class="line" data-hl="0" data-hlend="1">  f(<span class="r">18</span>, m.price);</span><span class="line c">  ...</span><span class="line" data-hl="2" data-hlend="3">  f(<span class="r">45</span>, m.appendage_length);</span><span class="line">};</span></div>
+<div class="tag c-green" data-cue="1" style="left:120px;top:770px;border-color:var(--green)">one list → encode() and decode()</div>
+<div class="tag c-red" data-cue="2" style="left:600px;top:770px;border-color:var(--red)">ends ≠ 47 → build fails</div>
+<div class="node" data-cue="3" style="left:1100px;top:230px;width:320px;height:110px;border-color:var(--teal)">trading thread<small>decide, risk, OMS</small></div>
+<div class="node" data-cue="3" data-d="0.4" style="left:1480px;top:230px;width:320px;height:110px;border-color:var(--teal)">order entry<small>owns the socket</small></div>
+<svg class="full"><path id="o1-ring" class="draw" data-cue="3" data-d="0.3" d="M 1425 285 L 1475 285" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="4" d="M 1760 345 L 1760 455" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="lbl" data-cue="3" data-d="0.8" style="left:1100px;top:355px">SPSC ring · no syscall on the trading thread</div>
+<div class="card" data-cue="4" style="left:1100px;top:470px;width:700px;border-color:var(--blue)"><div class="ct c-blue">simex gateway · admit()</div><div class="cs">ref ≤ last ref → ignore<br>qty 0 or too big → J 0x0013<br>price 0 or too high → J 0x001D</div><div class="cd">then to the matching engine</div></div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Three details that bite</div>
+<div class="card" data-cue="1" style="left:120px;top:240px;width:540px;height:330px;border-color:var(--amber)"><div class="ct c-amber">Price(4)</div><div class="cs">max limit<br>199,999.9900<br><br>0x7FFFFFFF<br>214,748.3647<br>= market order</div></div>
+<div class="card" data-cue="2" style="left:690px;top:240px;width:540px;height:330px;border-color:var(--teal)"><div class="ct c-teal">big-endian</div><div class="cs">100 shares<br>= 00 00 00 64<br><br>not 64 00 00 00</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:240px;width:540px;height:330px;border-color:var(--violet)"><div class="ct c-violet">appendage</div><div class="cs">every message<br>ends with<br>2-byte length<br><br>00 00 = none</div></div>
+<div class="take" data-cue="4" style="left:120px;top:660px;width:1680px">OUCH: fixed bytes, one number per order, <span class="c-amber">the shortest path from a decision to the book.</span></div>
+</div>

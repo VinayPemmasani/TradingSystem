@@ -1,0 +1,36 @@
+[
+ {
+  "id": "title",
+  "title": "Ticks and lots",
+  "text": "Every exchange has a grid. Prices move in ticks, and quantities come in lots. That grid shapes spreads, queues and trading costs."
+ },
+ {
+  "id": "why",
+  "title": "Why it matters",
+  "text": "The tick is the smallest step a price can take. On a ten dollar stock, one cent is ten basis points. On a five hundred dollar stock, it is only 0.2 basis points. When the tick is large next to the price, the spread sits at one tick and cannot narrow. So traders compete on queue position instead, and the queues grow long. When the tick is small, prices flicker between levels, and each level is thin."
+ },
+ {
+  "id": "rules",
+  "title": "Rule 612",
+  "text": "In US stocks, Rule 612 of Regulation NMS sets the grid. Quotes at one dollar or more use a one cent tick. Below one dollar, the tick is one hundredth of a cent. In 2024, the SEC adopted a half cent tick for stocks whose average quoted spread is a cent and a half or less. Compliance has been delayed to November 2027, so one cent still applies today. SEC rules also tie the round lot to price: 100 shares up to 250 dollars, down to one share above 10,000 dollars.",
+  "hold": 0.6
+ },
+ {
+  "id": "futures",
+  "title": "Futures ticks",
+  "text": "Futures give each tick a dollar value. The E-mini S&P 500 moves in quarter points, and each point is worth 50 dollars. So one tick is $12.50 per contract. Buy ten contracts, and let the price rise four ticks: that is ten times four times $12.50, or 500 dollars. Three-month SOFR futures tick a quarter of a basis point in the nearest expiries, worth $6.25. Further out, the tick doubles to half a basis point, worth $12.50.",
+  "hold": 0.6
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, a price is an integer with four decimal places. Ten dollars and one cent is stored as 100,100, and one cent is just 100. The market agents step prices by that one cent tick. But the engine itself does not enforce a tick. It checks only that the price is above zero and at most 199,999.99, and the quantity is below a million. A real venue would reject an off-tick price, so the lab's market maker carries its own one cent tick.",
+  "hold": 0.8
+ },
+ {
+  "id": "take",
+  "title": "Takeaway",
+  "text": "A few habits help. Never store prices as floating point; use integers or fixed decimals. Look up the tick for each product, because some ticks change with price. Check sub-dollar stocks, where the tick is far finer. And when the spread is one tick wide, your edge is queue position, not price. The tick is the grid, and the queue forms on it.",
+  "hold": 1.0
+ }
+]

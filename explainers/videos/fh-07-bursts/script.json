@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Bursts",
+"text": "Market data does not arrive at an even rate. It comes in bursts: at the open, at the close, and whenever news hits. A handler is judged by its worst millisecond, not its average one."
+},
+{
+"id": "why",
+"title": "Where the queue lives",
+"text": "A burst is a rate higher than you can process, for a short time. While it lasts, a queue grows somewhere. The engineering questions are where that queue lives, how big it is, and what happens when it fills. Average rates hide this completely. A feed that averages a small fraction of your capacity can still overflow for a few milliseconds."
+},
+{
+"id": "queues",
+"title": "Four queues",
+"text": "In the lab, a packet can wait in four places. The kernel's socket receive buffer, which itch-fh asks to make 16 megabytes. The packet ring between the two threads: 4096 slots of 1536 bytes, about 6 megabytes. The sequencer's held window behind a gap: 262,144 messages. And downstream, the Aeron log that feeds the traders. The ring and the window are allocated before the feed starts, so absorbing a burst never allocates."
+},
+{
+"id": "full",
+"title": "When they fill",
+"text": "Each one fails differently. A full socket buffer drops packets inside the kernel, and they turn into gaps. A full packet ring drops on the rx thread, but counts every drop. A full window drops messages too far ahead of a gap, and asks for them again later. A full Aeron log back-pressures the feed handler instead of losing data. Every drop becomes a gap to recover. Every stall becomes latency."
+},
+{
+"id": "measured",
+"title": "Overload, measured",
+"text": "Here is overload, from the run in video 3. With far more busy threads than cores, the book thread fell behind. The median time from packet receive to book update was 8.5 milliseconds. The 99th percentile was 42 milliseconds. That is time spent waiting in queues, not working. Then the window overflowed, and gaps were given up. And it was not the network's fault. A run with no injected loss on the same box still had a median of 24 milliseconds."
+},
+{
+"id": "pros",
+"title": "What pros do",
+"text": "So what do pros do? Size buffers for the worst burst you have recorded, and fault them in at startup. Batch: recvmmsg takes up to 32 packets per system call. Keep the work per message small and constant, so the drain rate stays high. Watch queue depth, not just drops. Report percentiles, never an average. And for consumers that cannot keep up, conflate: send the latest state instead of every change. The lab's vendor server does that per subscription. And the lab pins each hot thread to a core of its own, so a burst never waits for the scheduler."
+},
+{
+"id": "takeaway",
+"title": "Takeaway",
+"text": "Bursts are certain. Decide where the queue lives, make it big enough and visible, and make every overflow a gap you can recover.",
+"hold": 1.0
+}
+]

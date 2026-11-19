@@ -1,0 +1,6 @@
+[
+["\\bUDP\\b","U D P"],["\\bTCP\\b","T C P"],["\\bRFC\\b","R F C"],["\\bIP\\b","I P"],
+["MoldUDP64","mold U D P sixty four"],["SoupBinTCP","soup bin T C P"],["TCP_NODELAY","T C P no delay"],
+["\\b1472\\b","fourteen seventy two"],["\\b1500\\b","fifteen hundred"],["\\b200\\b","two hundred"],["\\b100\\b","a hundred"],
+["\\b20\\b","twenty"],["\\b8\\b","eight"],["\\b6\\b","six"],["\\b3\\b","three"]
+]

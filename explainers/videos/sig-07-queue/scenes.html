@@ -1,0 +1,65 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 07 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Queue position and<br>fill probability</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">What is ahead of you decides whether you fill.</div>
+<div id="ti-q" data-cue="1" data-anim="fade" style="left:140px;top:660px;width:1640px;height:120px"></div>
+</div>
+
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Each price level is a queue</div>
+<div id="wy-q" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:250px;width:1700px;height:200px"></div>
+<div class="fcard" data-cue="2" style="left:120px;top:520px;width:900px"><span class="lbl">Moallemi &amp; Yuan · queue position valuation</span><div class="body">for some large-tick stocks, queue value is of the <span class="c-amber">same order of magnitude as the bid-ask spread</span></div></div>
+<div class="code" data-cue="3" style="left:1080px;top:520px;width:740px;font-size:22px"><span class="c">// market_maker.hpp</span>
+<span class="v">uint32_t</span> hold_ticks = <span class="r">1</span>;
+<span class="c">// every replace goes to the</span>
+<span class="c">// back of the queue</span>
+<span class="k">return</span> diff &gt; p.hold_ticks * p.tick;</div>
+</div>
+
+<div class="scene" id="s-model">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Modeling the queue from top of book</div>
+<div class="tag c-muted" data-cue="0" data-d="0.4" style="left:120px;top:210px">order-level data: count exactly (signals video)</div>
+<div class="tag c-blue" data-cue="1" style="left:120px;top:270px">top of book only: research/lab_research/backtest.py</div>
+<div class="card" data-cue="2" style="left:120px;top:360px;width:400px;height:300px;border-color:var(--violet)"><div class="ct c-violet" style="font-size:28px">Join a level</div><div class="cs">behind every share already there</div></div>
+<div class="card" data-cue="2" data-d="1.2" style="left:550px;top:360px;width:400px;height:300px;border-color:var(--amber)"><div class="ct c-amber" style="font-size:28px">Step inside</div><div class="cs">first in a new level</div></div>
+<div class="card" data-cue="3" style="left:980px;top:360px;width:400px;height:300px;border-color:var(--red)"><div class="ct c-red" style="font-size:28px">Traded</div><div class="cs">at your price: off the front</div></div>
+<div class="card" data-cue="4" style="left:1410px;top:360px;width:400px;height:300px;border-color:var(--pink)"><div class="ct c-pink" style="font-size:28px">Cancelled</div><div class="cs">pro rata: ahead × gone / level</div></div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example</div>
+<div id="wk-q" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:260px;width:1700px;height:150px"></div>
+<div class="fcard" data-cue="1" style="left:120px;top:480px;width:760px"><div class="body">level 1,000 → 700 · traded 200<br>cancelled = 1,000 − 200 − 700 = <span class="c-pink">100</span></div></div>
+<div class="fcard pink" data-cue="2" style="left:120px;top:650px;width:760px"><div class="body">ahead's share: 100 × 600 / 1,000 = <span class="c-pink">60</span></div></div>
+<div class="fcard amber" data-cue="3" style="left:960px;top:480px;width:860px"><div class="math" style="font-size:40px">ahead = 600 − 200 − 60 = <span class="val c-amber">340</span></div></div>
+<div class="tag c-green" data-cue="4" style="left:960px;top:680px">fill when traded at your price &gt; ahead</div>
+</div>
+
+<div class="scene" id="s-prob">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A race: your queue vs the price</div>
+<div class="fcard" data-cue="1" style="left:120px;top:230px;width:760px"><span class="lbl">expected wait</span><div class="math" style="font-size:40px"><span class="frac"><span>340 shares</span><span>50 shares / s</span></span> ≈ <span class="val c-amber">7 s</span></div></div>
+<div id="pb-race" data-cue="2" data-anim="fade" style="left:960px;top:230px;width:860px;height:250px"></div>
+<div class="fcard violet" data-cue="3" style="left:120px;top:540px;width:1000px"><span class="lbl">Cont, Stoikov &amp; Talreja · Operations Research 2010</span><div class="body">book as queues with random limit orders, market orders and cancels</div></div>
+<div class="fcard amber" data-cue="4" style="left:120px;top:720px;width:1000px"><div class="math" style="font-size:36px">P( bid order executes before the ask moves | book )</div></div>
+<div class="fcard green" data-cue="5" style="left:1160px;top:600px;width:680px"><div class="math" style="font-size:30px">value ≈ P(fill) × (edge − adverse selection)</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: one number per order</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:210px;width:1700px;font-size:23px"><span class="c"># research/lab_research/backtest.py, _Side.update()</span>
+<span class="k">if</span> traded &gt; self.ahead:
+    <span class="k">return True</span>                                   <span class="c"># filled</span>
+gone = max(<span class="r">0</span>, prev_qty - traded - (best_qty <span class="k">if</span> best == prev_best <span class="k">else</span> <span class="r">0</span>))
+self.ahead = max(<span class="r">0.0</span>, self.ahead - traded - gone * self.ahead / prev_qty)</div>
+<table class="t" data-cue="1" style="left:120px;top:520px;width:1100px"><tr><th>hold_ticks</th><th>behaviour</th></tr>
+<tr data-cue="2"><td class="c-amber">0</td><td>replace on every quote change → back of the queue</td></tr>
+<tr data-cue="3"><td class="c-amber">1</td><td>stay unless the quote moves more than a tick</td></tr>
+<tr data-cue="4"><td class="c-amber">2</td><td>stay longer, risk a staler price</td></tr></table>
+<div class="tag c-blue" data-cue="4" style="left:120px;top:790px">python3 research/backtest.py aapl.csv --hold-ticks 0 1 2 --skew-ticks 0 1 2</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:820px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Pro rata is a guess</div><div class="cs">Check it on order-level data.</div></div>
+<div class="card" data-cue="1" style="left:990px;top:150px;width:820px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Simplified fills</div><div class="cs">Whole lots, no effect of your own orders.</div></div>
+<div class="big" data-cue="2" style="left:120px;top:480px;width:1700px">Know <span class="c-amber">what is ahead of you</span>:<br>it decides if you fill, and what it's worth.</div>
+</div>

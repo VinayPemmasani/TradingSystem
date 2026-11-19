@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "FX spot",
+  "text": "Foreign exchange is the largest market in the world, and it has no exchange at all. It trades over the counter, between dealers, non-banks and their clients."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: one currency for another, such as euros for dollars. Who trades: dealer banks, non-banks, asset managers, companies and central banks. Where: interdealer platforms like EBS and Refinitiv Matching, multi-bank platforms, and single-bank ones. There is no consolidated tape; each venue shows a slice. Electronic trading was 59 percent of turnover. Spot settles within two business days, and most interbank trades settle payment versus payment through CLS. The BIS triennial survey measured 9.6 trillion dollars a day in April 2025, 3 trillion of it spot."
+ },
+ {
+  "id": "streams",
+  "title": "Streams, not a book",
+  "text": "Most clients do not trade on a public order book. They receive streams of prices from many liquidity providers, merged by an aggregator. Each provider can quote each client differently, by size and by relationship. Dealers then internalise the flow, matching clients against each other before they hedge outside. The BIS found internalisation ratios upwards of 80 percent in the major hubs."
+ },
+ {
+  "id": "lastlook",
+  "title": "Last look",
+  "text": "The distinctive rule is last look. When a client hits a streamed price, the provider gets a final chance to accept or reject it. An illustrative case. A provider streams euro dollar at 1.08502 bid and 1.08505 offered. The client buys at 1.08505. In the last look window the market jumps to 1.08520, and the provider rejects. The FX Global Code, in principle 17, says providers must be open about how they use last look. And they should not trade on the client's request during that window."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab has no FX venue, but one piece maps across. With no consolidated tape, many FX users watch vendor composite rates. The lab's OMM JSON server speaks the public Refinitiv WebSocket API, the message model such a vendor uses. A real FX desk adds an aggregator merging many streams, each with its own credit line and reject rate."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. Streamed prices are tailored per client, so your price is yours alone. Measure each provider's reject rate and hold time, because a rejected price is not a price. Credit limits sit with each counterparty, so a full line blocks even the best price. And the market runs around the clock on weekdays, thinning between regional sessions."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "FX is the biggest market, with no exchange and no tape. Prices come from relationships, so judge a provider by its fills, not by its quotes."
+ }
+]

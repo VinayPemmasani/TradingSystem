@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Drop copy",
+"text": "Your trading system says you bought 300 shares. Is that true? A drop copy is a second, independent record of every execution, straight from the exchange."
+},
+{
+"id": "why",
+"title": "Why a second copy",
+"text": "The trading system's view of its fills can be wrong: a bug, a dropped message, a crash and restart. The back office and risk team need a record that doesn't depend on it. So the exchange sends every execution again, on a separate session, to a separate reader. The market access rule even requires that surveillance staff get immediate post-trade execution reports."
+},
+{
+"id": "flow",
+"title": "Same fill, two paths",
+"text": "One trade in the matching engine produces several messages. The firm's order session gets Order Executed. The public feed shows the trade anonymously. And the drop copy session gets an Execution Report for the account. All three carry the same match number, so they can be joined later. The public feed carries no account at all, so only the firm's two copies say whose trade it was."
+},
+{
+"id": "layout",
+"title": "The lab's format · 57 bytes",
+"text": "The lab defines its own drop copy, riding on SoupBinTCP like OUCH. Each Execution Report is 57 bytes. A type byte, D, and an eight byte timestamp. The six byte account, and the firm's UserRefNum. Side, quantity, symbol and price. The eight byte match number, the liquidity flag, and the order's reference number on the ITCH feed. Prices carry four implied decimals, as in OUCH, and every integer is big-endian."
+},
+{
+"id": "recon",
+"title": "Reconciling",
+"text": "At the end of the run, the lab joins the trader's fill log with the drop copy, on match number and UserRefNum. A fill on both sides must agree on side, quantity, price and symbol. A fill only the trader saw, or only the exchange reported, is a break. In the lab, reconciliation must come out clean, or the test fails. And because each report also carries the ITCH order number, every fill can be joined to the public feed. The match number alone is almost enough. Adding the UserRefNum keeps even a self-trade, two of the firm's own orders in one match, from being mixed up."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "simex serves the drop copy on the order entry port, to a special account. That account cannot send orders: anything but heartbeats and logout is ignored. Its sequenced stream holds every firm execution, in the order the matching engine made them. And because it is SoupBinTCP, a reader that disconnects logs back in and replays from where it stopped. The historical orders that simex replays belong to no account, so their side of a trade is never reported."
+},
+{
+"id": "take",
+"title": "Takeaway",
+"text": "Real venues each define their own drop copy formats. The idea is the same everywhere: never let the system that trades be the only one that counts. Positions come from the exchange's record, and the trading system has to agree with it. Reconcile every day, and treat any break as an incident, however small.",
+"hold": 1.0
+}
+]

@@ -1,0 +1,74 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">HFT &amp; HEDGE FUND STRATEGIES · 02 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Pairs trading</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Statistical arbitrage on a relationship, not a direction.</div>
+<div id="ti-c" data-cue="0" data-d="0.8" data-anim="fade" style="left:140px;top:500px;width:1000px;height:330px"></div>
+<div class="chip" data-cue="1" style="left:1250px;top:560px;background:var(--green)">buy the cheap twin</div>
+<div class="chip" data-cue="1" data-d="0.4" style="left:1250px;top:630px;background:var(--red)">sell the rich twin</div>
+<div class="chip" data-cue="1" data-d="0.8" style="left:1250px;top:700px;background:var(--amber)">wait for the gap to close</div>
+</div>
+
+<div class="scene" id="s-form">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Formation: find the closest path</div>
+<div class="node teal" data-cue="0" style="left:120px;top:230px;width:330px"><div class="t">stock A</div><div class="s">e.g. share class 1</div></div>
+<div class="node violet" data-cue="0" data-d="0.3" style="left:120px;top:400px;width:330px"><div class="t">stock B</div><div class="s">e.g. share class 2</div></div>
+<div class="src" data-cue="1" style="left:120px;top:590px;width:400px">Gatev, Goetzmann &amp; Rouwenhorst, Review of Financial Studies 19(3), 2006</div>
+<div id="fo-c" data-cue="2" data-anim="fade" style="left:560px;top:220px;width:1240px;height:470px"></div>
+<div class="tag c-muted" data-cue="2" data-d="0.3" style="left:660px;top:230px">12-month formation · normalised to 1.0 · dividends reinvested</div>
+<div class="fcard amber" data-cue="3" style="left:560px;top:740px;width:1240px"><span class="lbl">distance, smallest wins</span><div class="math">SSD<span class="eq">=</span>Σ<sub><i>t</i></sub> ( <i>P̂</i><sub>A,<i>t</i></sub> − <i>P̂</i><sub>B,<i>t</i></sub> )²</div></div>
+</div>
+
+<div class="scene" id="s-trade">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Trading: open at 2σ, close at the cross</div>
+<div id="tr-c" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:1300px;height:560px"></div>
+<div class="tag c-amber" data-cue="1" style="left:1440px;top:366px">+2σ</div>
+<div class="tag c-amber" data-cue="1" style="left:1440px;top:564px">−2σ</div>
+<div class="fcard" data-cue="1" data-d="0.8" style="left:1520px;top:400px;width:300px"><span class="lbl">open</span><div class="body"><span class="c-red">sell</span> the riser<br><span class="c-green">buy</span> the faller</div></div>
+<div class="fcard" data-cue="2" style="left:1520px;top:650px;width:300px;padding:12px 22px"><span class="lbl">close</span><div class="body" style="font-size:26px">prices cross, or 6 months end</div></div>
+<div class="fcard teal" data-cue="3" style="left:120px;top:800px;width:1300px;padding:12px 26px"><span class="body">$ long = $ short → a market-wide move mostly cancels</span></div>
+</div>
+
+<div class="scene" id="s-lose">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The edge, and how it breaks</div>
+<div id="lo-c" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:1200px;height:560px"></div>
+<div class="tag c-green" data-cue="1" style="left:700px;top:620px">temporary flow → gap reverts</div>
+<div class="card pink" data-cue="2" style="left:1380px;top:230px;width:420px"><div class="ct c-pink">permanent gap</div><div class="cs">takeover<br>profit warning<br>new business</div></div>
+<div class="tag c-pink" data-cue="3" style="left:880px;top:250px">widening: biggest loss</div>
+<div class="card pink" data-cue="4" style="left:1380px;top:560px;width:420px"><div class="ct c-pink">crowding</div><div class="cs">similar books unwind together</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: pairs.hpp</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:210px;width:860px;font-size:23px"><span class="line" data-hl="0" data-hlend="1">x = log(mid_a) - log(mid_b);</span><span class="line" data-hl="1" data-hlend="2">z = (x - mean) / sd;   <span class="c">// rolling window</span></span><span class="line" data-hl="1" data-hlend="2"><span class="k">if</span> (flat &amp;&amp; |z| &gt; <span class="r">2.0</span>) enter;</span><span class="line" data-hl="2" data-hlend="3"><span class="k">if</span> (|z| &lt; <span class="r">0.3</span> || z crossed <span class="r">0</span>) exit;</span><span class="line" data-hl="3" data-hlend="4"><span class="k">if</span> (|z| &gt; <span class="r">4.0</span>) stop, wait for |z| &lt; <span class="r">0.3</span>;</span><span class="line">legs: equal dollars, round lots</span></div>
+<div class="src" data-cue="0" style="left:120px;top:520px">firm/strategy/include/lab/strategy/pairs.hpp (abridged)</div>
+<div class="fcard blue" data-cue="4" style="left:1020px;top:210px;width:780px"><span class="lbl">quant-real · GOOGL/GOOG · 2019-01-30 · z</span><div id="lb-c" style="position:relative;width:730px;height:380px"></div></div>
+<div class="fcard pink" data-cue="4" data-d="0.8" style="left:1020px;top:690px;width:370px"><span class="lbl">round trips</span><div class="h3">10 · 3 won</div></div>
+<div class="fcard pink" data-cue="4" data-d="1.0" style="left:1430px;top:690px;width:370px"><span class="lbl">P&amp;L</span><div class="h3 c-pink">−$1,632</div></div>
+<div class="src" data-cue="4" style="left:120px;top:600px;width:860px">this run: 60-sample window, 1-minute samples, $300k per leg; one sample day, not a performance claim</div>
+</div>
+
+<div class="scene" id="s-infra">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What it needs</div>
+<div class="node blue" data-cue="1" style="left:120px;top:400px;width:330px"><div class="t">clean history</div><div class="s">splits, dividends</div></div>
+<div class="node violet" data-cue="0" style="left:640px;top:400px;width:330px"><div class="t">pair order</div><div class="s">both legs at once</div></div>
+<div class="node green" data-cue="3" style="left:1160px;top:250px;width:330px"><div class="t c-green">buy A</div></div>
+<div class="node red" data-cue="2" style="left:1160px;top:560px;width:330px"><div class="t c-red">short B</div></div>
+<div class="node pink" data-cue="2" data-d="0.5" style="left:1560px;top:560px;width:250px"><div class="t">borrow</div><div class="s">can be recalled</div></div>
+<svg class="full">
+<path id="pi-1" d="M450 460 L640 460" stroke="#6aa8ff" stroke-width="3" fill="none" class="draw" data-cue="1" marker-end="url(#ah)"/>
+<path id="pi-2" d="M970 440 C 1060 440 1080 300 1160 300" stroke="#4fd18b" stroke-width="3" fill="none" class="draw" data-cue="3" marker-end="url(#ah-green)"/>
+<path id="pi-3" d="M970 480 C 1060 480 1080 610 1160 610" stroke="#ff6b5e" stroke-width="3" fill="none" class="draw" data-cue="2" marker-end="url(#ah-red)"/>
+<path d="M1490 610 L1560 610" stroke="#ff8fc8" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="0.5"/>
+</svg>
+<div class="pkt" data-path="pi-2" data-cue="3" data-dur="1.0" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="pkt" data-path="pi-3" data-cue="3" data-dur="1.0" data-loop="1" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="tag c-violet" data-cue="3" data-d="0.4" style="left:640px;top:560px">one leg filled = open risk</div>
+<div class="fcard pink" data-cue="4" style="left:120px;top:740px;width:1690px;padding:14px 26px"><span class="body">cost per round trip ≈ 2 legs × 2 crossings × half-spread, plus fees and impact</span></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:250px;width:1640px">Harvest temporary gaps.<br><span class="c-pink">Lose when a gap turns permanent.</span></div>
+<div class="chip" data-cue="1" style="left:140px;top:640px;background:var(--teal)">pair selection</div>
+<div class="chip" data-cue="1" data-d="0.3" style="left:370px;top:640px;background:var(--pink)">stop rule</div>
+<div class="sub" data-cue="1" data-d="0.6" style="left:560px;top:630px">beat the entry signal</div>
+</div>

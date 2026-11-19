@@ -1,0 +1,66 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 06 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Realised volatility<br>estimators</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">From daily bars down to ticks.</div>
+<div id="ti-ch" data-cue="1" data-anim="fade" style="left:140px;top:640px;width:1640px;height:260px"></div>
+</div>
+
+<div class="scene" id="s-close">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Close to close</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:760px"><div class="math"><i>σ̂</i>² = mean of ( ln <span class="frac"><span><i>C</i><sub><i>t</i></sub></span><span><i>C</i><sub><i>t</i>−1</sub></span></span> )²</div></div>
+<div class="tag c-pink" data-cue="1" style="left:120px;top:420px">one number per day: 20 days → 20 noisy squares</div>
+<div id="cl-ch" data-cue="2" data-anim="fade" style="left:1000px;top:220px;width:820px;height:600px"></div>
+<table class="t" data-cue="2" data-d="0.5" style="left:120px;top:520px"><tr><th>previous close</th><td>49.90</td></tr><tr><th>open</th><td>50.00</td></tr><tr><th>high</th><td class="c-green">50.60</td></tr><tr><th>low</th><td class="c-red">49.70</td></tr><tr><th>close</th><td>50.20</td></tr></table>
+<div class="fcard amber" data-cue="3" style="left:520px;top:520px;width:420px"><span class="lbl">ln(C/C<sub>prev</sub>)</span><div class="stat c-amber" style="font-size:52px">0.60%</div><span class="lbl" style="margin-top:12px">ln(H/L)</span><div class="stat c-violet" style="font-size:52px">1.79%</div></div>
+</div>
+
+<div class="scene" id="s-range">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Range estimators (1980)</div>
+<div class="fcard violet" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:820px"><span class="lbl">Parkinson</span><div class="math"><i>σ̂</i>² = <span class="frac"><span>( ln <i>H</i>/<i>L</i> )²</span><span>4 ln 2</span></span></div></div>
+<div class="fcard violet" data-cue="1" style="left:120px;top:450px;width:820px"><span class="lbl">Garman–Klass</span><div class="math" style="font-size:38px"><i>σ̂</i>² = ½ ( ln <i>H</i>/<i>L</i> )² − (2 ln 2 − 1)( ln <i>C</i>/<i>O</i> )²</div></div>
+<table class="t" data-cue="2" style="left:1040px;top:230px;width:780px"><tr><th>our day</th><th>daily σ</th><th>× √252</th></tr>
+<tr><td>close to close</td><td>0.60%</td><td>9.5%</td></tr>
+<tr data-hl="2" data-hlend="3"><td>Parkinson</td><td class="c-amber">1.08%</td><td>17.1%</td></tr>
+<tr data-hl="2" data-hlend="3"><td>Garman–Klass</td><td class="c-amber">1.25%</td><td>19.8%</td></tr></table>
+<div class="lbl" data-cue="3" style="left:1040px;top:520px">efficiency vs close to close (Molnár)</div>
+<div class="lbl" data-cue="3" data-d="0.2" style="left:1040px;top:575px">close</div><div class="grow bar" data-cue="3" data-d="0.2" data-w="70" style="left:1260px;top:567px;background:#5b6f7c"></div><div class="lbl" data-cue="3" data-d="0.4" style="left:1350px;top:575px">1</div>
+<div class="lbl" data-cue="3" data-d="0.4" style="left:1040px;top:635px">Parkinson</div><div class="grow bar" data-cue="3" data-d="0.4" data-w="343" style="left:1260px;top:627px;background:var(--violet)"></div><div class="lbl" data-cue="3" data-d="0.8" style="left:1620px;top:635px">4.9</div>
+<div class="lbl" data-cue="3" data-d="0.6" style="left:1040px;top:695px">Garman–Klass</div><div class="grow bar" data-cue="3" data-d="0.6" data-w="518" style="left:1260px;top:687px;background:var(--violet)"></div><div class="lbl" data-cue="3" data-d="1.0" style="left:1790px;top:695px">7.4</div>
+</div>
+
+<div class="scene" id="s-realised">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Realised variance</div>
+<div class="fcard amber" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:760px"><div class="math">RV = Σ<sub><i>i</i></sub> <i>r</i><sub><i>i</i></sub>²</div><div class="note">r<sub>i</sub>: intraday log returns</div></div>
+<div id="rv-bars" data-cue="1" data-anim="fade" style="left:120px;top:470px;width:1700px;height:220px"></div>
+<div class="lbl" data-cue="1" data-d="0.3" style="left:120px;top:710px">78 five-minute squared returns, 09:30 to 16:00 (simulated)</div>
+<div class="fcard" data-cue="2" style="left:1000px;top:230px;width:820px"><span class="lbl">Andersen &amp; Bollerslev · Int. Econ. Review 1998</span><div class="body">high-frequency intraday data → far sharper ex-post measure than one squared daily return</div></div>
+<div class="tag c-muted" data-cue="3" style="left:120px;top:780px">theory: sample more often → more accurate …</div>
+</div>
+
+<div class="scene" id="s-noise">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Microstructure noise</div>
+<div id="nz-px" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:220px;width:700px;height:300px"></div>
+<div class="tag c-muted" data-cue="0" data-d="0.6" style="left:140px;top:540px">trades flip between bid and ask</div>
+<div class="fcard" data-cue="1" style="left:120px;top:620px;width:700px"><span class="lbl">my simulation · 40 days</span><div class="body">true σ 1.5% a day · half spread 1¢ · tick 1¢ · $50</div></div>
+<div id="nz-ch" data-cue="1" data-d="0.5" data-anim="fade" style="left:920px;top:220px;width:900px;height:580px"></div>
+<div class="src" data-cue="4" style="left:920px;top:820px">Zhang, Mykland &amp; Aït-Sahalia, JASA 2005: two time scales</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: known truths</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:1100px;font-size:23px"><span class="c">// exchange/agents/main.cpp: summary, vol/step in ticks</span>
+<span class="k">for</span> (<span class="k">const auto</span> r : s.returns) var += r * r;
+vol = std::sqrt(var / s.returns.size());</div>
+<div class="code" data-cue="2" style="left:120px;top:440px;width:1100px;font-size:23px"><span class="c">// tools/quant-lab/main.cpp: TRND, daily volatility</span>
+<span class="k">const double</span> vol = trnd_trending ? <span class="r">0.012</span> : <span class="r">0.016</span>;</div>
+<div class="node green" data-cue="3" style="left:1300px;top:300px;width:520px"><div class="t" style="font-size:26px">estimate from prices</div><div class="s">compare with 1.2% / 1.6%</div></div>
+<div class="node teal" data-cue="4" style="left:120px;top:620px;width:520px"><div class="t" style="font-size:26px">mids</div><div class="s">no bid-ask bounce</div></div>
+<div class="node red" data-cue="4" data-d="0.4" style="left:700px;top:620px;width:520px"><div class="t" style="font-size:26px">trade prices</div><div class="s">bounce inflates RV</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:230px;border-color:var(--pink)"><div class="ct c-pink">Overnight</div><div class="cs">Gaps fall outside the range: add them.</div></div>
+<div class="card" data-cue="1" style="left:690px;top:150px;width:540px;height:230px;border-color:var(--pink)"><div class="ct c-pink">Assumptions</div><div class="cs">Ranges assume no drift, continuous trading.</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:150px;width:540px;height:230px;border-color:var(--pink)"><div class="ct c-pink">Annualize</div><div class="cs">daily variance × 252</div></div>
+<div class="big" data-cue="3" style="left:120px;top:480px;width:1700px"><span class="c-violet">Ranges</span> for bars, <span class="c-amber">5-minute sums</span> for ticks,<br>checked against a known truth.</div>
+</div>

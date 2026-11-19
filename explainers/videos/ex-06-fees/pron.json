@@ -1,0 +1,134 @@
+[
+ [
+  "\\bOUCH\\b",
+  "ouch"
+ ],
+ [
+  "\\bITCH\\b",
+  "itch"
+ ],
+ [
+  "\\bsimex\\b",
+  "sim ex"
+ ],
+ [
+  "\\bSEC\\b",
+  "S E C"
+ ],
+ [
+  "\\bNYSE\\b",
+  "N Y S E"
+ ],
+ [
+  "\\bCME\\b",
+  "C M E"
+ ],
+ [
+  "\\bIOC\\b",
+  "I O C"
+ ],
+ [
+  "\\bFOK\\b",
+  "F O K"
+ ],
+ [
+  "\\bLULD\\b",
+  "L U L D"
+ ],
+ [
+  "\\bFIX\\b",
+  "fix"
+ ],
+ [
+  "\\bIEX\\b",
+  "I E X"
+ ],
+ [
+  "\\bFIFO\\b",
+  "fife-oh"
+ ],
+ [
+  "\\bAPI\\b",
+  "A P I"
+ ],
+ [
+  "\\bID\\b",
+  "I D"
+ ],
+ [
+  "\\bNBBO\\b",
+  "N B B O"
+ ],
+ [
+  "\\bS&P\\b",
+  "S and P"
+ ],
+ [
+  "\\bReg NMS\\b",
+  "Reg N M S"
+ ],
+ [
+  "\\bNMS\\b",
+  "N M S"
+ ],
+ [
+  "\\bMWCB\\b",
+  "M W C B"
+ ],
+ [
+  "\\bET\\b",
+  "Eastern"
+ ],
+ [
+  "\\$20\\.00",
+  "twenty dollars"
+ ],
+ [
+  "\\$20\\.01",
+  "twenty oh one"
+ ],
+ [
+  "\\$20\\.0130",
+  "twenty dollars and one point three cents"
+ ],
+ [
+  "\\$20\\.0098",
+  "twenty dollars and point nine eight cents"
+ ],
+ [
+  "\\$19\\.9982",
+  "nineteen dollars and ninety nine point eight two cents"
+ ],
+ [
+  "\\$20\\.0020",
+  "twenty dollars and point two cents"
+ ],
+ [
+  "\\b0\\.30 cents",
+  "zero point three oh cents"
+ ],
+ [
+  "\\b0\\.18 cents",
+  "zero point one eight cents"
+ ],
+ [
+  "\\b0\\.02 cents",
+  "zero point oh two cents"
+ ],
+ [
+  "\\b0\\.20 cents",
+  "zero point two oh cents"
+ ],
+ [
+  "\\bBYX\\b",
+  "B Y X"
+ ],
+ [
+  "\\bCboe\\b",
+  "see-bo"
+ ],
+ [
+  "\\b10,000\\b",
+  "ten thousand"
+ ]
+]

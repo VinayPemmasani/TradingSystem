@@ -1,0 +1,92 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 10 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">SIP vs direct</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Why the consolidated tape and the direct feeds disagree.</div>
+<div class="card" data-cue="1" style="left:140px;top:580px;width:640px;border-color:var(--amber)"><div class="ct c-amber">SIP NBBO</div><div class="cs" style="font-size:40px">10.00</div></div>
+<div class="card" data-cue="1" data-d="0.4" style="left:840px;top:580px;width:640px;border-color:var(--teal)"><div class="ct c-teal">your book from direct feeds</div><div class="cs" style="font-size:40px">10.01</div></div>
+<div class="big c-red" data-cue="2" style="left:1540px;top:600px">≠</div>
+<div class="tag c-green" data-cue="3" style="left:140px;top:790px;border-color:var(--green);font-size:26px">both correct · different moments</div>
+</div>
+
+<div class="scene" id="s-sip">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The securities information processor</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:220px;width:260px;height:100px;border-color:var(--blue)">Exchange 1</div>
+<div class="node" data-cue="0" data-d="0.3" style="left:120px;top:350px;width:260px;height:100px;border-color:var(--blue)">Exchange 2</div>
+<div class="node" data-cue="0" data-d="0.4" style="left:120px;top:480px;width:260px;height:100px;border-color:var(--blue)">Exchange 3</div>
+<div class="node" data-cue="0" data-d="0.5" style="left:120px;top:610px;width:260px;height:100px;border-color:var(--blue)">…</div>
+<div class="node" data-cue="1" style="left:760px;top:360px;width:400px;height:200px;border-color:var(--amber)">SIP<small>consolidate · NBBO · last sale</small></div>
+<div class="node" data-cue="1" data-d="0.6" style="left:1500px;top:400px;width:300px;height:120px;border-color:var(--teal)">Subscribers</div>
+<svg class="full">
+<path id="s10-1" class="draw" data-cue="0" data-d="0.6" d="M 385 270 C 560 270 600 420 750 430" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="s10-2" class="draw" data-cue="0" data-d="0.6" d="M 385 400 L 750 450" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="s10-3" class="draw" data-cue="0" data-d="0.6" d="M 385 530 L 750 480" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+<path id="s10-o" class="draw" data-cue="1" data-d="0.6" d="M 1165 460 L 1490 460" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/></svg>
+<div class="pkt" data-path="s10-1" data-cue="0" data-d="1" data-dur="1.4" data-loop="1"></div>
+<div class="pkt" data-path="s10-2" data-cue="0" data-d="1" data-dur="1.3" data-loop="1" data-phase="0.3"></div>
+<div class="pkt" data-path="s10-3" data-cue="0" data-d="1" data-dur="1.5" data-loop="1" data-phase="0.6"></div>
+<div class="pkt" data-path="s10-o" data-cue="1" data-d="1" data-dur="1" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="card" data-cue="2" style="left:120px;top:770px;width:820px;border-color:var(--amber)"><div class="ct c-amber">Tape C · UTP Plan</div><div class="cd">consolidated data for Nasdaq-listed stocks</div></div>
+<div class="card" data-cue="3" style="left:980px;top:770px;width:820px"><div class="ct">exclusive SIP model</div><div class="cd">"dates to the late 1970s" (SEC, Dec 2020)</div></div>
+</div>
+
+<div class="scene" id="s-path">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Same quote, two paths</div>
+<div class="node" data-cue="0" data-d="0.3" style="left:120px;top:400px;width:280px;height:150px;border-color:var(--blue)">Exchange X</div>
+<div class="node" data-cue="2" style="left:820px;top:640px;width:320px;height:150px;border-color:var(--amber)">SIP processor<small>consolidate</small></div>
+<div class="node" data-cue="0" data-d="0.3" style="left:1500px;top:400px;width:300px;height:150px;border-color:var(--teal)">Your server</div>
+<svg class="full"><path id="p10-d" class="draw" data-cue="1" d="M 405 450 L 1490 450" stroke="var(--teal)" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+<path id="p10-s" class="draw" data-cue="2" d="M 405 520 C 600 700 700 715 810 715 M 1145 715 C 1300 715 1400 650 1490 530" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/>
+<path id="p10-s1" d="M 405 520 C 600 700 700 715 810 715" stroke="none" fill="none"/><path id="p10-s2" d="M 1145 715 C 1300 715 1400 650 1490 530" stroke="none" fill="none"/></svg>
+<div class="pkt" data-path="p10-d" data-cue="1" data-d="0.3" data-dur="1.2" data-loop="1"></div>
+<div class="pkt" data-path="p10-s1" data-cue="2" data-d="0.5" data-dur="1.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="p10-s2" data-cue="2" data-d="0.5" data-dur="1.2" data-loop="1" data-phase="0.5" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="lbl c-teal" data-cue="1" data-d="0.4" style="left:800px;top:400px">direct feed</div>
+<div class="tag c-amber" data-cue="3" style="left:120px;top:240px;border-color:var(--amber);font-size:26px">+ hop · + distance · + processing</div>
+<div class="card" data-cue="4" style="left:1200px;top:780px;width:600px;border-color:var(--amber)"><div class="ct c-amber">12.8 µs median</div><div class="cd">UTP SIP quote latency · Q2 2024 (UTP Plan)</div></div>
+<div class="lbl" data-cue="5" style="left:420px;top:820px">network distance to and from the processor is extra</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A window of disagreement</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:200px">illustrative timeline</div>
+<svg class="full"><path class="draw" data-cue="1" d="M 300 330 L 1800 330" stroke="#3c5463" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="1" d="M 300 530 L 1800 530" stroke="#3c5463" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="lbl c-teal" data-cue="1" style="left:120px;top:315px">your book</div>
+<div class="lbl c-amber" data-cue="1" style="left:120px;top:515px">SIP</div>
+<div class="bar" data-cue="1" data-anim="fade" style="left:300px;top:290px;width:420px;height:30px;background:var(--teal);opacity:.35"></div>
+<div class="lbl" data-cue="1" style="left:320px;top:250px">10.00</div>
+<div class="bar" data-cue="1" data-anim="fade" style="left:300px;top:490px;width:900px;height:30px;background:var(--amber);opacity:.35"></div>
+<div class="lbl" data-cue="1" style="left:320px;top:450px">10.00</div>
+<div class="tag c-blue" data-cue="2" style="left:600px;top:600px;border-color:var(--blue)">X bids 10.01</div>
+<svg class="full"><path class="draw" data-cue="2" d="M 660 600 L 660 300" stroke="var(--blue)" stroke-width="3" stroke-dasharray="8 6" fill="none"/></svg>
+<div class="bar" data-cue="3" data-anim="fade" style="left:720px;top:290px;width:1060px;height:30px;background:var(--teal)"></div>
+<div class="lbl c-teal" data-cue="3" style="left:740px;top:250px">10.01</div>
+<div class="bar" data-cue="4" data-anim="left" style="left:720px;top:380px;width:480px;height:60px;background:rgba(255,107,94,.18);border:2px dashed var(--red)"></div>
+<div class="lbl c-red" data-cue="4" style="left:740px;top:395px">disagree</div>
+<div class="bar" data-cue="5" data-anim="fade" style="left:1200px;top:490px;width:580px;height:30px;background:var(--amber)"></div>
+<div class="lbl c-amber" data-cue="5" style="left:1220px;top:450px">10.01</div>
+<div class="take" data-cue="6" style="left:120px;top:720px;width:1680px;font-size:36px">Each view was right about a different moment.</div>
+</div>
+
+<div class="scene" id="s-rule">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The rule: SIP no later than direct</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:1680px;border-color:var(--teal)"><div class="ct c-teal">Regulation NMS, Rule 603(a)</div><div class="cd">no "transmitting data to a vendor or user any sooner than it transmits the data to a Network processor" (as quoted by the SEC, 2012)</div></div>
+<div class="card" data-cue="2" style="left:120px;top:440px;width:1100px;border-color:var(--red)"><div class="ct c-red">SEC v. NYSE · Sept 2012</div><div class="cd">from June 2008, OpenBook Ultra reached subscribers before the network processor · gaps from single-digit ms to seconds</div></div>
+<div class="big c-red" data-cue="3" style="left:1300px;top:460px">$5M</div>
+<div class="lbl" data-cue="3" data-d="0.3" style="left:1300px;top:550px">civil penalty</div>
+</div>
+
+<div class="scene" id="s-content">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Different content, too</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:820px;height:200px;border-color:var(--teal)"><div class="ct c-teal">direct feeds</div><div class="cd">full depth, order by order (video 08)</div></div>
+<div class="card" data-cue="2" style="left:980px;top:230px;width:820px;height:200px;border-color:var(--amber)"><div class="ct c-amber">SIP</div><div class="cd">top of book (NBBO) + last sale</div></div>
+<div class="card" data-cue="3" style="left:120px;top:470px;width:1680px;border-color:var(--violet)"><div class="ct c-violet">SEC market data infrastructure rules · Dec 2020</div><div class="cd">core data + odd lots + 5 levels of depth + auction info · competing consolidators replace exclusive SIPs</div></div>
+<div class="card" data-cue="4" style="left:120px;top:680px;width:1680px;border-color:var(--green)"><div class="ct c-green">lab: libs/vendor Consolidator</div><div class="cd">level 1 records rebuilt from direct ITCH books</div></div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What pros do</div>
+<div class="card" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">own book</div><div class="cd">consolidated from direct feeds</div></div>
+<div class="card" data-cue="1" style="left:690px;top:230px;width:540px;height:200px;border-color:var(--amber)"><div class="ct c-amber">timestamps</div><div class="cd">compare SIP and direct by time, not by eye</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:230px;width:540px;height:200px;border-color:var(--violet)"><div class="ct c-violet">which is newer?</div><div class="cd">before acting on either</div></div>
+<div class="take" data-cue="3" style="left:120px;top:560px;width:1680px">Disagreement is not an error. <span class="c-amber">It is latency, made visible.</span></div>
+</div>

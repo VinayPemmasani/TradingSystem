@@ -1,0 +1,21 @@
+[
+["\\bx86-TSO\\b", "x eighty six T S O"],
+["\\bx86\\b", "x eighty six"],
+["\\bTSO\\b", "T S O"],
+["\\bSPSC\\b", "S P S C"],
+["\\bseq_cst\\b", "seek C S T"],
+["\\bSeq_cst\\b", "Seek C S T"],
+["\\bxchg\\b", "exchange"],
+["\\bmov\\b", "move"],
+["\\bldar\\b", "L D A R"],
+["\\bstlr\\b", "S T L R"],
+["\\bARM\\b", "arm"],
+["g\\+\\+ -O2", "G plus plus, dash O two"],
+["\\b4-vCPU\\b", "four V C P U"],
+["\\bVM\\b", "V M"],
+["\\b11\\.6\\b", "eleven point six"],
+["\\b2\\.5\\b", "two point five"],
+["\\b4\\.6\\b", "four point six"],
+["\\b164\\b", "one hundred sixty four"],
+["\\bDekker-style\\b", "Dekker style"]
+]

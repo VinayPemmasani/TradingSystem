@@ -1,0 +1,13 @@
+== visible.o
+28 0000000000000000 <void fast::quote_all<fast::Clamp>(fast::Clamp, std::array<int, 64ul> const&, std::array<int, 64ul>&)>:
+24 0000000000000000 <int fast::run_serial<fast::Clamp>(fast::Clamp, int const*, int)>:
+== lib.o
+49 0000000000000100 <ai::run_serial(ai::Quoter const&, int const*, int)>:
+9 0000000000000000 <ai::Clamp::quote(int) const>:
+41 0000000000000070 <ai::quote_all(std::function<int (int)> const&, std::array<int, 64ul> const&, std::array<int, 64ul>&)>:
+40 0000000000000000 <ai::quote_all(ai::Quoter const&, std::array<int, 64ul> const&, std::array<int, 64ul>&)>:
+== lib_opaque.o
+30 00000000000000e0 <ai::run_serial(ai::Quoter const&, int const*, int)>:
+9 0000000000000000 <ai::Clamp::quote(int) const>:
+41 0000000000000050 <ai::quote_all(std::function<int (int)> const&, std::array<int, 64ul> const&, std::array<int, 64ul>&)>:
+26 0000000000000000 <ai::quote_all(ai::Quoter const&, std::array<int, 64ul> const&, std::array<int, 64ul>&)>:

@@ -1,0 +1,48 @@
+== run 1 cpu 2
+predictable: sides in runs of 256, 1% big
+  general       p50  2.127 ns/tick  min  2.075  p99  3.042
+  branchless    p50  1.038 ns/tick  min  1.038  p99  2.169
+  branchy+cold  p50  0.798 ns/tick  min  0.796  p99  1.974
+  lut           p50  2.393 ns/tick  min  2.362  p99  4.069
+in between: side repeats 80%, 10% big
+  general       p50  2.381 ns/tick  min  1.951  p99  3.730
+  branchless    p50  1.038 ns/tick  min  1.038  p99  2.567
+  branchy+cold  p50  2.055 ns/tick  min  2.029  p99  3.145
+  lut           p50  1.523 ns/tick  min  1.512  p99  2.227
+unpredictable: random side, 50% big
+  general       p50  7.204 ns/tick  min  6.690  p99 10.703
+  branchless    p50  1.038 ns/tick  min  1.038  p99  1.369
+  branchy+cold  p50  4.869 ns/tick  min  4.804  p99  6.140
+  lut           p50  1.357 ns/tick  min  1.347  p99  2.046
+== run 2 cpu 2
+predictable: sides in runs of 256, 1% big
+  general       p50  2.055 ns/tick  min  2.005  p99  3.741
+  branchless    p50  0.971 ns/tick  min  0.971  p99  2.047
+  branchy+cold  p50  0.746 ns/tick  min  0.744  p99  1.552
+  lut           p50  2.245 ns/tick  min  2.217  p99  3.251
+in between: side repeats 80%, 10% big
+  general       p50  2.296 ns/tick  min  1.850  p99  3.876
+  branchless    p50  0.971 ns/tick  min  0.971  p99  2.367
+  branchy+cold  p50  2.347 ns/tick  min  2.274  p99  3.948
+  lut           p50  1.526 ns/tick  min  1.510  p99  5.213
+unpredictable: random side, 50% big
+  general       p50  7.220 ns/tick  min  6.622  p99 10.413
+  branchless    p50  1.038 ns/tick  min  1.003  p99  2.070
+  branchy+cold  p50  4.893 ns/tick  min  4.782  p99  6.595
+  lut           p50  1.325 ns/tick  min  1.316  p99  2.231
+== run 3 cpu 2
+predictable: sides in runs of 256, 1% big
+  general       p50  2.098 ns/tick  min  2.026  p99  3.077
+  branchless    p50  1.004 ns/tick  min  1.003  p99  1.718
+  branchy+cold  p50  0.772 ns/tick  min  0.768  p99  1.497
+  lut           p50  2.313 ns/tick  min  2.285  p99  3.007
+in between: side repeats 80%, 10% big
+  general       p50  2.461 ns/tick  min  2.006  p99  3.971
+  branchless    p50  1.038 ns/tick  min  1.038  p99  1.813
+  branchy+cold  p50  2.087 ns/tick  min  2.046  p99  3.025
+  lut           p50  1.526 ns/tick  min  1.503  p99  2.226
+unpredictable: random side, 50% big
+  general       p50  7.466 ns/tick  min  6.773  p99 20.514
+  branchless    p50  1.038 ns/tick  min  1.038  p99  1.705
+  branchy+cold  p50  4.703 ns/tick  min  4.599  p99  6.100
+  lut           p50  1.355 ns/tick  min  1.305  p99  2.104

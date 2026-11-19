@@ -1,0 +1,117 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ASSET CLASSES · 06 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Corporate bonds</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1100px">Many bonds, few trades. Prices by asking.</div>
+<div class="node green" data-cue="1" style="left:1300px;top:330px;width:200px"><div class="t">client</div></div>
+<div class="node amber" data-cue="1" data-d="0.3" style="left:1620px;top:200px;width:200px"><div class="t">dealer</div></div>
+<div class="node amber" data-cue="1" data-d="0.4" style="left:1620px;top:330px;width:200px"><div class="t">dealer</div></div>
+<div class="node amber" data-cue="1" data-d="0.5" style="left:1620px;top:460px;width:200px"><div class="t">dealer</div></div>
+<svg class="full"><path d="M1500 370 L1620 240 M1500 370 L1620 370 M1500 370 L1620 500" stroke="#4fd18b" stroke-width="3" stroke-dasharray="8 6" fill="none" class="draw" data-cue="1" data-d="0.6"/></svg>
+<div class="chip" data-cue="1" data-d="0.80" style="left:140px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">equities</div>
+<div class="chip" data-cue="1" data-d="0.86" style="left:298px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">options</div>
+<div class="chip" data-cue="1" data-d="0.92" style="left:441px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">futures</div>
+<div class="chip" data-cue="1" data-d="0.98" style="left:584px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">FX</div>
+<div class="chip" data-cue="1" data-d="1.04" style="left:652px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">Treasuries</div>
+<div class="chip" data-cue="1" data-d="1.10" style="left:840px;top:720px;background:var(--teal);color:#06141a">credit</div>
+<div class="chip" data-cue="1" data-d="1.16" style="left:968px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">crypto</div>
+<div class="chip" data-cue="1" data-d="1.22" style="left:1096px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">commodities</div>
+<div class="chip" data-cue="1" data-d="1.28" style="left:1299px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">swaps</div>
+<div class="chip" data-cue="1" data-d="1.34" style="left:1412px;top:720px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">ETFs</div>
+</div>
+
+<div class="scene" id="s-profile">
+<div class="h2" data-cue="0" style="left:120px;top:100px">The profile</div>
+<div class="tile green" data-cue="1" style="left:120px;top:200px;width:540px"><div class="k c-green">what trades</div><div class="v">IG and high-yield bonds</div><div class="d" data-cue="2">≈ 28,000 public issues TRACE-eligible per day<br><span class="src">2014 data · SEC DERA, 2020</span></div></div>
+<div class="tile green" data-cue="3" style="left:700px;top:200px;width:540px"><div class="k c-green">who</div><div class="v">Dealers and real money</div><div class="d">asset managers, insurers, pensions, bond ETFs</div></div>
+<div class="tile teal" data-cue="4" style="left:1280px;top:200px;width:540px"><div class="k c-teal">where</div><div class="v">OTC: voice and RFQ platforms</div><div class="d">plus all-to-all, portfolio trades</div></div>
+<div class="tile blue" data-cue="5" style="left:120px;top:480px;width:540px"><div class="k c-blue">market data</div><div class="v">TRACE, post-trade</div><div class="d">report ≤ 15 min, published at once<br><span class="src">FINRA Rule 6730</span></div></div>
+<div class="tile amber" data-cue="6" style="left:700px;top:480px;width:540px"><div class="k c-amber">speed</div><div class="v">Seconds to minutes</div><div class="d">not microseconds</div></div>
+<div class="tile violet" data-cue="7" style="left:1280px;top:480px;width:540px"><div class="k c-violet">settlement</div><div class="v">T+1</div><div class="d">since 28 May 2024 (SEC)</div></div>
+<div class="fcard" data-cue="8" style="left:120px;top:770px;width:1700px"><span class="stat c-teal" style="font-size:52px">≈ $67 billion a day</span><span class="note" style="margin-left:30px">US corporate ADV, 2026 through Oct · $12.1 tn outstanding · SIFMA</span></div>
+</div>
+
+<div class="scene" id="s-rfq">
+<div class="h2" data-cue="0" style="left:120px;top:100px">Request for quote</div>
+<div class="node green" data-cue="1" style="left:120px;top:400px;width:280px"><div class="t c-green">client</div><div class="s">sell bond X, size</div></div>
+<div class="node amber" data-cue="1" data-d="0.2" data-hl="3" data-hlend="4" style="left:900px;top:200px;width:280px"><div class="t">dealer 1</div></div>
+<div class="node amber" data-cue="1" data-d="0.3" data-dim="3" style="left:900px;top:330px;width:280px"><div class="t">dealer 2</div></div>
+<div class="node amber" data-cue="1" data-d="0.4" data-dim="3" style="left:900px;top:460px;width:280px"><div class="t">dealer 3</div></div>
+<div class="node amber" data-cue="1" data-d="0.5" data-dim="3" style="left:900px;top:590px;width:280px"><div class="t">dealer 4</div></div>
+<svg class="full">
+<path id="r-1" d="M400 440 C 650 440 650 240 900 240" stroke="#4fd18b" stroke-width="3" stroke-dasharray="8 6" fill="none" class="draw" data-cue="1" data-d="0.4" marker-end="url(#ah-green)"/>
+<path id="r-2" d="M400 445 C 650 445 650 370 900 370" stroke="#4fd18b" stroke-width="3" stroke-dasharray="8 6" fill="none" class="draw" data-cue="1" data-d="0.5" marker-end="url(#ah-green)"/>
+<path id="r-3" d="M400 450 C 650 450 650 500 900 500" stroke="#4fd18b" stroke-width="3" stroke-dasharray="8 6" fill="none" class="draw" data-cue="1" data-d="0.6" marker-end="url(#ah-green)"/>
+<path id="r-4" d="M400 455 C 650 455 650 630 900 630" stroke="#4fd18b" stroke-width="3" stroke-dasharray="8 6" fill="none" class="draw" data-cue="1" data-d="0.7" marker-end="url(#ah-green)"/>
+</svg>
+<div class="pkt" data-path="r-1" data-cue="1" data-d="0.6" data-dur="0.9" style="background:var(--green)"></div>
+<div class="pkt" data-path="r-2" data-cue="1" data-d="0.7" data-dur="0.9" style="background:var(--green)"></div>
+<div class="pkt" data-path="r-3" data-cue="1" data-d="0.8" data-dur="0.9" style="background:var(--green)"></div>
+<div class="pkt" data-path="r-4" data-cue="1" data-d="0.9" data-dur="0.9" style="background:var(--green)"></div>
+<div class="tag c-amber" data-cue="2" style="left:1210px;top:225px">T + 118 bp</div>
+<div class="tag c-amber" data-cue="2" data-d="0.2" style="left:1210px;top:355px">T + 120 bp</div>
+<div class="tag c-amber" data-cue="2" data-d="0.4" style="left:1210px;top:485px">T + 123 bp</div>
+<div class="tag c-muted" data-cue="2" data-d="0.6" style="left:1210px;top:615px">pass</div>
+<div class="tag c-green" data-cue="3" style="left:1400px;top:225px">✓ done</div>
+<div class="tag c-muted" data-cue="3" data-d="0.3" style="left:1400px;top:355px">"you lost"</div>
+<div class="fcard violet" data-cue="4" style="left:1400px;top:430px;width:420px"><span class="lbl">portfolio trade</span><div class="note" style="color:#dce8ee">bond A · bond B · bond C<br>bond D · … bond N<br>→ one price for the list</div></div>
+<div class="src" data-cue="2" style="left:900px;top:720px">illustrative responses</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:100px">One RFQ, start to tape</div>
+<div class="fcard green" data-cue="1" style="left:120px;top:210px;width:720px"><span class="lbl">client RFQ</span><div class="h3">SELL $10m · company 10-year bond</div><div class="note">to 4 dealers</div></div>
+<table class="t" data-cue="2" style="position:absolute;left:120px;top:400px;width:720px">
+<tr><th>dealer</th><th>response</th><th>for a seller</th></tr>
+<tr class="hlrow"><td class="c-amber">1</td><td>T + 118</td><td class="c-green">highest price</td></tr>
+<tr><td class="c-amber">2</td><td>T + 120</td><td></td></tr>
+<tr><td class="c-amber">3</td><td>T + 123</td><td>lowest price</td></tr>
+<tr><td class="c-muted">4</td><td class="c-muted">pass</td><td></td></tr>
+</table>
+<div class="fcard amber" data-cue="3" style="left:960px;top:210px;width:860px"><span class="lbl">winner</span><div class="h3">dealer 1 buys at T + 118 bp</div><div class="note">lower spread = higher price</div></div>
+<div class="lbl" data-cue="4" style="left:960px;top:420px">TRACE PRINT · within 15 min</div>
+<div class="bytes" data-cue="4" data-d="0.3" style="position:absolute;left:960px;top:460px">
+<div style="width:200px;background:var(--blue)">CUSIP</div><div style="width:150px;background:var(--blue)">time</div><div style="width:160px;background:var(--blue)">price</div><div style="width:180px;background:var(--amber)">5MM+</div><div style="width:120px;background:var(--blue)">side</div></div>
+<div class="note" data-cue="4" data-d="0.8" style="left:960px;top:560px;width:860px">IG trades above $5m are disseminated as "5MM+" (HY: "1MM+") · FINRA</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:100px">In the lab: markouts</div>
+<div class="code" data-cue="0" data-d="0.4" style="left:120px;top:210px;width:860px;font-size:22px"><span class="c"># research/lab_research/tca.py</span>
+spread capture = s * (m0 - price)
+markout at h   = s * (m(t + h) - price)
+<span class="c"># drop from one to the other</span>
+<span class="c"># = adverse selection</span></div>
+<svg class="full">
+<path d="M1100 600 L1800 600 M1100 600 L1100 240" stroke="#2c4351" stroke-width="3" fill="none" class="draw" data-cue="1"/>
+<path d="M1120 420 L1300 415 L1400 418 L1500 470 L1600 500 L1780 520" stroke="#3fd0dc" stroke-width="4" fill="none" class="draw" data-cue="1" data-dur="1.6"/>
+</svg>
+<div style="left:1391px;top:382px;width:18px;height:18px;border-radius:50%;background:var(--green)" data-cue="1" data-anim="fade"></div>
+<div class="tag c-green" data-cue="1" data-d="0.3" style="left:1330px;top:330px">buy fill</div>
+<div class="tag c-teal" data-cue="1" data-d="0.6" style="left:1140px;top:360px">m0</div>
+<div class="tag c-pink" data-cue="1" data-d="1.4" style="left:1620px;top:540px">m(t+h): markout &lt; 0</div>
+<div class="fcard amber" data-cue="2" style="left:120px;top:520px;width:860px"><span class="lbl">a credit desk</span><div class="note" style="color:#dce8ee">same markouts, with TRACE prints and composite prices standing in for the mid</div></div>
+<div class="src" data-cue="1" style="left:1100px;top:620px">illustrative path</div>
+</div>
+
+<div class="scene" id="s-traps">
+<div class="h2" data-cue="0" style="left:120px;top:100px">Traps</div>
+<div class="fcard pink" data-cue="1" style="left:120px;top:220px;width:820px;height:200px;box-sizing:border-box"><span class="lbl c-pink">STALE PRINTS</span><div class="h3">last trade may be days old</div><div class="note">price what has not traded</div></div>
+<div class="fcard pink" data-cue="2" style="left:1000px;top:220px;width:820px;height:200px;box-sizing:border-box"><span class="lbl c-pink">ONE ISSUER, MANY BONDS</span><div class="h3">each maturity is its own line</div><div class="note">different terms, different liquidity</div></div>
+<div class="fcard pink" data-cue="3" style="left:120px;top:470px;width:820px;height:200px;box-sizing:border-box"><span class="lbl c-pink">CAPPED SIZES</span><div class="h3">5MM+ hides the block</div><div class="note">true size not on the tape</div></div>
+<div class="fcard pink" data-cue="4" style="left:1000px;top:470px;width:820px;height:200px;box-sizing:border-box"><span class="lbl c-pink">DEALER BALANCE SHEETS</span><div class="h3">liquidity can vanish</div><div class="note">exactly when you need it</div></div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:230px;width:1640px">Many bonds, few trades,<br><span class="c-amber">priced by asking.</span></div>
+<div class="sub" data-cue="1" style="left:140px;top:520px">the skill: pricing what has not traded yet</div>
+<div class="chip" data-cue="1" data-d="0.40" style="left:140px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">equities</div>
+<div class="chip" data-cue="1" data-d="0.46" style="left:298px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">options</div>
+<div class="chip" data-cue="1" data-d="0.52" style="left:441px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">futures</div>
+<div class="chip" data-cue="1" data-d="0.58" style="left:584px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">FX</div>
+<div class="chip" data-cue="1" data-d="0.64" style="left:652px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">Treasuries</div>
+<div class="chip" data-cue="1" data-d="0.70" style="left:840px;top:640px;background:var(--teal);color:#06141a">credit</div>
+<div class="chip" data-cue="1" data-d="0.76" style="left:968px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">crypto</div>
+<div class="chip" data-cue="1" data-d="0.82" style="left:1096px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">commodities</div>
+<div class="chip" data-cue="1" data-d="0.88" style="left:1299px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">swaps</div>
+<div class="chip" data-cue="1" data-d="0.94" style="left:1412px;top:640px;background:var(--panel2);color:#8ea3b1;border:1px solid var(--line)">ETFs</div>
+</div>

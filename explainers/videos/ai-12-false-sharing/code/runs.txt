@@ -1,0 +1,7 @@
+sizeof CountersPacked 16, CountersPadded 128; &n[1]-&n[0] = 8 bytes, &c[1]-&c[0] = 64 bytes
+RingPacked: head@0 tail@16 buf@32 | RingPadded: head@0 tail@64 buf@128
+run 0  counters ns/inc: packed 36.11 padded 6.87 | ring ns/msg: packed 109.21 padded 75.88
+run 1  counters ns/inc: packed 28.47 padded 7.12 | ring ns/msg: packed 82.78 padded 59.98
+run 2  counters ns/inc: packed 31.81 padded 6.67 | ring ns/msg: packed 98.27 padded 42.64
+run 3  counters ns/inc: packed 30.42 padded 7.60 | ring ns/msg: packed 69.14 padded 56.47
+run 4  counters ns/inc: packed 31.75 padded 7.95 | ring ns/msg: packed 112.39 padded 62.32

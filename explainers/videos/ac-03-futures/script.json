@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Futures",
+  "text": "A futures contract is a standard agreement to buy or sell something later, at a price agreed now. Each trades in one central book, the cleanest structure in this series."
+ },
+ {
+  "id": "profile",
+  "title": "The profile",
+  "text": "Here is the profile. What trades: contracts on stock indexes, interest rates, energy, metals, crops and currencies. Who trades: hedgers, such as producers and asset managers, plus speculators and fast market makers. Where: each contract trades only on the exchange that lists it, such as CME Group, Eurex or ICE. There is no fragmentation, so one book is the whole market. The data is the exchange's own feed, at CME binary MDP 3. It is fully electronic, nearly 24 hours a day. Every trade is cleared centrally. FIA counted 30.6 billion futures contracts traded worldwide in 2025."
+ },
+ {
+  "id": "margin",
+  "title": "Daily settlement",
+  "text": "The distinctive mechanism is daily settlement. You do not pay the contract's value up front. You post a performance bond, also called initial margin. CME Clearing becomes the buyer to every seller and the seller to every buyer. It marks every position to market twice a day, and moves the gains and losses as cash. So losses cannot pile up."
+ },
+ {
+  "id": "example",
+  "title": "Worked example",
+  "text": "Take the E-mini S&P 500. One contract is 50 dollars times the index, and the minimum tick is a quarter point, or 12.50 dollars. With the index at 6,000, one contract stands for 300 thousand dollars of stock. A trader buys one, and the index falls 20 points by the settlement. The trader pays 1,000 dollars of variation margin, and the seller receives it. At expiry, on the third Friday, it settles in cash against a special opening quotation of the index."
+ },
+ {
+  "id": "implied",
+  "title": "Implied pricing",
+  "text": "Futures have one more trick, implied pricing. Calendar spreads, such as September against December, have their own books. In CME's own example, a September offer at 9500 and a December bid at 9450 imply a spread offer at 50. Globex shows that implied order and matches against it. The lab's simulated exchange does the same. A strip trades its own book, and a strip order lifts both legs at once."
+ },
+ {
+  "id": "traps",
+  "title": "Traps",
+  "text": "Some traps. Contracts expire, so long price histories must be rolled, leaving jumps. Margin can be raised when volatility spikes, just when it hurts most. Every product has its own multiplier, and a wrong one breaks every profit figure. And a physically delivered contract held too long can mean taking delivery."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Futures are one book per contract, with leverage made safe by daily settlement. Learn the multiplier, the margin and the roll."
+ }
+]

@@ -1,0 +1,107 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">NETWORK · 04 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Hardware<br>timestamps and PTP</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1100px">Clocks that agree, and stamps taken where the packet really is.</div>
+<div class="node rt" data-cue="1" style="left:1300px;top:660px;width:220px;height:110px;font-size:30px">master<small id="clkA">12:00:00.000 000</small></div>
+<div class="node sv" data-cue="1" data-d="0.3" style="left:1560px;top:660px;width:220px;height:110px;font-size:30px">slave<small>12:00:00.000 000</small></div>
+</div>
+<div class="scene" id="s-why">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The bar: EU clock rules for HFT</div>
+<div class="stat c-blue" data-cue="1" style="left:140px;top:260px">100 µs</div>
+<div class="body" data-cue="1" data-d="0.3" style="left:140px;top:370px">max divergence from UTC</div>
+<div class="stat c-blue" data-cue="1" data-d="0.8" style="left:700px;top:260px">1 µs</div>
+<div class="body" data-cue="1" data-d="1.0" style="left:700px;top:370px">timestamp granularity or better</div>
+<div class="src" data-cue="1" data-d="1.2" style="left:140px;top:440px">Commission Delegated Regulation (EU) 2017/574, Annex, Table 2: high frequency algorithmic trading</div>
+<div class="node sv" data-cue="2" style="left:140px;top:580px;width:300px;height:100px">Server A<small>clock A</small></div>
+<div class="node sv" data-cue="2" style="left:1100px;top:580px;width:300px;height:100px">Server B<small>clock B, 2 µs ahead</small></div>
+<svg class="full"><path id="wy-p" class="draw" data-cue="2" data-d="0.3" d="M440 630 L1100 630" stroke="#3a5260" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="wy-p" data-cue="2" data-d="0.6" data-dur="1.5" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="kv" data-cue="2" data-d="1" style="left:520px;top:700px">true one-way: <b>3 µs</b><br>measured B − A: <b style="color:var(--red)">5 µs</b></div>
+<div class="tag" data-cue="2" data-d="1.4" style="left:1440px;top:610px;color:var(--muted)">illustration</div>
+</div>
+<div class="scene" id="s-hwts">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Where the stamp is taken</div>
+<div class="node" data-cue="0" data-d="0.0" style="left:120px;top:300px;width:220px;height:90px;border-color:#ffb347;font-size:25px">wire</div>
+<div class="node" data-cue="0" data-d="0.1" style="left:370px;top:300px;width:220px;height:90px;border-color:#ffb347;font-size:25px">NIC / MAC</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:620px;top:300px;width:220px;height:90px;border-color:#ff6b5e;font-size:25px">IRQ</div>
+<div class="node" data-cue="0" data-d="0.30000000000000004" style="left:870px;top:300px;width:220px;height:90px;border-color:#ff6b5e;font-size:25px">driver</div>
+<div class="node" data-cue="0" data-d="0.4" style="left:1120px;top:300px;width:220px;height:90px;border-color:#ff6b5e;font-size:25px">kernel stack</div>
+<div class="node" data-cue="0" data-d="0.5" style="left:1370px;top:300px;width:220px;height:90px;border-color:#3fd0dc;font-size:25px">socket</div>
+<div class="node" data-cue="0" data-d="0.6000000000000001" style="left:1620px;top:300px;width:220px;height:90px;border-color:#3fd0dc;font-size:25px">app</div>
+<svg class="full"><path id="hw-p" d="M120 345 L1870 345" stroke="none" fill="none"/></svg>
+<div class="pkt" data-path="hw-p" data-cue="0" data-d="0.8" data-dur="3" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="tag" data-cue="0" data-d="1" style="left:1130px;top:420px;color:var(--red)">▲ software stamp: after IRQ and driver</div>
+<div class="tag" data-cue="1" style="left:370px;top:240px;color:var(--amber)">▼ hardware stamp: in the NIC</div>
+<div class="code" data-cue="2" style="left:120px;top:540px;font-size:25px"><span class="k">int</span> f = SOF_TIMESTAMPING_RX_HARDWARE | SOF_TIMESTAMPING_TX_HARDWARE
+      | SOF_TIMESTAMPING_RAW_HARDWARE;
+setsockopt(fd, SOL_SOCKET, <span class="r">SO_TIMESTAMPING</span>, &amp;f, <span class="k">sizeof</span> f);</div>
+<div class="kv" data-cue="3" style="left:120px;top:760px">rx: recvmsg → SCM_TIMESTAMPING → <b>ts[2]</b> = hardware<br>tx: recvmsg(…, <b>MSG_ERRQUEUE</b>)</div>
+<div class="src" data-cue="3" data-d="0.5" style="left:1300px;top:860px">Linux docs: networking/timestamping</div>
+</div>
+<div class="scene" id="s-ptp">
+<div class="h2" data-cue="0" style="left:120px;top:110px">IEEE 1588: four timestamps</div>
+<div class="node rt" data-cue="0" style="left:300px;top:200px;width:260px;height:80px">Master</div>
+<div class="node sv" data-cue="0" style="left:1100px;top:200px;width:260px;height:80px">Slave</div>
+<svg class="full"><path d="M430 280 L430 880" stroke="#6aa8ff" stroke-width="3" fill="none"/><path d="M1230 280 L1230 880" stroke="#3fd0dc" stroke-width="3" fill="none"/>
+<path id="pa1" class="draw" data-cue="1" d="M430 340 L1230 460" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/>
+<path id="pa2" class="draw" data-cue="2" d="M1230 560 L430 680" stroke="#3fd0dc" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+<path id="pa3" class="draw" data-cue="3" d="M430 700 L1230 820" stroke="#6aa8ff" stroke-width="4" stroke-dasharray="10 8" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tl" data-cue="1" style="left:290px;top:325px;color:#cfe3ff;font-size:26px">t1</div>
+<div class="tl" data-cue="1" data-d="0.6" style="left:1250px;top:445px;color:#bff4f8;font-size:26px">t2</div>
+<div class="tl" data-cue="2" style="left:1250px;top:545px;color:#bff4f8;font-size:26px">t3</div>
+<div class="tl" data-cue="3" style="left:290px;top:665px;color:#cfe3ff;font-size:26px">t4</div>
+<div class="tag" data-cue="1" data-d="0.3" style="left:700px;top:345px;color:var(--blue)">Sync</div>
+<div class="tag" data-cue="2" data-d="0.3" style="left:700px;top:560px;color:var(--teal)">Delay_Req</div>
+<div class="tag" data-cue="3" data-d="0.3" style="left:640px;top:790px;color:var(--blue)">Delay_Resp (t4)</div>
+<div class="fcard" data-cue="4" style="left:1420px;top:330px;width:440px;background:rgba(19,33,43,.9);border:2px solid var(--line);border-radius:16px;padding:22px 26px"><div class="lbl">TWO EQUATIONS</div><div class="kv" style="font-size:24px;white-space:normal">t2 − t1 = delay + offset<br>t4 − t3 = delay − offset</div></div>
+</div>
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example (ns)</div>
+<div class="node rt" data-cue="0" style="left:300px;top:200px;width:260px;height:80px">Master</div>
+<div class="node sv" data-cue="0" style="left:1100px;top:200px;width:260px;height:80px">Slave</div>
+<svg class="full"><path d="M430 280 L430 880" stroke="#6aa8ff" stroke-width="3" fill="none"/><path d="M1230 280 L1230 880" stroke="#3fd0dc" stroke-width="3" fill="none"/>
+<path id="pw1" class="draw" data-cue="0" d="M430 340 L1230 460" stroke="#6aa8ff" stroke-width="4" fill="none" marker-end="url(#ah)"/>
+<path id="pw2" class="draw" data-cue="1" d="M1230 560 L430 680" stroke="#3fd0dc" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/>
+<path id="pw3" class="draw" data-cue="1" d="M430 700 L1230 820" stroke="#6aa8ff" stroke-width="4" stroke-dasharray="10 8" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tl" data-cue="0" style="left:190px;top:325px;color:#cfe3ff;font-size:26px">t1 = 1,000</div>
+<div class="tl" data-cue="0" data-d="0.6" style="left:1250px;top:445px;color:#bff4f8;font-size:26px">t2 = 1,650</div>
+<div class="tl" data-cue="1" style="left:1250px;top:545px;color:#bff4f8;font-size:26px">t3 = 2,000</div>
+<div class="tl" data-cue="1" style="left:190px;top:665px;color:#cfe3ff;font-size:26px">t4 = 2,250</div>
+<div class="tag" data-cue="0" data-d="0.3" style="left:700px;top:345px;color:var(--blue)">Sync</div>
+<div class="tag" data-cue="1" data-d="0.3" style="left:700px;top:560px;color:var(--teal)">Delay_Req</div>
+<div class="tag" data-cue="1" data-d="0.3" style="left:640px;top:790px;color:var(--blue)">Delay_Resp (t4)</div>
+<div class="fcard" data-cue="2" style="left:1420px;top:300px;width:460px;background:rgba(19,33,43,.9);border:2px solid var(--blue);border-radius:16px;padding:22px 26px"><div class="lbl">OFFSET</div><div class="kv" style="font-size:25px">(650 − 250) / 2<br><b>= +200 ns</b> slave ahead</div></div>
+<div class="fcard" data-cue="3" style="left:1420px;top:540px;width:460px;background:rgba(19,33,43,.9);border:2px solid var(--teal);border-radius:16px;padding:22px 26px"><div class="lbl">PATH DELAY</div><div class="kv" style="font-size:25px">(650 + 250) / 2<br><b>= 450 ns</b></div></div>
+</div>
+<div class="scene" id="s-asym">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The catch: both ways must take equally long</div>
+<div class="node rt" data-cue="0" style="left:140px;top:320px;width:260px;height:100px">Master</div>
+<div class="node sw" data-cue="2" style="left:820px;top:320px;width:280px;height:100px">Switch<small>queue</small></div>
+<div class="node sv" data-cue="0" style="left:1520px;top:320px;width:260px;height:100px">Slave</div>
+<svg class="full"><path id="as-f" class="draw" data-cue="0" d="M400 345 L1520 345" stroke="#6aa8ff" stroke-width="3" fill="none" marker-end="url(#ah)"/><path id="as-b" class="draw" data-cue="0" d="M1520 395 L400 395" stroke="#3fd0dc" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="tag" data-cue="1" style="left:500px;top:270px;color:var(--blue)">master → slave 300 ns</div>
+<div class="tag" data-cue="1" style="left:1150px;top:430px;color:var(--teal)">slave → master 400 ns</div>
+<div class="kv" data-cue="1" data-d="0.8" style="left:140px;top:520px">true offset 0 · asymmetry 100 ns → computed offset <b style="color:var(--red)">−50 ns</b></div>
+<div class="node rt" data-cue="3" style="left:140px;top:660px;width:780px;height:150px;font-size:30px">Boundary clock<small>terminates PTP, runs its own clock, serves the next hop</small></div>
+<div class="node rt" data-cue="3" data-d="1.5" style="left:1000px;top:660px;width:780px;height:150px;font-size:30px">Transparent clock<small>forwards PTP, corrects for its own transit time</small></div>
+</div>
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">On Linux, and in the lab</div>
+<div class="code" data-cue="0" style="left:120px;top:220px;font-size:25px">$ ptp4l -i eth0      <span class="c"># hardware timestamping is the default (-H)</span>
+$ phc2sys …          <span class="c"># steers the system clock to the NIC clock</span></div>
+<div class="code" data-cue="1" style="left:120px;top:450px;font-size:25px"><span class="c">// libs/core/include/lab/core/clock.hpp</span>
+<span class="k">uint64_t</span> t0 = lab::rdtsc();      <span class="c">// a few ns, no syscall</span>
+…
+<span class="k">uint64_t</span> dt = lab::rdtscp() - t0;</div>
+<div class="code" data-cue="2" style="left:120px;top:720px;font-size:25px"><span class="c">// off the hot path</span>
+<span class="k">auto</span> clk = TscClock::calibrate(<span class="r">50ms</span>); <span class="c">// vs CLOCK_MONOTONIC</span></div>
+<div class="node lab" data-cue="1" data-d="0.6" style="left:1380px;top:470px;width:420px;height:120px">hot thread<small>raw ticks only</small></div>
+<div class="node lab" data-cue="2" data-d="0.6" style="left:1380px;top:720px;width:420px;height:120px">report<small>ticks → ns</small></div>
+</div>
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Takeaway</div>
+<div class="node" data-cue="0" data-d="0.0" style="left:140px;top:300px;width:520px;height:140px;border-color:var(--amber);font-size:34px">Stamp in hardware</div>
+<div class="node" data-cue="0" data-d="0.6" style="left:720px;top:300px;width:520px;height:140px;border-color:var(--blue);font-size:34px">Sync with PTP</div>
+<div class="node" data-cue="0" data-d="1.2" style="left:1300px;top:300px;width:520px;height:140px;border-color:var(--teal);font-size:34px">Keep paths symmetric</div>
+<div class="take" data-cue="1" style="left:140px;top:560px;width:1640px">Otherwise your latency numbers<br><span class="c-blue">are measuring your clocks.</span></div>
+</div>

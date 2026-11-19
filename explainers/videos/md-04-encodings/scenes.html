@@ -1,0 +1,98 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 04 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Text, FAST, SBE</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">FIX tag=value vs FAST vs Simple Binary Encoding: why binary won.</div>
+<div class="card" data-cue="1" style="left:140px;top:580px;width:500px;border-color:var(--amber)"><div class="ct c-amber">tag=value</div><div class="cs">270=4123.25␁</div></div>
+<div class="card" data-cue="1" data-d="0.4" style="left:700px;top:580px;width:500px;border-color:var(--violet)"><div class="ct c-violet">FAST</div><div class="cs">stop bits · operators</div></div>
+<div class="card" data-cue="1" data-d="0.8" style="left:1260px;top:580px;width:500px;border-color:var(--teal)" data-hl="2"><div class="ct c-teal">SBE</div><div class="cs">fixed offsets</div></div>
+</div>
+
+<div class="scene" id="s-tagvalue">
+<div class="h2" data-cue="0" style="left:120px;top:110px">FIX tag=value: text with delimiters</div>
+<div class="hex" data-cue="1" style="left:120px;top:250px;font-size:34px;white-space:nowrap"><span class="c-blue" data-hl="2" data-hlend="3">8=FIX.4.4</span><span class="c-red">␁</span><span class="c-blue" data-hl="2" data-hlend="3">9=…</span><span class="c-red">␁</span>35=X<span class="c-red">␁</span>…<span class="c-red">␁</span><span class="c-amber">270=4123.25</span><span class="c-red">␁</span><span class="c-amber">271=10</span><span class="c-red">␁</span>…<span class="c-red">␁</span><span class="c-green" data-hl="2" data-hlend="3">10=ddd</span><span class="c-red">␁</span></div>
+<div class="lbl c-red" data-cue="1" data-d="0.5" style="left:120px;top:320px">␁ = SOH, byte 0x01, ends every field</div>
+<div class="card" data-cue="2" style="left:120px;top:400px;width:820px;border-color:var(--blue)"><div class="ct c-blue">9 BodyLength</div><div class="cd">bytes from 35= up to the SOH before 10=</div></div>
+<div class="card" data-cue="2" data-d="0.4" style="left:980px;top:400px;width:820px;border-color:var(--green)"><div class="ct c-green">10 CheckSum</div><div class="cd">sum of bytes before 10= · mod 256 · three digits</div></div>
+<div class="tag c-green" data-cue="3" style="left:120px;top:600px;font-size:26px;border-color:var(--green)">✓ human-readable · ✓ any field, any order</div>
+<div class="lbl" data-cue="4" style="left:120px;top:690px">to find the price, a parser walks every byte…</div>
+<div id="tv-scan" data-cue="4" data-anim="fade" style="left:120px;top:740px;width:1680px;height:60px;border-radius:10px;background:#0f1b23;border:2px solid var(--line)"></div>
+<div class="bar" id="tv-cursor" data-cue="4" data-anim="fade" style="left:120px;top:740px;width:0;height:60px;background:rgba(255,179,71,.35)"></div>
+<div class="tag c-amber" data-cue="4" data-d="2.5" style="left:120px;top:830px;border-color:var(--amber)">"4123.25" → atoi + decimal point → integer</div>
+</div>
+
+<div class="scene" id="s-fast">
+<div class="h2" data-cue="0" style="left:120px;top:110px">FAST: FIX Adapted for STreaming</div>
+<div class="lbl" data-cue="1" style="left:120px;top:220px">stop bit encoding · 942,755 (the FAST spec's example)</div>
+<div class="bytes" style="left:120px;top:260px">
+<div data-cue="1" data-d="0.4" style="width:60px;background:#55697a">0</div><div data-cue="1" data-d="0.4" style="width:350px;background:var(--violet)">0111001</div>
+<div data-cue="1" data-d="0.8" style="width:60px;background:#55697a">0</div><div data-cue="1" data-d="0.8" style="width:350px;background:var(--violet)">1000101</div>
+<div data-cue="1" data-d="1.2" style="width:60px;background:var(--red)">1</div><div data-cue="1" data-d="1.2" style="width:350px;background:var(--violet)">0100011</div>
+</div>
+<div class="lbl c-red" data-cue="1" data-d="1.5" style="left:1000px;top:340px">high bit set = last byte</div>
+<div class="big c-violet" data-cue="2" style="left:120px;top:370px">39 45 A3</div>
+<div class="card" data-cue="3" style="left:120px;top:500px;width:820px;border-color:var(--blue)"><div class="ct c-blue">Template + presence map</div><div class="cd">bits say which optional fields follow</div></div>
+<div class="card" data-cue="4" style="left:980px;top:500px;width:820px;border-color:var(--green)"><div class="ct c-green">copy · delta · increment</div><div class="cd">unchanged or predictable values are not sent</div></div>
+<div class="card" data-cue="5" style="left:120px;top:700px;width:1680px;border-color:var(--red)"><div class="ct c-red">The catch</div><div class="cd">variable lengths → decode field by field · lots of branches · "previous value" state across messages</div></div>
+</div>
+
+<div class="scene" id="s-sbe">
+<div class="h2" data-cue="0" style="left:120px;top:110px">SBE: Simple Binary Encoding</div>
+<div class="bytes" style="left:120px;top:300px">
+<div data-cue="2" style="width:160px;background:var(--blue)">blockLength 2</div>
+<div data-cue="2" data-d="0.2" style="width:160px;background:var(--blue)">templateId 2</div>
+<div data-cue="2" data-d="0.4" style="width:160px;background:var(--blue)">schemaId 2</div>
+<div data-cue="2" data-d="0.6" style="width:160px;background:var(--blue)">version 2</div>
+<div data-cue="1" style="width:640px;background:var(--teal)" data-hl="3" data-hlend="5">price · int64</div>
+<div data-cue="1" data-d="0.3" style="width:320px;background:var(--amber)">qty · int32</div>
+</div>
+<div class="olbl" data-cue="1" style="left:760px;top:260px">offset k</div>
+<div class="olbl" data-cue="1" style="left:1400px;top:260px">k + 8</div>
+<div class="lbl" data-cue="2" data-d="0.8" style="left:120px;top:390px">SBE message header · 8 bytes</div>
+<div class="code" data-cue="3" style="left:120px;top:470px;width:900px;font-size:26px"><span class="line"><span class="k">int64_t</span> px  = load_le64(p + k);</span><span class="line"><span class="k">int32_t</span> qty = load_le32(p + k + <span class="r">8</span>);</span></div>
+<div class="tag c-green" data-cue="4" style="left:1080px;top:500px;font-size:28px;border-color:var(--green)">no scan · no branch · no state</div>
+<div class="card" data-cue="5" style="left:120px;top:690px;width:1680px;border-color:var(--teal)"><div class="ct c-teal">CME market data notice, Dec 2013</div><div class="cd">MDP 3.0: "Simple Binary Encoding (SBE); replaces the current FAST compression model"</div></div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One entry: price 4123.25, qty 10</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:190px">illustrative values · bytes on the wire</div>
+<div class="lbl c-amber" data-cue="1" style="left:120px;top:260px">tag=value</div>
+<div class="grow bar" data-cue="1" data-d="0.2" data-w="1140" style="left:400px;top:250px;height:60px;background:var(--amber)"></div>
+<div class="hex" data-cue="1" data-d="0.4" style="left:420px;top:262px;color:#06141a">270=4123.25␁271=10␁</div>
+<div class="big c-amber" data-cue="1" data-d="1" style="left:1580px;top:240px;font-size:44px">19 B</div>
+<div class="lbl c-violet" data-cue="2" style="left:120px;top:400px">FAST</div>
+<div class="grow bar" data-cue="2" data-d="0.2" data-w="440" style="left:400px;top:390px;height:60px;background:var(--violet)"></div>
+<div class="hex" data-cue="2" data-d="0.4" style="left:420px;top:402px;color:#06141a">19 15 A5 · exp · 8A</div>
+<div class="big c-violet" data-cue="2" data-d="1" style="left:880px;top:380px;font-size:44px">~5 B, or 0 if copied</div>
+<div class="lbl c-teal" data-cue="3" style="left:120px;top:540px">SBE</div>
+<div class="grow bar" data-cue="3" data-d="0.2" data-w="720" style="left:400px;top:530px;height:60px;background:var(--teal)"></div>
+<div class="hex" data-cue="3" data-d="0.4" style="left:420px;top:542px;color:#06141a">80 00 DA 04 C0 03 00 00 · 0A 00 00 00</div>
+<div class="big c-teal" data-cue="3" data-d="1" style="left:1160px;top:520px;font-size:44px">12 B</div>
+<div class="lbl" data-cue="3" data-d="1.5" style="left:400px;top:620px;width:1300px;line-height:1.5">SBE price: int64 mantissa 4,123,250,000,000 with exponent −9 (CME PRICE9), little-endian</div>
+<div class="card" data-cue="3" data-d="2" style="left:120px;top:720px;width:1680px"><div class="cd"><span class="c-amber">text: scan + convert</span>   ·   <span class="c-violet">FAST: decode bit by bit, keep state</span>   ·   <span class="c-teal">SBE: two loads</span></div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: both worlds</div>
+<div class="node" data-cue="2" style="left:120px;top:300px;width:360px;height:160px;border-color:var(--amber)">FIX client<small>tag=value text</small></div>
+<div class="node" data-cue="2" data-d="0.3" style="left:780px;top:300px;width:360px;height:160px;border-color:var(--green)">fixgw<small>parse · Price(4)</small></div>
+<div class="node" data-cue="1" style="left:1440px;top:300px;width:360px;height:160px;border-color:var(--teal)">simex<small>OUCH · ITCH binary</small></div>
+<svg class="full"><path class="draw" data-cue="3" d="M 485 380 L 770 380" stroke="var(--amber)" stroke-width="4" fill="none" marker-end="url(#ah-amber)"/><path class="draw" data-cue="3" data-d="0.4" d="M 1145 380 L 1430 380" stroke="var(--teal)" stroke-width="4" fill="none" marker-end="url(#ah-teal)"/></svg>
+<div class="code" data-cue="1" data-d="0.4" style="left:1100px;top:520px;width:700px;font-size:22px"><span class="line"><span class="c">// ITCH Add Order, offsets from the spec</span></span><span class="line">m.shares = load_be32(p + <span class="r">20</span>);</span><span class="line">m.price  = load_be32(p + <span class="r">32</span>);</span></div>
+<div class="code" data-cue="2" data-d="0.6" style="left:120px;top:520px;width:860px;font-size:22px"><span class="line"><span class="c">// docs/specs/fix44-subset.md</span></span><span class="line"><span class="g">"100.25"</span> → <span class="r">1002500</span>   <span class="c">// Price(4)</span></span><span class="line"><span class="g">"100.12345"</span> → <span class="x">rejected</span>  <span class="c">// &gt; 4 decimals</span></span></div>
+<div class="lbl c-muted" data-cue="1" data-d="0.8" style="left:1100px;top:680px;width:700px;line-height:1.5">lab binary protocols are big-endian; SBE at CME is little-endian</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Growing without breaking</div>
+<div class="bytes" style="left:120px;top:280px">
+<div data-cue="0" data-d="0.3" style="width:200px;background:var(--blue)">header</div>
+<div data-cue="0" data-d="0.3" style="width:700px;background:var(--teal)">fields v1 knows</div>
+<div data-cue="1" style="width:300px;background:#55697a">new in v2</div>
+<div data-cue="1" style="width:300px;background:var(--amber)">group / var data</div>
+</div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.5" d="M 320 400 C 600 480 1000 480 1325 400" stroke="var(--green)" stroke-width="4" fill="none" marker-end="url(#ah-green)"/></svg>
+<div class="lbl c-green" data-cue="1" data-d="0.8" style="left:560px;top:480px">v1 decoder: jump blockLength bytes, carry on</div>
+<div class="take" data-cue="2" style="left:120px;top:620px;width:1680px">The bottleneck moved from the wire to the CPU.</div>
+<div class="take c-teal" data-cue="3" style="left:120px;top:700px;width:1680px">Fixed offsets make decoding just reading memory.</div>
+</div>

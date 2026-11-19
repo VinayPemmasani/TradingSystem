@@ -1,0 +1,16 @@
+[
+ {"id": "title", "title": "Japan Exchange Group",
+  "text": "Japan Exchange Group runs the Tokyo Stock Exchange, the main Japanese derivatives market in Osaka, and the clearing house behind both. Its story is consolidation: one group for a whole country's market."},
+ {"id": "history", "title": "History in six beats",
+  "text": "Six beats of history. The Tokyo Stock Exchange was founded on May 15, 1878. Its trading floor closed in 1999, and in 2010 the arrowhead system took over cash trading. In 2013 Japan Exchange Group was formed, Osaka's cash market moved to Tokyo, and Osaka's derivatives clearing moved into one clearing house, JSCC. In 2014, Tokyo's derivatives moved to Osaka. And in 2019, JPX bought the Tokyo Commodity Exchange."},
+ {"id": "trades", "title": "What it trades",
+  "text": "What trades there? Japanese shares above all: in the year to March 2026, the Tokyo Stock Exchange's cash market averaged about 7.5 trillion yen a day. In Osaka, the flagship is Nikkei 225 futures, about 137,000 contracts a day in large-contract terms. Ten-year Japanese government bond futures averaged about 45,000 a day. Both are cleared by JSCC, inside the group."},
+ {"id": "tech", "title": "arrowhead, itayose, zaraba",
+  "text": "Cash trading runs on arrowhead, in its fourth generation since November 2024. JPX puts order response at about 0.2 milliseconds, and data out at about 0.5. The day opens and closes with a call auction, itayose, and in between trades continuously, zaraba. The 2024 upgrade also extended the day by thirty minutes to a 3:30 close, with five minutes to collect orders before the closing auction. Its most detailed feed, FLEX Market by Order, sends every order, like the ITCH feed the lab replays."},
+ {"id": "money", "title": "How it makes money",
+  "text": "How does it make money? Operating revenue in the year to March 2026 was 199 billion yen. Trading fees were the biggest line at 77 billion, and clearing added 54 billion. Market information brought in 34 billion, listing fees 19 billion, and system services 14 billion. So about two thirds comes from trading and clearing, which rise and fall with volume."},
+ {"id": "why", "title": "Why it is big",
+  "text": "Why is it big? Consolidation. Japan's main cash market, its main derivatives market and its clearing house sit in one group, so orders and positions in Japanese assets meet in one place. Each merger removed a rival pool of liquidity instead of competing with it. One caution: with two thirds of revenue tied to volume, a quiet year shows up fast."},
+ {"id": "takeaway", "title": "Takeaway", "hold": 0.3,
+  "text": "JPX is one country's market under one roof: Tokyo shares, Osaka derivatives, one clearing house. Its moat is consolidation."}
+]

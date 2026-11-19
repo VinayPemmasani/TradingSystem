@@ -1,0 +1,6 @@
+[
+["\\bPTP\\b","P T P"],["IEEE 1588","I triple E fifteen eighty eight"],["\\bUTC\\b","U T C"],["SO_TIMESTAMPING","S O timestamping"],
+["\\bt1\\b","T one"],["\\bt2\\b","T two"],["\\bt3\\b","T three"],["\\bt4\\b","T four"],["\\bptp4l\\b","P T P four L"],["\\bphc2sys\\b","P H C to sys"],
+["\\brdtsc\\b","R D T S C"],["\\bEU's\\b","E U's"],["1,000","one thousand"],["1,650","sixteen fifty"],["2,000","two thousand"],["2,250","twenty two fifty"],
+["\\b650\\b","six fifty"],["\\b250\\b","two fifty"],["\\b450\\b","four hundred and fifty"],["\\b200\\b","two hundred"],["\\b100\\b","a hundred"]
+]

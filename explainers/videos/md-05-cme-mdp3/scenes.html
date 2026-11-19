@@ -1,0 +1,93 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 05 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">CME MDP 3.0</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">SBE over multicast: incrementals, snapshots, recovery.</div>
+<div class="node" data-cue="1" style="left:140px;top:600px;width:300px;height:130px;border-color:var(--blue)">CME Globex</div>
+<div class="bytes" style="left:520px;top:630px"><div data-cue="1" data-d="0.3" style="width:200px;background:var(--blue)">packet hdr</div><div data-cue="1" data-d="0.5" style="width:240px;background:var(--teal)">SBE msg</div><div data-cue="1" data-d="0.7" style="width:240px;background:var(--teal)">SBE msg</div></div>
+<div id="t5-book" data-cue="2" data-anim="fade" style="left:1360px;top:560px;width:400px;height:240px"></div>
+<svg class="full"><path class="draw" data-cue="2" d="M 1210 665 L 1340 665" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+</div>
+
+<div class="scene" id="s-feeds">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One channel, several feeds</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:380px;width:280px;height:160px;border-color:var(--blue)">CME Globex<small>channel</small></div>
+<div class="card" data-cue="0" data-d="0.4" style="left:620px;top:220px;width:700px;border-color:var(--teal)"><div class="ct c-teal">Incremental A</div><div class="cd">real-time book and trade updates</div></div>
+<div class="card" data-cue="0" data-d="0.7" style="left:620px;top:370px;width:700px;border-color:var(--teal)"><div class="ct c-teal">Incremental B</div><div class="cd">same data, second path</div></div>
+<div class="card" data-cue="1" style="left:620px;top:520px;width:700px;border-color:var(--amber)"><div class="ct c-amber">Market recovery</div><div class="cd">snapshot loop of every book</div></div>
+<div class="card" data-cue="2" style="left:620px;top:670px;width:700px;border-color:var(--violet)"><div class="ct c-violet">Instrument loop</div><div class="cd">definitions: security ID, depth (tag 264) …</div></div>
+<svg class="full">
+<path id="f5-a" class="draw" data-cue="0" data-d="0.4" d="M 405 440 C 500 440 520 270 610 270" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/>
+<path id="f5-b" class="draw" data-cue="0" data-d="0.7" d="M 405 460 C 500 460 520 420 610 420" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/>
+<path class="draw" data-cue="1" d="M 405 480 C 500 480 520 570 610 570" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="2" d="M 405 500 C 500 500 520 720 610 720" stroke="var(--violet)" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+</svg>
+<div class="pkt" data-path="f5-a" data-cue="0" data-d="1" data-dur="1.4" data-loop="1"></div>
+<div class="pkt" data-path="f5-b" data-cue="0" data-d="1" data-dur="1.4" data-loop="1" data-phase="0.1"></div>
+<div class="tag c-teal" data-cue="0" data-d="1.2" style="left:1360px;top:320px;border-color:var(--teal)">"strongly recommends" both</div>
+<div class="tag c-green" data-cue="3" style="left:1360px;top:420px;border-color:var(--green)">gaps: packet sequence numbers</div>
+</div>
+
+<div class="scene" id="s-packet">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Packet header, then SBE messages</div>
+<div class="bytes" style="left:120px;top:300px">
+<div data-cue="1" style="width:240px;background:var(--amber)">MsgSeqNum 4</div>
+<div data-cue="1" data-d="0.4" style="width:480px;background:var(--violet)">SendingTime 8 · ns</div>
+<div data-cue="2" style="width:120px;background:var(--pink)">size 2</div>
+<div data-cue="2" data-d="0.3" style="width:120px;background:var(--blue)">block 2</div>
+<div data-cue="2" data-d="0.4" style="width:120px;background:var(--blue)">tmpl 2</div>
+<div data-cue="2" data-d="0.5" style="width:120px;background:var(--blue)">schema 2</div>
+<div data-cue="2" data-d="0.6" style="width:120px;background:var(--blue)">ver 2</div>
+<div data-cue="2" data-d="0.8" style="width:160px;background:var(--teal)">body …</div>
+</div>
+<div class="olbl" data-cue="1" style="left:120px;top:260px">0</div>
+<div class="olbl" data-cue="1" style="left:360px;top:260px">4</div>
+<div class="olbl" data-cue="1" style="left:840px;top:260px">12</div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:395px">packet header · 12 bytes</div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:840px;top:395px">per message: size + 8-byte SBE header</div>
+<div class="tag c-red" data-cue="3" style="left:120px;top:480px;font-size:28px;border-color:var(--red)">little-endian (ITCH and Mold: big-endian)</div>
+<div class="card" data-cue="4" style="left:120px;top:600px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">CME's decoding example</div><div class="cs">A6 BB 0A 00 → 0x000ABBA6 = 703,398</div><div class="cd">least significant byte first</div></div>
+</div>
+
+<div class="scene" id="s-book">
+<div class="h2" data-cue="0" style="left:120px;top:110px">MDIncrementalRefreshBook · template 46</div>
+<div class="card" data-cue="1" style="left:120px;top:220px;width:460px;border-color:var(--violet)"><div class="ct c-violet">message</div><div class="cs">60 TransactTime<br>5799 MatchEventIndicator</div></div>
+<table class="t" style="left:660px;top:210px;width:1140px">
+<tr data-cue="1" data-d="0.4"><th>tag</th><th>field</th><th>per entry</th></tr>
+<tr data-cue="2"><td class="c-teal">48</td><td>SecurityID</td><td>which instrument</td></tr>
+<tr data-cue="2" data-d="0.3"><td class="c-teal">83</td><td>RptSeq</td><td>per-instrument sequence</td></tr>
+<tr data-cue="2" data-d="0.6"><td class="c-teal">270 · 271</td><td>MDEntryPx · MDEntrySize</td><td>PRICE9 · quantity</td></tr>
+<tr data-cue="2" data-d="0.9"><td class="c-teal">346 · 1023</td><td>NumberOfOrders · MDPriceLevel</td><td>orders · level 1…N</td></tr>
+<tr data-cue="3"><td class="c-amber">279</td><td>MDUpdateAction</td><td>0 New · 1 Change · 2 Delete</td></tr>
+<tr data-cue="4"><td class="c-amber">269</td><td>MDEntryType</td><td>0 Bid · 1 Offer · E/F implied</td></tr>
+</table>
+<div class="tag c-green" data-cue="5" style="left:120px;top:520px;border-color:var(--green)">entry 1: SecurityID A</div>
+<div class="tag c-green" data-cue="5" data-d="0.3" style="left:120px;top:580px;border-color:var(--green)">entry 2: SecurityID B</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Market by price: levels, not orders</div>
+<div class="lbl" data-cue="1" style="left:120px;top:210px">illustrative bid side · depth 5</div>
+<div id="e5-book" data-cue="1" data-anim="fade" style="left:120px;top:260px;width:900px;height:420px"></div>
+<div class="card" data-cue="2" style="left:1100px;top:250px;width:700px;border-color:var(--amber)"><div class="ct c-amber">279=1 Change · level 1</div><div class="cd">size 20 → 25 · other levels untouched</div></div>
+<div class="card" data-cue="3" style="left:1100px;top:420px;width:700px;border-color:var(--green)"><div class="ct c-green">279=0 New · level 2</div><div class="cd">insert · shift down · drop level 6</div></div>
+<div class="card" data-cue="4" style="left:1100px;top:590px;width:700px;border-color:var(--red)"><div class="ct c-red">279=2 Delete · level 1</div><div class="cd">shift up · an add may refill level 5</div></div>
+<div class="tag c-violet" data-cue="5" style="left:120px;top:760px;font-size:26px;border-color:var(--violet)">depth: tag 264 MarketDepth in the security definition</div>
+</div>
+
+<div class="scene" id="s-recovery">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Recovery: join the snapshot loop</div>
+<div class="lbl c-teal" data-cue="1" style="left:120px;top:220px">incremental packets, queued</div>
+<div id="r5-q" data-cue="1" data-anim="fade" style="left:120px;top:260px;width:1680px;height:90px"></div>
+<div class="card" data-cue="2" style="left:120px;top:420px;width:820px;border-color:var(--amber)"><div class="ct c-amber">snapshot · instrument X</div><div class="cs">369 LastMsgSeqNumProcessed = 5004</div><div class="cd">book state including packet 5004</div></div>
+<div class="card" data-cue="3" style="left:980px;top:420px;width:820px;border-color:var(--amber)"><div class="ct c-amber">one full loop</div><div class="cd">starting from snapshot 1 · 911 TotNumReports</div></div>
+<div class="tag c-red" data-cue="4" style="left:120px;top:660px;font-size:26px;border-color:var(--red)">drop queued packets &lt; 5004</div>
+<div class="tag c-green" data-cue="5" style="left:120px;top:730px;font-size:26px;border-color:var(--green)">apply 5004 onward · skip entries with RptSeq ≤ the snapshot's</div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Three habits</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:200px;border-color:var(--teal)"><div class="ct c-teal">Arbitrate A/B</div><div class="cd">first, before decoding (video 09)</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:200px;border-color:var(--amber)"><div class="ct c-amber">Check RptSeq</div><div class="cd">per instrument, not just per packet</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:230px;width:540px;height:200px;border-color:var(--violet)"><div class="ct c-violet">Practise recovery</div><div class="cd">the snapshot loop is routine</div></div>
+<div class="take" data-cue="4" style="left:120px;top:560px;width:1680px">MDP 3.0 = SBE + sequence numbers + <span class="c-amber">a way home.</span></div>
+</div>

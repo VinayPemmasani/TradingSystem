@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Combining signals",
+  "text": "Microprice, imbalance, trade flow, the futures lead: each signal is weak on its own. This last video of the series combines them into one forecast, with a linear model that keeps learning online. It reuses features from across the series."
+ },
+ {
+  "id": "setup",
+  "title": "One forecast",
+  "text": "First pick a target: the mid change, in ticks, over the horizon where your signals peak. Put the features in a vector, each scaled by its own running deviation. The forecast is a dot product: weights times features. Added to the mid, it is the fair value that the signals video quoted around."
+ },
+ {
+  "id": "ridge",
+  "title": "Least squares and ridge",
+  "text": "Least squares picks the weights that minimize squared error on past data: X transpose X, inverted, times X transpose y. But microprice and imbalance carry nearly the same information. When features are that correlated, least squares splits the weight between them almost at random. Ridge regression adds lambda to the diagonal, which pulls the weights toward zero, and toward each other."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "In my simulation, the true weights are 0.5 on microprice, zero on imbalance, and 0.3 on trade flow, with the first two correlated at 0.9. Trained on 250 samples, least squares gave microprice a negative weight, minus 0.29, and imbalance 0.71. Ridge, with lambda 250, gave 0.11, 0.21 and 0.20. On fifty thousand later samples, R squared rose from 2.9 to 3.7 percent. The true weights would score 4.4. Ridge did not find the true weights, but it stopped betting against one twin with the other."
+ },
+ {
+  "id": "online",
+  "title": "Learning online",
+  "text": "To learn online, decay the two sums by a factor gamma, just below one. A becomes gamma times A, plus x x transpose. And b becomes gamma times b, plus x times y. For three or four features, that is a few dozen multiply-adds per sample, and a tiny solve whenever you refresh the weights. One catch: y arrives only after the horizon, so update with the features from h ago."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, fit in Python under research, on earlier days, and test on later ones. Ship the weights to the trader as constants. On the hot path, fair value is a dot product of doubles, rounded back to whole ticks. The market maker's skew and hold rules then turn it into orders. Cont, Cucuringu and Zhang combined in the same spirit, merging order flow from several book levels into one integrated variable."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pitfalls: a feature measured after the decision leaks the answer. Expect a small R squared, and treat a suspiciously good fit as a bug until proven otherwise. Watch the weights drift, and cap the forecast, so one bad input cannot drag fair value away. Small, regularized and honest: that is how many signals become one price."
+ }
+]

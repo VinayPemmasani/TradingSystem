@@ -1,0 +1,43 @@
+[
+ {
+  "id": "title",
+  "title": "Market impact",
+  "text": "Buy a lot of anything, and the price moves against you while you buy. That move is market impact, and for large orders it is usually the biggest cost. Here is the theory, the data, and how to plan around it."
+ },
+ {
+  "id": "kyle",
+  "title": "Kyle's lambda",
+  "text": "Kyle's 1985 model starts with one insider, random noise traders, and a market maker who sees only their combined order. The price moves in a straight line with that net order flow. The slope is lambda, and one over lambda is the market's depth. Lambda is the value's uncertainty, over twice the noise traders' typical size. More noise hides the insider, so the market gets deeper."
+ },
+ {
+  "id": "kworked",
+  "title": "Kyle in numbers",
+  "text": "Here is my own example. Say the value's standard deviation is two dollars, and noise traders send ten thousand shares, give or take. Then lambda is two over twenty thousand: one cent per hundred shares. The insider buys five thousand shares for each dollar of mispricing. If value is a dollar high, the price moves fifty cents on average: halfway to the truth."
+ },
+ {
+  "id": "sqrt",
+  "title": "The square-root law",
+  "text": "Real large orders, sliced over hours, show something else. Impact grows with the square root of size, not in a straight line. Tóth, Bouchaud and colleagues wrote it as Y, times daily volatility, times the square root of size over daily volume. Y is of order one. Their data were about half a million trades by one fund in futures, from 2007 to 2010. It held from a few hundredths of a percent of daily volume up to a few percent."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Take a stock with two percent daily volatility, trading five million shares a day, at fifty dollars. Buying fifty thousand shares is one percent of the day. With Y equal to one, impact is two percent times one tenth: 0.2 percent, or ten cents. Buy four times as much, and impact only doubles, to twenty cents. But you pay it on four times the shares, so dollar cost grows as size to the power one and a half."
+ },
+ {
+  "id": "ac",
+  "title": "Almgren and Chriss",
+  "text": "So slow down? Waiting has its own cost: the price wanders while you hold the risk. Almgren and Chriss, in 2000, traded these off: expected cost plus risk aversion times variance. With no risk aversion, the best schedule is a straight line, like TWAP. With more, it front-loads, along a hyperbolic sine curve, buying impact to shed risk."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, the quant-lab's fundamental strategy works its orders with a participation schedule. Since the parent order began, it may have done at most six percent of the volume the market traded. Fixed participation keeps the order a small slice of the flow, the regime where the square-root law was measured. Raise participation basis points to see what speed costs."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Watch the traps. A backtest that fills at the mid ignores impact entirely. Y and the exponent differ by market, so fit them on your own fills. Impact grows like the square root of size, so the dollar cost of a big trade grows faster than the trade."
+ }
+]

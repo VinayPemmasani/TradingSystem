@@ -1,0 +1,38 @@
+[
+{
+"id": "title",
+"title": "Gaps",
+"text": "A gap is a hole in the sequence numbers. The handler has to notice it, wait a moment, ask for the missing messages, and decide what to do if they never come."
+},
+{
+"id": "detect",
+"title": "Detect",
+"text": "MoldUDP64 numbers every message. The lab's sequencer keeps two numbers: expected, the next one to deliver, and the high-water mark, one past the highest seen. When the high-water mark runs ahead of expected, a gap is open. Messages that arrive beyond the gap are copied into a preallocated window, and wait there. In the feed handler that window holds 262,144 messages. Even when the market is quiet, heartbeats carry the next sequence number, so a loss can't hide."
+},
+{
+"id": "ask",
+"title": "Ask",
+"text": "When should it ask? Not at once, because the packet may only be reordered. itch-fh waits 100 microseconds before its first request. The request is just a 20 byte MoldUDP64 header: session, first sequence wanted, and a count. It goes unicast to the exchange's re-request server. If 20 milliseconds pass with no progress, the handler asks again. After 10 requests without progress, it gives the gap up. Each answer is one ordinary packet, sent unicast, so a large gap takes several rounds of asking."
+},
+{
+"id": "code",
+"title": "In the lab",
+"text": "Here is that decision in the sequencer's poll function. Progress resets the retry count. A request is due after the first delay, or after a timeout. Past the retry limit, give up skips the missing run and counts its messages as lost. Everything here is integer compares on timestamp counter ticks, with no system call. The rx thread does the sending."
+},
+{
+"id": "stale",
+"title": "Stale books",
+"text": "Giving up has a cost. I ran the lab's live feed test on this shared box while it was badly overloaded. The book thread fell behind, the window overflowed, and 9 gaps were given up, losing 663,863 messages. The books then received 93 updates for orders they had never seen. Each one marks a book that was already wrong, and a strategy would have traded on it. The test failed, as it should."
+},
+{
+"id": "pros",
+"title": "What pros do",
+"text": "So what do pros do? Track staleness per instrument, not only per feed. Pull quotes on any instrument whose book you no longer trust. And rebuild it rather than patch it: from the venue's recovery service if it has one, or by replaying from the start of the day. Integrity counters, like the lab's unknown order reference, are how you catch a book that went wrong quietly. The lab takes the strictest stance of all: one lost message or one integrity error, and the feed handler reports the whole day as failed."
+},
+{
+"id": "takeaway",
+"title": "Takeaway",
+"text": "Detect gaps from sequence numbers, wait briefly for reordering, then ask with a timeout and a retry limit. When a gap is given up, treat every book it touched as stale until it is rebuilt.",
+"hold": 1.0
+}
+]

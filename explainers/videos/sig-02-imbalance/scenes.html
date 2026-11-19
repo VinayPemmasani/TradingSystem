@@ -1,0 +1,84 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 02 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Order book<br>imbalance</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">Who is waiting to buy, who is waiting to sell.</div>
+<div id="ti-g" data-cue="1" data-anim="fade" style="left:140px;top:680px;width:1100px;height:160px"></div>
+</div>
+
+<div class="scene" id="s-define">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Queue imbalance</div>
+<div class="fcard amber" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:760px"><span class="lbl">Gould &amp; Bonart · at the best bid and ask</span><div class="math"><i>ρ</i><span class="eq">=</span><span class="frac"><span><i>Q</i><sub>b</sub> − <i>Q</i><sub>a</sub></span><span><i>Q</i><sub>b</sub> + <i>Q</i><sub>a</sub></span></span></div></div>
+<div id="df-g" data-cue="1" data-anim="fade" style="left:120px;top:470px;width:820px;height:150px"></div>
+<div class="fcard violet" data-cue="2" style="left:1000px;top:230px;width:800px"><span class="lbl">signals video: I = Q<sub>b</sub> / (Q<sub>b</sub> + Q<sub>a</sub>) in [0, 1]</span><div class="math"><i>ρ</i><span class="eq">=</span>2<i>I</i> − 1</div></div>
+<div class="fcard" data-cue="3" style="left:1000px;top:430px;width:800px"><div class="math" style="font-size:38px"><span class="frac"><span>900 − 100</span><span>900 + 100</span></span> = <span class="val c-amber">+0.8</span></div></div>
+<div class="fcard" data-cue="4" style="left:120px;top:680px;width:1000px"><span class="lbl">deeper: N levels, weights falling with distance</span><div class="math" style="font-size:36px"><i>ρ</i><sub>N</sub> = <span class="frac"><span>Σ<sub><i>k</i></sub> <i>w</i><sub><i>k</i></sub> (<i>Q</i><sub>b,<i>k</i></sub> − <i>Q</i><sub>a,<i>k</i></sub>)</span><span>Σ<sub><i>k</i></sub> <i>w</i><sub><i>k</i></sub> (<i>Q</i><sub>b,<i>k</i></sub> + <i>Q</i><sub>a,<i>k</i></sub>)</span></span></div></div>
+<div class="lbl" data-cue="4" data-d="0.4" style="left:1200px;top:690px">w<sub>k</sub></div>
+<div class="grow bar" data-cue="4" data-d="0.5" data-w="420" style="left:1260px;top:690px;background:var(--violet)"></div>
+<div class="grow bar" data-cue="4" data-d="0.7" data-w="210" style="left:1260px;top:745px;background:var(--violet);opacity:.75"></div>
+<div class="grow bar" data-cue="4" data-d="0.9" data-w="105" style="left:1260px;top:800px;background:var(--violet);opacity:.55"></div>
+<div class="lbl" data-cue="4" data-d="0.5" style="left:1700px;top:698px">level 1</div>
+<div class="lbl" data-cue="4" data-d="0.7" style="left:1700px;top:753px">level 2</div>
+<div class="lbl" data-cue="4" data-d="0.9" style="left:1700px;top:808px">level 3</div>
+</div>
+
+<div class="scene" id="s-predict">
+<div class="h2" data-cue="0" style="left:120px;top:110px">It predicts the next mid move</div>
+<div class="chip" data-cue="1" style="left:120px;top:220px;background:var(--blue)">LOBSTER · Nasdaq · 10 stocks · 2014</div>
+<div class="fcard amber" data-cue="1" data-d="0.5" style="left:120px;top:300px;width:820px"><span class="lbl">logistic regression</span><div class="math">P(next move up)<span class="eq">=</span><span class="frac"><span>1</span><span>1 + <i>e</i><sup>−(<i>a</i> + <i>b ρ</i>)</sup></span></span></div></div>
+<div class="tag c-green" data-cue="2" style="left:120px;top:500px">strongly significant for every stock</div>
+<div class="lbl" data-cue="3" style="left:120px;top:590px">improvement over a no-imbalance model</div>
+<div class="lbl" data-cue="3" data-d="0.2" style="left:120px;top:640px">large tick</div>
+<div class="grow bar" data-cue="3" data-d="0.3" data-w="560" style="left:330px;top:632px;background:var(--amber)"></div>
+<div class="lbl" data-cue="3" data-d="0.5" style="left:120px;top:700px">small tick</div>
+<div class="grow bar" data-cue="3" data-d="0.6" data-w="170" style="left:330px;top:692px;background:var(--amber);opacity:.6"></div>
+<div class="note" data-cue="3" data-d="0.8" style="left:330px;top:745px">"considerable" vs "moderate" (abstract), not to scale</div>
+<div class="lbl" data-cue="4" style="left:1080px;top:230px">large-tick queues, one-tick spread</div>
+<div id="pr-q" data-cue="4" data-anim="fade" style="left:1080px;top:280px;width:740px;height:460px"></div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: the toy queue model</div>
+<div id="wk-ch" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:1060px;height:600px"></div>
+<div class="tag c-teal" data-cue="0" data-d="0.6" style="left:330px;top:250px">● toy model, P(up) by bucket</div>
+<div class="tag c-amber" data-cue="1" style="left:330px;top:300px">— logistic fit, b = 4.0</div>
+<div class="fcard" data-cue="2" style="left:1260px;top:250px;width:560px"><div class="math" style="font-size:36px"><i>ρ</i> = 0 ⇒ <span class="frac"><span>1</span><span>1 + <i>e</i><sup>0</sup></span></span> = <span class="val c-amber">0.50</span></div></div>
+<div class="fcard amber" data-cue="3" style="left:1260px;top:430px;width:560px"><div class="math" style="font-size:36px"><i>ρ</i> = 0.5 ⇒ <span class="frac"><span>1</span><span>1 + <i>e</i><sup>−2</sup></span></span> = <span class="val c-amber">0.88</span></div></div>
+<div class="card" data-cue="4" style="left:1260px;top:620px;width:560px;border-color:var(--pink)"><div class="ct c-pink" style="font-size:28px">Real books are noisier</div><div class="cs" style="font-size:23px">fit b per stock · test on unseen days</div></div>
+</div>
+
+<div class="scene" id="s-maker">
+<div class="h2" data-cue="0" style="left:120px;top:110px">It predicts who trades next</div>
+<div class="chip" data-cue="0" data-d="0.5" style="left:120px;top:210px;background:var(--blue)">Nasdaq · 11 stocks · fit Jan–Jun 2014, test Jul–Dec</div>
+<div id="mk-lad" data-cue="1" data-anim="fade" style="left:160px;top:350px"></div>
+<div class="tag c-violet" id="mk-rho" data-cue="2" style="left:160px;top:720px">ρ = (300 − 1,500) / 1,800 = −0.67</div>
+<div class="node red" data-cue="2" data-d="0.4" style="left:1400px;top:330px;width:380px"><div class="t" style="font-size:28px">sell market order</div><div class="s">likely next</div></div>
+<svg class="full"><path id="mk-p" d="M1400 400 C 1200 420 1100 520 900 545" fill="none" stroke="none"/><path class="draw" data-cue="3" d="M1400 400 C 1200 420 1100 520 900 545" stroke="#ff6b5e" stroke-width="3" stroke-dasharray="1 1" fill="none" marker-end="url(#ah-red)"/></svg>
+<div class="pkt" data-path="mk-p" data-cue="3" data-dur="1.2" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="tag c-amber" data-cue="3" data-d="0.4" style="left:900px;top:600px">our bid filled …</div>
+<div class="tag c-red" data-cue="3" data-d="1.4" style="left:900px;top:650px">… then the mid drops a tick</div>
+<div class="card" data-cue="4" style="left:1260px;top:560px;width:560px;border-color:var(--amber)"><div class="ct c-amber" style="font-size:30px">With imbalance</div><div class="cs" style="font-size:24px">higher out-of-sample profits, mostly from less adverse selection</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: remove your own order</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:210px;width:900px;font-size:23px"><span class="c">// firm/oms messages.hpp</span>
+<span class="v">uint32_t</span> bid_px[<span class="r">2</span>], bid_qty[<span class="r">2</span>];
+<span class="v">uint32_t</span> ask_px[<span class="r">2</span>], ask_qty[<span class="r">2</span>];</div>
+<div class="code" data-cue="2" style="left:1080px;top:210px;width:740px;font-size:23px"><span class="c">// market_maker.hpp</span>
+Market others(t, own_bid_px, own_bid_open,
+              own_ask_px, own_ask_open);
+<span class="c">// prices only: sizes untouched</span></div>
+<div class="node green" data-cue="3" style="left:120px;top:460px;width:490px;text-align:left"><div class="t" style="font-size:23px">bid 300 (ours 100) · ask 200</div><div class="s">with ours: 100 / 500 = <span class="c-amber">+0.20</span><br>without:   0 / 400 = <span class="c-teal">0.00</span></div></div>
+<div class="code" data-cue="4" style="left:650px;top:460px;width:1170px;font-size:22px"><span class="c"># sketch for research/lab_research/backtest.py quote(), before the passive clamp</span>
+rho = (bid_qty - ask_qty) / (bid_qty + ask_qty)
+<span class="k">if</span> rho &gt;  <span class="r">0.6</span>: b += p.tick; a += p.tick
+<span class="k">if</span> rho &lt; -<span class="r">0.6</span>: b -= p.tick; a -= p.tick</div>
+<div class="tag c-blue" data-cue="5" style="left:650px;top:690px">python3 research/backtest.py aapl.csv  · with vs without the rule</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="1" style="left:120px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Fleeting</div><div class="cs">Visible size can cancel within microseconds.</div></div>
+<div class="card" data-cue="1" data-d="1.6" style="left:690px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Spoofable</div><div class="cs">Fake size is placed to move exactly this signal.</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Hidden</div><div class="cs">Icebergs and hidden orders are not in it.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:480px;width:1700px"><span class="c-amber">Imbalance</span>: a cheap hint about<br>the next tick, best where queues are long.</div>
+</div>

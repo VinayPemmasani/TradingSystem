@@ -1,0 +1,20 @@
+[
+["\\b4 vCPU\\b", "four V C P U"],
+["\\bvCPU\\b", "V C P U"],
+["\\bVM\\b", "V M"],
+["\\bg\\+\\+", "G plus plus"],
+["std::map", "standard map"],
+["std::round", "standard round"],
+["\\b0\\.1 plus 0\\.2 is not 0\\.3", "zero point one plus zero point two is not zero point three"],
+["\\b100\\.10\\b", "a hundred point one zero"],
+["\\b0\\.29 divided by 0\\.01", "zero point two nine divided by zero point zero one"],
+["29,999\\.9999996", "twenty nine thousand, nine hundred ninety nine point nine nine nine nine nine nine six"],
+["30,000", "thirty thousand"],
+["\\b5012\\.25\\b", "five thousand twelve point two five"],
+["\\b501225\\b", "five hundred one thousand, two hundred twenty five"],
+["64-bit", "sixty four bit"],
+["\\b13 to 15\\b", "thirteen to fifteen"],
+["\\b2\\.5\\b", "two point five"],
+["\\b4\\.5\\b", "four point five"],
+["\\b13 nanoseconds", "thirteen nanoseconds"]
+]

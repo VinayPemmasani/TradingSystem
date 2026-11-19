@@ -1,0 +1,5 @@
+[
+["\\bNAPI\\b","nappy"],["ethtool -C","eth tool dash C"],["rx-usecs","R X micro seconds"],["rx-frames","R X frames"],["SO_BUSY_POLL","S O busy poll"],["busy_poll","busy poll"],
+["EF_POLL_USEC","E F poll U sec"],["/proc/irq","proc I R Q"],["\\birqbalance\\b","I R Q balance"],["\\brecvmmsg\\b","receive M message"],["\\bCPU\\b","C P U"],["\\bAMD's\\b","A M D's"],
+["\\b64 byte\\b","sixty four byte"],["\\b0\\.72\\b","nought point seven two"],["\\b0\\.81\\b","nought point eight one"],["\\b100 percent\\b","a hundred percent"]
+]

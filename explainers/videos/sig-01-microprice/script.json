@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Microprice",
+  "text": "The signals video built a size-weighted mid and called it the microprice. Sasha Stoikov's 2018 paper defines the micro-price differently: as an expected future price. Here is why that difference matters."
+ },
+ {
+  "id": "flaw",
+  "title": "The weighted mid",
+  "text": "Take a bid at 50.00 for 900 shares, and an ask at 50.01 for just 100. Imbalance is 0.9, so the weighted mid is 50.009, right next to the ask. Now that small ask cancels, and the next ask is 50.02, with 2,700 shares. A seller just left, which should not be bad news. Yet the weighted mid falls to 50.005. It jumps on every book update, and here it moved the wrong way."
+ },
+ {
+  "id": "define",
+  "title": "Stoikov's definition",
+  "text": "Stoikov starts from the times when the mid next changes. P one is the expected mid at the first change, given the book now. P two is the expected mid at the second change, and so on. The micro-price is the limit of that sequence. He shows it equals the mid, plus an adjustment g that depends only on imbalance and spread. If mid moves ignore imbalance, g is zero and the micro-price is the mid. The weighted mid falls out of one toy model, where imbalance wanders like a Brownian motion."
+ },
+ {
+  "id": "estimate",
+  "title": "Estimating g",
+  "text": "In practice, g is estimated from data. Cut imbalance into n buckets, and keep the spread in whole ticks. Each book update is a state, so count how states lead to one another, and to mid changes. That gives a Markov chain, and g one comes out of one matrix solve. Then add every observation mirrored, bids swapped with asks, so the table is symmetric. The paper fits it to Bank of America, a large-tick stock, and Chevron, a small-tick one."
+ },
+ {
+  "id": "toy",
+  "title": "A worked example",
+  "text": "To see the shape, I solved a toy queue model with a one-tick spread. Each event adds or removes a lot on a random side, and an empty queue moves the mid half a tick. The amber curve is g by imbalance bucket. It is S-shaped: in the top bucket it is 0.46 of a tick, where the weighted mid says 0.38. And imbalance is not the whole story. Three lots against one gives 0.31 ticks, but thirty against ten gives 0.40."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab this is cheap. TopOfBook already carries both sizes, so the bucket is integer math, and g is a table lookup in Price(4) units, one row per spread. Fit the table offline, from itch-dump's top of book CSV in the research folder. Then the market maker can lean its quotes on the micro-price instead of the raw best prices."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Watch the pitfalls: thin buckets, rare wide spreads, and tables reused across stocks with different tick sizes. Refit per symbol, and test on later days. The micro-price is the expected mid, learned from data, not a size-weighted guess."
+ }
+]

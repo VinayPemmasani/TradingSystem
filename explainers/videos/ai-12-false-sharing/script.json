@@ -1,0 +1,39 @@
+[
+ {
+  "id": "title",
+  "title": "False sharing",
+  "text": "Pattern twelve: false sharing. Two threads, each writing only its own variable. Nothing is shared, yet one layout runs four times slower than the other."
+ },
+ {
+  "id": "general",
+  "title": "The general version",
+  "text": "Here is the natural layout. Per-thread counters sit in one std::array of atomics. A ring keeps the producer's and consumer's indices side by side, with each side's cached copy. Two counters take 16 bytes, and the four ring fields take 32. Each set fits in one 64-byte cache line. It is compact, correct, and exactly what you write without thinking about caches."
+ },
+ {
+  "id": "pingpong",
+  "title": "Ping-pong",
+  "text": "Caches move whole 64-byte lines, and a core must own a line before it writes to it. When core one increments its counter, the copy in core two is invalidated. When core two writes its own counter, it pulls the line back. The threads share no data, only a line, so every write becomes a cross-core transfer. In the ring, each write to head also evicts the consumer's tail and cached head."
+ },
+ {
+  "id": "fast",
+  "title": "The hot-path version",
+  "text": "The fix is layout. Give each thread's field alignas 64, so it starts its own line. The counters grow from 16 bytes to 128, and a static assert pins that. In the ring, head and the producer's cached tail share one line. The consumer's fields get the next line, and the slots start on a third. Each core now writes only lines it owns."
+ },
+ {
+  "id": "hdi",
+  "title": "Why 64, spelled out",
+  "text": "C++17 names this number: std::hardware_destructive_interference_size. GCC 13 reports 64 on this box, but it warns when a header uses it. The value can change with tuning flags, and so would your struct layout. So low-latency code, like the lab's core library, fixes the constant at 64. Some code pads to 128, because Intel's spatial prefetcher fetches lines in pairs."
+ },
+ {
+  "id": "measured",
+  "title": "Measured",
+  "text": "Measured on a shared 4-vCPU cloud VM, with two threads pinned at real-time priority. For the counters, 100 million relaxed increments each: 31.8 nanoseconds per increment packed, and 7.1 padded. That is 4.5 times. For the ring, 20 million messages: 98 nanoseconds per message packed, and 60 padded. That is 1.6 times, because head and tail are truly shared anyway. The price is memory: 112 extra bytes for the counters, and 96 for the ring's header.",
+  "hold": 0.8
+ },
+ {
+  "id": "nuance",
+  "title": "The honest nuance",
+  "text": "Packing is not wrong. For data one thread writes, or data that is only read, dense is better, because more of it fits in cache. Padding pays only for fields that different threads write. That is the constraint the prompt left out: which thread writes which field. A layout change is cheap to try, so measure it. Rule: one writer per cache line.",
+  "hold": 1.5
+ }
+]

@@ -1,0 +1,77 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">HFT &amp; HEDGE FUND STRATEGIES · 09 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Global macro &amp; carry</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Trade whole economies. Get paid to hold what yields more.</div>
+<div class="chip" data-cue="0" data-d="0.8" style="left:140px;top:540px;background:var(--teal)">rates</div>
+<div class="chip" data-cue="0" data-d="1.0" style="left:260px;top:540px;background:var(--green)">currencies</div>
+<div class="chip" data-cue="0" data-d="1.2" style="left:440px;top:540px;background:var(--blue)">equity indices</div>
+<div class="chip" data-cue="0" data-d="1.4" style="left:670px;top:540px;background:var(--amber)">commodities</div>
+<div class="card violet" data-cue="1" style="left:140px;top:650px;width:900px"><div class="ct">carry</div><div class="cs">the systematic cousin: hold the higher yield</div></div>
+</div>
+
+<div class="scene" id="s-macro">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One view, many expressions</div>
+<div class="node violet" data-cue="1" style="left:120px;top:400px;width:440px"><div class="t">view</div><div class="s">central bank cuts faster<br>than the market prices</div></div>
+<div class="node teal" data-cue="2" style="left:820px;top:230px;width:420px"><div class="t">buy bond futures</div></div>
+<div class="node teal" data-cue="2" data-d="0.3" style="left:820px;top:420px;width:420px"><div class="t">receive fixed in a swap</div></div>
+<div class="node teal" data-cue="3" style="left:820px;top:610px;width:420px"><div class="t">options, FX, curve …</div></div>
+<svg class="full">
+<path d="M560 460 C 680 460 700 290 820 290" stroke="#a98bff" stroke-width="3" fill="none" class="draw" data-cue="2" marker-end="url(#ah-violet)"/>
+<path d="M560 470 L820 480" stroke="#a98bff" stroke-width="3" fill="none" class="draw" data-cue="2" data-d="0.3" marker-end="url(#ah-violet)"/>
+<path d="M560 480 C 680 480 700 670 820 670" stroke="#a98bff" stroke-width="3" fill="none" class="draw" data-cue="3" marker-end="url(#ah-violet)"/>
+</svg>
+<div class="fcard amber" data-cue="3" data-d="0.6" style="left:1320px;top:300px;width:480px"><span class="lbl">pick the expression with</span><div class="body"><span class="c-green">most payoff if right</span><br><span class="c-pink">least cost if wrong</span></div></div>
+<div class="fcard blue" data-cue="4" style="left:1320px;top:560px;width:480px"><span class="lbl">deep, liquid markets</span><div class="body">a large book can turn quickly</div></div>
+</div>
+
+<div class="scene" id="s-carry">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Carry: one definition for every asset</div>
+<div class="src" data-cue="0" style="left:120px;top:190px">Koijen, Moskowitz, Pedersen &amp; Vrugt, J. Financial Economics 127(2), 2018</div>
+<div class="fcard amber" data-cue="1" style="left:120px;top:250px;width:1680px"><span class="lbl">the futures return if the price stays the same</span><div class="math" data-cue="2" style="font-size:52px"><i>C</i><sub><i>t</i></sub><span class="eq">=</span>( <i>S</i><sub><i>t</i></sub> − <i>F</i><sub><i>t</i></sub> ) / <i>F</i><sub><i>t</i></sub></div></div>
+<div class="fcard green" data-cue="3" style="left:120px;top:480px;width:1680px;padding:12px 26px"><span class="body">currency forward: carry = the interest rate spread between the two countries</span></div>
+<div class="node green" data-cue="4" style="left:120px;top:620px;width:380px"><div class="t">currencies</div></div>
+<div class="node teal" data-cue="4" data-d="0.2" style="left:550px;top:620px;width:380px"><div class="t">bonds</div></div>
+<div class="node amber" data-cue="4" data-d="0.4" style="left:980px;top:620px;width:380px"><div class="t">commodities</div></div>
+<div class="node blue" data-cue="4" data-d="0.6" style="left:1410px;top:620px;width:390px"><div class="t">equity indices</div></div>
+<div class="tag c-violet" data-cue="4" data-d="0.9" style="left:120px;top:770px">carry predicts returns in each, cross-sectionally and over time</div>
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: a currency carry trade</div>
+<div class="node pink" data-cue="0" data-d="0.3" style="left:120px;top:240px;width:420px"><div class="t">fund</div><div class="s">borrow at 1%</div></div>
+<div class="node green" data-cue="0" data-d="0.6" style="left:1380px;top:240px;width:420px"><div class="t">invest</div><div class="s">currency paying 5%</div></div>
+<svg class="full"><path id="ex-p" d="M540 300 L1380 300" stroke="#4fd18b" stroke-width="3" fill="none" class="draw" data-cue="0" data-d="0.6" marker-end="url(#ah-green)"/></svg>
+<div class="pkt" data-path="ex-p" data-cue="0" data-d="1.0" data-dur="1.4" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="fcard" data-cue="1" style="left:120px;top:420px;width:820px"><span class="lbl">covered interest parity, spot S = 1.00</span><div class="math" style="font-size:38px"><i>F</i> = 1.00 × 1.01 / 1.05 ≈ <span class="val c-teal">0.962</span></div></div>
+<div class="fcard amber" data-cue="2" style="left:980px;top:420px;width:820px"><span class="lbl">carry</span><div class="math" style="font-size:38px">(1.00 − 0.962) / 0.962 ≈ <span class="val c-amber">3.96% / yr</span></div></div>
+<div class="lbl" data-cue="3" style="left:120px;top:640px">EXCHANGE RATE CHANGE OVER THE YEAR →  P&amp;L</div>
+<div id="ex-c" data-cue="3" data-anim="fade" style="left:120px;top:680px;width:1680px;height:170px"></div>
+<div class="tag c-pink" data-cue="4" style="left:720px;top:860px">loses past ≈ −4%</div>
+</div>
+
+<div class="scene" id="s-lose">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Up the stairs, down the elevator</div>
+<div id="lo-c" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:1000px;height:440px"></div>
+<div class="tag c-muted" data-cue="0" data-d="0.5" style="left:120px;top:680px">illustrative carry P&amp;L path</div>
+<div class="src" data-cue="1" style="left:1180px;top:220px">Brunnermeier, Nagel &amp; Pedersen, NBER Macro Annual 2008</div>
+<div class="card pink" data-cue="1" style="left:1180px;top:260px;width:620px"><div class="ct c-pink">crash risk</div><div class="cs">negatively skewed returns</div></div>
+<div class="card pink" data-cue="2" style="left:1180px;top:420px;width:620px"><div class="ct c-pink">sudden unwinding</div><div class="cs">risk appetite and funding liquidity dry up</div></div>
+<div class="card amber" data-cue="3" style="left:1180px;top:580px;width:620px"><div class="ct c-amber">KMPV 2018</div><div class="cs">recession, liquidity, volatility exposure</div></div>
+<div class="card violet" data-cue="4" style="left:120px;top:740px;width:1680px;padding:14px 26px"><div class="cs" style="margin:0">discretionary macro: right too early, or right on the economy but wrong on the price</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">What it needs</div>
+<div class="card blue" data-cue="0" data-d="0.8" style="left:120px;top:230px;width:820px"><div class="ct">lab today</div><div class="cs">fixed dollar notional per strategy</div></div>
+<div class="card amber" data-cue="1" data-d="0.6" style="left:980px;top:230px;width:820px"><div class="ct c-amber">carry book</div><div class="cs">each leg sized by its volatility</div></div>
+<div class="code" data-cue="2" style="left:120px;top:440px;width:1680px;font-size:24px"><span class="line c">// thesis.hpp: the view, written down before the trade</span><span class="line">fair_value · entry_bps · exit_bps · stop_bps · max_hold_days</span></div>
+<div class="chip" data-cue="3" style="left:120px;top:620px;background:var(--teal)">rate curves</div>
+<div class="chip" data-cue="3" data-d="0.3" style="left:330px;top:620px;background:var(--green)">forward points</div>
+<div class="chip" data-cue="3" data-d="0.6" style="left:590px;top:620px;background:var(--blue)">margin, many currencies</div>
+<div class="chip" data-cue="3" data-d="0.9" style="left:950px;top:620px;background:var(--pink)">crash scenarios</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:140px;top:250px;width:1640px">Harvest yield and policy views.<br><span class="c-pink">Lose in sudden unwinds.</span></div>
+<div class="sub" data-cue="1" style="left:140px;top:630px">size for the crash, not the average day</div>
+</div>

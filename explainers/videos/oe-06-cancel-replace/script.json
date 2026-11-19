@@ -1,0 +1,33 @@
+[
+{
+"id": "title",
+"title": "Cancel and replace",
+"text": "A market maker moves its quotes all day long. Cancel and replace are how it does that. But the order can trade while your change is still on the wire."
+},
+{
+"id": "msgs",
+"title": "The messages",
+"text": "In OUCH, Cancel Order is eleven bytes: the UserRefNum, and the size you now want, where zero means cancel it all. Replace Order is forty bytes: the old UserRefNum, a new one, and a new quantity and price. In FIX, a cancel is 35 equals F, and a replace is 35 equals G, each naming the original ClOrdID and carrying a new one. Both name the order by your own id, not the exchange's. The exchange answers with Order Canceled, which carries a reason, or Order Replaced, which names both the old and the new UserRefNum. And an OUCH replace has no side or symbol field: to change those, cancel and send a new order."
+},
+{
+"id": "race1",
+"title": "Race one: cancel versus fill",
+"text": "We rest 100 shares, and decide to cancel. At the same moment, a seller hits us. The fill happens first at the exchange, and our cancel arrives to find nothing left. In FIX, we get the fill, then an Order Cancel Reject: too late to cancel. The fill is real. Our strategy must handle both messages, in that order. In OUCH, simex simply drops a cancel that finds nothing left. A reject like this is not an error to retry: the order is already gone."
+},
+{
+"id": "race2",
+"title": "Race two: replace versus fill",
+"text": "Now we replace 100 at 187.25 with 100 at 187.30, while 40 shares are trading. If 100 meant 100 more, we could end up buying 140. So OUCH counts a replace's quantity across the whole chain, executed shares included. The exchange subtracts the 40 already filled, and the replacement rests with 60. The chain can never fill more than 100. The same idea makes a cancel safe: its quantity is the size you want left, not how many to remove. So the lab's risk check counts only the growth of a replace, beyond the old order's open shares."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab's OMS allows one request in flight per order. While a replace is pending, the old order and its replacement both count as exposure, because the exchange may still be holding either one. A cancel waits until the replace is answered. A replace for no more than the shares already filled simply cancels the rest. And in simex, a replaced order always goes to the back of the queue. When Order Replaced arrives, the old order is finished, its fills carry over to the replacement, and only the replacement stays live."
+},
+{
+"id": "take",
+"title": "What pros do",
+"text": "Never assume a cancel worked until the exchange says so. Size risk by the worst case: the old order and the new one, both live. And remember that a replace can cost your queue position, so move an order only when it is worth it. Each cancel reject is a race you lost, so count them. The race is always there; your state machine must expect it.",
+"hold": 1.0
+}
+]

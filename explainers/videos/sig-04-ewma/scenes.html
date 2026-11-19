@@ -1,0 +1,76 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">SIGNAL GENERATION · 04 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">EWMA, VWAP and<br>online features</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:530px;width:1500px">One number per feature. Constant work per message.</div>
+<div id="ti-ch" data-cue="0" data-d="0.8" data-anim="fade" style="left:1000px;top:640px;width:820px;height:260px"></div>
+<div class="chip" data-cue="1" style="left:140px;top:680px;background:var(--amber)">EWMA</div>
+<div class="chip" data-cue="1" data-d="0.4" style="left:300px;top:680px;background:var(--violet)">EW variance</div>
+<div class="chip" data-cue="1" data-d="0.8" style="left:530px;top:680px;background:var(--teal)">session VWAP</div>
+</div>
+
+<div class="scene" id="s-ewma">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The exponential average</div>
+<div class="fcard amber" data-cue="1" style="left:120px;top:230px;width:700px"><span class="lbl">each update</span><div class="math"><i>m</i> ← <i>m</i> + <i>α</i> (<i>x</i> − <i>m</i>)</div></div>
+<div id="ew-ch" data-cue="2" data-anim="fade" style="left:900px;top:220px;width:920px;height:400px"></div>
+<div class="fcard" data-cue="2" data-d="0.5" style="left:120px;top:420px;width:700px"><span class="lbl">half-life, in updates</span><div class="math"><i>h</i> = <span class="frac"><span>ln ½</span><span>ln(1 − <i>α</i>)</span></span></div></div>
+<table class="t" data-cue="3" style="left:120px;top:660px"><tr><th>pandas</th><th>as alpha</th></tr><tr><td>alpha</td><td>α</td></tr><tr><td>span N</td><td data-hl="4">α = 2 / (N + 1)</td></tr><tr><td>halflife h</td><td>α = 1 − exp(−ln 2 / h)</td></tr></table>
+<div class="tag c-muted" data-cue="2" data-d="0.8" style="left:900px;top:640px">weights α(1 − α)<sup>k</sup>, α = 0.3</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Averages in the lab</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:1000px;font-size:24px"><span class="c">// exchange/agents/main.cpp, on each trade</span>
+s.fast += <span class="r">0.3</span>  * (px - s.fast);
+s.slow += <span class="r">0.03</span> * (px - s.slow);</div>
+<table class="t" data-cue="1" data-d="0.4" style="left:120px;top:430px;width:1700px"><tr><th>where</th><th>kind</th><th>setting</th><th>equivalent</th></tr>
+<tr data-cue="1" data-d="0.6"><td>agents fast</td><td>EWMA per trade</td><td>α = 0.3</td><td class="c-amber">half-life 1.9 trades</td></tr>
+<tr data-cue="1" data-d="1.0"><td>agents slow</td><td>EWMA per trade</td><td>α = 0.03</td><td class="c-amber">half-life 22.8 trades</td></tr>
+<tr data-cue="2"><td>trend.hpp fast</td><td>SMA, ring</td><td>20 closes</td><td class="c-amber" data-cue="3">α = 2/21 ≈ 0.095</td></tr>
+<tr data-cue="2" data-d="0.3"><td>trend.hpp slow</td><td>SMA, ring</td><td>50 closes</td><td class="c-amber" data-cue="3" data-d="0.3">α = 2/51 ≈ 0.039</td></tr>
+<tr data-cue="4"><td>pairs.hpp</td><td>rolling window</td><td>156 samples</td><td class="c-amber">sum, sum² → mean, sd, z</td></tr></table>
+</div>
+
+<div class="scene" id="s-time">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Decay by time, not by message</div>
+<div id="tm-ticks" data-cue="0" data-d="0.3" data-anim="fade" style="left:120px;top:250px;width:1700px;height:120px"></div>
+<div class="fcard amber" data-cue="1" style="left:120px;top:440px;width:760px"><span class="lbl">signals video</span><div class="math"><i>α</i> = 1 − <i>e</i><sup>−Δ<i>t</i> / <i>τ</i></sup></div></div>
+<div class="fcard" data-cue="2" style="left:120px;top:640px;width:760px"><div class="math"><i>τ</i> = <span class="frac"><span><i>h</i></span><span>ln 2</span></span> = <span class="frac"><span>1 s</span><span>0.693</span></span> = <span class="val c-amber">1.44 s</span></div></div>
+<div id="tm-ch" data-cue="2" data-anim="fade" style="left:980px;top:440px;width:840px;height:400px"></div>
+<div class="fcard amber" data-cue="3" style="left:120px;top:800px;width:760px;padding:10px 22px"><div class="math" style="font-size:32px">Δ<i>t</i> = 0.5 s ⇒ <i>α</i> = 1 − <i>e</i><sup>−0.5/1.44</sup> = <span class="val c-amber">0.29</span></div></div>
+</div>
+
+<div class="scene" id="s-zscore">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Variance and z-score</div>
+<div class="code" data-cue="1" style="left:120px;top:220px;width:820px;font-size:25px"><span class="c">// Finch: exponentially weighted mean and variance</span>
+diff = x - mean;
+incr = alpha * diff;
+mean = mean + incr;
+var  = (<span class="r">1</span> - alpha) * (var + diff * incr);</div>
+<table class="t" data-cue="2" style="left:1020px;top:220px;width:800px"><tr><th>x</th><th>mean</th><th>sd</th></tr>
+<tr><td class="c-muted">start</td><td>50.00000</td><td>0</td></tr>
+<tr data-cue="3"><td>50.02</td><td>50.00500</td><td>0.00866</td></tr>
+<tr data-cue="3" data-d="0.4" data-hl="4" data-hlend="6"><td>50.01</td><td>50.00625</td><td>0.00781</td></tr>
+<tr data-cue="6"><td>50.05</td><td>50.01719</td><td>0.02011</td></tr></table>
+<div class="fcard amber" data-cue="5" style="left:120px;top:560px;width:820px"><span class="lbl">score before the update</span><div class="math" style="font-size:38px"><span class="frac"><span>50.05 − 50.00625</span><span>0.00781</span></span> = <span class="val c-amber">5.6</span></div></div>
+<div class="fcard pink" data-cue="6" style="left:1020px;top:560px;width:800px"><span class="lbl">score after the update</span><div class="math" style="font-size:38px"><span class="frac"><span>50.05 − 50.01719</span><span>0.02011</span></span> = <span class="val c-pink">1.6</span></div></div>
+</div>
+
+<div class="scene" id="s-vwap">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Session VWAP</div>
+<div class="fcard teal" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:700px"><div class="math">VWAP = <span class="frac"><span>Σ <i>p q</i></span><span>Σ <i>q</i></span></span></div></div>
+<table class="t" data-cue="2" style="left:120px;top:440px;width:700px"><tr><th>trade</th><th class="r">Σ pq</th><th class="r">Σ q</th></tr>
+<tr data-cue="2" data-d="0.2"><td>300 @ 50.00</td><td class="r">15,000.00</td><td class="r">300</td></tr>
+<tr data-cue="2" data-d="1.0"><td>100 @ 50.04</td><td class="r">20,004.00</td><td class="r">400</td></tr>
+<tr data-cue="2" data-d="1.8"><td>600 @ 50.02</td><td class="r">50,016.00</td><td class="r">1,000</td></tr></table>
+<div class="stat c-teal" data-cue="2" data-d="2.4" style="left:120px;top:720px">VWAP 50.016</div>
+<div id="vw-ch" data-cue="1" data-anim="fade" style="left:920px;top:220px;width:900px;height:520px"></div>
+<div class="fcard amber" data-cue="3" data-d="0.5" style="left:920px;top:760px;width:900px;padding:10px 22px"><div class="math" style="font-size:34px">mid vs VWAP: <span class="frac"><span>50.05 − 50.016</span><span>50.016</span></span> = <span class="val c-amber">+6.8 bps</span></div></div>
+<div class="tag c-blue" data-cue="4" style="left:120px;top:820px">sliding window, exact u128 sums → cpp-vwap video</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="card" data-cue="0" style="left:120px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Warm-up</div><div class="cs">Starts at the first value, zero variance.</div></div>
+<div class="card" data-cue="1" style="left:690px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Resets</div><div class="cs">At the open, and after a halt.</div></div>
+<div class="card" data-cue="2" style="left:1260px;top:150px;width:540px;height:220px;border-color:var(--pink)"><div class="ct c-pink">Exchange time</div><div class="cs">So a replay matches live.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:480px;width:1700px"><span class="c-amber">One number</span> per feature,<br><span class="c-teal">constant work</span> per message.</div>
+</div>

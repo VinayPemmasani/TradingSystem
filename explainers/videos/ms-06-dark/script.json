@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Dark pools",
+  "text": "A dark pool is a trading venue that shows no quotes. Orders rest out of sight, and the only thing anyone learns is a trade, after it happens. Here is why large traders want that, how a match works, and what can go wrong."
+ },
+ {
+  "id": "why",
+  "title": "Why hide",
+  "text": "Recall the impact video. A fund buying 200,000 shares on a lit book shows its hand. Others see the size, and the price moves before the fund is done. In a dark pool, the order waits unseen, and can meet another large order without leaking. The price usually comes from the lit market: often the midpoint of the national best bid and offer."
+ },
+ {
+  "id": "match",
+  "title": "A midpoint match",
+  "text": "Here is a match I made up. A buyer rests 50,000 shares pegged to the midpoint, with a minimum fill of 5,000. A seller arrives with 20,000. The pool reads the best bid and offer, 30.00 and 30.02, and prints 20,000 shares at 30.01. Against crossing the spread, each side saved a cent a share: 200 dollars each. Nobody saw the buyer's order before, and its other 30,000 shares still rest unseen. The trade is then reported to a FINRA trade reporting facility."
+ },
+ {
+  "id": "size",
+  "title": "How big",
+  "text": "How big are they? In the first quarter of 2022, the SEC counted 32 alternative trading systems, the legal form of most dark pools. Together they executed 10.2 percent of share volume in NMS stocks. The 16 exchanges executed 59.7 percent, and six wholesalers 23.9. When it adopted Form ATS-N in 2018, the SEC put the ATS share at about 11.4 percent. FINRA publishes trading volume for each alternative trading system, stock by stock."
+ },
+ {
+  "id": "risk",
+  "title": "The catches",
+  "text": "Dark pools have two catches. Fills are uncertain: an order can sit all day and match nothing. And you cannot see who else is inside. In 2016, Barclays and Credit Suisse paid about 154 million dollars to settle SEC and New York charges over their pools. Barclays had promised to police toxic flow, and did not. It also priced from slower data feeds than it said, and a stale midpoint is a gift to a faster trader."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "Since 2018, these venues must file Form ATS-N, a public account of how they work: order types, fees, market data, and the operator's conflicts. In the lab, OUCH orders carry a display flag, Y for visible and N for hidden. simex echoes it back, but shows every order. On real Nasdaq ITCH, trades that never touched the visible book arrive as P messages, and the lab's historical replay ignores them."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Dark pools trade information leakage for fill uncertainty. They borrow their price from lit markets, so they depend on them. Before routing to one, read its Form ATS-N, and measure your fills there like any other counterparty."
+ }
+]

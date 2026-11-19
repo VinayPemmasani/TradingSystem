@@ -1,0 +1,102 @@
+[
+[
+"SMARS's",
+"smars's"
+],
+[
+"\\bSMARS\\b",
+"smars"
+],
+[
+"15c3-5",
+"fifteen C three five"
+],
+[
+"34-70694",
+"thirty four, seven oh six nine four"
+],
+[
+"\\$460 million",
+"four hundred and sixty million dollars"
+],
+[
+"\\$12 million",
+"twelve million dollars"
+],
+[
+"\\$3\\.5 billion",
+"three point five billion dollars"
+],
+[
+"\\$3\\.15 billion",
+"three point one five billion dollars"
+],
+[
+"\\$2 million",
+"two million dollars"
+],
+[
+"\\b8:01\\b",
+"eight oh one"
+],
+[
+"\\b2,000\\b",
+"two thousand"
+],
+[
+"\\b1 August 2012\\b",
+"the first of August, twenty twelve"
+],
+[
+"\\b1 August\\b",
+"the first of August"
+],
+[
+"\\bSEC\\b",
+"S E C"
+],
+[
+"\\bUS\\b",
+"U S"
+],
+[
+"\\bEU\\b",
+"E U"
+],
+[
+"\\bOUCH\\b",
+"ouch"
+],
+[
+"\\bITCH\\b",
+"itch"
+],
+[
+"\\bsimex\\b",
+"sim ex"
+],
+[
+"\\bPnL\\b",
+"P and L"
+],
+[
+"\\bFINRA\\b",
+"finra"
+],
+[
+"\\bCFTC\\b",
+"C F T C"
+],
+[
+"\\bCCP\\b",
+"C C P"
+],
+[
+"\\bRTS 6\\b",
+"R T S six"
+],
+[
+"\\bMiFID II\\b",
+"miffid two"
+]
+]

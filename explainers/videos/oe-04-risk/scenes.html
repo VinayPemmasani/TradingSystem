@@ -1,0 +1,84 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">ORDER ENTRY · 04 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Pre-trade risk</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">And the market access rule behind it.</div>
+<div class="node" data-cue="1" style="left:140px;top:580px;width:300px;height:130px;border-color:var(--teal)">strategy</div>
+<div class="node" data-cue="1" data-d="0.2" style="left:810px;top:560px;width:300px;height:170px;border-color:var(--violet)">risk checks</div>
+<div class="node" data-cue="1" data-d="0.4" style="left:1480px;top:580px;width:300px;height:130px;border-color:var(--blue)">exchange</div>
+<svg class="full"><path id="r4-a" class="draw" data-cue="1" d="M 450 645 L 800 645" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="r4-b" class="draw" data-cue="1" data-d="0.3" d="M 1120 645 L 1470 645" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/><path id="r4-c" d="M 450 645 L 790 645" stroke="none" fill="none"/></svg>
+<div class="pkt" data-path="r4-a" data-cue="1" data-d="0.4" data-dur="1.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="r4-b" data-cue="1" data-d="1.0" data-dur="1.2" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="pkt" data-path="r4-c" data-cue="2" data-dur="1.2" data-loop="1" data-phase="0.5" style="background:var(--red);box-shadow:0 0 14px var(--red)"></div>
+<div class="tag c-red" data-cue="2" data-d="0.3" style="left:820px;top:750px;border-color:var(--red)">✕ blocked before the wire</div>
+</div>
+
+<div class="scene" id="s-rule">
+<div class="h2" data-cue="0" style="left:120px;top:110px">SEC Rule 15c3-5 <span class="c-muted">· the market access rule</span></div>
+<div class="tag" data-cue="0" data-d="0.4" style="left:120px;top:200px;border-color:var(--line)">adopted Nov 2010 · effective Jan 2011 · compliance Jul 2011</div>
+<div class="card" data-cue="1" style="left:120px;top:270px;width:820px;height:200px;border-color:var(--violet)"><div class="ct c-violet">(c)(1)(i) financial</div><div class="cs">reject orders that exceed<br>pre-set credit or capital<br>thresholds</div></div>
+<div class="card" data-cue="2" style="left:980px;top:270px;width:820px;height:200px;border-color:var(--violet)"><div class="ct c-violet">(c)(1)(ii) erroneous orders</div><div class="cs">price or size parameters<br>order by order, or over a short time<br>duplicative orders</div></div>
+<div class="card" data-cue="3" style="left:120px;top:500px;width:820px;height:200px;border-color:var(--red)"><div class="ct c-red">(d) direct and exclusive control</div><div class="cs">the broker-dealer's own controls</div><div class="cd">ends "unfiltered" or "naked" access</div></div>
+<div class="card" data-cue="4" style="left:980px;top:500px;width:820px;height:200px;border-color:var(--amber)"><div class="ct c-amber">(e) review and certify</div><div class="cs">review at least annually<br>CEO certifies each year</div></div>
+<div class="card" data-cue="5" style="left:120px;top:730px;width:1680px;border-color:var(--teal)"><div class="ct c-teal">(c)(2) regulatory controls</div><div class="cd">restricted securities blocked · access only for pre-approved people and accounts</div></div>
+</div>
+
+<div class="scene" id="s-checks">
+<div class="h2" data-cue="0" style="left:120px;top:110px">A chain of cheap comparisons</div>
+<div class="gate" data-cue="1" data-hl="1" data-hlend="2" style="left:120px;top:380px;border-color:var(--red)">kill<small>switch set?</small></div>
+<div class="gate" data-cue="2" data-hl="2" data-hlend="3" style="left:360px;top:380px">quantity<small>per order</small></div>
+<div class="gate" data-cue="2" data-d="0.3" data-hl="2" data-hlend="3" style="left:600px;top:380px">notional<small>price × qty</small></div>
+<div class="gate" data-cue="3" data-hl="3" data-hlend="4" style="left:840px;top:380px">collar<small>vs the mid</small></div>
+<div class="gate" data-cue="4" data-hl="4" data-hlend="5" style="left:1080px;top:380px">position<small>if all fills</small></div>
+<div class="gate" data-cue="5" data-hl="5" data-hlend="6" style="left:1320px;top:380px">open<small>orders</small></div>
+<div class="gate" data-cue="6" data-hl="6" data-hlend="7" style="left:1560px;top:380px">rate<small>per second</small></div>
+<svg class="full"><path id="r4-run" d="M 100 640 L 1820 640" stroke="#3c5463" stroke-width="3" fill="none" class="draw" data-cue="0" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="r4-run" data-cue="0" data-d="0.5" data-dur="6" data-loop="1" style="background:var(--amber);box-shadow:0 0 14px var(--amber)"></div>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:120px;top:670px">order →  each check is a compare against limits and the OMS</div>
+<div class="card" data-cue="7" style="left:120px;top:760px;width:1680px;border-color:var(--red)"><div class="ct c-red">first failure → blocked · counted · never sent</div></div>
+
+</div>
+
+<div class="scene" id="s-example">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Three orders, lab limits</div>
+<div class="lbl" data-cue="0" style="left:120px;top:210px">limit price</div>
+<div style="left:499px;top:250px;width:898px;height:80px;background:rgba(79,209,139,.14);border:2px solid var(--green);border-radius:8px" data-cue="0" data-d="0.3"></div>
+<svg class="full"><path class="draw" data-cue="0" d="M 120 290 L 1800 290" stroke="#5a7282" stroke-width="2" fill="none"/><path class="draw" data-cue="0" data-d="0.3" d="M 948 240 L 948 340" stroke="var(--blue)" stroke-width="3" fill="none"/></svg>
+<div class="lbl" data-cue="0" data-d="0.4" style="left:900px;top:350px;color:var(--blue)">mid 187.25</div>
+<div class="lbl" data-cue="0" data-d="0.6" style="left:440px;top:350px">177.89</div>
+<div class="lbl" data-cue="0" data-d="0.6" style="left:1350px;top:350px">196.61</div>
+<div class="lbl c-green" data-cue="0" data-d="0.8" style="left:600px;top:212px">± 5% collar</div>
+<div class="dot" data-cue="1" style="left:938px;top:270px;background:var(--green)"></div>
+<div class="dot" data-cue="3" style="left:1406px;top:270px;background:var(--red)"></div>
+<div class="lbl c-red" data-cue="3" data-d="0.3" style="left:1440px;top:250px">197.00 ✕ collar</div>
+<div class="lbl" data-cue="1" style="left:120px;top:440px">notional = price × shares</div>
+<svg class="full"><path class="draw" data-cue="1" d="M 1320 470 L 1320 830" stroke="var(--red)" stroke-width="3" stroke-dasharray="10 8" fill="none"/></svg>
+<div class="lbl c-red" data-cue="1" data-d="0.3" style="left:1340px;top:470px">limit $100,000</div>
+<div class="grow bar" data-cue="1" data-w="899" style="left:120px;top:520px;background:var(--green)"></div>
+<div class="lbl" data-cue="1" data-d="0.6" style="left:140px;top:528px;color:#06141a">400 × 187.30</div><div class="lbl" data-cue="1" data-d="0.6" style="left:1040px;top:528px;white-space:nowrap">$74,920 ✓</div>
+<div class="grow bar" data-cue="2" data-w="1349" style="left:120px;top:620px;background:var(--red)"></div>
+<div class="lbl" data-cue="2" data-d="0.6" style="left:140px;top:628px;color:#06141a">600 × 187.30</div><div class="lbl c-red" data-cue="2" data-d="0.6" style="left:1490px;top:628px;white-space:nowrap">$112,380 ✕ notional</div>
+<div class="grow bar" data-cue="3" data-w="1182" style="left:120px;top:720px;background:var(--amber)"></div>
+<div class="lbl" data-cue="3" data-d="0.6" style="left:140px;top:728px;color:#06141a">500 × 197.00</div><div class="lbl" data-cue="3" data-d="0.6" style="left:1340px;top:728px;white-space:nowrap">$98,500 ✓ · <span class="c-red">collar ✕</span></div>
+<div class="tag" data-cue="4" style="left:120px;top:850px;border-color:var(--line)">first failure wins: notional is checked before the collar</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: firm/risk</div>
+<div class="code" data-cue="0" data-d="0.2" style="left:120px;top:220px;width:1000px;font-size:24px"><span class="line c">// lab/risk/risk.hpp · struct Limits</span><span class="line" data-hl="1" data-hlend="2">max_order_qty        = <span class="r">1'000</span>;</span><span class="line" data-hl="1" data-hlend="2">max_order_notional   = <span class="r">$100,000</span>;</span><span class="line" data-hl="1" data-hlend="2">collar_bps           = <span class="r">500</span>;   <span class="c">// 5%</span></span><span class="line" data-hl="1" data-hlend="3">max_position         = <span class="r">2'000</span>; <span class="c">// long or short</span></span><span class="line" data-hl="1" data-hlend="2">max_open_orders      = <span class="r">200</span>;</span><span class="line" data-hl="1" data-hlend="2">max_orders_per_second= <span class="r">2'000</span>; <span class="c">// burst 100</span></span></div>
+<div class="tag c-violet" data-cue="0" data-d="0.6" style="left:1180px;top:230px;border-color:var(--violet)">inline · trading thread · no allocation</div>
+<div class="card" data-cue="2" style="left:1180px;top:320px;width:620px;border-color:var(--teal)"><div class="ct c-teal">worst-case position</div><div class="cs">shares + open buys + this order<br>≤ 2,000</div></div>
+<div class="card" data-cue="3" style="left:1180px;top:540px;width:620px;border-color:var(--green)"><div class="ct c-green">cancels: never checked</div><div class="cd">they only reduce risk</div></div>
+<div class="card" data-cue="4" style="left:120px;top:690px;width:1680px;border-color:var(--amber)"><div class="ct c-amber">replace: only the growth counts</div><div class="cd">OUCH counts the chain, so it can never fill more than max(old, new)</div></div>
+
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Layers, and counting</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:260px;width:360px;height:120px;border-color:var(--teal)">strategy<small>own limits</small></div>
+<div class="node" data-cue="0" data-d="0.4" style="left:560px;top:260px;width:360px;height:120px;border-color:var(--violet)">firm gateway<small>pre-trade risk</small></div>
+<div class="node" data-cue="0" data-d="0.6" style="left:1000px;top:260px;width:360px;height:120px;border-color:var(--violet)">broker<small>15c3-5 controls</small></div>
+<div class="node" data-cue="0" data-d="0.8" style="left:1440px;top:260px;width:360px;height:120px;border-color:var(--blue)">exchange<small>its own limits</small></div>
+<div class="tag" data-cue="1" style="left:120px;top:420px;border-color:var(--amber);color:var(--amber)">every block counted by reason: a silent strategy gets noticed</div>
+<div class="card" data-cue="2" style="left:120px;top:520px;width:1680px;border-color:var(--red)"><div class="ct c-red">SEC v. Knight Capital · charged Oct 2013</div><div class="cs">1 Aug 2012 · over 4 million orders in 45 minutes · trying to fill 212 customer orders</div><div class="cd">source: SEC press release 2013-222 · more in video reg-03</div></div>
+<div class="take" data-cue="3" style="left:120px;top:780px;width:1680px">Pre-trade risk: <span class="c-violet">the cheapest insurance in trading.</span></div>
+</div>

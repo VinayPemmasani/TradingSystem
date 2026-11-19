@@ -1,0 +1,43 @@
+[
+{
+"id": "title",
+"title": "Kernel bypass",
+"text": "An ordinary receive goes through the kernel: an interrupt, a protocol stack, a copy and a wake-up. Kernel bypass lets your program talk to the network card itself."
+},
+{
+"id": "kernel",
+"title": "The kernel path",
+"text": "With normal sockets, the card raises an interrupt and the kernel runs its TCP/IP stack. It then wakes your thread, and recv copies the bytes into your buffer. AMD's Onload guide puts each move into or out of the kernel at hundreds or thousands of instructions. It says answering an interrupt and switching threads can take on the order of a microsecond."
+},
+{
+"id": "onload",
+"title": "Onload",
+"text": "Onload keeps the sockets API, so the program does not change. You start it with the onload prefix, and a preloaded library intercepts the socket calls. The TCP/IP stack then runs inside your process, on a protected virtual NIC that the adapter hands to it. Set EF_POLL_USEC, and a blocking receive spins in user space instead of sleeping."
+},
+{
+"id": "efvi",
+"title": "ef_vi and TCPDirect",
+"text": "ef_vi goes lower. It is a layer 2 API: you post buffers to receive and transmit rings, and frames come back raw, so you parse IP and UDP yourself. TCPDirect sits in between: a small TCP and UDP stack with its own API, built on the same hardware."
+},
+{
+"id": "dpdk",
+"title": "DPDK",
+"text": "DPDK is the vendor neutral route. You unbind the port from its kernel driver and bind it to vfio-pci, so Linux can no longer use it. A poll mode driver then reads the receive descriptors directly, with no interrupts, a burst of packets at a time."
+},
+{
+"id": "numbers",
+"title": "Vendor figures",
+"text": "AMD publishes numbers for one setup: two X2522 adapters, cabled back to back at 25 gigabits. Half a round trip for a 32 byte UDP message took 2658 nanoseconds through the kernel. Onload took about 1030, TCPDirect 783, and ef_vi 750. These are vendor figures from one test bench, not a promise for your servers."
+},
+{
+"id": "lab",
+"title": "In the lab",
+"text": "The lab runs in a virtual machine, so it uses plain sockets, but it keeps them on one thread. The feed handler's receive thread makes every system call, pulling up to 32 datagrams with each recvmmsg. The book thread only reads a lock-free ring, and never enters the kernel. With Aeron, traders read the cleaned feed from shared memory, again with no system calls on the data path."
+},
+{
+"id": "take",
+"title": "The price",
+"text": "Bypass has a price. Each spinning thread needs a whole core. ef_vi and TCPDirect tie you to one vendor's cards, and tcpdump no longer sees the accelerated packets. Pay it where microseconds matter: the feed and the order path.",
+"hold": 1.5
+}
+]

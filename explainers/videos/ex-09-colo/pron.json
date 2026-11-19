@@ -1,0 +1,122 @@
+[
+ [
+  "\\bOUCH\\b",
+  "ouch"
+ ],
+ [
+  "\\bITCH\\b",
+  "itch"
+ ],
+ [
+  "\\bsimex\\b",
+  "sim ex"
+ ],
+ [
+  "\\bSEC\\b",
+  "S E C"
+ ],
+ [
+  "\\bNYSE\\b",
+  "N Y S E"
+ ],
+ [
+  "\\bCME\\b",
+  "C M E"
+ ],
+ [
+  "\\bIOC\\b",
+  "I O C"
+ ],
+ [
+  "\\bFOK\\b",
+  "F O K"
+ ],
+ [
+  "\\bLULD\\b",
+  "L U L D"
+ ],
+ [
+  "\\bFIX\\b",
+  "fix"
+ ],
+ [
+  "\\bIEX\\b",
+  "I E X"
+ ],
+ [
+  "\\bFIFO\\b",
+  "fife-oh"
+ ],
+ [
+  "\\bAPI\\b",
+  "A P I"
+ ],
+ [
+  "\\bID\\b",
+  "I D"
+ ],
+ [
+  "\\bNBBO\\b",
+  "N B B O"
+ ],
+ [
+  "\\bS&P\\b",
+  "S and P"
+ ],
+ [
+  "\\bReg NMS\\b",
+  "Reg N M S"
+ ],
+ [
+  "\\bNMS\\b",
+  "N M S"
+ ],
+ [
+  "\\bMWCB\\b",
+  "M W C B"
+ ],
+ [
+  "\\bET\\b",
+  "Eastern"
+ ],
+ [
+  "\\bNY11-4\\b",
+  "N Y eleven dash four"
+ ],
+ [
+  "\\bNY11\\b",
+  "N Y eleven"
+ ],
+ [
+  "\\b0\\.78\\b",
+  "zero point seven eight"
+ ],
+ [
+  "\\b4\\.9\\b",
+  "four point nine"
+ ],
+ [
+  "\\b0\\.72\\b",
+  "zero point seven two"
+ ],
+ [
+  "\\b0\\.98\\b",
+  "zero point nine eight"
+ ],
+ [
+  "\\bBX\\b",
+  "B X"
+ ],
+ [
+  "\\bsimex\\b",
+  "sim ex"
+ ],
+ [
+  "\\bMahwah\\b",
+  "Mah-wah"
+ ],
+ [
+  "\\bCarteret\\b",
+  "Carteret"
+ ]
+]

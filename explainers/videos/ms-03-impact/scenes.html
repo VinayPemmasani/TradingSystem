@@ -1,0 +1,91 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET MICROSTRUCTURE · 03 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">Market impact</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:410px;width:1500px">and the square-root law</div>
+<div id="ti-ch" data-cue="1" data-anim="fade" style="left:140px;top:520px;width:1100px;height:330px"></div>
+<div class="tag c-amber" data-cue="1" data-d="1.6" style="left:1280px;top:560px">impact: the price you pushed</div>
+</div>
+
+<div class="scene" id="s-kyle">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Kyle (1985): price is linear in order flow</div>
+<div class="node violet" data-cue="0" data-d="0.4" style="left:120px;top:260px;width:360px"><div class="t c-violet">insider</div><div class="s">x</div></div>
+<div class="node" data-cue="0" data-d="0.6" style="left:120px;top:500px;width:360px"><div class="t">noise traders</div><div class="s">u, std σ<sub>u</sub></div></div>
+<div class="node teal" data-cue="0" data-d="0.8" style="left:700px;top:380px;width:360px"><div class="t">market maker</div><div class="s">sees only x + u</div></div>
+<svg class="full">
+<path class="draw" data-cue="0" data-d="0.9" d="M490 310 C 600 320 600 420 690 430" stroke="#a98bff" stroke-width="3" fill="none" marker-end="url(#ah-violet)"/>
+<path class="draw" data-cue="0" data-d="1.0" d="M490 550 C 600 540 600 460 690 450" stroke="#8ea3b1" stroke-width="3" fill="none" marker-end="url(#ah)"/>
+</svg>
+<div class="fcard amber" data-cue="1" style="left:120px;top:690px;width:940px"><div class="math" style="font-size:40px"><i>p</i> = <i>μ</i> + <i>λ</i> (<i>x</i> + <i>u</i>) &nbsp;&nbsp; depth = 1 / <i>λ</i></div></div>
+<div id="ky-ch" data-cue="1" data-anim="fade" style="left:1160px;top:220px;width:660px;height:420px"></div>
+<div class="fcard violet" data-cue="3" style="left:1160px;top:690px;width:660px"><div class="math" style="font-size:40px"><i>λ</i> = <span class="frac"><span><i>σ</i><sub>V</sub></span><span>2 <i>σ</i><sub>u</sub></span></span> <span style="font-size:28px;color:#8ea3b1">&nbsp;more noise → deeper</span></div></div>
+</div>
+
+<div class="scene" id="s-kworked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Kyle in numbers</div>
+<div class="fcard" data-cue="1" style="left:120px;top:240px;width:800px"><span class="lbl">inputs (my example)</span><div class="math" style="font-size:38px"><i>σ</i><sub>V</sub> = $2 &nbsp;·&nbsp; <i>σ</i><sub>u</sub> = 10,000 shares</div></div>
+<div class="fcard amber" data-cue="2" style="left:120px;top:440px;width:860px"><div class="math" style="font-size:31px"><i>λ</i> = <span class="frac"><span>2</span><span>2 × 10,000</span></span> = $0.0001 = <span class="val c-amber">1¢ per 100 shares</span></div></div>
+<div class="fcard violet" data-cue="3" style="left:120px;top:640px;width:800px"><span class="lbl">insider: β = σ<sub>u</sub> / σ<sub>V</sub></span><div class="math" style="font-size:38px"><i>x</i> = 5,000 × (<i>V</i> − <i>μ</i>)</div></div>
+<div id="kw-ch" data-cue="4" data-anim="fade" style="left:1040px;top:240px;width:780px;height:520px"></div>
+<div class="tag c-teal" data-cue="4" data-d="1.4" style="left:1150px;top:780px">E[price move] = 0.0001 × 5,000 = $0.50</div>
+</div>
+
+<div class="scene" id="s-sqrt">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Real metaorders: the square-root law</div>
+<div id="sq-ch" data-cue="1" data-anim="fade" style="left:120px;top:220px;width:1000px;height:600px"></div>
+<div class="fcard amber" data-cue="2" style="left:1200px;top:230px;width:620px"><span class="lbl">Tóth et al., Phys. Rev. X 2011</span><div class="math" style="font-size:44px">Δ = <i>Y</i> <i>σ</i> <span style="font-size:1.1em">√</span><span style="border-top:2px solid currentColor"><i>Q</i> / <i>V</i></span></div><div class="note">σ daily volatility · V daily volume</div></div>
+<div class="tag c-amber" data-cue="3" style="left:1200px;top:470px">Y is "of order unity"</div>
+<div class="chip" data-cue="4" style="left:1200px;top:540px;background:var(--blue)">~500,000 CFM futures trades · 2007–2010</div>
+<div class="tag" data-cue="5" style="left:1200px;top:610px">Q/V: a few 10<sup>−4</sup> → a few %</div>
+<div class="note" data-cue="5" data-d="0.6" style="left:1200px;top:680px;width:620px">exponent 0.4–0.7 in general; ≈0.5 small-tick, ≈0.6 large-tick futures</div>
+</div>
+
+<div class="scene" id="s-worked">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Worked example: 1% of a day</div>
+<div class="fcard" data-cue="0" data-d="0.3" style="left:120px;top:230px;width:780px"><div class="math" style="font-size:36px"><i>σ</i> = 2% · <i>V</i> = 5M shares · $50</div></div>
+<div class="fcard" data-cue="1" style="left:120px;top:400px;width:780px"><div class="math" style="font-size:36px"><i>Q</i> = 50,000 ⇒ <i>Q</i>/<i>V</i> = 1%</div></div>
+<div class="fcard amber" data-cue="2" style="left:120px;top:570px;width:780px"><div class="math" style="font-size:36px">Δ = 1 × 2% × √0.01 = <span class="val c-amber">0.2% = 10¢</span></div></div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:1000px;top:240px">impact per share</div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:1000px;top:300px">50k</div>
+<div class="grow bar" data-cue="2" data-d="0.5" data-w="160" style="left:1130px;top:292px;background:var(--amber)"></div>
+<div class="lbl" data-cue="2" data-d="0.8" style="left:1310px;top:300px">10¢</div>
+<div class="lbl" data-cue="3" style="left:1000px;top:370px">200k</div>
+<div class="grow bar" data-cue="3" data-d="0.2" data-w="320" style="left:1130px;top:362px;background:var(--amber)"></div>
+<div class="lbl" data-cue="3" data-d="0.6" style="left:1470px;top:370px">20¢ · 4× size, 2× impact</div>
+<div class="lbl" data-cue="4" style="left:1000px;top:480px">dollar cost ∝ Q × √Q = Q<sup>1.5</sup></div>
+<div class="lbl" data-cue="4" data-d="0.3" style="left:1000px;top:540px">50k</div>
+<div class="grow bar" data-cue="4" data-d="0.4" data-w="80" style="left:1130px;top:532px;background:var(--red)"></div>
+<div class="lbl" data-cue="4" data-d="0.6" style="left:1000px;top:610px">200k</div>
+<div class="grow bar" data-cue="4" data-d="0.7" data-w="640" style="left:1130px;top:602px;background:var(--red)"></div>
+<div class="lbl" data-cue="4" data-d="1.4" style="left:1130px;top:660px">8×</div>
+</div>
+
+<div class="scene" id="s-ac">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Almgren &amp; Chriss (2000): impact vs risk</div>
+<div class="fcard" data-cue="1" style="left:1200px;top:230px;width:620px"><div class="math" style="font-size:40px">min E[cost] + <i>λ</i> Var[cost]</div></div>
+<div id="ac-ch" data-cue="0" data-anim="fade" style="left:120px;top:220px;width:1000px;height:600px"></div>
+<div class="tag c-teal" data-cue="2" style="left:1200px;top:420px">λ = 0: straight line, like TWAP</div>
+<div class="fcard amber" data-cue="3" style="left:1200px;top:500px;width:620px"><div class="math" style="font-size:36px"><i>x</i>(<i>t</i>) = <i>X</i> <span class="frac"><span>sinh <i>κ</i>(<i>T</i> − <i>t</i>)</span><span>sinh <i>κT</i></span></span></div><div class="note">κ ≈ √(λσ²/η): risk aversion × variance / impact</div></div>
+<div class="tag c-pink" data-cue="0" data-d="1" style="left:1200px;top:740px">slow = price risk · fast = impact</div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: participation of volume</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1100px;font-size:22px"><span class="c">// firm/strategy/.../execution.hpp</span>
+<span class="k">struct</span> <span class="v">PovParams</span> {
+  <span class="v">uint32_t</span> participation_bps = <span class="r">600</span>;  <span class="c">// 6% of the market's volume</span>
+<span class="line" data-hl="1" data-hlend="2">const uint64_t allowed = market_volume * p.participation_bps / 10'000;</span></div>
+<div class="code" data-cue="1" data-d="1.5" style="left:120px;top:520px;width:1100px;font-size:22px"><span class="c">// tools/quant-lab/main.cpp, fund_work()</span>
+qty = min(want - working, <span class="r">5'000</span>) / <span class="r">100</span> * <span class="r">100</span>;
+send(..., side == <span class="g">'B'</span> ? t.ask : t.bid, match::Tif::kIoc);</div>
+<div id="lb-ch" data-cue="1" data-anim="fade" style="left:1300px;top:230px;width:520px;height:360px"></div>
+<div class="tag c-amber" data-cue="2" style="left:1300px;top:640px">small Q/V: the measured regime</div>
+<div class="tag c-blue" data-cue="3" style="left:1300px;top:710px">600 → 1,000 → 2,000 bps</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Traps</div>
+<div class="card" data-cue="1" style="left:120px;top:230px;width:540px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Fill at mid</div><div class="cs">A backtest that does this ignores impact.</div></div>
+<div class="card" data-cue="2" style="left:690px;top:230px;width:540px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Y and δ vary</div><div class="cs">By market: fit them on your own fills.</div></div>
+<div class="card" data-cue="2" data-d="1.2" style="left:1260px;top:230px;width:540px;height:200px;border-color:var(--pink)"><div class="ct c-pink">Q vs V</div><div class="cs">Size only means something against volume.</div></div>
+<div class="big" data-cue="3" style="left:120px;top:540px;width:1700px">Impact ∝ <span class="c-amber">√size</span>, so cost grows<br>faster than the trade.</div>
+</div>

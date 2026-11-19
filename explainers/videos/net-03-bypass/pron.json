@@ -1,0 +1,7 @@
+[
+["\\bef_vi\\b","E F V I"],["\\bEF_POLL_USEC\\b","E F poll U sec"],["\\bTCP/IP\\b","T C P I P"],["\\bTCPDirect\\b","T C P direct"],
+["\\bDPDK\\b","D P D K"],["vfio-pci","V F I O P C I"],["\\bNIC\\b","nick"],["\\bAMD's\\b","A M D's"],["\\bAMD\\b","A M D"],["\\bX2522\\b","X twenty five twenty two"],
+["\\brecvmmsg\\b","receive M message"],["\\brecv\\b","receive"],["\\bUDP\\b","U D P"],["\\bTCP\\b","T C P"],["\\bIP\\b","I P"],["\\btcpdump\\b","T C P dump"],
+["\\b2658\\b","two thousand six hundred and fifty eight"],["\\b1030\\b","one thousand and thirty"],["\\b783\\b","seven hundred and eighty three"],["\\b750\\b","seven hundred and fifty"],
+["\\b32 byte\\b","thirty two byte"],["\\b25 gigabits\\b","twenty five gigabits"],["\\bonload prefix\\b","onload prefix"],["\\blayer 2\\b","layer two"],["lock-free","lock free"]
+]

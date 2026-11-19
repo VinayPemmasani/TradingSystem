@@ -1,0 +1,14 @@
+[
+["\\b4 vCPU\\b", "four V C P U"],
+["\\bvCPU\\b", "V C P U"],
+["\\bVM\\b", "V M"],
+["\\bstod\\b", "S to D"],
+["\\bstoi\\b", "S to I"],
+["\\bstrtod\\b", "S T R to D"],
+["std::from_chars", "standard from chars"],
+["\\bgetline\\b", "get line"],
+["\\bstringstream\\b", "string stream"],
+["\\bCSV\\b", "C S V"],
+["\\b0\\.8\\b", "zero point eight"],
+["\\b16 characters", "sixteen characters"]
+]

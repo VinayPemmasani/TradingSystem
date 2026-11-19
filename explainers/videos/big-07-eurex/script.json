@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Deutsche Börse and Eurex",
+  "text": "Deutsche Börse is the clearest example of a vertical silo. It trades, clears, settles and holds securities, all inside one group."
+ },
+ {
+  "id": "history",
+  "title": "History in six beats",
+  "text": "Six beats of history. The roots go back to 1585, when Frankfurt merchants fixed exchange rates for the many currencies in use. In 1990, the DTB derivatives exchange brought futures trading to Germany for the first time. In 1997, the electronic Xetra system took over cash trading. In 1998, DTB merged with the Swiss exchange's futures business to form Eurex, the first cross-border futures exchange. Deutsche Börse went public in 2001, and by 2002 fully owned Clearstream, the settlement and custody house."
+ },
+ {
+  "id": "trades",
+  "title": "What it trades and clears",
+  "text": "What does it trade? Eurex is the derivatives engine. In 2025 it traded 2.1 billion contracts: about 1 billion interest rate derivatives, 700 million index derivatives and 300 million single stock contracts. Eurex Clearing also clears over the counter, with 44 trillion euros of notional outstanding at the end of 2025. Xetra trades German shares, and EEX runs the commodities business."
+ },
+ {
+  "id": "tech",
+  "title": "T7, EOBI and ETI",
+  "text": "Trading runs on T7, one architecture that can host Eurex, Xetra and EEX on a single technical instance. Its most detailed feed, EOBI, publishes every visible order and quote, with executions: the most granular market data it offers. Lighter feeds aggregate by price level. Fast traders send orders over ETI, built for the highest throughput and lowest latency, and others use FIX 4.4."
+ },
+ {
+  "id": "money",
+  "title": "How it makes money",
+  "text": "How does it make money? Net revenue in 2025 was 6.0 billion euros. Trading and clearing brought in 2.6 billion. Financial derivatives were the largest part at 1.2 billion, and cash equities only 0.3 billion. Securities services, the settlement and custody side, brought in 1.6 billion. Investment management solutions added 1.3 billion, and fund services 0.5 billion. That is a broad base: even trading and clearing, the largest segment, is less than half of the total."
+ },
+ {
+  "id": "why",
+  "title": "Why it is big",
+  "text": "Why is it big? The silo. A Eurex trade is cleared by Eurex Clearing, and securities settle and sit in custody at Clearstream, inside the same group. Each step makes the next one stickier, and each one earns a fee. Cash equities, the most contested piece, earns less than a third of what derivatives earn. One caution: regulators watch silos closely, and European competition rulings blocked its planned mergers with NYSE Euronext in 2012 and with LSEG in 2017."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 0.3,
+  "text": "Deutsche Börse owns the whole chain from trade to custody. Its moat is the silo."
+ }
+]

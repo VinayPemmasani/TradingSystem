@@ -1,0 +1,16 @@
+/* feed handler series: blue=exchange/wire, teal=rx thread, violet=book thread, green=bids/books, red=asks/loss, amber=strategies, pink=recovery */
+.node{border-radius:18px;background:var(--panel);border:3px solid var(--line);padding:18px 22px;text-align:center}
+.node .t{font:700 32px var(--body)} .node .s{font:500 21px var(--mono);color:var(--muted);margin-top:6px;line-height:1.35}
+.node.blue{border-color:var(--blue)} .node.teal{border-color:var(--teal)} .node.violet{border-color:var(--violet)} .node.green{border-color:var(--green)} .node.amber{border-color:var(--amber)} .node.pink{border-color:var(--pink)} .node.red{border-color:var(--red)}
+.slot{width:46px;height:46px;border-radius:9px;border:2px solid var(--line);background:#0f1b23}
+.slot.on{background:var(--teal);border-color:var(--teal);box-shadow:0 0 10px rgba(63,208,220,.45)}
+.msg{height:62px;border-radius:12px;display:flex;align-items:center;justify-content:center;font:700 25px var(--mono);color:#06141a;padding:0 14px;white-space:nowrap}
+.msg.lost{background:transparent!important;border:3px dashed var(--red);color:var(--red)}
+.seq{font:700 24px var(--mono);white-space:nowrap}
+.card{border-radius:18px;border:3px solid;background:var(--panel);padding:22px 26px}
+.card .ct{font:700 34px var(--body)} .card .cs{font:400 26px/1.4 var(--body);color:#cfdde5;margin-top:12px}
+.big{font:800 84px/1.05 var(--display);font-stretch:80%}
+.lvl{height:52px;border-radius:8px;display:flex;align-items:center;padding:0 14px;font:700 24px var(--mono);color:#06141a;white-space:nowrap}
+.px{font:600 25px var(--mono);white-space:nowrap}
+.note{font:500 22px/1.45 var(--mono);color:var(--muted)}
+.stat{font:800 64px var(--display);font-stretch:85%}

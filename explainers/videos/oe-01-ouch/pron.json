@@ -1,0 +1,20 @@
+[
+["SoupBinTCP","Soup Bin T C P"],
+["\\bTCP\\b","T C P"],
+["\\bOUCH\\b","ouch"],
+["\\bITCH\\b","itch"],
+["UserRefNums?","user ref num"],
+["OrigClOrdID","original client order I D"],
+["ClOrdIDs?","client order I D"],
+["\\bsimex\\b","sim ex"],
+["\\bfixgw\\b","fix gateway"],
+["big-endian","big endian"],
+["left-justified","left justified"],
+["compile-time","compile time"],
+["214,748\\.3647","two hundred fourteen thousand seven hundred forty eight point three six four seven"],
+["\\bOMS\\b","O M S"],
+["\\bFIX\\b","fix"],
+["\\bIOC\\b","I O C"],
+["\\bSEC\\b","S E C"],
+["\\bAPI\\b","A P I"]
+]

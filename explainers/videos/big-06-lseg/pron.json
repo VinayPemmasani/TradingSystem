@@ -1,0 +1,3 @@
+[["\\bLSEG\\b", "L S E G"], ["\\bLCH\\b", "L C H"], ["\\bUK\\b", "U K"], ["\\bFTSE 100\\b", "footsie one hundred"], ["\\bFTSE\\b", "footsie"], ["\\bSETS\\b", "sets"], ["\\bFIX\\b", "fix"], ["\\bCME\\b", "C M E"], ["MillenniumIT", "Millennium I T"],
+ ["\\b1698\\b", "sixteen ninety eight"], ["\\b1801\\b", "eighteen oh one"], ["\\b1986\\b", "nineteen eighty six"], ["\\b2007\\b", "two thousand seven"], ["\\b2009\\b", "two thousand nine"], ["\\b2013\\b", "twenty thirteen"], ["\\b2021\\b", "twenty twenty one"], ["\\b2025\\b", "twenty twenty five"],
+ ["4\\.0 billion", "four billion"], ["1\\.0 billion", "one billion"], ["0\\.6 billion", "zero point six billion"], ["3\\.5 billion", "three point five billion"]]

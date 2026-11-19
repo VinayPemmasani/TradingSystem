@@ -1,0 +1,106 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:170px">MARKET DATA PROTOCOLS · 03 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:225px">SoupBinTCP</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:400px;width:1500px">Login, heartbeats and replay over one TCP connection.</div>
+<div class="node" data-cue="1" style="left:140px;top:580px;width:300px;height:130px;border-color:var(--teal)">Client</div>
+<div class="node" data-cue="1" style="left:1480px;top:580px;width:300px;height:130px;border-color:var(--blue)">Server</div>
+<svg class="full"><path id="t3-a" class="draw" data-cue="1" data-d="0.3" d="M 450 620 L 1470 620" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/><path id="t3-b" class="draw" data-cue="1" data-d="0.5" d="M 1470 670 L 450 670" stroke="var(--blue)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="pkt" data-path="t3-b" data-cue="1" data-d="0.8" data-dur="1.5" data-loop="1" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="pkt" data-path="t3-b" data-cue="1" data-d="0.8" data-dur="1.5" data-loop="1" data-phase="0.5" style="background:var(--green);box-shadow:0 0 14px var(--green)"></div>
+<div class="lbl" data-cue="1" data-d="1" style="left:760px;top:720px">L · A · S S S · H · R</div>
+</div>
+
+<div class="scene" id="s-frame">
+<div class="h2" data-cue="0" style="left:120px;top:110px">TCP gives you bytes, not packets</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:250px">the socket's byte stream</div>
+<div class="bytes" style="left:120px;top:290px">
+<div data-cue="0" data-d="0.3" style="width:100px;background:var(--pink)" data-hl="2" data-hlend="4">00 0B</div>
+<div data-cue="0" data-d="0.3" style="width:50px;background:var(--amber)" data-hl="2" data-hlend="4">S</div>
+<div data-cue="0" data-d="0.3" style="width:500px;background:#55697a">10-byte payload</div>
+<div data-cue="0" data-d="0.3" style="width:100px;background:var(--pink)">00 01</div>
+<div data-cue="0" data-d="0.3" style="width:50px;background:var(--violet)">H</div>
+<div data-cue="0" data-d="0.3" style="width:100px;background:var(--pink)">00 15</div>
+<div data-cue="0" data-d="0.3" style="width:50px;background:var(--amber)">S</div>
+<div data-cue="0" data-d="0.3" style="width:730px;background:#55697a">20-byte payload</div>
+</div>
+<svg class="full"><path class="draw" data-cue="1" d="M 520 260 L 520 400" stroke="var(--red)" stroke-width="4" stroke-dasharray="8 6" fill="none"/><path class="draw" data-cue="1" data-d="0.4" d="M 1350 260 L 1350 400" stroke="var(--red)" stroke-width="4" fill="none"/></svg>
+<div class="tag c-red" data-cue="1" style="left:440px;top:410px;border-color:var(--red)">recv() #1 ends here</div>
+<div class="tag c-red" data-cue="1" data-d="0.4" style="left:1270px;top:410px;border-color:var(--red)">recv() #2 ends here</div>
+<div class="card" data-cue="2" style="left:120px;top:500px;width:820px;border-color:var(--pink)"><div class="ct"><span class="c-pink">length 2</span> · <span class="c-amber">type 1</span> · payload</div><div class="cd">big-endian length</div></div>
+<div class="card" data-cue="3" style="left:980px;top:500px;width:820px;border-color:var(--pink)"><div class="ct">0x000B = 11 = 1 type + 10 payload</div><div class="cd">the length counts the type byte</div></div>
+<div class="chip" data-cue="4" style="left:120px;top:720px;width:300px;background:var(--amber);font-size:26px">S · 10 bytes</div>
+<div class="chip" data-cue="4" data-d="0.4" style="left:460px;top:720px;width:160px;background:var(--violet);font-size:26px">H</div>
+<div class="chip" data-cue="4" data-d="0.8" style="left:660px;top:720px;width:300px;background:var(--amber);font-size:26px">S · 20 bytes</div>
+<div class="lbl c-green" data-cue="4" data-d="1" style="left:1000px;top:740px">whole packets, after reassembly</div>
+</div>
+
+<div class="scene" id="s-types">
+<div class="h2" data-cue="0" style="left:120px;top:110px">One ASCII letter says what it is</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:120px;top:260px;width:300px;height:560px;border-color:var(--teal)">Client</div>
+<div class="node" data-cue="0" data-d="0.2" style="left:1500px;top:260px;width:300px;height:560px;border-color:var(--blue)">Server</div>
+<div class="card" data-cue="1" style="left:480px;top:250px;width:460px;border-color:var(--teal)"><div class="ct c-teal">client → server</div><div class="cs">L login request<br>U unsequenced data<br>R client heartbeat<br>O logout request</div></div>
+<div class="card" data-cue="2" style="left:980px;top:250px;width:460px;border-color:var(--blue)"><div class="ct c-blue">server → client</div><div class="cs">A login accepted<br>J login rejected</div></div>
+<div class="card" data-cue="3" style="left:980px;top:490px;width:460px;border-color:var(--amber)"><div class="cs"><span class="c-amber">S sequenced data</span><br>H server heartbeat<br>Z end of session</div></div>
+<div class="card" data-cue="4" style="left:480px;top:690px;width:960px"><div class="cs">+ debug · either direction · ignored</div></div>
+</div>
+
+<div class="scene" id="s-login">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Login Request · 49 bytes</div>
+<div class="bytes" style="left:120px;top:250px">
+<div data-cue="0" data-d="0.3" style="width:102px;background:var(--pink)">00 2F L</div>
+<div data-cue="1" style="width:204px;background:var(--teal)">user 6</div>
+<div data-cue="1" data-d="0.3" style="width:340px;background:var(--violet)">password 10</div>
+<div data-cue="1" data-d="0.6" style="width:340px;background:var(--blue)">session 10</div>
+<div data-cue="1" data-d="0.9" style="width:680px;background:var(--amber)">requested sequence number 20</div>
+</div>
+<div class="hex" data-cue="2" style="left:120px;top:340px;white-space:pre;font-size:24px"><span class="c-teal">FIRM01</span><span class="c-violet">secret····</span><span class="c-blue">··········</span><span class="c-amber" data-hl="3" data-hlend="4">···············42000</span></div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:120px;top:390px">· = space · blank session = the current one · digits right-justified</div>
+<div class="node" data-cue="3" style="left:120px;top:470px;width:280px;height:110px;border-color:var(--teal)">Client<small>done: 41,999</small></div>
+<div class="node" data-cue="3" style="left:1520px;top:470px;width:280px;height:110px;border-color:var(--blue)">Server</div>
+<svg class="full"><path class="draw" data-cue="3" d="M 260 590 L 260 860" stroke="#3c5463" stroke-width="3" fill="none"/><path class="draw" data-cue="3" d="M 1660 590 L 1660 860" stroke="#3c5463" stroke-width="3" fill="none"/>
+<path class="draw" data-cue="3" data-d="0.5" d="M 265 620 L 1650 640" stroke="var(--teal)" stroke-width="3" fill="none" marker-end="url(#ah-teal)"/>
+<path class="draw" data-cue="4" d="M 1655 680 L 270 700" stroke="var(--green)" stroke-width="3" fill="none" marker-end="url(#ah-green)"/>
+<path class="draw" data-cue="5" d="M 1655 740 L 270 760" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="5" data-d="0.4" d="M 1655 790 L 270 810" stroke="var(--amber)" stroke-width="3" fill="none" marker-end="url(#ah-amber)"/>
+<path class="draw" data-cue="5" data-d="1.2" d="M 1655 840 L 270 860" stroke="var(--blue)" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div class="tag c-teal" data-cue="3" data-d="0.6" style="left:780px;top:595px;border-color:var(--teal)">L · next wanted 42000</div>
+<div class="tag c-green" data-cue="4" data-d="0.3" style="left:780px;top:655px;border-color:var(--green)">A · session · seq 42000</div>
+<div class="tag c-amber" data-cue="5" data-d="0.2" style="left:440px;top:715px;border-color:var(--amber)">S · msg 42000 (replay)</div>
+<div class="tag c-amber" data-cue="5" data-d="0.6" style="left:440px;top:765px;border-color:var(--amber)">S · msg 42001 (replay) …</div>
+<div class="tag c-blue" data-cue="5" data-d="1.4" style="left:1100px;top:815px;border-color:var(--blue)">… live messages</div>
+</div>
+
+<div class="scene" id="s-count">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Sequenced data carries no number</div>
+<div class="bytes" style="left:120px;top:240px"><div data-cue="0" data-d="0.3" style="width:100px;background:var(--pink)">len</div><div data-cue="0" data-d="0.3" style="width:50px;background:var(--amber)">S</div><div data-cue="0" data-d="0.3" style="width:500px;background:#55697a">message · no sequence field</div></div>
+<div class="card" data-cue="1" style="left:120px;top:380px;width:780px;border-color:var(--teal)"><div class="ct c-teal">client count</div><div class="big c-teal" id="c3-a">0</div></div>
+<div class="card" data-cue="1" style="left:1020px;top:380px;width:780px;border-color:var(--blue)"><div class="ct c-blue">server count</div><div class="big c-blue" id="c3-b">0</div></div>
+<div class="tag c-green" data-cue="2" style="left:120px;top:600px;border-color:var(--green);font-size:26px">one TCP connection: in order, no gaps</div>
+<div class="tag c-red" data-cue="3" style="left:120px;top:680px;border-color:var(--red);font-size:26px">disconnect → log in with count + 1</div>
+<div class="tag c-amber" data-cue="4" style="left:120px;top:760px;border-color:var(--amber);font-size:26px">requested 0 → start from the most recent message</div>
+</div>
+
+<div class="scene" id="s-heart">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Heartbeats and timeouts</div>
+<div class="lbl" data-cue="0" data-d="0.2" style="left:120px;top:270px">server</div>
+<div class="lbl" data-cue="0" data-d="0.2" style="left:120px;top:450px">client</div>
+<svg class="full"><path class="draw" data-cue="0" d="M 220 285 L 1800 285" stroke="#3c5463" stroke-width="3" fill="none" marker-end="url(#ah)"/><path class="draw" data-cue="0" d="M 220 465 L 1800 465" stroke="#3c5463" stroke-width="3" fill="none" marker-end="url(#ah)"/></svg>
+<div id="h3-ticks" data-cue="0" data-anim="fade" style="left:0;top:0;width:1920px;height:600px"></div>
+<div class="card" data-cue="1" style="left:120px;top:570px;width:820px;border-color:var(--red)"><div class="ct c-red">~15 s silent → dropped</div><div class="cd">no login within ~30 s → dropped</div></div>
+<div class="card" data-cue="2" style="left:980px;top:570px;width:820px;border-color:var(--violet)"><div class="ct c-violet">Z · end of session</div><div class="cd">over for good: cannot be rejoined</div></div>
+</div>
+
+<div class="scene" id="s-lab">
+<div class="h2" data-cue="0" style="left:120px;top:110px">In the lab: libs/soup</div>
+<div class="code" data-cue="0" data-d="0.3" style="left:120px;top:220px;width:1680px;font-size:24px"><span class="line"><span class="c">// lab/soup/soup.hpp</span></span><span class="line" data-hl="0" data-hlend="1">soup::write_login_request(buf.data(), <span class="g">"FIRM01"</span>, <span class="g">"secret"</span>, <span class="g">""</span>, <span class="r">42000</span>);  <span class="c">// 49 bytes</span></span><span class="line"></span><span class="line" data-hl="0" data-hlend="1">soup::StreamParser in;                    <span class="c">// one buffer, allocated once</span></span><span class="line" data-hl="0" data-hlend="1">in.feed(received);</span><span class="line" data-hl="0" data-hlend="1"><span class="k">while</span> (<span class="k">auto</span> p = in.next()) handle(p-&gt;type, p-&gt;payload);</span></div>
+<div class="card" data-cue="1" style="left:120px;top:500px;width:540px;border-color:var(--amber)"><div class="ct c-amber">simex gateway</div><div class="cd">OUCH orders over SoupBinTCP</div></div>
+<div class="card" data-cue="2" style="left:690px;top:500px;width:540px;border-color:var(--green)"><div class="ct c-green">login → send_from(first)</div><div class="cd">replays the account's stored messages</div></div>
+<div class="card" data-cue="3" style="left:1260px;top:500px;width:540px;border-color:var(--violet)"><div class="ct c-violet">vendor feeds</div><div class="cd">e.g. the lab's ICF: SoupBinTCP transport</div></div>
+</div>
+
+<div class="scene" id="s-take">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Soup or Mold?</div>
+<div class="card" data-cue="1" style="left:120px;top:240px;width:820px;height:300px;border-color:var(--violet)"><div class="ct c-violet">SoupBinTCP</div><div class="cs">reliable · ordered · simple</div><div class="cd">one connection per client; a lost segment or a slow reader stalls everything behind it</div></div>
+<div class="card" data-cue="2" style="left:980px;top:240px;width:820px;height:300px;border-color:var(--teal)"><div class="ct c-teal">MoldUDP64</div><div class="cs">multicast · one send for all</div><div class="cd">gaps happen; detection and recovery are yours (video 02)</div></div>
+<div class="take" data-cue="3" style="left:120px;top:650px;width:1680px">SoupBinTCP: an exact, gapless copy of the session, <span class="c-violet">if you can wait for it.</span></div>
+</div>

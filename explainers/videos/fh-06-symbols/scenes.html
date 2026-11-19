@@ -1,0 +1,75 @@
+<div class="scene" id="s-title">
+<div class="eyebrow" data-cue="0" style="left:140px;top:150px">FEED HANDLERS · 06 / 10</div>
+<div class="h1" data-cue="0" data-d="0.2" style="left:132px;top:200px">Symbol directories<br>and instrument ids</div>
+<div class="sub" data-cue="0" data-d="0.5" style="left:140px;top:500px;width:1500px">Two bytes on the wire, learned fresh every day.</div>
+<div class="msg" data-cue="1" style="left:140px;top:700px;width:300px;background:#cfd8de">"AAPL    " · 8 B</div>
+<svg class="full"><path class="draw" data-cue="1" data-d="0.4" d="M460 731 L620 731" stroke="#a98bff" stroke-width="4" fill="none" marker-end="url(#ah-violet)"/></svg>
+<div class="msg" data-cue="1" data-d="0.6" style="left:640px;top:700px;width:200px;background:var(--violet)">13 · 2 B</div>
+</div>
+
+<div class="scene" id="s-locate">
+<div class="h2" data-cue="0" style="left:120px;top:110px">ITCH: the stock locate</div>
+<div class="lbl" data-cue="0" data-d="0.3" style="left:120px;top:230px">every ITCH message starts with 11 bytes</div>
+<div class="bytes" data-cue="0" data-d="0.4" style="left:120px;top:270px">
+<div style="width:110px;background:#cfd8de">type<br>1</div>
+<div style="width:220px;background:var(--violet)" data-hl="0.5" data-hlend="1">stock locate<br>2</div>
+<div style="width:220px;background:#cfd8de">tracking<br>2</div>
+<div style="width:500px;background:var(--blue)">timestamp (ns since midnight)<br>6</div>
+<div style="width:500px;background:#2c4351;color:#cfd8de">message body …</div>
+</div>
+<div class="card" data-cue="1" style="left:120px;top:420px;width:1680px;border-color:var(--line)"><div class="cs" style="font-size:30px;margin:0">“The locate codes are dynamically assigned each day, starting with a value of 1 … An instrument's locate code will not change intraday … there should be no expectation that the assignment will be the same across multiple days.”</div><div class="note" style="margin-top:12px">Nasdaq TotalView-ITCH 5.0 specification</div></div>
+<div class="node violet" data-cue="2" style="left:120px;top:690px;width:420px"><div class="t" style="font-size:26px">Monday: AAPL = 13</div></div>
+<div class="node" data-cue="3" style="left:600px;top:690px;width:460px;border-color:var(--red)"><div class="t" style="font-size:26px">Tuesday: AAPL = <span class="c-red">?</span></div></div>
+<div class="node" data-cue="4" style="left:1120px;top:690px;width:680px"><div class="t" style="font-size:26px">locate 0: system events, MWCB</div></div>
+</div>
+
+<div class="scene" id="s-directory">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Stock Directory (R) · 39 bytes</div>
+<div class="bytes" data-cue="2" style="left:120px;top:260px">
+<div style="width:330px;background:#cfd8de">header 11<br>locate = 13</div>
+<div style="width:300px;background:var(--violet)">stock 8<br>"AAPL    "</div>
+<div style="width:140px;background:#d9cfff">mkt cat<br>1</div>
+<div style="width:140px;background:#d9cfff">fin status<br>1</div>
+<div style="width:200px;background:var(--amber)">round lot<br>4</div>
+<div style="width:520px;background:#e8e0ff">lots only · class · sub-type · auth · SSR · IPO · LULD tier · ETP …</div>
+</div>
+<div class="lbl" data-cue="2" data-d="0.4" style="left:120px;top:350px">docs/specs/itch50-layout.md</div>
+<div id="dr-feed" data-cue="1" style="left:120px;top:460px;width:1680px;height:300px"></div>
+<div class="lbl" data-cue="1" style="left:120px;top:420px">start of day: one R per active symbol, then book messages (locates illustrative)</div>
+<div class="tag c-violet" data-cue="3" style="left:120px;top:800px">lab synthetic day: S O, then R + H per symbol, locates 1 … n (libs/itch/src/synthetic.cpp)</div>
+</div>
+
+<div class="scene" id="s-index">
+<div class="h2" data-cue="0" style="left:120px;top:110px">The locate is an array index</div>
+<div class="code" data-cue="1" style="left:120px;top:210px;width:1100px;font-size:21px"><span class="line"><span class="c">// libs/book/include/lab/book/book_builder.hpp</span></span><span class="line" data-hl="1" data-hlend="2">std::vector&lt;Instrument&gt; instruments_;  <span class="c">// indexed by stock locate (0..65535)</span></span><span class="line" data-hl="1" data-hlend="2"><span class="k">const</span> OrderBook&amp; book(std::uint16_t locate) <span class="k">const</span> {</span><span class="line" data-hl="1" data-hlend="2">  <span class="k">return</span> instruments_[locate].book; }</span><span class="line" data-hl="4"><span class="c">// Locate code for a symbol, or 0 if not listed. Linear scan; not for hot paths.</span></span></div>
+<div class="code" data-cue="2" style="left:120px;top:470px;width:1100px;font-size:23px"><span class="line"><span class="c">// firm/trader/main.cpp, MarketData::on_message</span></span><span class="line" data-hl="3" data-hlend="4"><span class="k">if</span> (msg[<span class="r">0</span>] == <span class="g">'R'</span>) {  <span class="c">// Stock Directory: Stock at 11</span></span><span class="line" data-hl="3" data-hlend="4">  <span class="k">if</span> (memcmp(msg + <span class="r">11</span>, symbols_[i].data(), <span class="r">8</span>) == <span class="r">0</span>)</span><span class="line" data-hl="3" data-hlend="4">    instrument_of_[locate] = i;</span><span class="line">}</span><span class="line"><span class="k">const int</span> inst = instrument_of_[locate];  <span class="k">if</span> (inst &lt; <span class="r">0</span>) <span class="k">return</span>;</span></div>
+<div class="node violet" data-cue="1" data-d="0.5" style="left:1300px;top:230px;width:500px"><div class="t" style="font-size:26px">65,536 Instruments</div><div class="s">one indexed load · no hash</div></div>
+<div class="node amber" data-cue="2" data-d="0.5" style="left:1300px;top:490px;width:500px"><div class="t" style="font-size:26px">instrument_of_[65536]</div><div class="s">locate → trader's own index · −1 = not traded</div></div>
+<div class="tag" data-cue="5" style="left:120px;top:760px">BookBuilder(): instruments_(65536), before any thread starts</div>
+</div>
+
+<div class="scene" id="s-checks">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Checking the mapping</div>
+<div class="msg" data-cue="1" style="left:120px;top:260px;width:720px;background:var(--green);justify-content:flex-start">A · locate 977 · "XYZ     "</div>
+<div class="tag c-red" data-cue="1" data-d="0.5" style="left:880px;top:275px">no R for 977 → locate_without_directory</div>
+<div class="msg" data-cue="2" style="left:120px;top:420px;width:720px;background:var(--green);justify-content:flex-start">A · locate 13 · "MSFT    "</div>
+<div class="tag c-red" data-cue="2" data-d="0.5" style="left:880px;top:435px">R said 13 = AAPL → locate_symbol_mismatch</div>
+<div class="code" data-cue="2" data-d="1.0" style="left:120px;top:580px;width:1680px;font-size:22px"><span class="line"><span class="c">// BookBuilder::add_order</span></span><span class="line">Instrument* inst = listed(h.stock_locate);   <span class="c">// counts locate_without_directory</span></span><span class="line"><span class="k">if</span> (LAB_UNLIKELY(inst-&gt;symbol != stock)) ++checks_.locate_symbol_mismatch;</span></div>
+<div class="tag c-red" data-cue="3" style="left:120px;top:760px">error_count() &gt; 0 → itch-fh exits 1</div>
+</div>
+
+<div class="scene" id="s-late">
+<div class="h2" data-cue="0" style="left:120px;top:110px">Joining late</div>
+<div id="lt-tl" data-cue="1" style="left:120px;top:250px;width:1680px;height:120px"></div>
+<div class="node amber" data-cue="2" style="left:120px;top:420px;width:620px;text-align:left"><div class="t" style="font-size:26px">late subscriber</div><div class="s">sees: A · locate 13 · … → ??</div></div>
+<div class="card" data-cue="3" style="left:800px;top:420px;width:1000px;border-color:var(--line)"><div class="cs" style="margin:0;font-size:26px">“A subscriber that joins late starts at the live position. It would miss the stock directory, so start the traders first.”</div><div class="note" style="margin-top:10px">docs/aeron.md</div></div>
+<div class="tag c-violet" data-cue="5" style="left:800px;top:640px">itch-fh --aeron: waits up to 10 s for a first subscriber</div>
+<div class="node green" data-cue="6" style="left:120px;top:720px;width:820px;text-align:left"><div class="t" style="font-size:26px">directory snapshot, loadable mid-day</div></div>
+<div class="node red" data-cue="6" data-d="0.4" style="left:980px;top:720px;width:820px;text-align:left"><div class="t" style="font-size:26px">never reuse yesterday's locates</div></div>
+<div class="tag c-amber" data-cue="7" style="left:120px;top:830px">restart at noon = late joiner</div>
+</div>
+
+<div class="scene" id="s-takeaway">
+<div class="big" data-cue="0" style="left:120px;top:180px">One feed. <span class="c-violet">One day.</span></div>
+<div class="sub" data-cue="1" style="left:120px;top:320px;width:1600px">Learn ids from the feed, index books by them,<br>and treat an unknown id as an error.</div>
+</div>

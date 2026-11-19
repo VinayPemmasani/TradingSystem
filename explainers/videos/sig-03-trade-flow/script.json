@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Trade flow",
+  "text": "The book shows intentions. Trades show who actually paid to cross the spread. This video signs every trade, sums the flow, and measures how far it moves the price. It builds on the trade flow imbalance from the signals video."
+ },
+ {
+  "id": "aggressor",
+  "title": "The aggressor",
+  "text": "Every trade has two sides: a passive order resting in the book, and an aggressor that arrived and took it. On a direct ITCH feed the aggressor is exact. An execution, E or C, names the resting order, and the book knows its side, so the aggressor is the opposite one. Leave auction volume out: a cross prints once, in a Q message, and has no aggressor."
+ },
+ {
+  "id": "leeready",
+  "title": "Lee and Ready",
+  "text": "Without order-level data, you have to infer it. The standard recipe is Lee and Ready, from 1991. A trade above the prevailing midpoint is a buy, and below it, a sell. At the midpoint, fall back on the tick test: up from the last different price is a buy, down is a sell. For their 1988 data they lagged quotes by five seconds, because quotes were recorded ahead of the trades that caused them. On 2004 Arca data, Rosenthal found it right about 72 percent of the time."
+ },
+ {
+  "id": "classify",
+  "title": "A worked example",
+  "text": "With the market at 50.00 bid, 50.02 offered, the midpoint is 50.01. A print at 50.02 is a buy, and one at 50.00 a sell. The next print, at 50.01, sits on the midpoint. It is above the last different price, 50.00, so the tick test calls it a buy. Another at 50.01 is a zero tick, so it inherits the last change: buy again."
+ },
+ {
+  "id": "lambda",
+  "title": "Signed flow and impact",
+  "text": "Now give each trade's size the aggressor's sign, and sum over a window. That is signed volume. Divide by total volume and you get the signals video's trade flow imbalance. Kyle's 1985 model makes the price change linear in signed flow, with a slope called lambda. Here are six one-second windows. Least squares through the origin gives a lambda of 1.6 cents per thousand shares."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "Flow is persistent, too. Lillo and Farmer found long memory in order signs on the London Stock Exchange: buys tend to follow buys. In the lab, itch-dump's top of book CSV already splits flow by side. traded_bid counts shares sold into the best bid, and traded_ask shares bought from the best ask. Live, flow belongs in the market data thread, next to the book that knows each order's side. Sum traded_ask minus traded_bid over a window, and you have the signed volume from before."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "One caution: a single feed sees only its own venue, so trades on other exchanges are missing, and hidden executions need their own handling. Sign trades exactly where you can, infer carefully where you cannot, and measure impact with lambda."
+ }
+]

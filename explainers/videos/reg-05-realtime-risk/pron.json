@@ -1,0 +1,82 @@
+[
+[
+"\\$50\\.00",
+"fifty dollars"
+],
+[
+"\\$50\\.10",
+"fifty dollars ten"
+],
+[
+"\\$50\\.05",
+"fifty dollars five cents"
+],
+[
+"\\$9,990",
+"nine thousand nine hundred and ninety dollars"
+],
+[
+"\\b1,000\\b",
+"one thousand"
+],
+[
+"\\b2,000\\b",
+"two thousand"
+],
+[
+"\\b2,100\\b",
+"twenty one hundred"
+],
+[
+"\\bOMS\\b",
+"O M S"
+],
+[
+"\\bSEC\\b",
+"S E C"
+],
+[
+"\\bUS\\b",
+"U S"
+],
+[
+"\\bEU\\b",
+"E U"
+],
+[
+"\\bOUCH\\b",
+"ouch"
+],
+[
+"\\bITCH\\b",
+"itch"
+],
+[
+"\\bsimex\\b",
+"sim ex"
+],
+[
+"\\bPnL\\b",
+"P and L"
+],
+[
+"\\bFINRA\\b",
+"finra"
+],
+[
+"\\bCFTC\\b",
+"C F T C"
+],
+[
+"\\bCCP\\b",
+"C C P"
+],
+[
+"\\bRTS 6\\b",
+"R T S six"
+],
+[
+"\\bMiFID II\\b",
+"miffid two"
+]
+]

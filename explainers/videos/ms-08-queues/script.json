@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Queues",
+  "text": "At each price, resting orders wait in line. Where you stand in that line decides whether you get filled, and how good that fill turns out to be. Here is how a queue moves, and why its front is worth money."
+ },
+ {
+  "id": "fifo",
+  "title": "Price-time priority",
+  "text": "Most stock exchanges match by price, then by time. At one price, the oldest order trades first. A new order joins at the back. It moves forward in only two ways: trades at the front, and cancels ahead of it. Changing its price, or adding size, usually sends it to the back again."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Here is one I made up. The bid at 30.00 holds 5,000 shares, and you join with 100 at the back. Over the next minute, 1,500 shares trade at the bid, and 2,000 shares ahead of you cancel. That leaves 1,500 ahead of you, and 400 more have joined behind. Then a seller sweeps 2,000 shares. It takes the 1,500, your 100 and the 400 behind you. The level is gone, and the bid drops to 29.99. You waited a full minute, and were filled at the worst moment."
+ },
+ {
+  "id": "adverse",
+  "title": "Why the back is worse",
+  "text": "Look at what filled you: the order that emptied the level. Fills near the back tend to come from large or informed orders, just before the price moves through. Fills at the front come from small trades, while the queue still stands. Moallemi and Yuan modelled this with Nasdaq data from August 2013. Adverse selection rises with queue position. For some large-tick stocks, the value of queue position can be of the same order as the whole spread. For Bank of America, the front of the queue was worth about a fifth to a quarter of a tick more than an average spot."
+ },
+ {
+  "id": "tick",
+  "title": "Queues move prices",
+  "text": "With a one-tick spread, the price can only move when a queue at the best bid or offer runs out. So queue sizes, and how fast they shrink, forecast the next tick. That is the imbalance signal from the signal series, seen from the queue's side."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "In the lab, simex matches by price, then time. A replace leaves the book, and the new order loses time priority. ITCH carries every add, execution and cancel with its order reference, so a feed handler can track how much sits ahead of you: cancels ahead count, adds behind do not. The lab's market maker leaves an order alone while it is within a tick of its target, because every replace goes to the back."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Professionals join early, replace rarely, and cancel when the queue against them is about to break. Queue position is an asset. You earn it by arriving first, lose it on every replace, and it is worth most where ticks are large and queues are long."
+ }
+]

@@ -1,0 +1,17 @@
+[
+["\\b4 vCPU\\b", "four V C P U"],
+["\\bg\\+\\+", "G plus plus"],
+["\\bvCPU\\b", "V C P U"],
+["\\bVM\\b", "V M"],
+["\\bCPU\\b", "C P U"],
+["fprintf", "F printf"],
+["\\b7\\.2\\b", "seven point two"],
+["\\b1\\.0\\b", "one point oh"],
+["\\b2\\.3\\b", "two point three"],
+["\\b0\\.77\\b", "zero point seven seven"],
+["\\b15 to 20\\b", "fifteen to twenty"],
+["\\b80 percent\\b", "eighty percent"],
+["\\b4\\.9\\b", "four point nine"],
+["\\b2\\.4\\b", "two point four"],
+["\\b2\\.1\\b", "two point one"]
+]

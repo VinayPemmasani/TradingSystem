@@ -1,0 +1,16 @@
+[
+["std::array", "standard array"],
+["std::hardware_destructive_interference_size", "standard hardware destructive interference size"],
+["\\bC\\+\\+17\\b", "C plus plus seventeen"],
+["\\bGCC 13\\b", "G C C thirteen"],
+["\\bGCC\\b", "G C C"],
+["\\balignas\\b", "align as"],
+["\\b64-byte\\b", "sixty four byte"],
+["\\b4-vCPU\\b", "four V C P U"],
+["\\bVM\\b", "V M"],
+["\\b31\\.8\\b", "thirty one point eight"],
+["\\b7\\.1\\b", "seven point one"],
+["\\b4\\.5\\b", "four point five"],
+["\\b1\\.6\\b", "one point six"],
+["\\bstatic assert\\b", "static assert"]
+]

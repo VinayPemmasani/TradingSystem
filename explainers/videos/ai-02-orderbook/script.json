@@ -1,0 +1,36 @@
+[
+ {
+  "id": "title",
+  "title": "Price levels",
+  "text": "Pattern two: the price levels of an order book. A market-by-price feed sends level updates: add a price, change its quantity, or delete it. After each one, the strategy reads the best bid and the best ask."
+ },
+ {
+  "id": "general",
+  "title": "The general version",
+  "text": "With no latency budget stated, the natural answer is a std::map per side, keyed by price as a double. Bids sort descending, so begin is always the best price. A quantity of zero erases the level; anything else inserts or overwrites it. It is correct for any price and any depth, and it reads like the spec."
+ },
+ {
+  "id": "cost",
+  "title": "What a tree costs",
+  "text": "A std::map is a red-black tree. Finding a price walks down from the root, about nine or ten steps with four hundred live levels. Each step loads a node, compares, and branches left or right. That direction depends on the data, so the predictor often guesses wrong, and a wrong guess typically costs fifteen to twenty cycles. A new level calls malloc for a node, a deleted level calls free, and both may rebalance the tree. Here the whole book fits in L2 cache, so this is not about misses. It is pointer chasing, branching and allocation, on every update.",
+  "hold": 0.6
+ },
+ {
+  "id": "hot",
+  "title": "The hot-path version",
+  "text": "The hot-path version states two constraints. Prices are integer ticks, and they stay inside a known band, like the exchange's price limits. Then each side is a flat array of quantities, indexed by price minus a base. Setting a level is a subtraction and a store. A cursor remembers the best index. A better price moves it. Deleting the best scans to the next non-empty slot, usually a few slots away, in the same cache lines. Reading the top is one load. A price outside the band is rejected, so the caller can recenter the window.",
+  "hold": 0.6
+ },
+ {
+  "id": "measured",
+  "title": "Measured",
+  "text": "Measured on a shared cloud VM, pinned to one core: one million level updates, a third each add, modify and delete, clustered near the touch, with a top of book read after each. One message at a time, the map's median was 103 nanoseconds, and its p99 was 204. The flat book took 33 and 59, and both include about 22 nanoseconds of timer overhead. Back to back, timed in batches, it was 82 versus 11. The map allocated on one message in three; the flat book never did. Reading the top alone took under two nanoseconds in both, because the map keeps a pointer to its first node.",
+  "hold": 1.0
+ },
+ {
+  "id": "nuance",
+  "title": "When the map is fine",
+  "text": "The map is the right tool when prices are unbounded or sparse, when there is no fixed tick, and for analytics, replay and tests. The flat book is fast because it was told the tick size, the band, and that the book never allocates. Put those constraints in the prompt, then measure. The rule: index price levels by tick, keep a best cursor, and never allocate per level.",
+  "hold": 1.0
+ }
+]

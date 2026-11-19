@@ -1,0 +1,38 @@
+[
+ {
+  "id": "title",
+  "title": "Fair value",
+  "text": "A futures price and its index are tied together by the cost of carrying the stocks. That tie gives each one a fair value, read from the other. This is how a desk prices the cash from the futures, and the reverse. It builds on video five, where futures lead cash."
+ },
+ {
+  "id": "carry",
+  "title": "Cost of carry",
+  "text": "Buy the index today, and you pay financing until expiry, but you collect the dividends. A futures contract does neither. So in CME's fair value formula, futures equals cash, times one plus the rate times days over 360, minus dividends in index points. The rate and the days are known; the dividends have to be forecast. The futures price minus the cash index is the basis."
+ },
+ {
+  "id": "worked",
+  "title": "A worked example",
+  "text": "Take the index at 6,000, a 4 percent rate, 60 days to expiry, and dividends worth 12 points. Financing is 6,000 times 4 percent, times 60 over 360: that adds 40 points, and dividends take away 12, so fair value is 6,028, and the fair basis is 28 points. If the futures trade at 6,031.50, they are 3.50 points rich. Rich means the futures cost more than carry explains, here by a little under six hundredths of a percent."
+ },
+ {
+  "id": "invert",
+  "title": "Pricing the cash",
+  "text": "Now run it backwards, to price the cash from the futures. Add back the dividends, and divide by the carry factor: 6,043.50 over 1.00667 is 6,003.48. So the futures say the index is worth about three and a half points more than it prints. Since futures lead, a market maker in the cash or the ETF centers its quotes there. That is the number to quote around, not the 6,000 on the screen."
+ },
+ {
+  "id": "practice",
+  "title": "Intraday",
+  "text": "Intraday, the fair basis barely moves: only rates, dividends and days to expiry change it. So a desk holds it fixed for the day, and recomputes cash fair value on every futures tick, as futures minus basis. A futures move that carry cannot explain is information. The printed index is built from each stock's last trade, so in a fast market it lags, and makes a poor reference."
+ },
+ {
+  "id": "lab",
+  "title": "In the lab",
+  "text": "The lab's agents trade the same idea in miniature. A strip's value is the sum of its two legs, so its fair value is the two leg mids added up, with no carry. The strip's mid minus that sum is its basis, and it should hover near zero. A basis that stays wide is either a trade, or a sign that one book is stale."
+ },
+ {
+  "id": "takeaway",
+  "title": "Takeaway",
+  "hold": 1.0,
+  "text": "Pitfalls: dividends are forecasts, the right rate is your own funding cost, and contracts roll, so recompute the basis at every roll. The same arithmetic, with other carry costs, prices currency forwards and commodity futures. Carry ties futures to cash: hold the basis, and let the leader's price set the follower's fair value."
+ }
+]
