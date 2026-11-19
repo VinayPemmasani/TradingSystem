@@ -54,7 +54,11 @@ class OrderEntry {
   // has been sent, then logs out.
   void run(const std::atomic<bool>& stop);
 
+  // After run(): counters and latency.
   const OrderEntryStats& stats() const noexcept { return stats_; }
+  // Safe from any thread while run() is going: the session has ended (the
+  // exchange said so, or the connection dropped).
+  bool session_over() const noexcept { return session_over_.load(std::memory_order_acquire); }
 
  private:
   void send(const lab::oms::OrderRequest& r);
@@ -71,6 +75,7 @@ class OrderEntry {
   std::uint64_t last_tx_ns_ = 0;
   std::uint64_t next_seq_ = 1;
   OrderEntryStats stats_;
+  std::atomic<bool> session_over_{false};
 };
 
 }  // namespace trader

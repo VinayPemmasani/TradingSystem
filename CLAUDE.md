@@ -34,6 +34,10 @@ the project playbook. Build phases are listed in README.md.
 - `scripts/e2e-quant-lab.sh` runs `quant-lab` (all four strategies for a shortened
   year) and builds the Quant Research Lab page; run it after any strategy,
   `tools/quant-lab` or `research/quant_lab.py` change.
+- `scripts/e2e-aeron.sh` runs `aeron-driver`, `itch-fh --aeron` and two
+  `trader --md-aeron` processes against simex; run it after any `libs/aeron`,
+  `aeron-*` tool, or Aeron path in `itch-fh` or `trader` change, along with
+  `aeron-ping` for before/after round trips.
 - Benchmarks: `./build/release/bench/core_bench`. Any hot-path change comes with
   before/after numbers from the same machine.
 
@@ -56,6 +60,8 @@ the project playbook. Build phases are listed in README.md.
 - `libs/vendor`  vendor ticker plant: `Consolidator` (Level 1 records from `BookBuilder`), a
   single-threaded distribution `Server` with conflation, and the ICF, OMM JSON/WebSocket and
   B-PIPE sessions; `vendors/{icf,rtws,bpipe}` the three servers
+- `libs/aeron`  C++ layer over the Aeron C client and media driver (fetched by `cmake/Aeron.cmake`,
+  version 1.47.7); `tools/aeron-driver`, `tools/aeron-ping`; design notes in `docs/aeron.md`
 - `research/`  Python (numpy, pandas): PnL, reconciliation, TCA, backtests; stdlib unittest
 - `exchange/`, `tools/`  as in the design doc
 - One library or executable per directory, each with its own CMakeLists.txt and
