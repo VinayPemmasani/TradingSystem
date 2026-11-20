@@ -1,0 +1,45 @@
+{
+  "comment": "Layout of the packet-life scene, read by both index.html and the OpenGL viewer in opengl/. Stations sit on a floor (x right, z toward the viewer). Each leg moves one message from tools/order-trace output (stage id + index into its msgs, -1 for a decision with no message) along a path of stations. Legs with the same stage and wave move together; waves and stages play in order.",
+  "groups": [
+    { "id": "simex",  "label": "simex, the exchange",   "color": "#f5a524" },
+    { "id": "net",    "label": "network",               "color": "#8796a8" },
+    { "id": "trader", "label": "trader, our firm",      "color": "#4c9aff" },
+    { "id": "fix",    "label": "another firm over FIX", "color": "#b57bff" },
+    { "id": "post",   "label": "back office",           "color": "#2ec4b6" }
+  ],
+  "stations": [
+    { "id": "match",  "group": "simex",  "label": "matching thread",       "x": -17, "z": 0 },
+    { "id": "md",     "group": "simex",  "label": "market data thread",    "x": -17, "z": -9 },
+    { "id": "gw",     "group": "simex",  "label": "gateway thread",        "x": -17, "z": 9 },
+    { "id": "swmd",   "group": "net",    "label": "multicast switch",      "x": 0,   "z": -12 },
+    { "id": "swoe",   "group": "net",    "label": "order entry switch",    "x": 0,   "z": 10 },
+    { "id": "rx",     "group": "trader", "label": "rx thread",             "x": 15,  "z": -12 },
+    { "id": "tmd",    "group": "trader", "label": "market data thread",    "x": 20,  "z": -5 },
+    { "id": "strat",  "group": "trader", "label": "trading: strategy",     "x": 20,  "z": 3 },
+    { "id": "risk",   "group": "trader", "label": "trading: risk + OMS",   "x": 15,  "z": 9 },
+    { "id": "oe",     "group": "trader", "label": "order entry thread",    "x": 8,   "z": 14 },
+    { "id": "fixgw",  "group": "fix",    "label": "fixgw",                 "x": -10, "z": 19 },
+    { "id": "fixc",   "group": "fix",    "label": "fix-client firm",       "x": 1,   "z": 23 },
+    { "id": "drop",   "group": "post",   "label": "drop copy, DROP01",     "x": -27, "z": 6 }
+  ],
+  "legs": [
+    { "stage": "feed-out", "wave": 0, "msg": 1, "path": ["match", "md"] },
+    { "stage": "feed-out", "wave": 1, "msg": 0, "path": ["md", "swmd", "rx"] },
+    { "stage": "book",     "wave": 0, "from": "feed-out", "msg": 0, "path": ["rx", "tmd"] },
+    { "stage": "book",     "wave": 1, "msg": 0, "path": ["tmd", "strat"] },
+    { "stage": "strategy", "wave": 0, "msg": -1, "label": "quote: buy 100 @ 189.51", "path": ["strat"] },
+    { "stage": "risk",     "wave": 0, "msg": -1, "label": "order to check", "path": ["strat", "risk"] },
+    { "stage": "ouch-out", "wave": 0, "msg": 0, "path": ["risk", "oe"] },
+    { "stage": "ouch-out", "wave": 1, "msg": 1, "path": ["oe", "swoe", "gw"] },
+    { "stage": "accept",   "wave": 0, "msg": 0, "path": ["gw", "match"] },
+    { "stage": "accept",   "wave": 1, "msg": 1, "path": ["match", "gw", "swoe", "oe"] },
+    { "stage": "accept",   "wave": 1, "msg": 2, "path": ["match", "md", "swmd", "rx"] },
+    { "stage": "fix-in",   "wave": 0, "msg": 0, "path": ["fixc", "fixgw"] },
+    { "stage": "fix-in",   "wave": 1, "msg": 1, "path": ["fixgw", "gw", "match"] },
+    { "stage": "match",    "wave": 0, "msg": 0, "path": ["match", "gw", "swoe", "oe"] },
+    { "stage": "match",    "wave": 0, "msg": 1, "path": ["match", "md", "swmd", "rx"] },
+    { "stage": "match",    "wave": 0, "msg": 2, "path": ["match", "drop"] },
+    { "stage": "fills",    "wave": 0, "msg": 0, "path": ["fixgw", "fixc"] },
+    { "stage": "fills",    "wave": 0, "msg": 1, "path": ["oe", "risk"] }
+  ]
+}
