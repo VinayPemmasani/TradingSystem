@@ -65,6 +65,8 @@ the project playbook. Build phases are listed in README.md.
 - `explainers/`  narrated explainer videos: scene engine (`engine/GUIDE.md`), per-video sources, and the
   C++ example code shown in them (not in the CMake build; `explainers/samples.sh` builds it and runs its tests,
   `explainers/RUNNING.md` covers running it on a PC)
+- `viz/packet-life/`  one order's end-to-end packet life in 3D from `tools/order-trace` output: a three.js
+  page and a native OpenGL 3.3/GLFW viewer of the same scene (standalone CMake project, not in the main build)
 - `research/`  Python (numpy, pandas): PnL, reconciliation, TCA, backtests; stdlib unittest
 - `exchange/`, `tools/`  as in the design doc
 - One library or executable per directory, each with its own CMakeLists.txt and
